@@ -38,7 +38,7 @@ pub fn create_app() -> Server<State> {
     app.middleware(log);
 
     app.at("/hello/:name").get(hello_handler);
-    app.at("/doctors").get(|req: Request<()>| async move {
+    app.at("/doctors").get(|req: Request<State>| async move {
         let id = req.header("X-Correlation-ID");
 
         match id {
