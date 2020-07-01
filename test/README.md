@@ -1,5 +1,12 @@
 # Automated Testing
 
+## Setup
+
+Run `npm install` in the `/test/` dir to install dependencies.
+Add your BrowserStack username and access key to the .env file.
+
+Access key can be found by going to the [BrowserStack Automate Dashboard](https://automate.browserstack.com/dashboard/v2/) and clicking on the ACCESS KEY dropdown.
+
 ## Local Server Testing
 
 These example tests are designed to run off a local server.
@@ -21,9 +28,7 @@ This will open the test runner. You can then select a test you want to run and w
 ### Selenium
 
 To run the Selenium test on Browserstack, you first need to launch the Browserstack Local executable.
-From the command line, cd into the browserstack folder and execute `./BrowserStackLocal --key {accesskey}`\*
-
-\* Replace {accesskey} with your access key, which can be found by going to the [BrowserStack Automate Dashboard](https://automate.browserstack.com/dashboard/v2/) and clicking on the ACCESS KEY dropdown.
+From the command line, cd into the browserstack folder and execute `./BrowserStackLocal --key {accesskey}`
 
 Then (in a separate window) execute `node browserstack_local_test.js`.
 

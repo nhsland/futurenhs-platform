@@ -1,9 +1,10 @@
+require("dotenv").config();
 var webdriver = require("selenium-webdriver");
 var assert = require("assert");
 
-// Need to replace these credentials with env vars
-var userName = "declanslevin1";
-var accessKey = "UEZD7fj328mqvqX6xtxq";
+var userName = process.env.BROWSERSTACK_USERNAME;
+var accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
+
 var browserstackURL =
   "https://" +
   userName +
@@ -33,27 +34,44 @@ describe("Page loads", function () {
       .build();
   });
 
+  // it("should render h1", function (done) {
+  //   const expected = "[Your Name]";
+
+  //   let result;
+  //   driver.get("http://127.0.0.1:3000").then(async () => {
+  //     try {
+  //       await driver.findElement(webdriver.By.css("h1")).then(async (h1) => {
+  //         result = await h1.getText();
+  //       });
+  //       console.log(result);
+  //       assert.equal(result, expected);
+  //       done();
+  //     } catch (err) {
+  //       console.log(err);
+  //       done();
+  //     }
+  //   });
+  //   // .catch(function (err) {
+  //   //   console.log(err);
+  //   // });
+  // });
+
   it("should render h1", function (done) {
     const expected = "[Your Name]";
 
     let result;
-    driver.get("http://127.0.0.1:3000").then(async () => {
-      try {
-        await driver.findElement(webdriver.By.css("h1")).then(async (h1) => {
-          await h1.getText();
+    driver
+      .get("http://127.0.0.1:3000")
+      .then(function () {
+        driver.findElement(webdriver.By.css("h1")).then(function (h1) {
           result = h1.getText();
+          done();
         });
-        console.log(result);
-        assert.equal(result, expected);
-        done();
-      } catch (err) {
+      })
+      .catch(function (err) {
         console.log(err);
         done();
-      }
-    });
-    // .catch(function (err) {
-    //   console.log(err);
-    // });
+      });
   });
 
   //   assert.equal(result, expected)

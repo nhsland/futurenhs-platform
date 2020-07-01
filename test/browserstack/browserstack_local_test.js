@@ -1,9 +1,10 @@
+require("dotenv").config();
 var webdriver = require("selenium-webdriver");
 var assert = require("assert");
 
-// Need to replace these credentials with env vars
-var userName = "declanslevin1";
-var accessKey = "UEZD7fj328mqvqX6xtxq";
+var userName = process.env.BROWSERSTACK_USERNAME;
+var accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
+
 var browserstackURL =
   "https://" +
   userName +
