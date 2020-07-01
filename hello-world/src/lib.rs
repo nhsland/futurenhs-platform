@@ -3,8 +3,6 @@ use std::pin::Pin;
 use tide::{Next, Request, Result, Server};
 use tracing::{info, info_span};
 use tracing_futures::Instrument;
-use serde::{Deserialize, Serialize};
-use tide::prelude::*;
 
 #[derive(Debug)]
 pub struct State {}
@@ -28,32 +26,11 @@ fn log<'a>(
     })
 }
 
-#[derive(Deserialize, Serialize)]
-struct Doctor {
-    name: String,
-}
-
 pub fn create_app() -> Server<State> {
     let mut app = tide::with_state(State {});
     app.middleware(log);
 
     app.at("/hello/:name").get(hello_handler);
-    app.at("/doctors").get(|req: Request<State>| async move {
-        let id = req.header("X-Correlation-ID");
-
-        match id {
-            Some(x) => println!("Correlation ID is {}", x),
-            None => println!("No correlation ID found in header"),
-        }
-
-        Ok(json!({
-            "doctors": [
-                {"type": "doctor", "name": "Dr Doolittle" },
-                {"type": "doctor", "name": "Dr John" },
-                {"type": "doctor", "name": "Dr Marten"}
-            ]
-        }))
-    });
     app
 }
 
