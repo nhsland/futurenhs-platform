@@ -13,9 +13,9 @@ const provider = new NodeTracerProvider({
   },
 });
 
-const exporter = process.env.INSTRUMENTATION_KEY ? new AzureMonitorTraceExporter({
+const exporter = process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY ? new AzureMonitorTraceExporter({
   logger: provider.logger,
-  instrumentationKey: process.env.INSTRUMENTATION_KEY,
+  instrumentationKey: process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY,
 }) : new ConsoleSpanExporter()
 
 provider.register();
