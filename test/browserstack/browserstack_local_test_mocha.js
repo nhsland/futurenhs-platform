@@ -17,7 +17,6 @@ describe("Page loads", function () {
   let driver;
 
   before(function () {
-    console.log("starting driver");
     let capabilities = {
       os: "Windows",
       os_version: "10",
@@ -37,27 +36,19 @@ describe("Page loads", function () {
   it("should render h1", (done) => {
     const expected = "[Your Name]";
 
-    let result;
     driver
       .get("http://127.0.0.1:3000")
       .then(() => {
         driver.findElement(webdriver.By.css("h1")).then((h1) => {
           h1.getText()
-            .then((text) => {
-              result = text;
+            .then((result) => {
               assert.equal(result, expected);
               done();
             })
-            .catch((err) => {
-              console.log(err);
-              done();
-            });
+            .catch(done);
         });
       })
-      .catch((err) => {
-        console.log(err);
-        done();
-      });
+      .catch(done);
   });
 
   after(function () {
