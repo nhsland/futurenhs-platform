@@ -4,8 +4,9 @@ import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 
 export default function Home() {
+  // this is purely here to check that we receive client side exceptions within Application Insights
   const outrage = () => {
-    throw new Error("Clearly eggs are not suitable for Vegans")
+    throw new Error("No, eggs are not suitable for Vegans")
   }
   return (
     <Layout home>
