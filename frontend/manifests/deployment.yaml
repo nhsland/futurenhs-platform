@@ -16,7 +16,7 @@ spec:
         - name: frontend
           image: fnhsproduction.azurecr.io/frontend
           env:
-          - name: INSTRUMENTATION_KEY
+          - name: NEXT_PUBLIC_INSTRUMENTATION_KEY
             value: "18be3b83-4ad5-4186-a7b6-f65dd1253a77"
           ports:
             - containerPort: 3000
