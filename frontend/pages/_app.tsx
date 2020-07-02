@@ -1,6 +1,18 @@
 import React from "react";
-import { AppProps } from "next/app";
+import App from "next/app";
+import { withApplicationInsights } from 'next-applicationinsights';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+class MyApp extends App {
+  render() {
+    const { Component, pageProps } = this.props
+
+    return (
+      <Component {...pageProps} />
+    )
+  }
 }
+
+export default withApplicationInsights({
+  instrumentationKey: process.env.INSTRUMENTATION_KEY,
+  isEnabled: process.env.NODE_ENV === 'production'
+})(MyApp)
