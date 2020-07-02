@@ -34,58 +34,31 @@ describe("Page loads", function () {
       .build();
   });
 
-  // it("should render h1", function (done) {
-  //   const expected = "[Your Name]";
-
-  //   let result;
-  //   driver.get("http://127.0.0.1:3000").then(async () => {
-  //     try {
-  //       await driver.findElement(webdriver.By.css("h1")).then(async (h1) => {
-  //         result = await h1.getText();
-  //       });
-  //       console.log(result);
-  //       assert.equal(result, expected);
-  //       done();
-  //     } catch (err) {
-  //       console.log(err);
-  //       done();
-  //     }
-  //   });
-  //   // .catch(function (err) {
-  //   //   console.log(err);
-  //   // });
-  // });
-
-  it("should render h1", function (done) {
+  it("should render h1", (done) => {
     const expected = "[Your Name]";
 
     let result;
     driver
       .get("http://127.0.0.1:3000")
-      .then(function () {
-        driver.findElement(webdriver.By.css("h1")).then(function (h1) {
-          result = h1.getText();
-          done();
+      .then(() => {
+        driver.findElement(webdriver.By.css("h1")).then((h1) => {
+          h1.getText()
+            .then((text) => {
+              result = text;
+              assert.equal(result, expected);
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            });
         });
       })
-      .catch(function (err) {
+      .catch((err) => {
         console.log(err);
         done();
       });
   });
-
-  //   assert.equal(result, expected)
-  // } catch (err) {
-  //   console.log(err);
-  // }
-
-  // try {
-  //   assert.equal(result, expected);
-  // } catch (err) {
-  //   console.log(err);
-  // }
-  // done();
-  // });
 
   after(function () {
     driver.quit();
