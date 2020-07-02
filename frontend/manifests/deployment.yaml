@@ -17,7 +17,7 @@ spec:
           image: fnhsproduction.azurecr.io/frontend
           env:
           - name: INSTRUMENTATION_KEY
-            value: ""
+            value: "18be3b83-4ad5-4186-a7b6-f65dd1253a77"
           ports:
             - containerPort: 3000
           resources:
