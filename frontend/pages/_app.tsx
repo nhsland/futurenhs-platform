@@ -7,7 +7,6 @@ class MyApp extends App {
     const { Component, pageProps } = this.props
 
     return (
-
       <Component {...pageProps} />
     )
   }
@@ -16,5 +15,4 @@ class MyApp extends App {
 export default withApplicationInsights({
   instrumentationKey: process.env.INSTRUMENTATION_KEY,
   isEnabled: process.env.NODE_ENV === 'production'
-
 })(MyApp)
