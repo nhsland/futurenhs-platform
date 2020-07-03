@@ -1,13 +1,13 @@
 name: frontend-master
 
 on:
-  push:
+  # push:
     # branches:
     #   - master
     # paths:
     #   - frontend/**
     #   - .github/workflows/frontend-master.yaml
-    pull_request:
+  pull_request:
     branches:
       - master
     paths:
