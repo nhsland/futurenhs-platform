@@ -13,7 +13,7 @@ COPY . .
 # Building app
 RUN yarn lint
 RUN yarn test
-RUN yarn build
+RUN NEXT_PUBLIC_INSTRUMENTATION_KEY=22def0fe-38ea-4aee-a7a6-7b2ddb347709 yarn build
 
 # Running the app
 CMD [ "yarn", "start" ]

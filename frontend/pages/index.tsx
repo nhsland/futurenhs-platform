@@ -16,7 +16,7 @@ export default function Home() {
       <section className={utilStyles.headingMd}>
         <p>FutureNHS</p>
         <p>
-          (This is a sample website about how eggs are suitable for vegans - Polli - you’ll be building a site like this in{" "}
+          (This is a sample website about how eggs are suitable for vegans - polly - you’ll be building a site like this in{" "}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
         <button onClick={outrage}>Are eggs suitable for vegans? Click button to find out</button>
