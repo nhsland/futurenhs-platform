@@ -2,8 +2,6 @@
 
 ## Productivity
 
-While there will be an initial learning curve, we recommend the adoption of Rust in order to capitalise on the long-term productivity and efficiency gains it offers.
-
 Rust provides a number of features that enables developers to work faster:
 
 - Enums & structs allow complex domains to be correctly modelled easier than in many languages.
@@ -12,6 +10,8 @@ Rust provides a number of features that enables developers to work faster:
 - It provides a comprehensive set of data structures and iterator utilities in its standard library, and supports generics to add more should you need them.
 - It's strict compiler reduces the need for certain types of testing and allows for fearless refactoring - you can be reasonably sure that when it compiles it'll run.
 - When you make a change the compiler can guide you through all the places that you need to change.
+- Its standard formatter means almost all Rust code follows the same code style, which helps with reading third party code.
+- It provides tooling for documentation, which runs code examples as part of unit tests - almost all Rust library documentation looks the same and code examples are guaranteed to work.
 
 These productivity benefits are enabled by a steeper learning curve. Rust has some features that can't currently be found in any other language, and developers may take a while to get up to speed on these.
 
