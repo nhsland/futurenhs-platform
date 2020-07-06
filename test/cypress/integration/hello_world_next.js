@@ -1,6 +1,6 @@
 describe("Hello world", () => {
   it("Visits the home page", () => {
-    cy.visit("http://127.0.0.1:3000");
+    cy.visit("http://bs-local.com:3000");
   });
 
   it("Renders page elements", () => {

@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "username": "declanslevin1",
+    "access_key": "UEZD7fj328mqvqX6xtxq"
+  },
+  "browsers": [
+    {
+      "browser": "chrome",
+      "os": "Windows 10",
+      "versions": ["78", "77"]
+    }
+  ],
+  "run_settings": {
+    "cypress_proj_dir": "./",
+    "project_name": "Untitled Project",
+    "build_name": "Untitled Build",
+    "parallels": 5,
+    "npm_dependencies": {}
+  },
+  "connection_settings": {
+    "local": true,
+    "local_identifier": "bslocal1"
+  },
+  "disable_usage_reporting": false
+}
