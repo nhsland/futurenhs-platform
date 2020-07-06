@@ -1,13 +1,16 @@
 {
   "auth": {
-    "username": "declanslevin1",
-    "access_key": "UEZD7fj328mqvqX6xtxq"
+    "username": "<browserstack username>",
+    "access_key": "<browserstack access key>"
   },
   "browsers": [
     {
       "browser": "chrome",
       "os": "Windows 10",
-      "versions": ["78", "77"]
+      "versions": [
+        "78",
+        "77"
+      ]
     }
   ],
   "run_settings": {

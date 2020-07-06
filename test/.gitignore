@@ -1,4 +1,6 @@
 .env
 .DS_Store
+browserstack.json
+
 /node_modules
 /log
