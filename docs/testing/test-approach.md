@@ -97,7 +97,7 @@ To avoid negatively affecting Production performance it would be wise to test pe
 ## Levels of Testing
 ### The Testing Pyramid
 
-![diagram of the testing pyramid](./test_pyramid.png)
+![diagram of the testing pyramid](./test-pyramid.png)
 
 Popularised by Mike Cohn, the idea of the Test Pyramid is fundamental to our approach to testing within Red Badger. Through previous experience and research, we have come to believe that the principles behind this model are of vital importance for a successful delivery built upon a solid foundation of quality assurance. As automation plays an increasingly important role in enabling continuous integration and delivery, it is vital that this area is given the highest attention.
 
