@@ -3,13 +3,13 @@
 Proposed tech stack for the FutureNHS platform:
 
 - **Microsoft Azure** for hosting
-- [**Terraform**](#terraform) for infrastructure management
-- **Docker** to containerize our applications
-- [**Kubernetes**](#kubernetes) to run and orchestrate our applications
-- [**GitHub Actions**](#github-actions) for continuous integration
-- [**GitOps**](#gitops) for continuous deployment (using **Argo CD**)
 - **React** and **TypeScript** (using **Next.js**) for the frontend
 - [**Rust**](#rust) for backend services
+- [**GitHub Actions**](#github-actions) for continuous integration
+- [**GitOps**](#gitops) for continuous deployment (using **Argo CD**)
+- **Docker** to containerize our applications
+- [**Kubernetes**](#kubernetes) to run and orchestrate our applications
+- [**Terraform**](#terraform) for infrastructure management
 - **Azure Monitor** with **Azure Application Insights** for monitoring, tracing and alerting
 - [**Linkerd**](#linkerd) as a service mesh
 - **Azure Blob Storage** to store files
@@ -19,11 +19,11 @@ Proposed tech stack for the FutureNHS platform:
 
 ### Terraform
 
-We also considered **Azure Resource Manager (ARM) Templates**. That's Azure's proprietary format for declarative infrastructure management. It's possible to generate ARM templates from the Azure Portal. Arguments for Terraform are that it's platform agnostic, so developer skills are transferable and it's possible to manage multiple providers with the same tool. There is no clear best solution.
+We also considered **Azure Resource Manager (ARM) Templates**. ARM templates are Azure's proprietary format for declarative infrastructure management. It's possible to generate ARM templates from the Azure Portal. Arguments for Terraform are that it's platform agnostic, so developer skills are transferable and it's possible to manage multiple providers with the same tool. In our mind there is no clear best solution.
 
 ### Kubernetes
 
-We also considered **Azure App Service**. Kubernetes provides a range of features itself and in it's ecosystem, that would be harder to build on top of App Services, e.g.: auto-scaling, zero-downtime deployments, automated canary/blue-green deployments, local development.
+We also considered **Azure App Service**. Kubernetes provides a range of features itself and through it's ecosystem, that would be harder to build on top of App Services. Examples: auto-scaling, zero-downtime deployments, automated canary/blue-green deployments, local development.
 
 ### GitHub Actions
 
@@ -41,13 +41,12 @@ We will look for existing open source solutions for self-contained parts of the 
 
 ### Linkerd
 
-A service mesh encrypts network traffic between our services, enables automated canary deployments with intelligent traffic routing, supports automated retries and timeouts and it provides diagnostic information about our network traffic.
+Linkerd encrypts network traffic between our services, enables automated canary deployments with intelligent traffic routing, supports automated retries and timeouts and it provides diagnostic information about our network traffic.
 
 ### PostgreSQL
 
-We also considered **Azure CosmosDB**. It's fully managed and scales infinitelty. Unfortunately development for CosmosDB requires Windows for the emulator.
+We also considered **Azure CosmosDB**. CosmosDB is fully managed and scales infinitelty. Unfortunately development for CosmosDB requires Windows for the emulator.
 
 ## A note about API gateways
-
 
 We're planning to start without a dedicated API Gateway, because we don't plan to have a public API in the beginning. We may have an API, which is available on the internet, but it will be exclusively used by our platform. This means we can use cookies for authentication, which is the safest option for websites at the moment, and we are less concerned about usage quotas or other parties calling the API.
