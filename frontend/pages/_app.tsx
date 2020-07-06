@@ -1,10 +1,10 @@
 import React from "react";
 import App from "next/app";
-import { withApplicationInsights } from '../components/next-applicationinsights'
+import { withApplicationInsights } from '../components/next-applicationinsights';
 
 class MyApp extends App {
   render() {
-    const { Component, pageProps } = this.props
+    const { Component, pageProps } = this.props;
 
     return (
       <Component {...pageProps} />

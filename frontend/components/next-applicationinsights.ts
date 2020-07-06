@@ -1,7 +1,8 @@
+// This file is taken from https://github.com/goenning/next-applicationinsights and edited to remove the 'getInitialProps' method in order to allow for static generation.
 import * as React from 'react';
 import { AppProps, default as NextApp, AppContext } from 'next/app';
 
-import { ApplicationInsights, IConfiguration, IConfig } from '@microsoft/applicationinsights-web'
+import { ApplicationInsights, IConfiguration, IConfig } from '@microsoft/applicationinsights-web';
 
 const IS_BROWSER = typeof window !== "undefined";
 
@@ -46,13 +47,12 @@ export const withApplicationInsights = (config: IConfiguration & IConfig & ICust
       public trackPageView() {
         if (appInsights) {
           const name = this.props.Component.displayName || this.props.Component.name || location.pathname;
-          const properties = {
+          const properties: { [route: string]: string | undefined | string[] } = {
             route: this.props.router.route,
           }
           if (this.props.router.query) {
             for (const key in this.props.router.query) {
-              //@ts-ignore
-              properties[`query.${key}`] = this.props.router.query[key];
+              properties[(`query.${key}`)] = this.props.router.query[key];
             }
           }
           appInsights.trackPageView({ name, properties });
