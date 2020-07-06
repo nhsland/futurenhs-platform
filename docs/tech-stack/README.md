@@ -37,7 +37,9 @@ More about [GitOps](https://www.gitops.tech/)
 
 ### Rust
 
-We will look for existing open source solutions for self-contained parts of the platform. For example we might deploy an existing CalDAV server to support calendars. We won't require Rust for these solutions. Instead we go with whatever is already there.
+[Why Rust?](why-rust.md) describes why we chose Rust.
+
+However, we will also look for existing open source solutions for self-contained parts of the platform. For example we might use an existing CalDAV server to support calendars. We won't require Rust for these solutions. Instead we go with whatever is already there.
 
 ### Linkerd
 
