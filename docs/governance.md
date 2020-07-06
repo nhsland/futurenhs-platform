@@ -24,3 +24,5 @@ Every feature is:
 - Hidden behind a feature flag
 - Enabled by the product owner after being tested and discussed with the service team
 - Sometimes gradually rolled out to subsets of users (criteria determining the set of users are to be defined, but can be things like workspace or email address)
+
+![](./change-release-process.png)
