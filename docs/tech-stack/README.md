@@ -1,6 +1,6 @@
 # Tech Stack
 
-Proposed tech stack for the FutureNHS platform:
+Proposed tech stack for the FutureNHS platform (based on open source and open standards where possible):
 
 - **Microsoft Azure** for hosting
 - **React** and **TypeScript** (using **Next.js**) for the frontend
@@ -15,7 +15,7 @@ Proposed tech stack for the FutureNHS platform:
 - **Azure Blob Storage** to store files
 - [**PostgreSQL**](#postgresql) to store other data
 
-## Details
+## Details about individual choices
 
 ### Terraform
 
@@ -48,6 +48,15 @@ Linkerd encrypts network traffic between our services, enables automated canary 
 ### PostgreSQL
 
 We also considered **Azure CosmosDB**. CosmosDB is fully managed and scales infinitelty. Unfortunately development for CosmosDB requires Windows for the emulator.
+
+## Benefits of using open source/standards
+
+The tech stack is made up mainly from open source software of hosted solutions based on an open standard. The GOV.UK website describes the benefits of [open source](https://www.gov.uk/guidance/be-open-and-use-open-source) and [open standards](https://www.gov.uk/government/publications/open-standards-principles/open-standards-principles) better than we could do here.
+
+One of the benefits to call out here is avoiding vendor lock-in. If we rely on an open stack, it's likely that we can run it with minimal changes on other hosting platforms. We don't treat this as a hard requirement, though. If the costs of using an open solution compared to a proprietary ones outweight the benefits, we will go with the proprietary one. Some of these choices include:
+
+- Azure Monitor: While we're using Azure Monitor for monitoring, tracing and alerting, we're using the [OpenTelemetry](https://opentelemetry.io/) standard to inject tracing and metric data.
+- Azure Blob Storage: The service could be replaced with Amazon S3 or Google Cloud Storage without too much effort.
 
 ## A note about API gateways
 
