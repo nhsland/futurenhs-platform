@@ -19,6 +19,19 @@ The compiler should prove helpful while developers are on the learning curve: a 
 
 Any learning curve should be eclipsed by the overall productivity gains as the learning curve is a one time cost (per developer) but the productivity gains last forever.
 
+## Concerns
+
+With all the good things also come a list of concerns. The most important ones for us are:
+
+- Rust adds yet another language to the list of languages that have to be supported by the government long term.
+- Rusts usage is still relatively small across the industry. This means there are fewer developers, fewer agencies, fewer libraries/resources to support and maintain software built in Rust.
+
+Those are valid and things we should consider. Rust is a general purpose programming language and can replace languages like C++ in the long term. It's unrealistic however, that all old projects are going to migrated. So Rust would be another language to support.
+
+Rusts adoption is growing. That's visible in indexes such as [TIOBE](https://www.tiobe.com/tiobe-index/) or the [Stack Overflow Developer Survey](https://insights.stackoverflow.com/survey/2020#most-popular-technologies). It seems likely that adoption will continue to grow. The lack of developers skilled in Rust at the moment does mean there is a cost involved in upskilling existing developers and hiring new ones. The following sections [Upskilling](#upskilling) and [Hiring](#hiring) go into the topics in more detail.
+
+We believe the benefits outweight the concerns, making it worth a try. In this project we can start building a few self-contained microservices in Rust. This will allow us to gather more information and make a decision to continue or pivot later on.
+
 ## Upskilling
 
 For the team taking over maintenance and development of the project after Red Badger, developers will likely need to be upskilled. Thankfully, Rust has a lot of resources to help with this:
