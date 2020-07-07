@@ -1,13 +1,15 @@
 # Governance
 
-## Types of changes
+## Incremental feature changes
+
+Example: Add preview functionality for documents.
 
 We distinguish between a deployment and a release.
 
 - A **deployment** brings a code change into an environment. This code change should not have any visible consequences for end users.
 - A **release** make a change visible to a set of end users.
 
-## Deployment governance
+### Deployment
 
 Every change is:
 
@@ -17,7 +19,7 @@ Every change is:
 
 Those tests also ensure that the change is hidden behind a feature flag and not visible to the end user, yet. See our [testing approach](testing/test-approach.md) for more details. Because these changes are not visible to end users, deployments can be made multiple times a day. This enables quick bug fixes in case an issue has not been found earlier by the different layers of testing.
 
-## Release governance
+### Release
 
 Every feature is:
 
@@ -25,6 +27,10 @@ Every feature is:
 - Enabled by the product owner after being tested and discussed with the service team
 - Sometimes gradually rolled out to subsets of users (criteria determining the set of users are to be defined, but can be things like workspace or email address)
 
-## Diagram
+## Project changes
+
+Example: Add workflow engine.
+
+Bigger changes to the platform will go through the approval process in the Architecture Review Board. This ensures we're not duplicating effort for something, that already exists somewhere else in the organization. The following diagram outlines the change and release process.
 
 ![](./change-release-process.png)
