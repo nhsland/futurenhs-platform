@@ -123,7 +123,11 @@ as opposed to sharing a staging environment.
    linkerd dashboard &
    ```
 
-1. Create overlays for the different service you would like to install in your cluster and submit a PR.
+1. Create overlays for the different services you would like to install in your cluster and submit a PR. You can create the default set of overlays by running:
+
+   ```bash
+   ./infrastructure/scripts/create-dev-overlays.sh $FNHSNAME "<app-insights-instrumentation-key>"
+   ```
 
 1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
 
