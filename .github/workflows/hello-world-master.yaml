@@ -37,7 +37,7 @@ jobs:
         with:
           repository: FutureNHS/futurenhs-deployments
           path: futurenhs-deployments
-          token: ${{secrets.DEPLOYMENT_TOKEN}}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Copy manifests
         run: |
@@ -48,17 +48,18 @@ jobs:
           cp *.yaml $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
 
       - name: Update image tag and deploy
-        uses: stefanprodan/kube-tools@v1
-        with:
-          kustomize: 3.5.5
-          command: |
+        run: |
             set -eux
+
+            cd $HOME
+            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
             cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
 
-            kustomize edit set image $DIGEST
-            # TODO create service account, swap out email, update deployment_token secret
-            git config --local user.email "tracy.wu@red-badger.com"
+            $HOME/kustomize edit set image $DIGEST
+
+            git config --local user.email "futurenhs-devs@red-badger.com"
             git config --local user.name "FutureNHS CI/CD"
+
             git add -A
             git diff-index --quiet HEAD || git commit -am "CI: Update production image for ${TAG}"
 

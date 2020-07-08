@@ -23,6 +23,7 @@ jobs:
           repository: FutureNHS/futurenhs-deployments
           path: futurenhs-deployments
           token: ${{secrets.DEPLOYMENT_TOKEN}}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Copy manifests
         run: |
@@ -37,9 +38,9 @@ jobs:
           set -eux
           cd $GITHUB_WORKSPACE/futurenhs-deployments
 
-          # TODO create service account, swap out email, update deployment_token secret
-          git config --local user.email "tracy.wu@red-badger.com"
+          git config --local user.email "futurenhs-devs@red-badger.com"
           git config --local user.name "FutureNHS CI/CD"
+
           git add -A
           git diff-index --quiet HEAD || git commit -am "CI: Update cert-manager and ingress"
 
