@@ -56,6 +56,10 @@ jobs:
             cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
 
             kustomize edit set image $DIGEST
+
+            git config --local user.email "futurenhs-devs@red-badger.com"
+            git config --local user.name "FutureNHS CI/CD"
+
             git add -A
             git diff-index --quiet HEAD || git commit -am "CI: Update production image for ${TAG}"
 
