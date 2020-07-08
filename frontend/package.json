@@ -1,9 +1,10 @@
 {
   "name": "frontend",
+  "license": "ISC",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--require ./tracing.js' next dev",
+    "dev": "NODE_OPTIONS='--require ./tracing.js' node server.js",
     "build": "next build",
     "start": "NODE_OPTIONS='--require ./tracing.js' next start",
     "test": "jest",
@@ -18,7 +19,8 @@
     "next": "9.4.1",
     "next-applicationinsights": "^1.0.4",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "swr": "0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -30,9 +32,11 @@
     "babel-jest": "^26.0.1",
     "eslint": "^7.0.0",
     "eslint-plugin-react": "^7.20.0",
+    "express": "^4.15.3",
     "ignore-loader": "^0.1.2",
     "jest": "^26.0.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "http-proxy-middleware": "^1.0.4"
   },
   "lint-staged": {
     "linters": {
