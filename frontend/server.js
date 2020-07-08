@@ -13,11 +13,14 @@ const devProxy = {
 }
 
 const port = parseInt(process.env.PORT, 10) || 3000
-const env = process.env.NODE_ENV
-const dev = env !== 'production'
+if (process.env.NODE_ENV !== 'development') {
+    console.error("This server should only be used by `yarn dev`, and should never be used in production.")
+    process.exit(1)
+}
+
 const app = next({
   dir: '.', // base directory where everything is, could move to src later
-  dev,
+  dev: true,
 })
 
 const handle = app.getRequestHandler()
@@ -29,12 +32,10 @@ app
     server = express()
 
     // Set up the proxy.
-    if (dev && devProxy) {
-      const { createProxyMiddleware } = require('http-proxy-middleware')
-      Object.keys(devProxy).forEach(function (context) {
-        server.use(context, createProxyMiddleware(devProxy[context]))
-      })
-    }
+    const { createProxyMiddleware } = require('http-proxy-middleware')
+    Object.keys(devProxy).forEach(function (context) {
+    server.use(context, createProxyMiddleware(devProxy[context]))
+    })
 
     // Default catch-all handler to allow Next.js to handle all other routes
     server.all('*', (req, res) => handle(req, res))
@@ -43,7 +44,7 @@ app
       if (err) {
         throw err
       }
-      console.log(`> Ready on port ${port} [${env}]`)
+      console.log(`> Ready on http://localhost:${port} [development]`)
     })
   })
   .catch((err) => {
