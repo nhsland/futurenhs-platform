@@ -1,7 +1,8 @@
 name: infrastructure-master
 
 on:
-  push:
+  # push:
+  pull_request:
     branches:
       - master
     paths:
@@ -40,8 +41,6 @@ jobs:
 
           git config --local user.email "futurenhs-devs@red-badger.com"
           git config --local user.name "FutureNHS CI/CD"
-
-          ssh -o "StrictHostKeyChecking=no" user@host
 
           git add -A
           git diff-index --quiet HEAD || git commit -am "CI: Update cert-manager and ingress"
