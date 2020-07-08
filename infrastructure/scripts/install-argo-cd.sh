@@ -18,10 +18,10 @@ echo "Installing Argo CD CLI"
 brew install argoproj/tap/argocd || { echo 'Unable to install.' ; exit 1;  }
 
 echo "Installing Argo CD"
-kustomize build ../kubernetes/argocd/base | 
+kustomize build ../kubernetes/argocd/install | 
 	kubectl apply -n argocd -f -
 kubectl rollout status -n argocd deployment argocd-server
 
 echo "Creating applications"
-kustomize build ../kubernetes/argocd/apps-$NAME |
+kustomize build ../kubernetes/argocd/apps/$NAME |
 	kubectl apply -n argocd -f -
