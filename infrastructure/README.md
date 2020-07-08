@@ -48,12 +48,6 @@ We use [Terraform](https://www.terraform.io/) to build our environments.
    az login
    ```
 
-1. Install the [Linkerd CLI](https://linkerd.io/2/getting-started/):
-
-   ```bash
-   brew install linkerd
-   ```
-
 1. Install [Kustomize](https://github.com/kubernetes-sigs/kustomize):
 
    ```bash
@@ -120,7 +114,7 @@ as opposed to sharing a staging environment.
 1. To install the [Linkerd](https://linkerd.io/) control plane, run the `install-linkerd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
-   ./infrastructure/scripts/install-linkerd.sh
+   ./infrastructure/scripts/install-linkerd.sh $FNHSNAME
    ```
 
    Once installed, view the Linkerd dashboard with the following command:
@@ -129,10 +123,12 @@ as opposed to sharing a staging environment.
    linkerd dashboard &
    ```
 
+1. Create overlays for the different service you would like to install in your cluster and submit a PR.
+
 1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
-   ./infrastructure/scripts/install-argo-cd.sh
+   ./infrastructure/scripts/install-argo-cd.sh $FNHSNAME
    ```
 
    This will set up Argo CD on your cluster, and install the `argocd` command-line utility.
@@ -225,6 +221,13 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
+   ```
+
+1. Install Linkerd and Argo CD in the same way as it works for development environments.
+
+   ```bash
+   ./infrastructure/scripts/install-linkerd.sh production
+   ./infrastructure/scripts/install-argo-cd.sh production
    ```
 
 ## Troubleshooting

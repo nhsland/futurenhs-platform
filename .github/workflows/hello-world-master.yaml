@@ -45,7 +45,7 @@ jobs:
 
           cd $GITHUB_WORKSPACE/futurenhs-platform/hello-world/manifests
           mkdir -p $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
-          cp *.yaml $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
+          cp -r * $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
 
       - name: Update image tag and deploy
         run: |
@@ -53,7 +53,7 @@ jobs:
 
             cd $HOME
             curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-            cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world
+            cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world/production
 
             $HOME/kustomize edit set image $DIGEST
 

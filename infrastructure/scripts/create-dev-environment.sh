@@ -53,15 +53,4 @@ EOF
 	echo "    terraform init -backend-config=terraform.tfvars"
 }
 
-setup_ingress_overlay() {
-	INGRESS_DIR="$REPO_ROOT/infrastructure/kubernetes/ingress"
-	mkdir -p "$INGRESS_DIR/dev"
-
-	for file in $INGRESS_DIR/dev-template/*.yaml; do
-		filename="$(basename "$file")"
-		sed "s/{{NAME}}/$NAME/g" $file > "$INGRESS_DIR/dev/$filename"
-	done
-}
-
-setup_ingress_overlay
 setup_terraform

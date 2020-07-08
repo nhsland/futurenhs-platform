@@ -4,23 +4,24 @@ set -eu
 # https://stackoverflow.com/a/1482133
 cd $(dirname "$0")
 
-CURRENT_CLUSTER=$(kubectl config current-context)
+NAME="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
+CURRENT_CONTEXT=$(kubectl config current-context)
 
-while true; do
-    read -p "The current cluster is $CURRENT_CLUSTER. Are you sure you would like to add Argo CD to this cluster? (y/n)" yn
-    case $yn in
-        [Yy]* )
-            echo "Installing Argo CD CLI"
-            brew install argoproj/tap/argocd || { echo 'Unable to install.' ; exit 1;  }
-            echo "Create namespace"
-            kubectl apply -f ../kubernetes/argocd-setup/namespace.yaml
-            echo "Installing Argo CD"
-            kubectl apply -n argocd -f ../kubernetes/argocd-setup/install.yaml
-            echo "Pods will need to be in a running state before you can move forward. These need to be in a running state before you can move forward. Use 'watch kubectl get pods -n argocd' to check"
-            echo "Creating deployment in Argo CD"
-            kubectl apply -n argocd -f ../kubernetes/argocd-setup/
-        break;;
-        [Nn]* ) echo "You may wish to use the commands 'az account set' and 'az aks get-credentials' to change cluster."; exit;;
-        * ) echo "Please answer 'yes' or 'no'.";;
-    esac
-done
+if [ "$NAME" != "$CURRENT_CONTEXT" ]; then
+	echo "You want to deploy to:   $NAME"
+	echo "Your current content is: $CURRENT_CONTEXT"
+	echo "Please change your current context (e.g. using `kubectl config use-context` or a combination or `az account set` and `az aks get-credentials`) and try again"
+	exit 1
+fi
+
+echo "Installing Argo CD CLI"
+brew install argoproj/tap/argocd || { echo 'Unable to install.' ; exit 1;  }
+
+echo "Installing Argo CD"
+kustomize build ../kubernetes/argocd/base | 
+	kubectl apply -n argocd -f -
+kubectl rollout status -n argocd deployment argocd-server
+
+echo "Creating applications"
+kustomize build ../kubernetes/argocd/apps-$NAME |
+	kubectl apply -n argocd -f -

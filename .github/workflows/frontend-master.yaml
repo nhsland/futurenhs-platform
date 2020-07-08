@@ -45,7 +45,7 @@ jobs:
 
           cd $GITHUB_WORKSPACE/futurenhs-platform/frontend/manifests
           mkdir -p $GITHUB_WORKSPACE/futurenhs-deployments/frontend
-          cp *.yaml $GITHUB_WORKSPACE/futurenhs-deployments/frontend
+          cp -r * $GITHUB_WORKSPACE/futurenhs-deployments/frontend
 
       - name: Update image tag and deploy
 
@@ -54,7 +54,7 @@ jobs:
 
           cd $HOME
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-          cd $GITHUB_WORKSPACE/futurenhs-deployments/frontend
+          cd $GITHUB_WORKSPACE/futurenhs-deployments/frontend/production
 
           $HOME/kustomize edit set image $DIGEST
 
