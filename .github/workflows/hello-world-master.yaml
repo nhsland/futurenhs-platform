@@ -1,8 +1,7 @@
 name: hello-world-master
 
 on:
-  # push:
-  pull_request:
+  push:
     branches:
       - master
     paths:
