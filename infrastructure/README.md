@@ -114,7 +114,7 @@ as opposed to sharing a staging environment.
 1. To install the [Linkerd](https://linkerd.io/) control plane, run the `install-linkerd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
-   ./infrastructure/scripts/install-linkerd.sh $FNHSNAME
+   ./infrastructure/scripts/install-linkerd.sh dev-$FNHSNAME
    ```
 
    Once installed, view the Linkerd dashboard with the following command:
@@ -128,7 +128,7 @@ as opposed to sharing a staging environment.
 1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
-   ./infrastructure/scripts/install-argo-cd.sh $FNHSNAME
+   ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME
    ```
 
    This will set up Argo CD on your cluster, and install the `argocd` command-line utility.

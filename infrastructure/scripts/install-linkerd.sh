@@ -1,11 +1,11 @@
 #!/bin/bash
 set -eu
 
-NAME="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
+ENVIRONMENT="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
 CURRENT_CONTEXT=$(kubectl config current-context)
 
-if [ "$NAME" != "$CURRENT_CONTEXT" ]; then
-	echo "You want to deploy to:   $NAME"
+if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
+	echo "You want to deploy to:   $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
 	echo "Please change your current context (e.g. using `kubectl config use-context` or a combination or `az account set` and `az aks get-credentials`) and try again"
 	exit 1
