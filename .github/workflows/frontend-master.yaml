@@ -49,26 +49,27 @@ jobs:
           cp *.yaml $GITHUB_WORKSPACE/futurenhs-deployments/frontend
 
       - name: Update image tag and deploy
-        uses: stefanprodan/kube-tools@v1
-        with:
-          kustomize: 3.5.5
-          command: |
-            set -eux
-            cd $GITHUB_WORKSPACE/futurenhs-deployments/frontend
 
-            kustomize edit set image $DIGEST
+        run: |
+          set -eux
 
-            git config --local user.email "tracy.wu@red-badger.com"
-            git config --local user.name "FutureNHS CI/CD"
+          cd $HOME
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+          cd $GITHUB_WORKSPACE/futurenhs-deployments/frontend
 
-            git add -A
-            git diff-index --quiet HEAD || git commit -am "CI: Update production image for ${TAG}"
+          $HOME/kustomize edit set image $DIGEST
 
-            declare -i n
-            n=0
-            until [ $n -ge 5 ]
-            do
-              git push && break
-              n+=1
-              git pull --rebase
-            done
+          git config --local user.email "futurenhs-devs@red-badger.com"
+          git config --local user.name "FutureNHS CI/CD"
+
+          git add -A
+          git diff-index --quiet HEAD || git commit -am "CI: Update production image for ${TAG}"
+
+          declare -i n
+          n=0
+          until [ $n -ge 5 ]
+          do
+            git push && break
+            n+=1
+            git pull --rebase
+          done
