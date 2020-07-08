@@ -12,7 +12,7 @@ spec:
     - host: fnhs.westeurope.cloudapp.azure.com
       http:
         paths:
-          - path: /hello(/|$)(.*)
+          - path: /hello
             backend:
               serviceName: hello-world
               servicePort: 80
