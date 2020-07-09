@@ -1,5 +1,17 @@
 {
+	"david": {
+		"INSTRUMENTATION_KEY": "todo"
+	},
 	"jan": {
+		"INSTRUMENTATION_KEY": "todo"
+	},
+	"matt": {
+		"INSTRUMENTATION_KEY": "todo"
+	},
+	"potts": {
+		"INSTRUMENTATION_KEY": "todo"
+	},
+	"tracy": {
 		"INSTRUMENTATION_KEY": "todo"
 	}
 }
