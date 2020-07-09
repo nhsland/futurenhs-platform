@@ -19,9 +19,10 @@ terraform {
 }
 
 module platform {
-  source      = "../../modules/platform"
-  environment = "production"
-  location    = var.location
+  source                = "../../modules/platform"
+  environment           = "production"
+  location              = var.location
+  ip_whitelist_insights = var.ip_whitelist_insights
 }
 
 resource "azurerm_container_registry" "acr" {

@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "platform" {
 }
 
 resource "azurerm_virtual_network" "platform" {
-  name                = "platform-${var.environment}"
+  name = "platform-${var.environment}"
   address_space       = ["10.0.0.0/8"]
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
@@ -96,4 +96,96 @@ resource "azurerm_application_insights" "app_insights" {
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
   application_type    = "other"
+}
+
+resource "random_password" "password" {
+  length           = 32
+  special          = true
+  override_special = "_%@"
+}
+
+resource "random_string" "server" {
+  length  = 15
+  special = false
+}
+
+data "azurerm_client_config" "current" {
+}
+
+resource "azurerm_key_vault" "secret_vault" {
+  name                = format("%s%s", "kv-fnhs", random_string.server.result)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.platform.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "standard"
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "Create",
+      "Get",
+    ]
+
+    secret_permissions = [
+      "Set",
+      "Get",
+      "Delete",
+      "List",
+    ]
+  }
+
+  tags = {
+    environment = var.environment
+  }
+}
+
+resource "azurerm_key_vault_secret" "secret_synapse_password" {
+  name         = "synapse-password"
+  value        = random_password.password.result
+  key_vault_id = azurerm_key_vault.secret_vault.id
+
+  tags = {
+    environment = var.environment
+  }
+}
+
+resource "azurerm_mssql_server" "sql_server" {
+  name                         = "${azurerm_resource_group.platform.name}-synapse-sql-server"
+  resource_group_name          = azurerm_resource_group.platform.name
+  location                     = var.location
+  version                      = "12.0"
+  administrator_login          = "nhs-admin"
+  administrator_login_password = azurerm_key_vault_secret.secret_synapse_password.value
+  azuread_administrator {
+    login_username = "FutureNHS Developers"
+    object_id      = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
+  }
+
+  tags = {
+    environment = var.environment
+  }
+}
+
+resource "azurerm_sql_database" "sql_dw" {
+  name                             = "${azurerm_resource_group.platform.name}-synapse-sql-dw"
+  resource_group_name              = azurerm_resource_group.platform.name
+  location                         = var.location
+  server_name                      = azurerm_mssql_server.sql_server.name
+  edition                          = "DataWarehouse"
+  requested_service_objective_name = "DW100c"
+
+  tags = {
+    environment = var.environment
+  }
+}
+
+resource "azurerm_sql_firewall_rule" "ip_whitelisted" {
+  for_each            = var.ip_whitelist_insights
+  name                = "ip-whitelisted-${each.key}"
+  resource_group_name = azurerm_resource_group.platform.name
+  server_name         = azurerm_mssql_server.sql_server.name
+  start_ip_address    = each.value
+  end_ip_address      = each.value
 }
