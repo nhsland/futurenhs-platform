@@ -9,3 +9,7 @@ output "cluster_identity_principal_id" {
 output "instrumentation_key" {
   value = azurerm_application_insights.app_insights.instrumentation_key
 }
+
+output "postgresql_password" {
+  value = azurerm_postgresql_server.postgresql_server.administrator_login_password
+}
