@@ -29,3 +29,5 @@ jobs:
           terraform init -backend=false
           terraform validate
         working-directory: infrastructure/environments/production
+      - name: Test dev overlay creation
+        run: infrastructure/scripts/create-dev-overlays.py

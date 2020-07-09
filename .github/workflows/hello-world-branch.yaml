@@ -29,3 +29,5 @@ jobs:
           cd platform/hello-world
           make docker-build
           make docker-push
+      - name: Test dev overlay creation
+        run: infrastructure/scripts/create-dev-overlays.py

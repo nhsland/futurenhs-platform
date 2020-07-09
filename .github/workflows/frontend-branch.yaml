@@ -24,3 +24,5 @@ jobs:
           cd frontend
           docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/frontend -t latest
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/frontend
+      - name: Test dev overlay creation
+        run: infrastructure/scripts/create-dev-overlays.py
