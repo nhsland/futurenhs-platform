@@ -16,8 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          path: platform
       - name: "Login to docker"
         uses: azure/docker-login@v1
         with:
@@ -26,6 +24,8 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: "Build & Push image"
         run: |
-          cd platform/hello-world
+          cd hello-world
           make docker-build
           make docker-push
+      - name: Test dev overlay creation
+        run: infrastructure/scripts/create-dev-overlays.py

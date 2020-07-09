@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ./frontend
+    path: ./frontend/production
     repoURL: https://github.com/FutureNHS/futurenhs-deployments.git
     targetRevision: master
   syncPolicy:

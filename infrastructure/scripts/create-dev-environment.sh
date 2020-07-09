@@ -30,16 +30,33 @@ setup_terraform() {
 
 	# Create resource group
 	# TODO: do we want to limit this to england/wales, or is europe okay?
-	az group create --name $RESOURCE_GROUP_NAME --location westeurope
+	az group create \
+		--name $RESOURCE_GROUP_NAME \
+		--location westeurope \
+		--output none
 
 	# Create storage account
-	az storage account create --kind StorageV2 --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob
+	az storage account create \
+		--kind StorageV2 \
+		--resource-group $RESOURCE_GROUP_NAME \
+		--name $STORAGE_ACCOUNT_NAME \
+		--sku Standard_LRS \
+		--encryption-services blob \
+		--output none
 
 	# Get storage account key
-	ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+	ACCESS_KEY=$(az storage account keys list \
+		--resource-group $RESOURCE_GROUP_NAME \
+		--account-name $STORAGE_ACCOUNT_NAME \
+		--query [0].value \
+		--output tsv)
 
 	# Create blob container
-	az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --account-key "$ACCESS_KEY"
+	az storage container create \
+		--name $CONTAINER_NAME \
+		--account-name $STORAGE_ACCOUNT_NAME \
+		--account-key "$ACCESS_KEY" \
+		--output none
 
 	cat >"$DEV_CONFIG_FILE" <<EOF
 resource_group_name="$RESOURCE_GROUP_NAME"
@@ -53,15 +70,4 @@ EOF
 	echo "    terraform init -backend-config=terraform.tfvars"
 }
 
-setup_ingress_overlay() {
-	INGRESS_DIR="$REPO_ROOT/infrastructure/kubernetes/ingress"
-	mkdir -p "$INGRESS_DIR/dev"
-
-	for file in $INGRESS_DIR/dev-template/*.yaml; do
-		filename="$(basename "$file")"
-		sed "s/{{NAME}}/$NAME/g" $file > "$INGRESS_DIR/dev/$filename"
-	done
-}
-
-setup_ingress_overlay
 setup_terraform

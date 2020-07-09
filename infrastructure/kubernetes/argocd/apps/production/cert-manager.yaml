@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ./cert-manager
+    path: ./cert-manager/production
     repoURL: https://github.com/FutureNHS/futurenhs-deployments.git
     targetRevision: master
   ignoreDifferences:
@@ -17,3 +17,6 @@ spec:
       kind: ValidatingWebhookConfiguration
       jsonPointers:
         - /webhooks/0/namespaceSelector/matchExpressions
+  syncPolicy:
+    automated:
+      prune: true

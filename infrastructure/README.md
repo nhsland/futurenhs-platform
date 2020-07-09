@@ -48,12 +48,6 @@ We use [Terraform](https://www.terraform.io/) to build our environments.
    az login
    ```
 
-1. Install the [Linkerd CLI](https://linkerd.io/2/getting-started/):
-
-   ```bash
-   brew install linkerd
-   ```
-
 1. Install [Kustomize](https://github.com/kubernetes-sigs/kustomize):
 
    ```bash
@@ -120,7 +114,7 @@ as opposed to sharing a staging environment.
 1. To install the [Linkerd](https://linkerd.io/) control plane, run the `install-linkerd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
-   ./infrastructure/scripts/install-linkerd.sh
+   ./infrastructure/scripts/install-linkerd.sh dev-$FNHSNAME
    ```
 
    Once installed, view the Linkerd dashboard with the following command:
@@ -129,10 +123,18 @@ as opposed to sharing a staging environment.
    linkerd dashboard &
    ```
 
+1. Add your name and the instrumentation key printed by Terraform in the `infrastructure/dev-overlay-variables.json` and create a pull request.
+
+1. Create your dev overlays locally by running the following script. Your overlays will also be created automatically in the deployments repository once your pull request from the previous step is merged.
+
+   ```bash
+   ./infrastructure/scripts/create-dev-overlays.py
+   ```
+
 1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
-   ./infrastructure/scripts/install-argo-cd.sh
+   ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME
    ```
 
    This will set up Argo CD on your cluster, and install the `argocd` command-line utility.
@@ -153,22 +155,6 @@ as opposed to sharing a staging environment.
    argocd login --username admin --password $(kubectl get pods -n argocd | grep --only-matching 'argocd-server-[^ ]*')
    ```
 
-   You will probably want to have an Ingress controller and public domain for your cluster. You can get it by synchronizing your local development overlay with Argo CD, which will give you a domain like `https://fnhs-dev-$FNHSNAME.westeurope.cloudapp.azure.com`.
-
-   ```bash
-   argocd app sync cert-manager --local ./infrastructure/kubernetes/cert-manager/dev/
-   argocd app sync ingress --local ./infrastructure/kubernetes/ingress/dev/
-   ```
-
-   If you are manually making changes to your applications, you can apply them in a similar way (example based on hello-world app):
-
-   ```bash
-   # Turn of auto-sync. This is not necessary for cert-manager and ingress, because they don't have it enabled in the first place.
-   argocd app set hello-world --sync-policy none
-   # Deploy your application
-   argocd app sync hello-world --local ./hello-world/manifests --prune
-   ```
-
    If you want to view the Argo CD UI, do:
 
    ```bash
@@ -177,18 +163,12 @@ as opposed to sharing a staging environment.
 
    and browse to http://localhost:8080.
 
-   If you want to see the next.js frontend app UI, do:
-
-   ```bash
-   kubectl port-forward deployments/frontend 3000
-   ```
-
-   and browse to http://localhost:3000.
+   If you want to see the frontend app browse to <https://fnhs-dev-$FNHSNAME.westeurope.cloudapp.azure.com>.
 
 1. Apply the ConfigMap for Azure Monitor for Containers to collect data in the Log Analytics workspace. The ConfigMap can be found in `infrastructure/kubernetes/logging` directory.
 
    ```bash
-   kubectl apply -f container-azm-ms-agentconfig.yaml
+   kubectl apply -f ./infrastructure/kubernetes/logging/container-azm-ms-agentconfig.yaml
    ```
 
 1. To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
@@ -225,6 +205,13 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
+   ```
+
+1. Install Linkerd and Argo CD in the same way as it works for development environments.
+
+   ```bash
+   ./infrastructure/scripts/install-linkerd.sh production
+   ./infrastructure/scripts/install-argo-cd.sh production
    ```
 
 ## Troubleshooting
