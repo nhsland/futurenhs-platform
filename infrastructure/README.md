@@ -123,7 +123,7 @@ as opposed to sharing a staging environment.
    linkerd dashboard &
    ```
 
-1. Add your name and the instrumentation key printed by Terraform in the `infrastructure/scripts/dev-overlays.json` and create a pull request.
+1. Add your name and the instrumentation key printed by Terraform in the `infrastructure/dev-overlays.json` and create a pull request.
 
 1. Create your dev overlays locally by running the following script. Your overlays will also be created automatically in the deployments repository once your pull request from the previous step is merged.
 

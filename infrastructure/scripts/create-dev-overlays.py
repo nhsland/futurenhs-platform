@@ -24,7 +24,7 @@ def create_overlays(name, variables):
                 f.write(content)
 
 def main():
-    with open(f'{repo_root}/infrastructure/scripts/dev-overlays.json') as f:
+    with open(f'{repo_root}/infrastructure/dev-overlays.json') as f:
         overlays = json.load(f)
 
     for name, variables in overlays.items():
