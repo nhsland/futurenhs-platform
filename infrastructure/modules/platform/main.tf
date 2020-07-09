@@ -97,3 +97,35 @@ resource "azurerm_application_insights" "app_insights" {
   resource_group_name = azurerm_resource_group.platform.name
   application_type    = "other"
 }
+
+resource "random_string" "db_password" {
+  length = 50
+  special = false
+  upper = true
+}
+
+resource "azurerm_postgresql_server" "postgresql_server" {
+  name                = "postgresql-${var.environment}"
+  location            = azurerm_resource_group.platform.location
+  resource_group_name = azurerm_resource_group.platform.name
+
+  sku_name = "B_Gen5_2"
+
+  storage_mb                   = 5120
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+  auto_grow_enabled            = true
+
+  administrator_login          = "psqladminun"
+  administrator_login_password = random_string.db_password.result
+  version                      = "9.5"
+  ssl_enforcement_enabled      = true
+}
+
+resource "azurerm_postgresql_database" "example" {
+  name                = "exampledb"
+  resource_group_name = azurerm_resource_group.platform.name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  charset             = "UTF8"
+  collation           = "English_United States.1252"
+}
