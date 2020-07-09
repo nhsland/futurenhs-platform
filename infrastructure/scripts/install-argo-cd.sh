@@ -10,15 +10,18 @@ CURRENT_CONTEXT=$(kubectl config current-context)
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "You want to deploy to:   $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
-	echo "Please change your current context (e.g. using `kubectl config use-context` or a combination or `az account set` and `az aks get-credentials`) and try again"
+	echo "Please change your current context (e.g. using 'kubectl config use-context' or a combination or 'az account set' and 'az aks get-credentials') and try again"
 	exit 1
 fi
 
 echo "Installing Argo CD CLI"
-brew install argoproj/tap/argocd || { echo 'Unable to install.' ; exit 1;  }
+brew install argoproj/tap/argocd || {
+	echo 'Unable to install.'
+	exit 1
+}
 
 echo "Installing Argo CD"
-kustomize build ../kubernetes/argocd/install | 
+kustomize build ../kubernetes/argocd/install |
 	kubectl apply -n argocd -f -
 kubectl rollout status -n argocd deployment argocd-server
 

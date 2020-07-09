@@ -12,7 +12,7 @@ create_overlay() {
 		sed \
 			-e "s/{{NAME}}/$NAME/g" \
 			-e "s/{{INSTRUMENTATION_KEY}}/$INSTRUMENTATION_KEY/g" \
-			$file > "$FOLDER/dev-$NAME/$filename"
+			$file >"$FOLDER/dev-$NAME/$filename"
 	done
 }
 
