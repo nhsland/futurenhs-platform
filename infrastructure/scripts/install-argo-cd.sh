@@ -26,5 +26,11 @@ kustomize build ../kubernetes/argocd/install |
 kubectl rollout status -n argocd deployment argocd-server
 
 echo "Creating applications"
+if [ ! -d ../kubernetes/argocd/apps/$ENVIRONMENT ]; then
+	echo "The overlay folder $ENVIRONMENT for Argo CD applications does not exist."
+	echo "Did you run ./infrastructure/scripts/create-dev-overlays.py?"
+	echo "Did you add the overlay in ./infrastructure/dev-overlays.json?"
+	exit 1
+fi
 kustomize build ../kubernetes/argocd/apps/$ENVIRONMENT |
 	kubectl apply -n argocd -f -

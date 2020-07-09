@@ -155,22 +155,6 @@ as opposed to sharing a staging environment.
    argocd login --username admin --password $(kubectl get pods -n argocd | grep --only-matching 'argocd-server-[^ ]*')
    ```
 
-   You will probably want to have an Ingress controller and public domain for your cluster. You can get it by synchronizing your local development overlay with Argo CD, which will give you a domain like `https://fnhs-dev-$FNHSNAME.westeurope.cloudapp.azure.com`.
-
-   ```bash
-   argocd app sync cert-manager --local ./infrastructure/kubernetes/cert-manager/dev/
-   argocd app sync ingress --local ./infrastructure/kubernetes/ingress/dev/
-   ```
-
-   If you are manually making changes to your applications, you can apply them in a similar way (example based on hello-world app):
-
-   ```bash
-   # Turn of auto-sync. This is not necessary for cert-manager and ingress, because they don't have it enabled in the first place.
-   argocd app set hello-world --sync-policy none
-   # Deploy your application
-   argocd app sync hello-world --local ./hello-world/manifests --prune
-   ```
-
    If you want to view the Argo CD UI, do:
 
    ```bash
@@ -179,18 +163,12 @@ as opposed to sharing a staging environment.
 
    and browse to http://localhost:8080.
 
-   If you want to see the next.js frontend app UI, do:
-
-   ```bash
-   kubectl port-forward deployments/frontend 3000
-   ```
-
-   and browse to http://localhost:3000.
+   If you want to see the frontend app browse to <https://fnhs-dev-$FNHSNAME.westeurope.cloudapp.azure.com>.
 
 1. Apply the ConfigMap for Azure Monitor for Containers to collect data in the Log Analytics workspace. The ConfigMap can be found in `infrastructure/kubernetes/logging` directory.
 
    ```bash
-   kubectl apply -f container-azm-ms-agentconfig.yaml
+   kubectl apply -f ./infrastructure/kubernetes/logging/container-azm-ms-agentconfig.yaml
    ```
 
 1. To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
