@@ -4,4 +4,4 @@ metadata:
   name: cert-manager
 spec:
   source:
-    path: ./cert-manager/dev-{{NAME}}
+    path: ./cert-manager/dev-$NAME

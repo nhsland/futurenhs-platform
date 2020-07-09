@@ -9,4 +9,4 @@ spec:
         - name: hello-world
           env:
             - name: INSTRUMENTATION_KEY
-              value: "{{INSTRUMENTATION_KEY}}"
+              value: "$INSTRUMENTATION_KEY"

@@ -4,4 +4,4 @@ metadata:
   name: hello-world
 spec:
   source:
-    path: ./hello-world/dev-{{NAME}}
+    path: ./hello-world/dev-$NAME

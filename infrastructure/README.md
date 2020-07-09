@@ -123,10 +123,12 @@ as opposed to sharing a staging environment.
    linkerd dashboard &
    ```
 
-1. Create overlays for the different services you would like to install in your cluster and submit a PR. You can create the default set of overlays by running:
+1. Add your name and the instrumentation key printed by Terraform in the `infrastructure/scripts/dev-overlays.json` and create a pull request.
+
+1. Create your dev overlays locally by running the following script. Your overlays will also be created automatically in the deployments repository once your pull request from the previous step is merged.
 
    ```bash
-   ./infrastructure/scripts/create-dev-overlays.sh $FNHSNAME "<app-insights-instrumentation-key>"
+   ./infrastructure/scripts/create-dev-overlays.py
    ```
 
 1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.

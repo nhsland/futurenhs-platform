@@ -4,4 +4,4 @@ metadata:
   name: frontend
 spec:
   source:
-    path: ./frontend/dev-{{NAME}}
+    path: ./frontend/dev-$NAME
