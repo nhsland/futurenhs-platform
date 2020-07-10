@@ -99,9 +99,9 @@ resource "azurerm_application_insights" "app_insights" {
 }
 
 resource "random_string" "db_password" {
-  length = 50
+  length  = 50
   special = false
-  upper = true
+  upper   = true
 }
 
 resource "azurerm_postgresql_server" "postgresql_server" {
