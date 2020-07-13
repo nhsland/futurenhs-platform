@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "platform" {
 }
 
 resource "azurerm_virtual_network" "platform" {
-  name = "platform-${var.environment}"
+  name                = "platform-${var.environment}"
   address_space       = ["10.0.0.0/8"]
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
@@ -159,8 +159,8 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login          = "nhs-admin"
   administrator_login_password = azurerm_key_vault_secret.secret_synapse_password.value
   azuread_administrator {
-    login_username = "FutureNHS Developers"
-    object_id      = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
+    login_username = var.ad_username
+    object_id      = var.ad_object_id
   }
 
   tags = {

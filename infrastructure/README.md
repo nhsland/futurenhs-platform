@@ -86,6 +86,14 @@ as opposed to sharing a staging environment.
    ```bash
    cd infrastructure/environments/dev
    ```
+   
+1. If you intend to use Synapse, add your IP to the list in terraform.tfvars
+
+   ```hcl-terraform
+   ip_whitelist_insights = {
+     john = "123.45.678.90",
+   }
+   ```
 
 1. Run Terraform Init using the vars file you just created:
 
