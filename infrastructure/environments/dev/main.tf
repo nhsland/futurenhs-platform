@@ -16,8 +16,13 @@ terraform {
   }
 }
 
+
+
 module platform {
-  source      = "../../modules/platform"
-  environment = "dev-${var.USERNAME}"
-  location    = var.location
+  source                = "../../modules/platform"
+  environment           = "dev-${var.USERNAME}"
+  location              = var.location
+  ip_whitelist_insights = var.ip_whitelist_insights
+  ad_username           = "FutureNHS Developers"
+  ad_object_id          = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
 }
