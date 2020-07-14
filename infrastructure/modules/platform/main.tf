@@ -104,8 +104,8 @@ resource "random_password" "password" {
   override_special = "_%@"
 }
 
-resource "random_string" "server" {
-  length  = 15
+resource "random_string" "random_string_19_chars" {
+  length  = 19
   special = false
 }
 
@@ -113,7 +113,7 @@ data "azurerm_client_config" "current" {
 }
 
 resource "azurerm_key_vault" "secret_vault" {
-  name                = format("%s%s", "kv-fnhs", random_string.server.result)
+  name                = "fnhs-${random_string.random_string_19_chars.result}"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -151,7 +151,7 @@ resource "azurerm_key_vault_secret" "secret_synapse_password" {
   }
 }
 
-resource "azurerm_mssql_server" "sql_server" {
+resource "azurerm_mssql_server" "synapse_server" {
   name                         = "${azurerm_resource_group.platform.name}-synapse-sql-server"
   resource_group_name          = azurerm_resource_group.platform.name
   location                     = var.location
@@ -168,11 +168,11 @@ resource "azurerm_mssql_server" "sql_server" {
   }
 }
 
-resource "azurerm_sql_database" "sql_dw" {
-  name                             = "${azurerm_resource_group.platform.name}-synapse-sql-dw"
+resource "azurerm_sql_database" "synapse_data_warehouse" {
+  name                             = "${azurerm_resource_group.platform.name}-synapse-sql-data_warehouse"
   resource_group_name              = azurerm_resource_group.platform.name
   location                         = var.location
-  server_name                      = azurerm_mssql_server.sql_server.name
+  server_name                      = azurerm_mssql_server.synapse_server.name
   edition                          = "DataWarehouse"
   requested_service_objective_name = "DW100c"
 
@@ -185,7 +185,7 @@ resource "azurerm_sql_firewall_rule" "ip_whitelisted" {
   for_each            = var.ip_whitelist_insights
   name                = "ip-whitelisted-${each.key}"
   resource_group_name = azurerm_resource_group.platform.name
-  server_name         = azurerm_mssql_server.sql_server.name
+  server_name         = azurerm_mssql_server.synapse_server.name
   start_ip_address    = each.value
   end_ip_address      = each.value
 }
