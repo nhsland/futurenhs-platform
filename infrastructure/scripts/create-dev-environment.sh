@@ -63,6 +63,7 @@ resource_group_name="$RESOURCE_GROUP_NAME"
 storage_account_name="$STORAGE_ACCOUNT_NAME"
 USERNAME="$NAME"
 ip_whitelist_insights={}
+ip_whitelist_postgresql={}
 EOF
 
 	echo "Your dev terraform environment is ready to go. To initialize run:"

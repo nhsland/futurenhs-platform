@@ -191,9 +191,9 @@ resource "azurerm_sql_firewall_rule" "ip_whitelisted" {
 }
 
 resource "random_string" "postgresql_password" {
-  length = 50
+  length  = 50
   special = false
-  upper = true
+  upper   = true
 }
 
 resource "azurerm_postgresql_server" "postgresql_server" {
@@ -214,10 +214,19 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   ssl_enforcement_enabled      = true
 }
 
-resource "azurerm_postgresql_database" "example" {
-  name                = "exampledb"
+resource "azurerm_postgresql_database" "kratos" {
+  name                = "kratos"
   resource_group_name = azurerm_resource_group.platform.name
   server_name         = azurerm_postgresql_server.postgresql_server.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
+}
+
+resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
+  for_each            = var.ip_whitelist_postgresql
+  name                = "ip-whitelisted-${each.key}"
+  resource_group_name = azurerm_resource_group.platform.name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  start_ip_address    = each.value
+  end_ip_address      = each.value
 }
