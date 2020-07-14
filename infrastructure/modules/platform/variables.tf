@@ -11,6 +11,11 @@ variable "ip_whitelist_insights" {
   type        = map(string)
 }
 
+variable "ip_whitelist_postgresql" {
+  description = "List of allowed IPs for use with PostgreSQL"
+  type        = map(string)
+}
+
 variable "ad_username" {
   description = "Active Directory Username"
 }

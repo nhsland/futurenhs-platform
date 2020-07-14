@@ -15,6 +15,11 @@ variable "location" {
 }
 
 variable "ip_whitelist_insights" {
-  description = "List of whitelisted IPs for use with Synapse"
+  description = "List of allowed IPs for use with Synapse for insights. Check infrastructure/README.md for instructions on how to fill this in."
+  type        = map(string)
+}
+
+variable "ip_whitelist_postgresql" {
+  description = "List of allowed IPs for use with PostgreSQL for local development. Check infrastructure/README.md for instructions on how to fill this in."
   type        = map(string)
 }
