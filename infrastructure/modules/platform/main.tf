@@ -190,7 +190,7 @@ resource "azurerm_sql_firewall_rule" "ip_whitelisted" {
   end_ip_address      = each.value
 }
 
-resource "random_string" "postgresql_password" {
+resource "random_password" "postgresql_password" {
   length  = 50
   special = false
   upper   = true
@@ -209,7 +209,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   auto_grow_enabled            = true
 
   administrator_login          = "psqladminun"
-  administrator_login_password = random_string.postgresql_password.result
+  administrator_login_password = random_password.postgresql_password.result
   version                      = "9.5"
   ssl_enforcement_enabled      = true
 }
