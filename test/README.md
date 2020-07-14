@@ -25,7 +25,7 @@ To run Cypress locally, execute `yarn cypress` in the /test/ directory.
 
 This will open the test runner. You can then select a test you want to run and which browser you would like to run it in.
 
-- Please note \* that the tests are currently not setup to run locally - the test url is set to bs-local.com, rather than localhost. You will need to modify the url to point at localhost if you want to test locally. This will be resolved in a later PR.
+** Please note ** that the tests are currently not setup to run locally - the test url is set to bs-local.com, rather than localhost. You will need to modify the url to point at localhost if you want to test locally. This will be resolved in a later PR.
 
 ## BrowserStack
 
@@ -48,4 +48,4 @@ To run the Mocha test on BrowserStack, execute `yarn mocha-bs`.
 
 The 'Selenium' test is essentially the same as the Mocha test, just without the Mocha syntax and formatting.
 
-To run the Selenium test on BrowserStack, from the /browserstack/ directory, execute `node browserstack_local_test.js`.
+To run the Selenium test on BrowserStack, from the /browserstack/ directory, execute `node /browserstack/browserstack_local_test.js`.
