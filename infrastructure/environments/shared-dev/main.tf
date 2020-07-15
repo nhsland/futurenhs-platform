@@ -67,7 +67,7 @@ resource "azurerm_key_vault" "vault" {
 }
 
 
-// On startup, the controller searches for this secret with label 'ealedsecrets.bitnami.com/sealed-secrets-key: active' within its namespace. It uses this to decrupt existing sealed secrets.
+// On startup, the controller searches for this secret with label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' within its namespace. It uses this to decrupt existing sealed secrets.
 resource "azurerm_key_vault_secret" "sealed_secret" {
   name         = "sealed-secret-yaml"
   value        = <<EOF

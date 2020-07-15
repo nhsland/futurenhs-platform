@@ -21,7 +21,7 @@ setup_terraform() {
     az storage account create \
     --kind StorageV2 \
     --resource-group $RESOURCE_GROUP_NAME \
-    --name $STORAGE_ACCOUNT_NAME \gs
+    --name $STORAGE_ACCOUNT_NAME \
     --sku Standard_LRS \
     --encryption-services blob \
     --output none
