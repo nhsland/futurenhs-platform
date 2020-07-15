@@ -2,6 +2,8 @@
 
 ## Setup
 
+To get started, you should have [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/get-npm) installed. If you don't have it already, install Yarn `npm install -g yarn`.
+
 Run `yarn` in the `/test/` dir to install dependencies.
 Add your BrowserStack username and access key to the .env file.
 
@@ -23,9 +25,9 @@ Before executing the Cypress or Browserstack tests you will need to have the loc
 
 To run Cypress locally, execute `yarn cypress` in the /test/ directory.
 
-This will open the test runner. You can then select a test you want to run and which browser you would like to run it in.
+This will open the test runner. You can then select a test you want to run and which browser (Chrome/Firefox/Chromium Edge) you would like to run it in.
 
-** Please note ** that the tests are currently not setup to run locally - the test url is set to bs-local.com, rather than localhost. You will need to modify the url to point at localhost if you want to test locally. This will be resolved in a later PR.
+**Please note** that the tests are currently not setup to run locally - the test url is set to bs-local.com, rather than localhost. You will need to modify the url to point at localhost if you want to test locally. This will be resolved in a later PR.
 
 ## BrowserStack
 
