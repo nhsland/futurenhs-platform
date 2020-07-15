@@ -47,6 +47,8 @@ resource "azurerm_key_vault" "vault" {
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
+    // This object_id relates to the FutureNHS Developers Group ID. 
+    // See https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/b06ebd00-f52c-4e82-ac88-0520f4320fee
     object_id = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
 
     key_permissions = [
@@ -66,8 +68,11 @@ resource "azurerm_key_vault" "vault" {
   }
 }
 
-
-// On startup, the controller searches for this secret with label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' within its namespace. It uses this to decrupt existing sealed secrets.
+// On startup, the controller searches for this secret with label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' within its namespace. 
+// It uses this to decrypt existing sealed secrets.
+// To be able to read sealed secrets, you must add the sealed secret certificate to your cluster as a secret. 
+// Run the following to retrieve it from the Key Vault:
+//   az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml" | jq -r '.value'  | kubectl apply -f -
 resource "azurerm_key_vault_secret" "sealed_secret" {
   name         = "sealed-secret-yaml"
   value        = <<EOF
