@@ -71,9 +71,7 @@ resource "azurerm_key_vault" "vault" {
 }
 
 
-// This is the k8s secret that is required by devs to use for sealing secrets, using the cert that we created above.
-// NOTE on sealedsecrets.bitnami.com/sealed-secrets-key: active
-// On startup, the controller searches for this secret within its namespace.  The public portion of key pair should be ourput in logs
+// On startup, the controller searches for this secret with label 'ealedsecrets.bitnami.com/sealed-secrets-key: active' within its namespace.
 resource "azurerm_key_vault_secret" "sealed_secret" {
   name         = "sealed-secret-yaml"
   value        = <<EOF

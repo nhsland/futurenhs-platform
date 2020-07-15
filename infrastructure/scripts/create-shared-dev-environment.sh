@@ -13,23 +13,19 @@ setup_terraform() {
     # Use non-production subscription
     az account set --subscription $SUBSCRIPTION_ID
     
-    # Create resource group
-    # TODO: do we want to limit this to england/wales, or is europe okay?
     az group create \
     --name $RESOURCE_GROUP_NAME \
     --location westeurope \
     --output none
     
-    # Create storage account
     az storage account create \
     --kind StorageV2 \
     --resource-group $RESOURCE_GROUP_NAME \
-    --name $STORAGE_ACCOUNT_NAME \
+    --name $STORAGE_ACCOUNT_NAME \gs
     --sku Standard_LRS \
     --encryption-services blob \
     --output none
     
-    # Get storage account key
     ACCESS_KEY=$(
         az storage account keys list \
         --resource-group $RESOURCE_GROUP_NAME \
@@ -38,7 +34,6 @@ setup_terraform() {
         --output tsv
     )
     
-    # Create blob container
     az storage container create \
     --name $CONTAINER_NAME \
     --account-name $STORAGE_ACCOUNT_NAME \
