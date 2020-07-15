@@ -4,10 +4,6 @@ provider "azurerm" {
   subscription_id = "4a4be66c-9000-4906-8253-6a73f09f418d"
 }
 
-provider "random" {
-  version = "~> 2.2"
-}
-
 provider "tls" {
   version = "~> 2.1"
 }
