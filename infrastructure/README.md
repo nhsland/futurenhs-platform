@@ -177,6 +177,19 @@ as opposed to sharing a staging environment.
    terraform destroy
    ```
 
+1. To be able to read sealed secrets, you must add the sealed secret certificate to your cluster as a secret. Run the following to retrieve it from the Key Vault.
+  ```bash
+  az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml"
+  ```
+  
+  Add the contents of the 'value' field to a file called `sealed-secret-cert.yaml` within `infrastructure/environments/shared-dev`.
+
+  To add this secret to your cluster, run:
+  ```bash
+  (cd infrastructure/environments/shared-dev && kubectl apply -f sealed-secret-cert.yaml)
+  ```
+
+
 ## Production environment
 
 Production is a long-lived environment. To make changes, follow these steps.

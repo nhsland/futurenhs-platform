@@ -4,3 +4,4 @@ target/
 dev-*/
 !dev-template/
 terraform.tfvars
+infrastructure/environments/shared-dev/sealed-secret-cert.yaml
