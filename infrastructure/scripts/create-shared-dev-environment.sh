@@ -40,7 +40,6 @@ setup_terraform() {
     --account-key "$ACCESS_KEY" \
     --output none
     
-    
     (cd $REPO_ROOT/infrastructure/environments/shared-dev && terraform init -backend-config="resource_group_name=vault"  -backend-config="storage_account_name=fnhstfstatedevshared")
     
     echo "The shared development terraform environment is ready to go"
