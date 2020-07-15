@@ -50,4 +50,4 @@ To run the Mocha test on BrowserStack, execute `yarn mocha-bs`.
 
 The 'Selenium' test is essentially the same as the Mocha test, just without the Mocha syntax and formatting.
 
-To run the Selenium test on BrowserStack, from the /browserstack/ directory, execute `node /browserstack/browserstack_local_test.js`.
+To run the Selenium test on BrowserStack, from the /test/ directory, execute `node /browserstack/browserstack_local_test.js`.
