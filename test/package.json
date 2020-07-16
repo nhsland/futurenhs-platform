@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "cypress": "cypress open",
+    "cypress-bs": "browserstack-cypress run",
+    "mocha": "mocha",
+    "mocha-bs": "mocha ./browserstack/browserstack_local_test.js",
+    "local": "./scripts/local-bs-connect.sh"
+  },
+  "dependencies": {
+    "browserstack": "^1.6.0",
+    "browserstack-cypress-cli": "^1.2.0",
+    "browserstack-local": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "selenium-webdriver": "^4.0.0-alpha.7"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cypress": "^4.9.0",
+    "mocha": "^8.0.1"
+  }
+}
