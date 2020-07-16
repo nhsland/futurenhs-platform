@@ -10,3 +10,8 @@ spec:
           env:
             - name: INSTRUMENTATION_KEY
               value: "18be3b83-4ad5-4186-a7b6-f65dd1253a77"
+            - name: FAVOURITE_FOOD
+              valueFrom:
+                secretKeyRef:
+                  name: favouritefood
+                  key: food
