@@ -182,16 +182,23 @@ as opposed to sharing a staging environment.
    kubectl apply -f ./infrastructure/kubernetes/logging/container-azm-ms-agentconfig.yaml
    ```
 
-1. To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
+1. To be able to read existing sealed secrets, you must add the sealed secret certificate to your cluster as a secret. Run the following to retrieve it from the Key Vault and apply to the cluster, and then add the controller:
+
+  ```bash
+  az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml" | jq -r '.value'  | kubectl apply -f -
+  ```
+
+  ```bash
+  kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
+  ```
+
+
+To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
 
    ```bash
    terraform destroy
    ```
 
-1. To be able to read sealed secrets, you must add the sealed secret certificate to your cluster as a secret. Run the following to retrieve it from the Key Vault.
-  ```bash
-  az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml" | jq -r '.value'  | kubectl apply -f -
-  ```
 
 ## Production environment
 
