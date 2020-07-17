@@ -4,7 +4,6 @@ describe("Hello world", () => {
   });
 
   it("Renders page elements", () => {
-    cy.get("h1").should("contain", "[Your Name]");
-    cy.get("main").should("contain", "FutureNHS");
+    cy.get("section").should("contain", "FutureNHS");
   });
 });
