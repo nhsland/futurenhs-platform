@@ -10,8 +10,8 @@ spec:
           env:
             - name: INSTRUMENTATION_KEY
               value: "$INSTRUMENTATION_KEY"
-            - name: FAVOURITE_FOOD
+            - name: FAVOURITE_CUISINE
               valueFrom:
                 secretKeyRef:
-                  name: favouritefood
-                  key: food
+                  name: mysecret
+                  key: favouritecuisine

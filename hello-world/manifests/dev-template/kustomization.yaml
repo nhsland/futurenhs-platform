@@ -4,4 +4,5 @@ bases:
   - ../base
 patchesStrategicMerge:
   - deployment.yaml
-  - ../sealed-secrets/dev/mysealedfoodsecret.yaml
+resources:
+  - mynewsealedsecret.yaml
