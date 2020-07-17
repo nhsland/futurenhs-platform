@@ -39,9 +39,17 @@ kubectl get secrets -n hello-world
 #### Use Secret to generate an environment variable
 1. Edit dev-template deployment.yaml to add the secret ref within env config.
 
-2. Now regenerate the dev-overlays and push to argo-cd`./infrastructure/scripts/create-dev-overlays.py && argocd app sync hello-world --local ./hello-world/manifests/dev-matt --prune`
+2. Now regenerate the dev-overlays and push to argo-cd
+```
+./infrastructure/scripts/create-dev-overlays.py && argocd app sync hello-world --local ./hello-world/manifests/dev-matt --prune
+```
 
-3. Get the correct podname - `k get pods -n hello-world`
+3. Get the correct podname: 
+```
+kubectl get pods -n hello-world
+```
 
-4. Then verify that the secret is now exposed as an env within the pod.
-`kubectl exec -n hello-world --stdin --tty <POD_NAME> -- bash`
+4. Then verify that the secret is now exposed as an env within the pod. One in the pod, type `env` and look for your secret.
+```
+kubectl exec -n hello-world --stdin --tty <POD_NAME> -- bash
+```
