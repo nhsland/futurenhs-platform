@@ -3,7 +3,7 @@
     "cypress": "cypress open",
     "cypress-bs": "browserstack-cypress run",
     "mocha": "mocha",
-    "mocha-bs": "mocha ./browserstack/browserstack_local_test.js",
+    "mocha-bs": "mocha ./browserstack/browserstack_local_test_mocha.js",
     "local": "./scripts/local-bs-connect.sh"
   },
   "dependencies": {
