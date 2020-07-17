@@ -53,3 +53,23 @@ kubectl get pods -n hello-world
 ```
 kubectl exec -n hello-world --stdin --tty <POD_NAME> -- bash
 ```
+
+
+## Production Secrets
+
+Make sure `kubectl` points to the production cluster:
+```
+kubectl config use-context production 
+```
+
+Seal the secret:
+```
+cat favourite-cuisine.yaml | kubeseal --format yaml > favourite-cuisine-sealed.yaml
+```
+
+Place the generated Sealed Secret in <app>/manifests/production
+
+Remember to switch back to your own cluster:
+   ```
+   kubectl config use-context dev-matt
+   ```

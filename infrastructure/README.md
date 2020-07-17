@@ -230,11 +230,22 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
    ```
 
-1. Install Linkerd and Argo CD in the same way as it works for development environments.
+Change `kubectl` to point to the production cluster.
+   ```
+kubectl config use-context production 
+   ```
+
+1. Install Linkerd, Argo CD, and Sealed Secrets in the same way as it works for development environments.
 
    ```bash
    ./infrastructure/scripts/install-linkerd.sh production
    ./infrastructure/scripts/install-argo-cd.sh production
+   kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
+   ```
+
+Remember to switch back to your own cluster:
+   ```
+   kubectl config use-context dev-matt
    ```
 
 ## Troubleshooting
