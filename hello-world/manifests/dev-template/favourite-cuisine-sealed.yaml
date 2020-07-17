@@ -1,0 +1,15 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: favourite-cuisine
+  namespace: hello-world
+spec:
+  encryptedData:
+    favouritecuisine: AgBILMfgFQjh5F2+hnOs6ZLZidtYgKUr0uFMx5KJhmsmh6RgMzIKhC7CawaI1IYeTq3XX2qUE7C5/MDa8Jlm2xy0jJQMPSUl7h8a2hH+4+YJfvg0HZBKojmVZ8KnW+iL3h3GKrZ4hVzcZsCl6eqkol3Oayd7Wl/CaIxQ27qRQ9WXshT1O+SNro+MurmwOout1vXeFCBUX1vcUcYDmfF8MUFd9tAJU4Hj7J4TbpPd7j4XLjmeO6oJ8YAIMcNB7e96GGH+KNarcB1zyTxtHvflDZv3zo8JAl3d/7aqV9eLQUX8ygWqRlX0giZny59RQgup0Hieyp7n3zBP8p8W6MzMiOrgcTTO9LJgCxvRvXZY5dJmY5V5nvP1A+m278PnTamVLwQUF4z/OCLIwlAk6mtpkwdf4CQufaFPdDVfEl/NPyQzODDKPQzEpqn0YZ8y8OlDB7rvg6qfeI/mdQBxtcDZQBaKtZIToLo2tFPg1O5s61im2u7FUrk5cG3ntK4FpWE1jXNKt078LzY1Yq0sGmDpR1gI1gDy8Bu8BXofqlSqdw3fCgEdfEbf2K1cG/KxUP2QxcehyX5tBGdOZ+243UUsWm+y68/cQh1sJnYgdurJJoyWX8oZMOssVYsNIgKUZT8vUtsX5veHXMdTPbxvabEJe1JQUUdqa9bH+fyqZTixIVQpUtSQeNUKwxmTz9r7C4h8WpcXms7vy6g=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: favourite-cuisine
+      namespace: hello-world
+
