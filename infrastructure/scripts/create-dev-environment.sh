@@ -9,19 +9,38 @@ if [ "$NAME" != "${NAME//[^a-z]/-}" ]; then
 	exit 1
 fi
 
+# We might want to write a CLEAN=full version later that does a terraform destroy etc.
+CLEAN="${CLEAN:-check}"
+if [[ "$CLEAN" != "local" && "$CLEAN" != "localstate" && "$CLEAN" != "check" ]]; then
+	echo "Unexpected value for CLEAN environment variable: '$CLEAN'"
+	echo "Use CLEAN=local to clean your local files and configs."
+	echo "Use CLEAN=localstate to clean just .terraform, but keep your terraform.tfvars config."
+	echo "Use CLEAN=check (the default) if you are using a clean envionment."
+	exit 1
+fi
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 setup_terraform() {
 	DEV_CONFIG_FILE="$REPO_ROOT/infrastructure/environments/dev/terraform.tfvars"
+	TERRAFORM_DIR="$REPO_ROOT/infrastructure/environments/dev/.terraform"
 
 	SUBSCRIPTION_ID=4a4be66c-9000-4906-8253-6a73f09f418d
 	RESOURCE_GROUP_NAME=tfstate$NAME
 	STORAGE_ACCOUNT_NAME=fnhstfstatedev$NAME
 	CONTAINER_NAME=tfstate
 
-	if [ -f "$DEV_CONFIG_FILE" ]; then
-		echo "File infrastructure/environments/dev/terraform.tfvars already exists."
+	if [ "$CLEAN" = "local" ]; then
+		rm -r $DEV_CONFIG_FILE $TERRAFORM_DIR
+	elif [ "$CLEAN" = "localstate" ]; then
+		rm -r $TERRAFORM_DIR
+	elif [ -f "$DEV_CONFIG_FILE" ]; then
+		echo "File $DEV_CONFIG_FILE already exists."
 		echo "If you want to initialize your environment again, please delete the file and rerun this script."
+		exit 1
+	elif [ -d "$TERRAFORM_DIR" ]; then
+		echo "Folder $TERRAFORM_DIR already exists."
+		echo "If you want to initialize your environment again, please delete that directory and rerun this script."
 		exit 1
 	fi
 
@@ -58,12 +77,14 @@ setup_terraform() {
 		--account-key "$ACCESS_KEY" \
 		--output none
 
-	cat >"$DEV_CONFIG_FILE" <<EOF
+	if [ "$CLEAN" = "localstate" ]; then
+		cat >"$DEV_CONFIG_FILE" <<EOF
 resource_group_name="$RESOURCE_GROUP_NAME"
 storage_account_name="$STORAGE_ACCOUNT_NAME"
 USERNAME="$NAME"
 ip_whitelist_postgresql={"$NAME" = $(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com)}
 EOF
+	fi
 
 	echo "Your dev terraform environment is ready to go. To initialize run:"
 	echo "("
