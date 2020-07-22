@@ -47,7 +47,6 @@ jobs:
             git checkout HEAD -b pr-$GITHUB_HEAD_REF
           fi
       - name: Copy manifests
-        working-directory: futurenhs-deployments
         run: |
           set -eux
           $GITHUB_WORKSPACE/futurenhs-platform/infrastructure/scripts/create-dev-overlays.py
@@ -68,8 +67,6 @@ jobs:
           # TODO: can we make this commit message reflect the message at the tip of the platform repo?
           git diff-index --quiet HEAD || git commit -am "CI: Update cert-manager and ingress"
 
-          git status
-          
           declare -i n
           n=0
           until [ $n -ge 5 ]
