@@ -1,14 +1,10 @@
-app := hello-world
+app := frontend
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
 
 .PHONY: default
 default: ## Run locally
-	cargo run
-
-.PHONY: test
-test: ## Run tests [TEST=test_name (optional)]
-	cargo test $$TEST
+	yarn dev
 
 .PHONY: docker-build
 docker-build: ## Build and tag Docker image
@@ -21,7 +17,7 @@ docker-build: ## Build and tag Docker image
 
 .PHONY: docker-run
 docker-run: ## Run Docker image
-	docker run -it -p 3030:3030 $(image)
+	docker run -it -p 3000:3000 $(image)
 
 .PHONY: docker-push
 docker-push: ## Push Docker image
