@@ -18,8 +18,8 @@ docker-build: ## Build and tag Docker image
 		--tag $(image) \
 		--tag $(image):$(tag) \
 		.
-.PHONY: docker-run
 
+.PHONY: docker-run
 docker-run: ## Run Docker image
 	docker run -it -p 3030:3030 $(image)
 
