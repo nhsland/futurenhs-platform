@@ -11,12 +11,22 @@ provider "tls" {
 terraform {
   required_version = "0.12.25"
   backend "azurerm" {
-    container_name       = "vault-container"
-    key                  = "dev-vault.terraform.tfstate"
-    resource_group_name  = "vault"
+    container_name       = "tfstate"
+    key                  = "devshared.terraform.tfstate"
+    resource_group_name  = "tfstatedevshared"
     storage_account_name = "fnhstfstatedevshared"
   }
 }
 
 data "azurerm_client_config" "current" {
+}
+
+
+resource "azurerm_resource_group" "shared" {
+  name     = "shared-dev"
+  location = var.location
+
+  tags = {
+    environment = "dev-shared"
+  }
 }

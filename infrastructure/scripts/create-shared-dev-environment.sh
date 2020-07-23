@@ -5,10 +5,12 @@ set -eu
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 setup_terraform() {
+	DEV_CONFIG_FILE="$REPO_ROOT/infrastructure/environments/shared-dev/terraform.tfvars"
+
 	SUBSCRIPTION_ID=4a4be66c-9000-4906-8253-6a73f09f418d
-	RESOURCE_GROUP_NAME=vault
+	RESOURCE_GROUP_NAME=tfstatedevshared
 	STORAGE_ACCOUNT_NAME=fnhstfstatedevshared
-	CONTAINER_NAME=vault-container
+	CONTAINER_NAME=tfstate
 
 	# Use non-production subscription
 	az account set --subscription $SUBSCRIPTION_ID
@@ -40,7 +42,11 @@ setup_terraform() {
 		--account-key "$ACCESS_KEY" \
 		--output none
 
-	(cd $REPO_ROOT/infrastructure/environments/shared-dev && terraform init -backend-config="resource_group_name=vault" -backend-config="storage_account_name=fnhstfstatedevshared")
+	cat >"$DEV_CONFIG_FILE" <<EOF
+ip_whitelist_insights={}
+EOF
+
+	(cd $REPO_ROOT/infrastructure/environments/shared-dev && terraform init)
 
 	echo "The shared development terraform environment is ready to go"
 }

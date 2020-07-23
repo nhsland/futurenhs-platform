@@ -16,8 +16,8 @@ resource "tls_self_signed_cert" "sealed_secret" {
 
 resource "azurerm_key_vault" "vault" {
   name                = "fnhs-shared-dev"
-  location            = "westeurope"
-  resource_group_name = "vault"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.shared.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
 
   sku_name = "premium"
