@@ -27,6 +27,11 @@ jobs:
         run: |
           terraform init -backend=false
           terraform validate
+      - name: Validate Terraform of shared dev environment
+        working-directory: futurenhs-platform/infrastructure/environments/shared-dev
+        run: |
+          terraform init -backend=false
+          terraform validate
       - name: Validate Terraform of production environment
         working-directory: futurenhs-platform/infrastructure/environments/production
         run: |
