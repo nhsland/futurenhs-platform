@@ -80,7 +80,7 @@ as opposed to sharing a staging environment.
    ```bash
    cd infrastructure/environments/dev
    ```
-   
+
 1. If you intend to use Synapse or PostgreSQL locally, add your IP to the list in terraform.tfvars
 
    ```hcl-terraform
@@ -124,25 +124,27 @@ as opposed to sharing a staging environment.
 
 1. To be able to read existing sealed secrets, you must add the sealed secret certificate to your cluster as a secret. Run the following to retrieve it from the Key Vault and apply to the cluster, and then add the controller:
 
-  ```bash
-  az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml" | jq -r '.value'  | kubectl apply -f -
-  ```
+   ```bash
+   az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml" | jq -r '.value'  | kubectl apply -f -
+   ```
 
-  ```bash
-  kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
-  ```
+   ```bash
+   kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
+   ```
 
-  If everything works then your log should only contain:
-  ```
-  $ kubectl -n kube-system logs -l name=sealed-secrets-controller
-  controller version: v0.12.4+dirty
-  2020/07/21 14:52:04 Starting sealed-secrets controller version: v0.12.4+dirty
-  2020/07/21 14:52:04 Searching for existing private keys
-  2020/07/21 14:52:04 ----- sealed-secret-key
-  2020/07/21 14:52:04 HTTP server serving on :8080
-  ```
-  If you see something about it failing to find a private key and generating one then you might need to recreate it.
-  See https://github.com/bitnami-labs/sealed-secrets/blob/master/docs/bring-your-own-certificates.md for details.
+   If everything works then your log should only contain:
+
+   ```
+   $ kubectl -n kube-system logs -l name=sealed-secrets-controller
+   controller version: v0.12.4+dirty
+   2020/07/21 14:52:04 Starting sealed-secrets controller version: v0.12.4+dirty
+   2020/07/21 14:52:04 Searching for existing private keys
+   2020/07/21 14:52:04 ----- sealed-secret-key
+   2020/07/21 14:52:04 HTTP server serving on :8080
+   ```
+
+   If you see something about it failing to find a private key and generating one then you might need to recreate it.
+   See https://github.com/bitnami-labs/sealed-secrets/blob/master/docs/bring-your-own-certificates.md for details.
 
 1. To install the [Linkerd](https://linkerd.io/) control plane, run the `install-linkerd.sh` script that can be found within `infrastructure/scripts` directory.
 
@@ -197,11 +199,14 @@ as opposed to sharing a staging environment.
    and browse to http://localhost:8080.
 
    or do
+
    ```bash
    brew install kubefwd
    sudo kubefwd services -n argocd
    ```
+
    and browse to:
+
    ```
    https://argocd-server.argocd/
    ```
@@ -214,13 +219,11 @@ as opposed to sharing a staging environment.
    kubectl apply -f ./infrastructure/kubernetes/logging/container-azm-ms-agentconfig.yaml
    ```
 
-
 To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
 
-   ```bash
-   terraform destroy
-   ```
-
+```bash
+terraform destroy
+```
 
 ## Production environment
 
@@ -252,12 +255,15 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
    ```
 
-Change `kubectl` to point to the production cluster.
-   ```
-kubectl config use-context production 
+1. Install Linkerd, Argo CD, and Sealed Secrets in the same way as it works for development environments.
+
+   Change `kubectl` to point to the production cluster.
+
+   ```bash
+   kubectl config use-context production
    ```
 
-1. Install Linkerd, Argo CD, and Sealed Secrets in the same way as it works for development environments.
+   Install the applications.
 
    ```bash
    ./infrastructure/scripts/install-linkerd.sh production
@@ -265,8 +271,9 @@ kubectl config use-context production
    kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
    ```
 
-Remember to switch back to your own cluster:
-   ```
+   And switch back to your own cluster.
+
+   ```bash
    kubectl config use-context dev-matt
    ```
 
