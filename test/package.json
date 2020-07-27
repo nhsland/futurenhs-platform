@@ -1,7 +1,11 @@
 {
   "scripts": {
-    "cypress": "cypress open",
-    "cypress-bs": "browserstack-cypress run",
+    "cypress:local": "cypress open",
+    "cypress:dev": "to do",
+    "cypress:prod": "cypress open --config-file ./cypress-prod.json",
+    "cypress-bs:local": "./scripts/cypress-bs.sh ./cypress-bs-local.json",
+    "cypress-bs:dev": "./scripts/cypress-bs.sh",
+    "cypress-bs:prod": "./scripts/cypress-bs.sh ./cypress-prod.json",
     "mocha": "mocha",
     "mocha-bs": "mocha ./browserstack/browserstack_local_test_mocha.js",
     "local": "./scripts/local-bs-connect.sh"
