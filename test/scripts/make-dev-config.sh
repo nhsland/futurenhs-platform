@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# This is a delicious hack because BrowserStack doesn't let us specify a config file
-
 set -eu
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
