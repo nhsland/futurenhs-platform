@@ -1,7 +1,7 @@
 {
   "scripts": {
     "cypress:local": "cypress open",
-    "cypress:dev": "to do",
+    "cypress:dev": "./scripts/make-dev-config-local.sh",
     "cypress:prod": "cypress open --config-file ./cypress-prod.json",
     "cypress-bs:local": "./scripts/cypress-bs.sh ./cypress-bs-local.json",
     "cypress-bs:dev": "./scripts/cypress-bs.sh",
