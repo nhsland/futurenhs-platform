@@ -6,8 +6,8 @@
     "cypress-bs:local": "./scripts/cypress-bs.sh ./cypress-bs-local.json",
     "cypress-bs:dev": "./scripts/cypress-bs.sh",
     "cypress-bs:prod": "./scripts/cypress-bs.sh ./cypress-prod.json",
-    "mocha": "mocha",
-    "mocha-bs": "mocha ./browserstack/browserstack_local_test_mocha.js",
+    "internet-explorer": "mocha",
+    "internet-explorer-bs": "mocha ./internet-explorer/internet_explorer_hello_world.js",
     "local": "./scripts/local-bs-connect.sh"
   },
   "dependencies": {
