@@ -4,50 +4,56 @@
 
 To get started, you should have [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/get-npm) installed. If you don't have it already, install Yarn `npm install -g yarn`.
 
-Run `yarn` in the `/test/` dir to install dependencies.
+Run `yarn` in the `/test/` directory to install dependencies.
 Add your BrowserStack username and access key to the .env file.
 
 Access key can be found by going to the [BrowserStack Automate Dashboard](https://automate.browserstack.com/dashboard/v2/) and clicking on the ACCESS KEY dropdown.
 
-Install the BrowserStack Local executable `brew cask install browserstacklocal`
+Install the BrowserStack Local executable `brew cask install browserstacklocal`.
 
-## Local Server Testing
+## Running Tests
 
-These example tests are currently set up to run off a local server.
+### Local Browser
+
+Before executing the Cypress or Internet Explorer tests you will need to have the local frontend server running (the API server is only necessary for the hello_world_rust.js Cypress test at this point).
 
 [Local API server instructions](../hello-world/README.md)
 
 [Local frontend instructions](../frontend)
 
-Before executing the Cypress or Browserstack tests you will need to have the local frontend server running (the API server is only necessary for the hello_world_rust.js Cypress test at this point).
+Currently, only Cypress tests will run in a local browser.
 
-## Cypress
+To run tests, execute the desired command from the `/test/` directory:
 
-To run Cypress locally, execute `yarn cypress` in the /test/ directory.
+- a local server: `yarn cypress:local`.
+- a dev cluster: `yarn cypress:dev <dev cluster name>` i.e. `yarn cypress:dev foo`.
+- prod: `yarn cypress:prod`.
 
 This will open the test runner. You can then select a test you want to run and which browser (Chrome/Firefox/Chromium Edge) you would like to run it in.
 
-**Please note** that the tests are currently not setup to run locally - the test url is set to bs-local.com, rather than localhost. You will need to modify the url to point at localhost if you want to test locally. This will be resolved in a later PR.
-
-## BrowserStack
+### BrowserStack
 
 Before running local tests on BrowserStack make sure the BrowserStack Local executable is [installed](#setup).
-Use `yarn local` to launch the executable.
+Execute `yarn local` (from the /test/ directory) to launch the executable before running any of the following tests.
 
-### Cypress
+#### Cypress
 
-To run Cypress on BrowserStack, duplicate and edit the browserstack.json example, adding your BrowserStack username and access key.
+##### Cypress Configuration
 
-From the `/test/` directory, execute `yarn cypress-bs`.
+Before running Cypress on BrowserStack, duplicate and edit the browserstack.json example, adding your BrowserStack username and access key. Check the [Setup](#setup) section for instructions on getting your access key.
 
-### Mocha
+You can also modify which browsers you would like to run the tests in by modifying the `"browsers"` object in the browserstack.json file. See the BrowserStack [browsers and OS](https://www.browserstack.com/docs/automate/cypress/browsers-and-os) documentation for more information.
 
-Mocha tests run using the Selenium webdriver.
+##### Run tests
 
-To run the Mocha test on BrowserStack, execute `yarn mocha-bs`.
+To run tests, execute the desired command from the `/test/` directory:
 
-#### Selenium
+- a local server: `yarn cypress-bs:local`.
+- a dev cluster: `yarn cypress-bs:dev <dev cluster name>` i.e. `yarn cypress:dev foo`.
+- prod: `yarn cypress-bs:prod`.
 
-The 'Selenium' test is essentially the same as the Mocha test, just without the Mocha syntax and formatting.
+#### Internet Explorer
 
-To run the Selenium test on BrowserStack, from the /test/ directory, execute `node /browserstack/browserstack_local_test.js`.
+Internet Explorer tests currently only run off a local server in BrowserStack.
+
+Execute `yarn internet-explorer-bs` from the `/test/` directory.
