@@ -79,6 +79,19 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   }
 }
 
+# see https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html
+provider "kubernetes" {
+  load_config_file       = "false"
+  host                   = azurerm_kubernetes_cluster.cluster.kube_config.0.host
+  username               = azurerm_kubernetes_cluster.cluster.kube_config.0.username
+  password               = azurerm_kubernetes_cluster.cluster.kube_config.0.password
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.cluster.kube_config.0.client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.cluster.kube_config.0.client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
+}
+
+
+
 resource "azurerm_log_analytics_workspace" "cluster" {
   name                = "cluster-${var.environment}"
   location            = var.location
@@ -137,4 +150,25 @@ resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
   server_name         = azurerm_postgresql_server.postgresql_server.name
   start_ip_address    = each.value
   end_ip_address      = each.value
+}
+
+# TODO: destroy the cluster and see whether this applies cleanly or whether it needs
+# terraform to also create the namespace?
+resource "kubernetes_secret" "kratos_db_creds" {
+  metadata {
+    name = "kratos-db-creds"
+    namespace = "kratos"
+  }
+  data = {
+    # TODO: make a user that's not the db server admin, and use that here instead
+    username = azurerm_postgresql_server.postgresql_server.administrator_login
+    password = azurerm_postgresql_server.postgresql_server.administrator_login_password
+    dsn = "postgres://${
+        azurerm_postgresql_server.postgresql_server.administrator_login
+      }:${
+        azurerm_postgresql_server.postgresql_server.administrator_login_password
+      }@${
+        azurerm_postgresql_server.postgresql_server.name
+      }.postgres.database.azure.com:5432/kratos"
+  }
 }
