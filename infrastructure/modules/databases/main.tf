@@ -49,7 +49,7 @@ resource "kubernetes_secret" "kratos_db_creds" {
   }
   data = {
     secretsDefault = random_password.kratos_secrets_default.result
-    secretsCookie = random_password.kratos_secrets_cookie.result
+    secretsCookie  = random_password.kratos_secrets_cookie.result
     dsn = "postgres://${
       postgresql_role.kratos.name
       }@${
