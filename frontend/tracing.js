@@ -1,8 +1,13 @@
 "use strict";
 
 const { NodeTracerProvider } = require("@opentelemetry/node");
-const { BatchSpanProcessor, ConsoleSpanExporter } = require("@opentelemetry/tracing");
-const { AzureMonitorTraceExporter } = require('@azure/monitor-opentelemetry-exporter');
+const {
+  BatchSpanProcessor,
+  ConsoleSpanExporter,
+} = require("@opentelemetry/tracing");
+const {
+  AzureMonitorTraceExporter,
+} = require("@azure/monitor-opentelemetry-exporter");
 
 const provider = new NodeTracerProvider({
   plugins: {
@@ -13,14 +18,18 @@ const provider = new NodeTracerProvider({
   },
 });
 
-const exporter = process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY ? new AzureMonitorTraceExporter({
-  logger: provider.logger,
-  instrumentationKey: process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY,
-}) : new ConsoleSpanExporter()
+const exporter = process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY
+  ? new AzureMonitorTraceExporter({
+      logger: provider.logger,
+      instrumentationKey: process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY,
+    })
+  : new ConsoleSpanExporter();
 
 provider.register();
 
-provider.addSpanProcessor(new BatchSpanProcessor(exporter, {
-  bufferTimeout: 15000,
-  bufferSize: 1000,
-}));
+provider.addSpanProcessor(
+  new BatchSpanProcessor(exporter, {
+    bufferTimeout: 15000,
+    bufferSize: 1000,
+  })
+);
