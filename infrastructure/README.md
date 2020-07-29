@@ -110,16 +110,16 @@ as opposed to sharing a staging environment.
    terraform apply
    ```
 
-1. Give the Kubernetes cluster permissions to pull images from our Docker registry.
-
-   ```bash
-   az aks update -n dev-$FNHSNAME -g platform-dev-$FNHSNAME --attach-acr "/subscriptions/75173371-c161-447a-9731-f042213a19da/resourceGroups/platform-production/providers/Microsoft.ContainerRegistry/registries/fnhsproduction"
-   ```
-
 1. In order to use Kubernetes CLI (kubectl) commands, you need to pull the credentials from the server.
 
    ```bash
    az aks get-credentials --resource-group platform-dev-$FNHSNAME --name dev-$FNHSNAME
+   ```
+
+1. Give the Kubernetes cluster permissions to pull images from our Docker registry.
+
+   ```bash
+   az aks update -n dev-$FNHSNAME -g platform-dev-$FNHSNAME --attach-acr "/subscriptions/75173371-c161-447a-9731-f042213a19da/resourceGroups/platform-production/providers/Microsoft.ContainerRegistry/registries/fnhsproduction"
    ```
 
 1. To be able to read existing sealed secrets, you must add the sealed secret certificate to your cluster as a secret. Run the following to retrieve it from the Key Vault and apply to the cluster, and then add the controller:
@@ -160,11 +160,6 @@ as opposed to sharing a staging environment.
 
 1. Add your name in the `infrastructure/dev-overlay-variables.json` and create a pull request.
 
-1. Create your dev overlays locally by running the following script. Your overlays will also be created automatically in the deployments repository once your pull request from the previous step is merged.
-
-   ```bash
-   ./infrastructure/scripts/create-dev-overlays.py
-   ```
 
 1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
 
