@@ -15,7 +15,7 @@ Install the BrowserStack Local executable `brew cask install browserstacklocal`.
 
 ### Local Browser
 
-Before executing the Cypress or Internet Explorer tests you will need to have the local frontend server running (the API server is only necessary for the hello_world_rust.js Cypress test at this point).
+If you wish to test locally, before running the Cypress or Internet Explorer tests you will need to have the frontend server running (the API server is only necessary for the hello_world_rust.js Cypress test at this point).
 
 [Local API server instructions](../hello-world/README.md)
 
@@ -54,6 +54,8 @@ To run tests, execute the desired command from the `/test/` directory:
 
 #### Internet Explorer
 
-Internet Explorer tests currently only run off a local server in BrowserStack.
+To run tests, execute the desired command from the `/test/` directory:
 
-Execute `yarn internet-explorer-bs` from the `/test/` directory.
+- a local server: `yarn internet-explorer-bs:local`.
+- a dev cluster: `yarn internet-explorer-bs:dev <dev cluster name>` i.e. `yarn internet-explorer:dev foo`.
+- prod: `yarn internet-explorer-bs:prod`.
