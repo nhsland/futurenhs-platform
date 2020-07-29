@@ -160,8 +160,8 @@ resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
   end_ip_address      = each.value
 }
 
-resource "azurerm_postgresql_firewall_rule" "cluster_ip" {
-  name                = "cluster_ip"
+resource "azurerm_postgresql_firewall_rule" "whitelist_cluster" {
+  name                = "whitelist_cluster"
   resource_group_name = azurerm_resource_group.platform.name
   server_name         = azurerm_postgresql_server.postgresql_server.name
   start_ip_address    = azurerm_public_ip.cluster_outbound.ip_address
