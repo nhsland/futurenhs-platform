@@ -1,5 +1,6 @@
-## Name of story / Ticket #
-Link to Zeplin/design files
+[Ticket]()
+
+[Zeplin]()
 
 ## Acceptance Criteria
 
