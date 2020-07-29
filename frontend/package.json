@@ -39,19 +39,22 @@
     "eslint-plugin-react": "^7.20.0",
     "express": "^4.15.3",
     "http-proxy-middleware": "^1.0.4",
+    "husky": "^4.2.5",
     "ignore-loader": "^0.1.2",
     "jest": "^26.0.1",
+    "lint-staged": ">=10",
     "prettier": "2.0.5",
     "typescript": "^3.9.3"
   },
   "lint-staged": {
     "linters": {
-      "*.js": [
-        "./node_modules/.bin/eslint --fix"
-      ],
-      "*.{ts,tsx}": [
-        "yarn lint"
-      ]
+      "*.{js, ts, tsx }": "eslint --cache --fix",
+      "*.{js, jsx, ts, tsx,md, yaml, graphql }": "prettier --write"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
   }
 }
