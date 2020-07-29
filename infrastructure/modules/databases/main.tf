@@ -8,7 +8,7 @@ resource "random_password" "kratos_postgresql_password" {
   upper   = true
 }
 
-resource "postgresql_role" "kratos_user" {
+resource "postgresql_role" "kratos" {
   name     = "kratos_user"
   login    = true
   password = random_password.kratos_postgresql_password.result
@@ -18,7 +18,7 @@ resource "postgresql_role" "kratos_user" {
 # doesn't let us set the owner to a role other than the server admin.
 resource "postgresql_database" "kratos" {
   name              = "kratos"
-  owner             = postgresql_role.kratos_user.name
+  owner             = postgresql_role.kratos.name
   lc_collate        = "C"
   connection_limit  = -1
   allow_connections = true
@@ -39,7 +39,7 @@ resource "kubernetes_secret" "kratos_db_creds" {
   }
   data = {
     dsn = "postgres://${
-      postgresql_role.kratos_user.name
+      postgresql_role.kratos.name
       }@${
       var.postgresql_server_name
       }:${
@@ -47,7 +47,7 @@ resource "kubernetes_secret" "kratos_db_creds" {
       }@${
       var.postgresql_server_name
       }.postgres.database.azure.com:5432/${
-      postgresql_database.kratos_db.name
+      postgresql_database.kratos.name
     }"
   }
 }
