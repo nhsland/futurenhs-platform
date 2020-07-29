@@ -6,8 +6,9 @@
     "cypress-bs:local": "./scripts/cypress-bs.sh ./cypress-bs-local.json",
     "cypress-bs:dev": "./scripts/cypress-bs.sh",
     "cypress-bs:prod": "./scripts/cypress-bs.sh ./cypress-prod.json",
-    "internet-explorer": "mocha",
-    "internet-explorer-bs": "mocha ./internet-explorer/internet_explorer_hello_world.js",
+    "internet-explorer-bs:local": "./scripts/internet-explorer-bs.sh local",
+    "internet-explorer-bs:dev": "./scripts/internet-explorer-bs.sh dev",
+    "internet-explorer-bs:prod": "./scripts/internet-explorer-bs.sh prod",
     "local": "./scripts/local-bs-connect.sh"
   },
   "dependencies": {

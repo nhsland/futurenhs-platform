@@ -5,6 +5,7 @@ var assert = require("assert");
 var userName = process.env.BROWSERSTACK_USERNAME;
 var accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
 
+var baseUrl = process.env.IE_BASE_URL;
 var browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack.com/wd/hub`;
 
 describe("Page loads", function () {
@@ -20,7 +21,7 @@ describe("Page loads", function () {
       "browserstack.local": "true",
       "browserstack.console": "errors",
 
-      name: "Example Local Mocha Test",
+      name: "Example Internet Explorer Test",
     };
     driver = new webdriver.Builder()
       .usingServer(browserstackURL)
@@ -32,7 +33,7 @@ describe("Page loads", function () {
     const expected = "FutureNHS";
 
     driver
-      .get("http://127.0.0.1:3000")
+      .get(baseUrl)
       .then(() => {
         driver.findElement(webdriver.By.css("p")).then((p) => {
           p.getText()
