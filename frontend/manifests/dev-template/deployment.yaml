@@ -8,5 +8,5 @@ spec:
       containers:
         - name: frontend
           env:
-          - name: NEXT_PUBLIC_INSTRUMENTATION_KEY
-            value: "$INSTRUMENTATION_KEY"
+            - name: NEXT_PUBLIC_INSTRUMENTATION_KEY
+              value: "$INSTRUMENTATION_KEY"
