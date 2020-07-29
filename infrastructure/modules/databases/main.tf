@@ -1,40 +1,6 @@
-
-data "azurerm_postgresql_server" "postgresql_server" {
-  name                = "postgresql-${var.environment}"
-  resource_group_name = "platform-${var.environment}"
-}
-
-provider "postgresql" {
-  host = "${
-    data.azurerm_postgresql_server.postgresql_server.name
-  }.postgres.database.azure.com"
-  port              = 5432
-  database          = "postgres"
-  database_username = data.azurerm_postgresql_server.postgresql_server.administrator_login
-  username          = "${data.azurerm_postgresql_server.postgresql_server.administrator_login}@${data.azurerm_postgresql_server.postgresql_server.name}"
-  password          = var.postgresql_admin_password
-  sslmode           = "require"
-  connect_timeout   = 15
-  superuser         = false
-}
-
-data "azurerm_kubernetes_cluster" "cluster" {
-  name                = var.environment
-  resource_group_name = "platform-${var.environment}"
-}
-
-# see https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html
-provider "kubernetes" {
-  load_config_file       = "false"
-  host                   = data.azurerm_kubernetes_cluster.cluster.kube_config.0.host
-  username               = data.azurerm_kubernetes_cluster.cluster.kube_config.0.username
-  password               = data.azurerm_kubernetes_cluster.cluster.kube_config.0.password
-  client_certificate     = base64decode(data.azurerm_kubernetes_cluster.cluster.kube_config.0.client_certificate)
-  client_key             = base64decode(data.azurerm_kubernetes_cluster.cluster.kube_config.0.client_key)
-  cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
-}
-
-
+# This requires the postgresql and terraform providers to be set up properly.
+# Run `terraform apply -target module.platform` to set up their requirements
+# before attempting to apply this module.
 
 resource "random_password" "kratos_postgresql_password" {
   length  = 50
@@ -78,11 +44,11 @@ resource "kubernetes_secret" "kratos_db_creds" {
     dsn = "postgres://${
       postgresql_role.kratos_user.name
       }@${
-      data.azurerm_postgresql_server.postgresql_server.name
+      var.postgresql_server_name
       }:${
       random_password.kratos_postgresql_password.result
       }@${
-      data.azurerm_postgresql_server.postgresql_server.name
+      var.postgresql_server_name
       }.postgres.database.azure.com:5432/${
       postgresql_database.kratos_db.name
     }"
