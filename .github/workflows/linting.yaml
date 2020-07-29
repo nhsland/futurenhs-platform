@@ -1,0 +1,17 @@
+name: Linting
+
+on: [push]
+
+jobs:
+  bash:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run the sh-checker
+        uses: luizm/action-sh-checker@v0.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHELLCHECK_OPTS: -e SC1004
+        with:
+          sh_checker_comment: true
+          sh_checker_exclude: ".terraform ^dir/example.sh"
