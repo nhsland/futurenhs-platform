@@ -152,8 +152,14 @@ resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
   end_ip_address      = each.value
 }
 
-# TODO: destroy the cluster and see whether this applies cleanly or whether it needs
-# terraform to also create the namespace?
+resource "kubernetes_namespace" "kratos" {
+  metadata {
+    name = "kratos"
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+  }
+}
 resource "kubernetes_secret" "kratos_db_creds" {
   metadata {
     name      = "kratos-db-creds"
