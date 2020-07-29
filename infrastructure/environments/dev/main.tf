@@ -27,7 +27,6 @@ module platform {
   ip_whitelist_postgresql = var.ip_whitelist_postgresql
 }
 
-# see https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html
 provider "kubernetes" {
   load_config_file       = "false"
   host                   = module.platform.kube_config.0.host
