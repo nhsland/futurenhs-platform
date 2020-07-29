@@ -18,7 +18,7 @@ resource "postgresql_role" "kratos_user" {
 # doesn't let us set the owner to a role other than the server admin.
 resource "postgresql_database" "kratos_db" {
   name              = "kratos_db"
-  owner             = "kratos_user"
+  owner             = postgresql_role.kratos_user.name
   lc_collate        = "C"
   connection_limit  = -1
   allow_connections = true
