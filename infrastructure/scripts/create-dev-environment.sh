@@ -2,8 +2,6 @@
 
 set -eu
 
-variable_that_isnt="being used"
-
 NAME="${1:?"Please enter your name as first argument"}"
 
 if [ "$NAME" != "${NAME//[^a-z]/-}" ]; then
@@ -11,7 +9,7 @@ if [ "$NAME" != "${NAME//[^a-z]/-}" ]; then
 	exit 1
 fi
 
-REPO_ROOT="$(   git rev-parse --show-toplevel)"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 setup_terraform() {
 	DEV_CONFIG_FILE="$REPO_ROOT/infrastructure/environments/dev/terraform.tfvars"
