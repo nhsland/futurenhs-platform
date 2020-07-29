@@ -9,11 +9,6 @@ on:
       - .github/workflows/frontend-branch.yaml
 
 jobs:
-name: Lint
-
-on: pull_request
-
-jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
@@ -21,22 +16,21 @@ jobs:
       - uses: hallee/eslint-action@1.0.3
         # GITHUB_TOKEN in forked repositories is read-only
         # https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request
-        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }} 
+        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
         with:
           repo-token: ${{secrets.GITHUB_TOKEN}}
-          source-root: optional-sub-dir
   prettier:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.head_ref }}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
-    - name: Prettify code
-      uses: creyD/prettier_action@v2.2
-      with:
-        prettier_options: --check frontend/* .
+      - name: Prettify code
+        uses: creyD/prettier_action@v2.2
+        with:
+          prettier_options: --check frontend/* .
   build:
     runs-on: ubuntu-latest
     steps:
