@@ -20,7 +20,7 @@ terraform {
 
 # This module should be applied first, using `terraform apply -target module.platform`
 # so that the kubernetes cluster and postresql firewall rules are set up.
-# These are needed before the `terraform` and `postgresql` terraform providers can plan
+# These are needed before the `kubernetes` and `postgresql` terraform providers can plan
 # anything.
 module platform {
   source                  = "../../modules/platform"

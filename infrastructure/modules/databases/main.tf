@@ -1,4 +1,4 @@
-# This requires the postgresql and terraform providers to be set up properly.
+# This requires the postgresql and kubernetes providers to be set up properly.
 # Run `terraform apply -target module.platform` to set up their requirements
 # before attempting to apply this module.
 
