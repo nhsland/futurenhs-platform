@@ -39,7 +39,7 @@ provider "kubernetes" {
 }
 
 provider "postgresql" {
-  host = "${module.platform.postgresql_server_name}.postgres.database.azure.com"
+  host              = "${module.platform.postgresql_server_name}.postgres.database.azure.com"
   port              = 5432
   database          = "postgres"
   database_username = module.platform.postgresql_admin
@@ -51,7 +51,7 @@ provider "postgresql" {
 }
 
 module databases {
-  source                    = "../../modules/databases"
-  environment               = "dev-${var.USERNAME}"
+  source                 = "../../modules/databases"
+  environment            = "dev-${var.USERNAME}"
   postgresql_server_name = module.platform.postgresql_server_name
 }
