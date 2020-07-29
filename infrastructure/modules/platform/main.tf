@@ -156,7 +156,7 @@ resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
 # terraform to also create the namespace?
 resource "kubernetes_secret" "kratos_db_creds" {
   metadata {
-    name = "kratos-db-creds"
+    name      = "kratos-db-creds"
     namespace = "kratos"
   }
   data = {
@@ -164,11 +164,11 @@ resource "kubernetes_secret" "kratos_db_creds" {
     username = azurerm_postgresql_server.postgresql_server.administrator_login
     password = azurerm_postgresql_server.postgresql_server.administrator_login_password
     dsn = "postgres://${
-        azurerm_postgresql_server.postgresql_server.administrator_login
+      azurerm_postgresql_server.postgresql_server.administrator_login
       }:${
-        azurerm_postgresql_server.postgresql_server.administrator_login_password
+      azurerm_postgresql_server.postgresql_server.administrator_login_password
       }@${
-        azurerm_postgresql_server.postgresql_server.name
-      }.postgres.database.azure.com:5432/kratos"
+      azurerm_postgresql_server.postgresql_server.name
+    }.postgres.database.azure.com:5432/kratos"
   }
 }
