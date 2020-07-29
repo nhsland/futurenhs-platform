@@ -24,7 +24,7 @@ jobs:
       with:
         # This part is also where you can pass other options, for example:
         prettier_options: --check frontend/* .
-  ci:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Platform repo
