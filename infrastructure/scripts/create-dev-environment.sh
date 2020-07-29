@@ -62,7 +62,7 @@ setup_terraform() {
 resource_group_name="$RESOURCE_GROUP_NAME"
 storage_account_name="$STORAGE_ACCOUNT_NAME"
 USERNAME="$NAME"
-ip_whitelist_postgresql={}
+ip_whitelist_postgresql={"$NAME" = $(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com)}
 EOF
 
 	echo "Your dev terraform environment is ready to go. To initialize run:"

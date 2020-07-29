@@ -90,8 +90,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
 }
 
-
-
 resource "azurerm_log_analytics_workspace" "cluster" {
   name                = "cluster-${var.environment}"
   location            = var.location
@@ -135,14 +133,6 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   ssl_enforcement_enabled      = true
 }
 
-resource "azurerm_postgresql_database" "kratos" {
-  name                = "kratos"
-  resource_group_name = azurerm_resource_group.platform.name
-  server_name         = azurerm_postgresql_server.postgresql_server.name
-  charset             = "UTF8"
-  collation           = "English_United States.1252"
-}
-
 resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
   for_each            = var.ip_whitelist_postgresql
   name                = "ip-whitelisted-${each.key}"
@@ -150,31 +140,4 @@ resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
   server_name         = azurerm_postgresql_server.postgresql_server.name
   start_ip_address    = each.value
   end_ip_address      = each.value
-}
-
-resource "kubernetes_namespace" "kratos" {
-  metadata {
-    name = "kratos"
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-  }
-}
-resource "kubernetes_secret" "kratos_db_creds" {
-  metadata {
-    name      = "kratos-db-creds"
-    namespace = "kratos"
-  }
-  data = {
-    # TODO: make a user that's not the db server admin, and use that here instead
-    username = azurerm_postgresql_server.postgresql_server.administrator_login
-    password = azurerm_postgresql_server.postgresql_server.administrator_login_password
-    dsn = "postgres://${
-      azurerm_postgresql_server.postgresql_server.administrator_login
-      }:${
-      azurerm_postgresql_server.postgresql_server.administrator_login_password
-      }@${
-      azurerm_postgresql_server.postgresql_server.name
-    }.postgres.database.azure.com:5432/kratos"
-  }
 }

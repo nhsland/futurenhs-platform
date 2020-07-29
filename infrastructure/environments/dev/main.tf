@@ -22,3 +22,10 @@ module platform {
   location                = var.location
   ip_whitelist_postgresql = var.ip_whitelist_postgresql
 }
+
+
+module databases {
+  source                    = "../../modules/databases"
+  environment               = "dev-${var.USERNAME}"
+  postgresql_admin_password = module.platform.postgresql_admin_password
+}
