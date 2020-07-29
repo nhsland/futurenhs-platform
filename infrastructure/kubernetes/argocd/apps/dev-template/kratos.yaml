@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress
+spec:
+  source:
+    # There is no difference between dev and prod other than secrets,
+    # and secrets are managed by terraform.
+    # path: ./kratos/base
+    targetRevision: $BRANCH

@@ -7,6 +7,16 @@ resource "random_password" "kratos_postgresql_password" {
   special = false
   upper   = true
 }
+resource "random_password" "kratos_secrets_default" {
+  length  = 32
+  special = false
+  upper   = true
+}
+resource "random_password" "kratos_secrets_cookie" {
+  length  = 32
+  special = false
+  upper   = true
+}
 
 resource "postgresql_role" "kratos" {
   name     = "kratos_user"
@@ -34,10 +44,12 @@ resource "kubernetes_namespace" "kratos" {
 }
 resource "kubernetes_secret" "kratos_db_creds" {
   metadata {
-    name      = "kratos-db-creds"
+    name      = "kratos"
     namespace = "kratos"
   }
   data = {
+    secretsDefault = random_password.kratos_secrets_default.result
+    secretsCookie = random_password.kratos_secrets_cookie.result
     dsn = "postgres://${
       postgresql_role.kratos.name
       }@${
