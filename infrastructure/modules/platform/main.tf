@@ -24,6 +24,19 @@ resource "azurerm_subnet" "cluster_nodes" {
   address_prefixes     = ["10.240.0.0/16"]
 }
 
+resource "azurerm_public_ip" "cluster_outbound" {
+  name = "cluster_outbound"
+
+  resource_group_name = azurerm_resource_group.platform.name
+  location            = var.location
+  allocation_method   = "Static"
+  sku = "Standard"
+
+  tags = {
+    environment = var.environment
+  }
+}
+
 resource "azurerm_kubernetes_cluster" "cluster" {
   name                = var.environment
   location            = var.location
@@ -53,6 +66,11 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
   network_profile {
     network_plugin = "kubenet"
+    load_balancer_profile {
+      outbound_ip_address_ids = [
+        azurerm_public_ip.cluster_outbound.id
+      ]
+    }
   }
 
   addon_profile {
@@ -140,4 +158,12 @@ resource "azurerm_postgresql_firewall_rule" "ip_whitelisted" {
   server_name         = azurerm_postgresql_server.postgresql_server.name
   start_ip_address    = each.value
   end_ip_address      = each.value
+}
+
+resource "azurerm_postgresql_firewall_rule" "cluster_ip" {
+  name                = "cluster_ip"
+  resource_group_name = azurerm_resource_group.platform.name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  start_ip_address    = azurerm_public_ip.cluster_outbound.ip_address
+  end_ip_address      = azurerm_public_ip.cluster_outbound.ip_address
 }
