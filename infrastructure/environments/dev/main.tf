@@ -16,9 +16,41 @@ terraform {
   }
 }
 
+# This module should be applied first, using `terraform apply -target module.platform`
+# so that the kubernetes cluster and postresql firewall rules are set up.
+# These are needed before the `kubernetes` and `postgresql` terraform providers can plan
+# anything.
 module platform {
   source                  = "../../modules/platform"
   environment             = "dev-${var.USERNAME}"
   location                = var.location
   ip_whitelist_postgresql = var.ip_whitelist_postgresql
+}
+
+provider "kubernetes" {
+  load_config_file       = "false"
+  host                   = module.platform.kube_config.0.host
+  username               = module.platform.kube_config.0.username
+  password               = module.platform.kube_config.0.password
+  client_certificate     = base64decode(module.platform.kube_config.0.client_certificate)
+  client_key             = base64decode(module.platform.kube_config.0.client_key)
+  cluster_ca_certificate = base64decode(module.platform.kube_config.0.cluster_ca_certificate)
+}
+
+provider "postgresql" {
+  host              = "${module.platform.postgresql_server_name}.postgres.database.azure.com"
+  port              = 5432
+  database          = "postgres"
+  database_username = module.platform.postgresql_admin
+  username          = "${module.platform.postgresql_admin}@${module.platform.postgresql_server_name}"
+  password          = module.platform.postgresql_admin_password
+  sslmode           = "require"
+  connect_timeout   = 15
+  superuser         = false
+}
+
+module databases {
+  source                 = "../../modules/databases"
+  environment            = "dev-${var.USERNAME}"
+  postgresql_server_name = module.platform.postgresql_server_name
 }
