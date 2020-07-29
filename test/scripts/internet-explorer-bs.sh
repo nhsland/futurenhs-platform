@@ -13,7 +13,6 @@ elif [[ "$ENV" == dev ]]
 then
     NAME="${2:?"If you wish to use a dev cluster, please enter your name as the second argument."}"
     IE_BASE_URL="https://fnhs-dev-$NAME.westeurope.cloudapp.azure.com/"
-    echo $2
 elif [[ "$ENV" == prod ]]
 then
     IE_BASE_URL="https://fnhs.westeurope.cloudapp.azure.com/"
