@@ -11,7 +11,8 @@ terraform init -backend-config=terraform.tfvars
 
 # The terraform provider cannot initialise itself once the `platform` module has been destroyed
 # because it can't connect to the database. Therefore `terraform destroy` with no targetting
-# will always fail. Once you have run 
+# will always fail. Once you have run these two, terraform state pull should show an empty list of
+# resources.
 terraform destroy -target module.databases
 terraform destroy -target module.platform
 

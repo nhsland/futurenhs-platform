@@ -16,8 +16,8 @@ resource "postgresql_role" "kratos_user" {
 
 # we are using the postgresql provider here because azurerm_postgresql_database
 # doesn't let us set the owner to a role other than the server admin.
-resource "postgresql_database" "kratos_db" {
-  name              = "kratos_db"
+resource "postgresql_database" "kratos" {
+  name              = "kratos"
   owner             = postgresql_role.kratos_user.name
   lc_collate        = "C"
   connection_limit  = -1
@@ -38,9 +38,6 @@ resource "kubernetes_secret" "kratos_db_creds" {
     namespace = "kratos"
   }
   data = {
-    # TODO: make a user that's not the db server admin, and use that here instead
-    # username = data.azurerm_postgresql_server.postgresql_server.administrator_login
-    # password = var.postgresql_admin_password
     dsn = "postgres://${
       postgresql_role.kratos_user.name
       }@${

@@ -231,11 +231,13 @@ Production is a long-lived environment. To make changes, follow these steps.
 
 The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure CLI authentication and production is not your default subscription (which is recommended).
 
-1. Change directory into the dev environment folder:
+1. Change directory into the production environment folder:
 
    ```bash
    cd infrastructure/environments/production
    ```
+
+1. Create a `terraform.tfvars` file that contains at least `ip_whitelist_postgresql = { yourname = "your.public.ip.adddress" }` (this is needed by the postgresql terraform provider).
 
 1. Run Terraform Init using the vars file you just created:
 
@@ -243,7 +245,19 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform init
    ```
 
-1. Create an execution plan:
+1. Create an execution plan to setup the initial database and kubernetes cluster:
+
+   ```bash
+   ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform plan -target module.platform
+   ```
+
+1. After verifying the plan above, apply changes. The infrastructure will be created in Azure.
+
+   ```bash
+   ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply -target module.platform
+   ```
+
+1. Create an execution plan for the rest of the infrastructure:
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform plan
@@ -253,6 +267,10 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
+   ```
+1. Set `ip_whitelist_postgresql = {}` in `terraform.tfvars` and re-run terraform apply, to remove yourself from the postgresql ip whitelist.
+   ```bash
+   ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply -target module.platform
    ```
 
 1. Install Linkerd, Argo CD, and Sealed Secrets in the same way as it works for development environments.
