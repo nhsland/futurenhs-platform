@@ -28,7 +28,7 @@ data:
 
     courier:
       smtp:
-        connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+        connection_uri: smtps://test:test@mailslurper.kratos:1025/?skip_ssl_verify=true
     hashers:
       argon2:
         iterations: 2
