@@ -19,9 +19,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.25
-      - name: Check Terraform format
-        working-directory: futurenhs-platform/infrastructure
-        run: terraform fmt -recursive -check
       - name: Validate Terraform of dev environment
         working-directory: futurenhs-platform/infrastructure/environments/dev
         run: |
@@ -81,7 +78,7 @@ jobs:
             n+=1
             git pull --rebase origin pr-$GITHUB_HEAD_REF
           done
-          
+
           if [ $n -ge 5 ]
           then
             echo "ran out of retries"

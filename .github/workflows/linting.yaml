@@ -3,7 +3,7 @@ name: Linting
 on: [push]
 
 jobs:
-  bash:
+  shfmt:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Platform repo
@@ -17,7 +17,7 @@ jobs:
         run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
       - name: Run shfmt
         run: shfmt -d .
-  rust:
+  rustfmt:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Platform repo
@@ -25,7 +25,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - name: rustfmt
+      - name: Run rustfmt
         run: |
           cd hello-world
           cargo fmt -- --check
@@ -53,3 +53,17 @@ jobs:
       - name: Run Prettier
         working-directory: futurenhs-platform/frontend
         run: yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
+  terraform-fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Platform repo
+        uses: actions/checkout@v2
+        with:
+          path: futurenhs-platform
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.25
+      - name: Run Terraform fmt
+        run: |
+          cd futurenhs-platform/infrastructure
+          terraform fmt -recursive -check
