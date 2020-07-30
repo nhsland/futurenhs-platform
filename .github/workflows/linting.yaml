@@ -14,3 +14,7 @@ jobs:
         run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
       - name: Run shfmt
         run: shfmt -d .
+      - name: List files
+        run: ls -la
+      - name: Get path
+        run: pwd
