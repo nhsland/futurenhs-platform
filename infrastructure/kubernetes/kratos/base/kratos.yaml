@@ -37,9 +37,7 @@ data:
         parallelism: 1
         salt_length: 16
     identity:
-      # FIXME: I think this is mounted in by docker-compose quickstart.yml.
-      # How do we do this in kubernetes?
-      default_schema_url: file:///etc/config/kratos/identity.traits.schema.json
+      default_schema_url: file:///etc/config/identity.traits.schema.json
     log:
       level: debug
     selfservice:
