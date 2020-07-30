@@ -12,8 +12,26 @@ jobs:
           path: futurenhs-platform
       - uses: actions/setup-go@v2
         with:
-          go-version: '^1.14.6'
+          go-version: "^1.14.6"
       - name: Installing shfmt
         run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
       - name: Run shfmt
         run: shfmt -d .
+  rust:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./hello-world
+    steps:
+      - name: Clone Platform repo
+        uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features
+      - name: Run rustfmt
+        working-directory: futurenhs-platform/hello-world
+        run: cargo fmt
