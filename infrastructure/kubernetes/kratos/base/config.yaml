@@ -1,25 +1,15 @@
 serve:
   public:
-    base_url: /.ory/kratos/public/
+    base_url: http://127.0.0.1:4455/.ory/kratos/public/
     port: 4433
   admin:
-    base_url: http://kratos-public.kratos/
+    base_url: http://kratos:4434/
     port: 4434
 
 selfservice:
-  default_browser_return_url: /
+  default_browser_return_url: http://127.0.0.1:4455/
   whitelisted_return_urls:
-    - /
     - http://127.0.0.1:4455
-    - http://127.0.0.1:3000
-    - https://127.0.0.1:3000
-    - https://fnhs.westeurope.cloudapp.azure.com/
-    - https://fnhs-dev-david.westeurope.cloudapp.azure.com/
-    - https://fnhs-dev-jan.westeurope.cloudapp.azure.com/
-    - https://fnhs-dev-matt.westeurope.cloudapp.azure.com/
-    - https://fnhs-dev-potts.westeurope.cloudapp.azure.com/
-    - https://fnhs-dev-tracy.westeurope.cloudapp.azure.com/
-    - https://fnhs-dev-declan.westeurope.cloudapp.azure.com/
 
   strategies:
     password:
@@ -27,33 +17,33 @@ selfservice:
 
   flows:
     error:
-      ui_url: /error
+      ui_url: http://127.0.0.1:4455/error
 
     settings:
-      ui_url: /settings
+      ui_url: http://127.0.0.1:4455/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: /recovery
+      ui_url: http://127.0.0.1:4455/recovery
 
     verification:
       enabled: true
-      ui_url: /verify
+      ui_url: http://127.0.0.1:4455/verify
       after:
-        default_browser_return_url: /
+        default_browser_return_url: http://127.0.0.1:4455/
 
     logout:
       after:
-        default_browser_return_url: /auth/login
+        default_browser_return_url: http://127.0.0.1:4455/auth/login
 
     login:
-      ui_url: /auth/login
+      ui_url: http://127.0.0.1:4455/auth/login
       request_lifespan: 10m
 
     registration:
       request_lifespan: 10m
-      ui_url: /auth/registration
+      ui_url: http://127.0.0.1:4455/auth/registration
       after:
         password:
           hooks:
