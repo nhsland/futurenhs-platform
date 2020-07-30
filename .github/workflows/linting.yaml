@@ -29,3 +29,27 @@ jobs:
         run: |
           cd hello-world
           cargo fmt -- --check
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: futurenhs-platform
+      - name: Install modules
+        working-directory: futurenhs-platform/frontend
+        run: yarn
+      - name: Run ESLint
+        working-directory: futurenhs-platform/frontend
+        run: yarn eslint . --ext .js,.ts,.tsx
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: futurenhs-platform
+      - name: Install modules
+        working-directory: futurenhs-platform/frontend
+        run: yarn
+      - name: Run Prettier
+        working-directory: futurenhs-platform/frontend
+        run: yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
