@@ -9,6 +9,10 @@ jobs:
   bash:
     runs-on: ubuntu-latest
     steps:
+      - name: Clone Platform repo
+        uses: actions/checkout@v2
+        with:
+          path: futurenhs-platform
       - uses: actions/setup-go@v2
         with:
           go-version: '^1.14.6'
