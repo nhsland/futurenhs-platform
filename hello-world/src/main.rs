@@ -5,8 +5,6 @@ use tracing_subscriber::Registry;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-
-    
     let instrumentation_key =
         env::var("INSTRUMENTATION_KEY").expect("env var INSTRUMENTATION_KEY should exist");
     let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
