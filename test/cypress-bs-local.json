@@ -1,0 +1,4 @@
+{
+  "baseUrl": "http://bs-local.com:3000",
+  "integrationFolder": "./cypress/integration/"
+}

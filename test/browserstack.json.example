@@ -21,8 +21,7 @@
     "npm_dependencies": {}
   },
   "connection_settings": {
-    "local": true,
-    "local_identifier": "bslocal1"
+    "local": true
   },
   "disable_usage_reporting": false
 }
