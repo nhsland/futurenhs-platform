@@ -27,7 +27,5 @@ jobs:
           toolchain: stable
       - name: rustfmt
         run: |
-          pwd
-          ls
           cd hello-world
-          cargo fmt --check
+          cargo fmt -- --check
