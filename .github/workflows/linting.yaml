@@ -1,9 +1,6 @@
 name: Linting
 
-on:
-  push:
-    paths:
-      - '**'
+on: [push]
 
 jobs:
   bash:
@@ -20,7 +17,3 @@ jobs:
         run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
       - name: Run shfmt
         run: shfmt -d .
-      - name: List files
-        run: ls -a
-      - name: Get path
-        run: pwd
