@@ -8,6 +8,8 @@ spec:
     app: mailslurper
   ports:
     - port: 80
-      targetPort: 4436
+      targetPort: http
+      name: http
     - port: 4437
-      targetPort: 4437
+      targetPort: smtp
+      name: smtp

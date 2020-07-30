@@ -16,8 +16,10 @@ spec:
         - name: mailslurper
           image: oryd/mailslurper:latest-smtps
           ports:
-            - containerPort: 4436
-            - containerPort: 4437
+            - name: http
+              containerPort: 4436
+            - name: smtp
+              containerPort: 4437
           resources:
             limits:
               cpu: 100m
