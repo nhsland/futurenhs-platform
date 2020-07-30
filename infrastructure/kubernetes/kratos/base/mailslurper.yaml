@@ -20,6 +20,8 @@ spec:
               containerPort: 4436
             - name: smtp
               containerPort: 4437
+            - name: somethingelse
+              containerPort: 1025
           resources:
             limits:
               cpu: 100m
