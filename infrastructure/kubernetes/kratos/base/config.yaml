@@ -52,7 +52,7 @@ selfservice:
 
     registration:
       request_lifespan: 10m
-      ui_url: https://fnhs-dev-david.westeurope.cloudapp.azure.com/auth/registration
+      ui_url: https://127.0.0.1:4455/auth/registration
       after:
         password:
           hooks:
