@@ -3,7 +3,7 @@ name: Linting
 on:
   push:
     paths:
-      - *
+      - '**'
 
 jobs:
   bash:
