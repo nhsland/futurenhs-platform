@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   # There is no namespace.yaml because this is managed by terraform.
   - kratos.yaml
+  - mailslurper.yaml
