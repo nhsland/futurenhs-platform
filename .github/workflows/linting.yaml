@@ -19,33 +19,15 @@ jobs:
         run: shfmt -d .
   rust:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./hello-world
     steps:
       - name: Clone Platform repo
         uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --all-features
-      - name: Run rustfmt
-        working-directory: futurenhs-platform/hello-world
-        run: cargo fmt
-  rust2:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Platform repo
-        uses: actions/checkout@v2
-#      - uses: hecrj/setup-rust-action@v1
-#        with:
-#          rust-version: ${{ matrix.rust }}
-      - uses: actions/checkout@master
-      - name: Run tests
+      - name: rustfmt
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          pwd
+          ls
           cd hello-world
-          cargo fmt
+          cargo fmt --check
