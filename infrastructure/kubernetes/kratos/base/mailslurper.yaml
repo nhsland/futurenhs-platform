@@ -18,6 +18,8 @@ spec:
           ports:
             - name: http
               containerPort: 4436
+            # FIXME: I'm not really sure what these two ports are for.
+            # Kratos seems to be trying to send smtp over 1025?
             - name: smtp
               containerPort: 4437
             - name: somethingelse
