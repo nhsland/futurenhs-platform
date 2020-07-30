@@ -13,4 +13,4 @@ jobs:
       - name: Installing shfmt
         run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
       - name: Run shfmt
-        run: shfmt -d ./scripts
+        run: shfmt -d .
