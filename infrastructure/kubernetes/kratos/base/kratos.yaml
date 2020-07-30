@@ -2,13 +2,14 @@
 # and then deleting the secrets section from the top (secrets are managed by terraform)
 # values.yaml contains:
 #
+# fullnameOverride: "kratos"
 # kratos:
 #     config:
 #       # DSN is actually unused, because we set it in the terraform secret.
 #       # This is just the example given.
 #       dsn: postgres://foo:bar@pg-sqlproxy-gcloud-sqlproxy:5432/db
-# fullnameOverride: "kratos"
-#
+#       # FIXME: a whole bunch of other crap from ./contrib/quickstart/kratos/email-password/
+#       # indented funkily and maybe hand-edited.
 ---
 # Source: kratos/templates/configmap-config.yaml
 apiVersion: v1
@@ -82,6 +83,43 @@ data:
       public:
         base_url: http://127.0.0.1:4455/.ory/kratos/public/
         port: 4433
+  "identity.traits.schema.json": |
+    {
+      "$id": "https://schemas.ory.sh/presets/kratos/quickstart/email-password/identity.schema.json",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Person",
+      "type": "object",
+      "properties": {
+        "traits": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email",
+              "title": "E-Mail",
+              "minLength": 3,
+              "ory.sh/kratos": {
+                "credentials": {
+                  "password": {
+                    "identifier": true
+                  }
+                },
+                "verification": {
+                  "via": "email"
+                },
+                "recovery": {
+                  "via": "email"
+                }
+              }
+            }
+          },
+          "required": [
+            "email"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
 ---
 # Source: kratos/templates/service-admin.yaml
 apiVersion: v1
