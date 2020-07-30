@@ -1,4 +1,3 @@
-
 courier:
     smtp:
       connection_uri: smtps://test:test@mailslurper.kratos:1025/?skip_ssl_verify=true
