@@ -8,13 +8,12 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 CONFIG_FILE="${1:?"Please enter a cypress-*.json OR your name"}"
 
-if [[ "$CONFIG_FILE" == *.json ]]
-then
-    cp $CONFIG_FILE $REPO_ROOT/test/cypress.json
+if [[ "$CONFIG_FILE" == *.json ]]; then
+	cp $CONFIG_FILE $REPO_ROOT/test/cypress.json
 else
-    echo "making dev config file"
-    NAME=$CONFIG_FILE
-    $REPO_ROOT/test/scripts/make-dev-config.sh $NAME
+	echo "making dev config file"
+	NAME=$CONFIG_FILE
+	$REPO_ROOT/test/scripts/make-dev-config.sh $NAME
 fi
 
 cd $REPO_ROOT/test && yarn browserstack-cypress run
