@@ -5,37 +5,12 @@ on: [push]
 jobs:
   bash:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Run the sh-checker
-        uses: luizm/action-sh-checker@v0.1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHELLCHECK_OPTS: -e SC1004
-        with:
-          sh_checker_comment: true
-          sh_checker_exclude: ".terraform ^dir/example.sh"
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          path: futurenhs-platform
-      - name: Install modules
-        working-directory: futurenhs-platform/frontend
-        run: yarn
-      - name: Run ESLint
-        working-directory: futurenhs-platform/frontend
-        run: yarn eslint . --ext .js,.ts,.tsx
-  prettier:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v2.2
+    steps:
+      - uses: actions/setup-go@v2
         with:
-          prettier_options: --check frontend/*.{js,ts,tsx,md,yaml,graphql}
+          go-version: '^1.14.6'
+      - name: Installing shfmt
+        run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
+      - name: Run shfmt
+        run: shfmt -d ./scripts
