@@ -18,34 +18,34 @@
 
 ## Testing information
 
-- Is there any special setup required? 
+- Is there any special setup required?
 
 - Test plan?
 
 ## Test:
 
-- [ ] Tested locally 
+- [ ] Tested locally
 
-- Platforms/Browsers: 
+- Platforms/Browsers:
 
-  - [ ] Google Chrome (latest version) 
-  
+  - [ ] Google Chrome (latest version)
+
   - [ ] Internet Explorer 11
-  
+
   - [ ] Edge
-  
+
 - Accessibility:
 
   - [ ] Screen Reader
-  
+
   - [ ] Keyboard Navigation
-  
+
   - [ ] Magnification
-  
+
   - [ ] Contrast
-  
+
   - [ ] Text size 200%
-  
+
   - [ ] Touch target areas (Mobile)
-  
+
   - [ ] Landscape (Mobile)

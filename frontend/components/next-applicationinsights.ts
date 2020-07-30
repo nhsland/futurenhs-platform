@@ -1,8 +1,12 @@
 // This file is taken from https://github.com/goenning/next-applicationinsights and edited to remove the 'getInitialProps' method in order to allow for static generation.
-import * as React from 'react';
-import { AppProps, default as NextApp, AppContext } from 'next/app';
+import * as React from "react";
+import { AppProps, default as NextApp } from "next/app";
 
-import { ApplicationInsights, IConfiguration, IConfig } from '@microsoft/applicationinsights-web';
+import {
+  ApplicationInsights,
+  IConfiguration,
+  IConfig,
+} from "@microsoft/applicationinsights-web";
 
 const IS_BROWSER = typeof window !== "undefined";
 
@@ -22,9 +26,13 @@ export interface ICustomConfig {
   isEnabled: boolean;
 }
 
-export const withApplicationInsights = (config: IConfiguration & IConfig & ICustomConfig) => {
+export const withApplicationInsights = (
+  config: IConfiguration & IConfig & ICustomConfig
+) => {
   return (App: typeof NextApp) => {
-    return class WithApplicationInsights extends React.Component<WithApplicationInsightsProps & AppProps> {
+    return class WithApplicationInsights extends React.Component<
+      WithApplicationInsightsProps & AppProps
+    > {
       public componentDidMount() {
         this.initializeAppInsights();
         this.trackPageView();
@@ -46,13 +54,18 @@ export const withApplicationInsights = (config: IConfiguration & IConfig & ICust
 
       public trackPageView() {
         if (appInsights) {
-          const name = this.props.Component.displayName || this.props.Component.name || location.pathname;
-          const properties: { [route: string]: string | undefined | string[] } = {
+          const name =
+            this.props.Component.displayName ||
+            this.props.Component.name ||
+            location.pathname;
+          const properties: {
+            [route: string]: string | undefined | string[];
+          } = {
             route: this.props.router.route,
-          }
+          };
           if (this.props.router.query) {
             for (const key in this.props.router.query) {
-              properties[(`query.${key}`)] = this.props.router.query[key];
+              properties[`query.${key}`] = this.props.router.query[key];
             }
           }
           appInsights.trackPageView({ name, properties });
@@ -64,6 +77,6 @@ export const withApplicationInsights = (config: IConfiguration & IConfig & ICust
         //@ts-ignore
         return React.createElement(App, this.props);
       }
-    }
+    };
   };
 };
