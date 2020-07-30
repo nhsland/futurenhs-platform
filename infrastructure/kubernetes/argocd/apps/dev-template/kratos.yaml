@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress
+  name: kratos
 spec:
   source:
     # There is no difference between dev and prod other than secrets,
