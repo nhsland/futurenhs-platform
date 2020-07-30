@@ -49,7 +49,7 @@ You can also modify which browsers you would like to run the tests in by modifyi
 To run tests, execute the desired command from the `/test/` directory:
 
 - a local server: `yarn cypress-bs:local`.
-- a dev cluster: `yarn cypress-bs:dev <dev cluster name>` i.e. `yarn cypress:dev foo`.
+- a dev cluster: `yarn cypress-bs:dev <dev cluster name>` i.e. `yarn cypress-bs:dev foo`.
 - prod: `yarn cypress-bs:prod`.
 
 #### Internet Explorer
@@ -57,5 +57,5 @@ To run tests, execute the desired command from the `/test/` directory:
 To run tests, execute the desired command from the `/test/` directory:
 
 - a local server: `yarn internet-explorer-bs:local`.
-- a dev cluster: `yarn internet-explorer-bs:dev <dev cluster name>` i.e. `yarn internet-explorer:dev foo`.
+- a dev cluster: `yarn internet-explorer-bs:dev <dev cluster name>` i.e. `yarn internet-explorer-bs:dev foo`.
 - prod: `yarn internet-explorer-bs:prod`.
