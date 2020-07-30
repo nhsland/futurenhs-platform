@@ -5,3 +5,9 @@ resources:
   - kratos.yaml
   - mailslurper.yaml
   - mailslurper-service.yaml
+configMapGenerator:
+- name: kratos-config
+  files:
+  - config.yaml
+  - identity.traits.schema.json
+  
