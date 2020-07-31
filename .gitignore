@@ -4,3 +4,4 @@ target/
 dev-*/
 !dev-template/
 terraform.tfvars
+node_modules

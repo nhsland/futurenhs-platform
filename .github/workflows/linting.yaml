@@ -8,15 +8,15 @@ jobs:
     steps:
       - name: Clone Platform repo
         uses: actions/checkout@v2
-        with:
-          path: futurenhs-platform
       - uses: actions/setup-go@v2
         with:
           go-version: "^1.14.6"
-      - name: Installing shfmt
-        run: GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
       - name: Run shfmt
-        run: shfmt -d .
+        run: |
+          cd $HOME
+          curl -L https://github.com/mvdan/sh/releases/download/v3.1.2/shfmt_v3.1.2_linux_amd64 -o shfmt
+          chmod +x shfmt
+          shfmt -d .
   rustfmt:
     runs-on: ubuntu-latest
     steps:
@@ -48,10 +48,8 @@ jobs:
         with:
           path: futurenhs-platform
       - name: Install modules
-        working-directory: futurenhs-platform/frontend
         run: yarn
       - name: Run Prettier
-        working-directory: futurenhs-platform/frontend
         run: yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
   terraform-fmt:
     runs-on: ubuntu-latest

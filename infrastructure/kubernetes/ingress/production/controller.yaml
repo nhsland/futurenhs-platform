@@ -1,6 +1,6 @@
 # THIS FILE IS AUTO-GENERATED
 #
-# This is the NGINX Ingress controller: https://kubernetes.github.io/ingress-nginx 
+# This is the NGINX Ingress controller: https://kubernetes.github.io/ingress-nginx
 #
 # There was a problem applying the default configuration using Argo CD. The certificate generation job for the admission webhook failed. Argo CD created the job before it created the role and rolebinding for the service account. This meant the job didn't have permissions to read/create Kubernetes secrets. As a workaround we've disabled the admission webhook feature for now.
 #
@@ -301,11 +301,11 @@ spec:
         - name: controller
           image: "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.33.0"
           imagePullPolicy: IfNotPresent
-          lifecycle: 
+          lifecycle:
             preStop:
               exec:
                 command:
-                - /wait-shutdown
+                  - /wait-shutdown
           args:
             - /nginx-ingress-controller
             - --publish-service=ingress/ingress-nginx-controller
@@ -314,9 +314,9 @@ spec:
             - --configmap=ingress/ingress-nginx-controller
           securityContext:
             capabilities:
-                drop:
+              drop:
                 - ALL
-                add:
+              add:
                 - NET_BIND_SERVICE
             runAsUser: 101
             allowPrivilegeEscalation: true
@@ -356,7 +356,7 @@ spec:
             - name: https
               containerPort: 443
               protocol: TCP
-          resources: 
+          resources:
             requests:
               cpu: 100m
               memory: 90Mi
