@@ -1,10 +1,8 @@
 kind: ConfigMap # Documentation can be found here - https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-agent-config#configmap-file-settings-overview
 apiVersion: v1
 data:
-  schema-version:
-    v1
-  config-version:
-    ver1
+  schema-version: v1
+  config-version: ver1
   log-data-collection-settings: |-
     [log_collection_settings]
        [log_collection_settings.stdout]

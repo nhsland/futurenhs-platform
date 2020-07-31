@@ -48,31 +48,31 @@ jobs:
 
       - name: Update image tag and deploy
         run: |
-            set -eux
+          set -eux
 
-            cd $HOME
-            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-            cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world/production
+          cd $HOME
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+          cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world/production
 
-            $HOME/kustomize edit set image $DIGEST
+          $HOME/kustomize edit set image $DIGEST
 
-            git config --local user.email "futurenhs-devs@red-badger.com"
-            git config --local user.name "FutureNHS CI/CD"
+          git config --local user.email "futurenhs-devs@red-badger.com"
+          git config --local user.name "FutureNHS CI/CD"
 
-            git add -A
-            git diff-index --quiet HEAD || git commit -am "CI: Update production image for ${TAG}"
+          git add -A
+          git diff-index --quiet HEAD || git commit -am "CI: Update production image for ${TAG}"
 
-            declare -i n
-            n=0
-            until [ $n -ge 5 ]
-            do
-              git push && break
-              n+=1
-              git pull --rebase
-            done
+          declare -i n
+          n=0
+          until [ $n -ge 5 ]
+          do
+            git push && break
+            n+=1
+            git pull --rebase
+          done
 
-            if [ $n -ge 5 ]
-            then
-              echo "ran out of retries"
-              exit 1
-            fi
+          if [ $n -ge 5 ]
+          then
+            echo "ran out of retries"
+            exit 1
+          fi

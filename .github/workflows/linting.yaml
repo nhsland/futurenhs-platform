@@ -1,0 +1,61 @@
+name: Linting
+
+on: [pull_request]
+
+jobs:
+  shfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Platform repo
+        uses: actions/checkout@v2
+      - name: Install shfmt
+        run: |
+          cd $HOME
+          curl -L https://github.com/mvdan/sh/releases/download/v3.1.2/shfmt_v3.1.2_linux_amd64 -o shfmt
+          chmod +x shfmt
+      - name: Validate bash scripts
+        run: |
+          cd $HOME
+          ./shfmt -d $GITHUB_WORKSPACE
+  rustfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Platform repo
+        uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Run rustfmt
+        run: |
+          cd hello-world
+          cargo fmt -- --check
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        working-directory: frontend
+        run: yarn
+      - name: Run ESLint
+        working-directory: frontend
+        run: yarn eslint . --ext .js,.ts,.tsx
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run Prettier
+        run: yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
+  terraform-fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Platform repo
+        uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.25
+      - name: Run Terraform fmt
+        run: |
+          cd infrastructure
+          terraform fmt -recursive -check

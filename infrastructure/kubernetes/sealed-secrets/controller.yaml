@@ -10,8 +10,8 @@ metadata:
   namespace: kube-system
 spec:
   ports:
-  - port: 8080
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
   selector:
     name: sealed-secrets-controller
   type: ClusterIP
@@ -29,9 +29,9 @@ roleRef:
   kind: Role
   name: sealed-secrets-service-proxier
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: system:authenticated
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:authenticated
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
@@ -46,9 +46,9 @@ roleRef:
   kind: Role
   name: sealed-secrets-key-admin
 subjects:
-- kind: ServiceAccount
-  name: sealed-secrets-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: sealed-secrets-controller
+    namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -58,36 +58,36 @@ metadata:
     name: secrets-unsealer
   name: secrets-unsealer
 rules:
-- apiGroups:
-  - bitnami.com
-  resources:
-  - sealedsecrets
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - bitnami.com
-  resources:
-  - sealedsecrets/status
-  verbs:
-  - update
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-  - create
-  - update
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
-  - patch
+  - apiGroups:
+      - bitnami.com
+    resources:
+      - sealedsecrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - bitnami.com
+    resources:
+      - sealedsecrets/status
+    verbs:
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - create
+      - update
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -123,16 +123,16 @@ metadata:
   name: sealed-secrets-service-proxier
   namespace: kube-system
 rules:
-- apiGroups:
-  - ""
-  resourceNames:
-  - 'http:sealed-secrets-controller:'
-  - sealed-secrets-controller
-  resources:
-  - services/proxy
-  verbs:
-  - create
-  - get
+  - apiGroups:
+      - ""
+    resourceNames:
+      - "http:sealed-secrets-controller:"
+      - sealed-secrets-controller
+    resources:
+      - services/proxy
+    verbs:
+      - create
+      - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
@@ -143,13 +143,13 @@ metadata:
   name: sealed-secrets-key-admin
   namespace: kube-system
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - create
-  - list
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
@@ -163,9 +163,9 @@ roleRef:
   kind: ClusterRole
   name: secrets-unsealer
 subjects:
-- kind: ServiceAccount
-  name: sealed-secrets-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: sealed-secrets-controller
+    namespace: kube-system
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -194,33 +194,33 @@ spec:
         name: sealed-secrets-controller
     spec:
       containers:
-      - args: []
-        command:
-        - controller
-        env: []
-        image: quay.io/bitnami/sealed-secrets-controller:v0.12.4
-        imagePullPolicy: Always
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-        name: sealed-secrets-controller
-        ports:
-        - containerPort: 8080
-          name: http
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-        securityContext:
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1001
-        stdin: false
-        tty: false
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp
+        - args: []
+          command:
+            - controller
+          env: []
+          image: quay.io/bitnami/sealed-secrets-controller:v0.12.4
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          name: sealed-secrets-controller
+          ports:
+            - containerPort: 8080
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1001
+          stdin: false
+          tty: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
       imagePullSecrets: []
       initContainers: []
       securityContext:
@@ -228,5 +228,5 @@ spec:
       serviceAccountName: sealed-secrets-controller
       terminationGracePeriodSeconds: 30
       volumes:
-      - emptyDir: {}
-        name: tmp
+        - emptyDir: {}
+          name: tmp

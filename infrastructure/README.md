@@ -268,7 +268,9 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
    ```
+
 1. Set `ip_whitelist_postgresql = {}` in `terraform.tfvars` and re-run terraform apply, to remove yourself from the postgresql ip whitelist.
+
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply -target module.platform
    ```

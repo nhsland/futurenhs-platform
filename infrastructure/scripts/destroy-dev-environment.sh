@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 set -eu
@@ -6,7 +5,7 @@ set -eu
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd $REPO_ROOT/infrastructure/environments/dev
- 
+
 terraform init -backend-config=terraform.tfvars
 
 # The terraform provider cannot initialise itself once the `platform` module has been destroyed
