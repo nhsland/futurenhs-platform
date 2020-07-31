@@ -5,5 +5,5 @@ yarn.lock
 package.json
 package-lock.json
 
-## Helm generated 5000 line formatting mess.
+# Helm generated 5000 line formatting mess.
 infrastructure/kubernetes/cert-manager/production/cert-manager.yaml
