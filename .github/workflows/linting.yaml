@@ -52,21 +52,16 @@ jobs:
         run: yarn
       - name: Run Prettier
         working-directory: futurenhs-platform
-        run: |
-          pwd
-          ls
-          yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
+        run: yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
   terraform-fmt:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Platform repo
         uses: actions/checkout@v2
-        with:
-          path: futurenhs-platform
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.25
       - name: Run Terraform fmt
         run: |
-          cd futurenhs-platform/infrastructure
+          cd infrastructure
           terraform fmt -recursive -check
