@@ -321,14 +321,16 @@ spec:
           type: object
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 
+                "APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 
+                "Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
               type: string
             metadata:
               type: object
@@ -342,10 +344,11 @@ spec:
                 - secretName
               properties:
                 commonName:
-                  description: 'CommonName is a common name to be used on the Certificate.
-                  The CommonName should have a length of 64 characters or fewer to
-                  avoid generating invalid CSRs. This value is ignored by TLS clients
-                  when any subject alt name is set. This is x509 behaviour: https://tools.ietf.org/html/rfc6125#section-6.4.4'
+                  description: 
+                    "CommonName is a common name to be used on the Certificate.
+                    The CommonName should have a length of 64 characters or fewer to
+                    avoid generating invalid CSRs. This value is ignored by TLS clients
+                    when any subject alt name is set. This is x509 behaviour: https://tools.ietf.org/html/rfc6125#section-6.4.4"
                   type: string
                 dnsNames:
                   description: DNSNames is a list of subject alt names to be used on
@@ -451,8 +454,9 @@ spec:
                                 be a valid secret key.
                               type: string
                             name:
-                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                              TODO: Add other useful fields. apiVersion, kind, uid?'
+                              description: 
+                                "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?"
                               type: string
                     pkcs12:
                       description: PKCS12 configures options for storing a PKCS12 keystore
@@ -561,15 +565,16 @@ spec:
                     if empty
                   type: array
                   items:
-                    description: 'KeyUsage specifies valid usage contexts for keys.
-                    See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-                    Valid KeyUsage values are as follows: "signing", "digital signature",
-                    "content commitment", "key encipherment", "key agreement", "data
-                    encipherment", "cert sign", "crl sign", "encipher only", "decipher
-                    only", "any", "server auth", "client auth", "code signing", "email
-                    protection", "s/mime", "ipsec end system", "ipsec tunnel", "ipsec
-                    user", "timestamping", "ocsp signing", "microsoft sgc", "netscape
-                    sgc"'
+                    description: 
+                      "KeyUsage specifies valid usage contexts for keys.
+                      See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
+                      Valid KeyUsage values are as follows: 'signing', 'digital signature',
+                      'content commitment', 'key encipherment', 'key agreement', 'data
+                    encipherment', 'cert sign', 'crl sign', 'encipher only', 'decipher
+                    only', 'any', 'server auth', 'client auth', 'code signing', 'email
+                    protection', 's/mime', 'ipsec end system', 'ipsec tunnel', 'ipsec
+                    user', 'timestamping', 'ocsp signing', 'microsoft sgc', 'netscape
+                    sgc'"
                     type: string
                     enum:
                       - signing
@@ -669,14 +674,16 @@ spec:
           type: object
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 
+                "APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 
+                "Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
               type: string
             metadata:
               type: object
@@ -690,10 +697,11 @@ spec:
                 - secretName
               properties:
                 commonName:
-                  description: 'CommonName is a common name to be used on the Certificate.
-                  The CommonName should have a length of 64 characters or fewer to
-                  avoid generating invalid CSRs. This value is ignored by TLS clients
-                  when any subject alt name is set. This is x509 behaviour: https://tools.ietf.org/html/rfc6125#section-6.4.4'
+                  description: 
+                    "CommonName is a common name to be used on the Certificate.
+                    The CommonName should have a length of 64 characters or fewer to
+                    avoid generating invalid CSRs. This value is ignored by TLS clients
+                    when any subject alt name is set. This is x509 behaviour: https://tools.ietf.org/html/rfc6125#section-6.4.4"
                   type: string
                 dnsNames:
                   description: DNSNames is a list of subject alt names to be used on
@@ -830,8 +838,9 @@ spec:
                                 be a valid secret key.
                               type: string
                             name:
-                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                              TODO: Add other useful fields. apiVersion, kind, uid?'
+                              description: 
+                                "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?"
                               type: string
                 privateKey:
                   description: Options to control private keys used for the Certificate.
@@ -909,15 +918,15 @@ spec:
                     if empty
                   type: array
                   items:
-                    description: 'KeyUsage specifies valid usage contexts for keys.
+                    description: "KeyUsage specifies valid usage contexts for keys.
                     See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-                    Valid KeyUsage values are as follows: "signing", "digital signature",
-                    "content commitment", "key encipherment", "key agreement", "data
-                    encipherment", "cert sign", "crl sign", "encipher only", "decipher
-                    only", "any", "server auth", "client auth", "code signing", "email
-                    protection", "s/mime", "ipsec end system", "ipsec tunnel", "ipsec
-                    user", "timestamping", "ocsp signing", "microsoft sgc", "netscape
-                    sgc"'
+                    Valid KeyUsage values are as follows: 'signing', 'digital signature',
+                    'content commitment', 'key encipherment', 'key agreement', 'data
+                    encipherment', 'cert sign', 'crl sign', 'encipher only', 'decipher
+                    only', 'any', 'server auth', 'client auth', 'code signing', 'email
+                    protection', 's/mime', 'ipsec end system', 'ipsec tunnel', 'ipsec
+                    user', 'timestamping', 'ocsp signing', 'microsoft sgc', 'netscape
+                    sgc'"
                     type: string
                     enum:
                       - signing
