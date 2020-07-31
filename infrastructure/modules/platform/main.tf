@@ -24,6 +24,14 @@ resource "azurerm_subnet" "cluster_nodes" {
   address_prefixes     = ["10.240.0.0/16"]
 }
 
+# The ingress controller needs to fiddle with azurerm_public_ip.cluster_outbound.
+resource "azurerm_role_assignment" "managed_identity_operator_cluster" {
+  scope                            = azurerm_resource_group.platform.id
+  role_definition_name             = "Network Contributor"
+  principal_id                     = azurerm_kubernetes_cluster.cluster.identity.0.principal_id
+  skip_service_principal_aad_check = true
+}
+
 resource "azurerm_public_ip" "cluster_outbound" {
   name = "cluster_outbound"
 
