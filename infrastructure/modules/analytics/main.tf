@@ -21,12 +21,9 @@ resource "azurerm_key_vault" "secret_vault" {
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    key_permissions = [
-      "Create",
-      "Get",
-    ]
+    // This object_id relates to the FutureNHS Developers Group ID. 
+    // See https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/b06ebd00-f52c-4e82-ac88-0520f4320fee
+    object_id = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
 
     secret_permissions = [
       "Set",
