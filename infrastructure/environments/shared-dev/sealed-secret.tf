@@ -28,15 +28,10 @@ resource "azurerm_key_vault" "vault" {
     // See https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/b06ebd00-f52c-4e82-ac88-0520f4320fee
     object_id = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
 
-    key_permissions = [
-      "create",
-      "get",
-    ]
-
     secret_permissions = [
-      "set",
-      "get",
-      "delete",
+      "Set",
+      "Get",
+      "Delete",
     ]
   }
 
