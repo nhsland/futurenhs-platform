@@ -4,7 +4,5 @@ metadata:
   name: kratos
 spec:
   source:
-    # There is no difference between dev and prod other than secrets,
-    # and secrets are managed by terraform.
-    # path: ./kratos/base
+    path: ./kratos/dev-$NAME
     targetRevision: $BRANCH

@@ -8,9 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    # There is no difference between dev and prod other than secrets,
-    # and secrets are managed by terraform.
-    path: ./kratos/base
+    path: ./kratos/production
     repoURL: https://github.com/FutureNHS/futurenhs-deployments.git
     targetRevision: master
   syncPolicy:
