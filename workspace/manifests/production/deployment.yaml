@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspace
+spec:
+  template:
+    spec:
+      containers:
+        - name: workspace
+          env:
+            - name: INSTRUMENTATION_KEY
+              value: "18be3b83-4ad5-4186-a7b6-f65dd1253a77"
