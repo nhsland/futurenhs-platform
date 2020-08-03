@@ -1,0 +1,51 @@
+serve:
+  public:
+    base_url: https://fnhs.westeurope.cloudapp.azure.com/.ory/kratos/public/
+    port: 4433
+  admin:
+    base_url: http://kratos:4434/
+    port: 4434
+
+selfservice:
+  default_browser_return_url: https://fnhs.westeurope.cloudapp.azure.com/
+  whitelisted_return_urls:
+    - https://fnhs.westeurope.cloudapp.azure.com/
+
+  strategies:
+    password:
+      enabled: true
+
+  flows:
+    logout:
+      after:
+        default_browser_return_url: https://fnhs.westeurope.cloudapp.azure.com/auth/login
+
+    login:
+      ui_url: https://fnhs.westeurope.cloudapp.azure.com/auth/login
+      request_lifespan: 10m
+
+    registration:
+      request_lifespan: 10m
+      ui_url: http://127.0.0.1:4455/auth/registration
+      after:
+        password:
+          hooks:
+            - hook: session
+
+log:
+  level: debug
+
+hashers:
+  argon2:
+    parallelism: 1
+    memory: 131072
+    iterations: 2
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_url: file:///etc/config/identity.traits.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper.kratos:1025/?skip_ssl_verify=true

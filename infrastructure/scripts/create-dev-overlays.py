@@ -11,6 +11,7 @@ services = [
     'infrastructure/kubernetes/argocd/apps',
     'infrastructure/kubernetes/cert-manager',
     'infrastructure/kubernetes/ingress',
+    'infrastructure/kubernetes/kratos',
 ]
 
 def create_overlays(name, variables):
@@ -28,6 +29,8 @@ def main():
         overlays = json.load(f)
 
     for name, variables in overlays.items():
+        if name == "__doc__":
+            continue
         create_overlays(name, variables)
 
 if __name__ == '__main__':

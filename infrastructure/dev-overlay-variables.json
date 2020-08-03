@@ -1,26 +1,46 @@
 {
+  "__doc__": {
+    "BRANCH": [
+      "The branch on futurenhs-deployments repo that you want to deploy",
+      "Should be of the form 'pr-$LOCALBRANCH'"],
+    "KRATOS_WEB_ROOT": [
+      "Set this to 'https://fnhs-dev-$YOURNAME.westeurope.cloudapp.azure.com' for testing your cluster",
+      "or 'http://localhost:4455' for local testing.",
+      "This is a work-around until https://github.com/ory/kratos/pull/617 gets finished and released."
+    ],
+    "INSTRUMENTATION_KEY": [
+      "For azure insights. This is spat out at the end of `terraform apply`",
+      "If you want to see it again, run `(cd infrastructure/environments/dev/ && terraform show)`"
+    ]
+  },
   "david": {
-    "BRANCH": "pr-deploy-login-microservice",
-    "INSTRUMENTATION_KEY": "todo"
+    "BRANCH": "pr-kratos-helm",
+    "KRATOS_WEB_ROOT": "https://fnhs-dev-david.westeurope.cloudapp.azure.com",
+    "INSTRUMENTATION_KEY": "a8da8ece-72c3-4711-a72f-83049651f298"
   },
   "jan": {
     "BRANCH": "master",
+    "KRATOS_WEB_ROOT": "https://fnhs-dev-jan.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "14fe00c5-310f-4e84-aa83-5db7bd5b2797"
   },
   "matt": {
     "BRANCH": "pr-argocd-branch",
+    "KRATOS_WEB_ROOT": "https://fnhs-dev-matt.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "todo"
   },
   "potts": {
     "BRANCH": "master",
+    "KRATOS_WEB_ROOT": "https://fnhs-dev-potts.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "todo"
   },
   "tracy": {
     "BRANCH": "master",
+    "KRATOS_WEB_ROOT": "https://fnhs-dev-tracy.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "todo"
   },
   "declan": {
     "BRANCH": "master",
+    "KRATOS_WEB_ROOT": "https://fnhs-dev-declan.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "b9ba8f32-a8f1-471b-9bc2-a1c7a74bc6c0"
   }
 }

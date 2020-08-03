@@ -11,7 +11,7 @@ const devProxy = {
     changeOrigin: true,
   },
   "/.ory/kratos/public/self-service/browser/flows/login": {
-    target: "http://127.0.0.1:4433",
+    target: "http://kratos-public.kratos",
     pathRewrite: { "/.ory/kratos/public": "" },
     changeOrigin: false,
   },

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailslurper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailslurper
+  template:
+    metadata:
+      labels:
+        app: mailslurper
+    spec:
+      containers:
+        - name: mailslurper
+          image: oryd/mailslurper:latest-smtps
+          ports:
+            - name: http
+              containerPort: 4436
+            # FIXME: I'm not really sure what these two ports are for.
+            # Kratos seems to be trying to send smtp over 1025?
+            - name: smtp
+              containerPort: 4437
+            - name: somethingelse
+              containerPort: 1025
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 100Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 4436
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 4436
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            timeoutSeconds: 30
