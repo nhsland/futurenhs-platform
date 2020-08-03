@@ -77,8 +77,7 @@ spec:
       annotations:
     spec:
       volumes:
-        -
-          name: kratos-config-volume
+        - name: kratos-config-volume
           configMap:
             name: kratos-config
       containers:
@@ -87,34 +86,30 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["kratos"]
           args: [
-            "serve",
-            "all",
-            # FIXME remove the --dev flag somehow. Might be possible to make the localhost dev server be secure + self-signed?
-            # https://www.ory.sh/kratos/docs/debug/csrf/#ory-kratos-running-over-http-without-dev-mode-enabled
-            "--dev",
-            "--config",
-            "/etc/config/config.yaml"
-          ]
+              "serve",
+              "all",
+              # FIXME remove the --dev flag somehow. Might be possible to make the localhost dev server be secure + self-signed?
+              # https://www.ory.sh/kratos/docs/debug/csrf/#ory-kratos-running-over-http-without-dev-mode-enabled
+              "--dev",
+              "--config",
+              "/etc/config/config.yaml",
+            ]
           volumeMounts:
-            -
-              name: kratos-config-volume
+            - name: kratos-config-volume
               mountPath: /etc/config
               readOnly: true
           env:
-            -
-              name: DSN
+            - name: DSN
               valueFrom:
                 secretKeyRef:
                   name: kratos
                   key: dsn
-            -
-              name: SECRETS_DEFAULT
+            - name: SECRETS_DEFAULT
               valueFrom:
                 secretKeyRef:
                   name: kratos
                   key: secretsDefault
-            -
-              name: SECRETS_COOKIE
+            - name: SECRETS_COOKIE
               valueFrom:
                 secretKeyRef:
                   name: kratos
@@ -134,5 +129,4 @@ spec:
             httpGet:
               path: /health/ready
               port: http-admin
-          resources:
-            null
+          resources: null
