@@ -82,7 +82,7 @@ spec:
             name: kratos-config
       containers:
         - name: kratos
-          image: "oryd/kratos:v0.4.3-alpha.1-sqlite"
+          image: "oryd/kratos:v0.4.6"
           imagePullPolicy: IfNotPresent
           command: ["kratos"]
           args: [
