@@ -31,6 +31,7 @@ if [ -d $APPNAME ]; then
 else
 	LOCALDIR="infrastructure/kubernetes/$APPNAME/$ENVIRONMENT"
 fi
+
 # grep returns true if it spits out any lines of output.
 # grep -v image because we customize our image tags as part of the CI build.
 while (
