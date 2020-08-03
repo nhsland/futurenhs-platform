@@ -37,7 +37,7 @@ while (
 	argocd app diff $APPNAME --local $LOCALDIR || true
 ) | grep '^[<>]' | grep -v 'image: fnhsproduction.azurecr.io/[a-z]*'; do
 	# Prod argocd to sync. Otherwise it will only check every 3 minutes.
-	argocd app sync $APPNAME
+	argocd app sync $APPNAME --prune
 done
 
 echo "Looks like you're up to date."
