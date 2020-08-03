@@ -33,7 +33,10 @@ else
 fi
 # grep returns true if it spits out any lines of output.
 # grep -v image because we customize our image tags as part of the CI build.
-while (argocd app diff $APPNAME --local $LOCALDIR || true) | grep '^[<>]' | grep -v image; do
+while (
+	argocd app diff $APPNAME --local $LOCALDIR || true
+) | grep '^[<>]' | grep -v 'image: fnhsproduction.azurecr.io/[a-z]*'; do
+	# Prod argocd to sync. Otherwise it will only check every 3 minutes.
 	argocd app sync $APPNAME
 done
 
