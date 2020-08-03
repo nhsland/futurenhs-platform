@@ -16,23 +16,6 @@ selfservice:
       enabled: true
 
   flows:
-    error:
-      ui_url: $KRATOS_WEB_ROOT/error
-
-    settings:
-      ui_url: $KRATOS_WEB_ROOT/settings
-      privileged_session_max_age: 15m
-
-    recovery:
-      enabled: true
-      ui_url: $KRATOS_WEB_ROOT/recovery
-
-    verification:
-      enabled: true
-      ui_url: $KRATOS_WEB_ROOT/verify
-      after:
-        default_browser_return_url: $KRATOS_WEB_ROOT/
-
     logout:
       after:
         default_browser_return_url: $KRATOS_WEB_ROOT/auth/login
