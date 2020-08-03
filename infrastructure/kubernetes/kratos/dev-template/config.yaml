@@ -1,15 +1,15 @@
 serve:
   public:
-    base_url: https://fnhs.westeurope.cloudapp.azure.com/.ory/kratos/public/
+    base_url: $KRATOS_WEB_ROOT/.ory/kratos/public/
     port: 4433
   admin:
     base_url: http://kratos:4434/
     port: 4434
 
 selfservice:
-  default_browser_return_url: https://fnhs.westeurope.cloudapp.azure.com/
+  default_browser_return_url: $KRATOS_WEB_ROOT/
   whitelisted_return_urls:
-    - https://fnhs.westeurope.cloudapp.azure.com/
+    - $KRATOS_WEB_ROOT/
 
   strategies:
     password:
@@ -17,28 +17,28 @@ selfservice:
 
   flows:
     error:
-      ui_url: https://fnhs.westeurope.cloudapp.azure.com/error
+      ui_url: $KRATOS_WEB_ROOT/error
 
     settings:
-      ui_url: https://fnhs.westeurope.cloudapp.azure.com/settings
+      ui_url: $KRATOS_WEB_ROOT/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: https://fnhs.westeurope.cloudapp.azure.com/recovery
+      ui_url: $KRATOS_WEB_ROOT/recovery
 
     verification:
       enabled: true
-      ui_url: https://fnhs.westeurope.cloudapp.azure.com/verify
+      ui_url: $KRATOS_WEB_ROOT/verify
       after:
-        default_browser_return_url: https://fnhs.westeurope.cloudapp.azure.com/
+        default_browser_return_url: $KRATOS_WEB_ROOT/
 
     logout:
       after:
-        default_browser_return_url: https://fnhs.westeurope.cloudapp.azure.com/auth/login
+        default_browser_return_url: $KRATOS_WEB_ROOT/auth/login
 
     login:
-      ui_url: https://fnhs.westeurope.cloudapp.azure.com/auth/login
+      ui_url: $KRATOS_WEB_ROOT/auth/login
       request_lifespan: 10m
 
     registration:
