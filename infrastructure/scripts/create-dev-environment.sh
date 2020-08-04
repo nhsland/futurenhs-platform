@@ -69,8 +69,8 @@ EOF
 	echo "("
 	echo "    cd $REPO_ROOT/infrastructure/environments/dev &&"
 	echo "    terraform init -backend-config=terraform.tfvars &&"
-	echo "    terraform terraform apply -target module.platform &&"
-	echo "    terraform terraform apply"
+	echo "    terraform apply -target module.platform &&"
+	echo "    terraform apply"
 	echo ")"
 }
 
