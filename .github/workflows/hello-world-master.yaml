@@ -52,7 +52,7 @@ jobs:
 
           cd $HOME
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-          cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world/production
+          cd $GITHUB_WORKSPACE/futurenhs-deployments/hello-world/base
 
           $HOME/kustomize edit set image $DIGEST
 
