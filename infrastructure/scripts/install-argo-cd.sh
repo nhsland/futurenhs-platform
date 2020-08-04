@@ -5,6 +5,8 @@ set -eu
 cd $(dirname "$0")
 
 ENVIRONMENT="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
+BRANCH="${2:?"Please specify the branch you want to deploy, e.g. master or pr-mybranch or --mine"}"
+
 CURRENT_CONTEXT=$(kubectl config current-context)
 
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
@@ -13,6 +15,13 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "Please change your current context (e.g. using 'kubectl config use-context' or a combination or 'az account set' and 'az aks get-credentials') and try again"
 	exit 1
 fi
+
+if [ "x$BRANCH" = "x--mine" ]; then
+	BRANCH=pr-`git branch --show-current`
+fi
+
+echo "Expanding dev overlays"
+./create-dev-overlays.py --set-branch=$BRANCH
 
 echo "Installing Argo CD CLI"
 brew install argoproj/tap/argocd || {
@@ -25,8 +34,6 @@ kustomize build ../kubernetes/argocd/install |
 	kubectl apply -n argocd -f -
 kubectl rollout status -n argocd deployment argocd-server
 
-echo "Expanding dev overlays"
-./create-dev-overlays.py
 
 echo "Creating applications"
 if [ ! -d ../kubernetes/argocd/apps/$ENVIRONMENT ]; then
