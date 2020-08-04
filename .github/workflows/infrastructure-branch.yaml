@@ -46,7 +46,7 @@ jobs:
           set -eux
           if git fetch --depth=0 origin pr-$GITHUB_HEAD_REF ; then
             git checkout origin/pr-$GITHUB_HEAD_REF -b pr-$GITHUB_HEAD_REF
-            git pull --depth=0 --no-rebase --no-edit origin master
+            git pull --depth=0 --rebase --no-edit origin master
           else
             git checkout HEAD -b pr-$GITHUB_HEAD_REF
           fi
