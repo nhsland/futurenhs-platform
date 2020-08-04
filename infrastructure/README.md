@@ -280,6 +280,10 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    Change `kubectl` to point to the production cluster.
 
    ```bash
+   az aks get-credentials --subscription=75173371-c161-447a-9731-f042213a19da --resource-group=platform-production --name=production
+   ```
+
+   ```bash
    kubectl config use-context production
    ```
 
