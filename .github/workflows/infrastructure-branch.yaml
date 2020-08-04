@@ -43,9 +43,10 @@ jobs:
       - name: Checkout the correct Deployments repo branch
         working-directory: futurenhs-deployments
         run: |
+          set -eux
           if git fetch origin pr-$GITHUB_HEAD_REF ; then
             git checkout origin/pr-$GITHUB_HEAD_REF -b pr-$GITHUB_HEAD_REF
-            git pull --no-edit origin master
+            git pull --no-rebase --no-edit origin master
           else
             git checkout HEAD -b pr-$GITHUB_HEAD_REF
           fi
