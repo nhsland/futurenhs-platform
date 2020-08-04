@@ -46,7 +46,7 @@ jobs:
           set -eux
           if git fetch --unshallow origin pr-$GITHUB_HEAD_REF master ; then
             git checkout origin/pr-$GITHUB_HEAD_REF -b pr-$GITHUB_HEAD_REF
-            git merge origin/master --strategy=recursive --strategy-options=ours
+            git merge origin/master --strategy=recursive --strategy-option=ours
           else
             git checkout HEAD -b pr-$GITHUB_HEAD_REF
           fi
@@ -81,7 +81,7 @@ jobs:
             git push origin "HEAD:pr-$GITHUB_HEAD_REF" && break
             n+=1
             git fetch origin pr-$GITHUB_HEAD_REF
-            git merge origin/master --strategy=recursive --strategy-options=ours
+            git merge origin/master --strategy=recursive --strategy-option=ours
           done
 
           if [ $n -ge 5 ]
