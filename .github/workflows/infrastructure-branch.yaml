@@ -77,7 +77,6 @@ jobs:
           n=0
           until [ $n -ge 5 ]
           do
-            # TODO: also push to pr-$GITHUB_ACTOR branch. Can do this as a force-push at the end?
             git push origin "HEAD:pr-$GITHUB_HEAD_REF" && break
             n+=1
             git fetch origin pr-$GITHUB_HEAD_REF

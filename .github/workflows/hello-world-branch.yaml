@@ -41,9 +41,10 @@ jobs:
       - name: Checkout the correct Deployments repo branch
         working-directory: futurenhs-deployments
         run: |
-          if git fetch origin pr-$GITHUB_HEAD_REF ; then
+          set -eux
+          if git fetch --unshallow origin pr-$GITHUB_HEAD_REF master ; then
             git checkout origin/pr-$GITHUB_HEAD_REF -b pr-$GITHUB_HEAD_REF
-            git pull --no-edit origin master
+            git merge origin/master --strategy=recursive --strategy-option=ours
           else
             git checkout HEAD -b pr-$GITHUB_HEAD_REF
           fi
@@ -80,10 +81,10 @@ jobs:
           n=0
           until [ $n -ge 5 ]
           do
-            # TODO: also push to pr-$GITHUB_ACTOR branch. Can do this as a force-push at the end?
             git push origin "HEAD:pr-$GITHUB_HEAD_REF" && break
             n+=1
-            git pull --rebase origin pr-$GITHUB_HEAD_REF
+            git fetch origin pr-$GITHUB_HEAD_REF
+            git merge origin/master --strategy=recursive --strategy-option=ours
           done
 
           if [ $n -ge 5 ]
