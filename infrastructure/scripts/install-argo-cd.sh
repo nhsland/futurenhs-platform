@@ -5,7 +5,7 @@ set -eu
 cd $(dirname "$0")
 
 ENVIRONMENT="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
-BRANCH="${2:?"Please specify the branch you want to deploy, e.g. master or pr-mybranch or --mine"}"
+BRANCH="${2:-""}"
 
 CURRENT_CONTEXT=$(kubectl config current-context)
 
@@ -16,12 +16,16 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	exit 1
 fi
 
-if [ "x$BRANCH" = "x--mine" ]; then
+if [ "$BRANCH" = "MINE" ]; then
 	BRANCH=pr-$(git branch --show-current)
 fi
 
 echo "Expanding dev overlays"
-./create-dev-overlays.py --set-branch=$BRANCH
+if [ -z "$BRANCH" ]; then
+	./create-dev-overlays.py --set-branch=$BRANCH
+else
+	./create-dev-overlays.py
+fi
 
 echo "Installing Argo CD CLI"
 brew install argoproj/tap/argocd || {
