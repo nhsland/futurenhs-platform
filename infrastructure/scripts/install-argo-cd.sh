@@ -12,19 +12,30 @@ CURRENT_CONTEXT=$(kubectl config current-context)
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "You want to deploy to:   $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
-	echo "Please change your current context (e.g. using 'kubectl config use-context' or a combination or 'az account set' and 'az aks get-credentials') and try again"
+	echo "Please change your current context using:"
+	echo "    kubectl config use-context $ENVIRONMENT'"
+	echo "or"
+	echo "    az account set --subscription \$SUBSCRIPTION_ID && az aks get-credentials --resource-group=platform-$ENVIRONMENT --name=$ENVIRONMENT"
+	echo "and try again."
 	exit 1
 fi
 
 if [ "$BRANCH" = "MINE" ]; then
 	BRANCH=pr-$(git branch --show-current)
 fi
-
-echo "Expanding dev overlays"
 if [ -z "$BRANCH" ]; then
-	./create-dev-overlays.py --set-branch=$BRANCH
-else
+	echo "Expanding dev overlays."
+	echo ""
+	echo "To force argocd to point at the pr-build for your current branch, try:"
+	echo "    $0 $* MINE"
+	echo ""
+	echo "To force argocd to point at a pr-build for someone else's branch, try:"
+	echo "    $0 $* pr-\$BRANCHNAME"
+	echo ""
 	./create-dev-overlays.py
+else
+	echo "Expanding dev overlays to point at $BRANCH"
+	./create-dev-overlays.py --set-branch=$BRANCH
 fi
 
 echo "Installing Argo CD CLI"

@@ -2,7 +2,7 @@
   "__doc__": {
     "BRANCH": [
       "This is only used by argocd for deciding which branch to deploy",
-      "and it is overridden by `install-argo-cd.sh` anyway. It should be fine to leave this as `master`"
+      "and it often overridden by `install-argo-cd.sh` anyway. It should be fine to leave this as `master`"
     ],
     "KRATOS_WEB_ROOT": [
       "Set this to 'https://fnhs-dev-$YOURNAME.westeurope.cloudapp.azure.com' for testing your cluster",
