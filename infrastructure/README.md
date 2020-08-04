@@ -213,10 +213,10 @@ as opposed to sharing a staging environment.
 
    If you want to see the frontend app browse to <https://fnhs-dev-$FNHSNAME.westeurope.cloudapp.azure.com>.
 
-   If you want to switch branches in argocd, re-run install-argo-cd.sh specifying the branch name, or --mine.
+   If you want to switch branches in argocd, re-run install-argo-cd.sh specifying the branch name, or MINE.
 
    ```bash
-   ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME --mine
+   ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME MINE
    ```
 
 1. Apply the ConfigMap for Azure Monitor for Containers to collect data in the Log Analytics workspace. The ConfigMap can be found in `infrastructure/kubernetes/logging` directory.
