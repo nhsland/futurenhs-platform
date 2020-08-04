@@ -14,7 +14,7 @@
     ]
   },
   "david": {
-    "BRANCH": "pr-kratos-helm",
+    "BRANCH": "pr-kratos-fixups",
     "KRATOS_WEB_ROOT": "https://fnhs-dev-david.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "a8da8ece-72c3-4711-a72f-83049651f298"
   },

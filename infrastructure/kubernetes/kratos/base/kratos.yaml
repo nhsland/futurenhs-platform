@@ -58,32 +58,35 @@ spec:
       annotations:
     spec:
       initContainers:
-        -
-          name: kratos-automigrate
+        - name: kratos-automigrate
           image: "oryd/kratos:v0.4.6"
           imagePullPolicy: IfNotPresent
           command: ["kratos"]
-          args: ["migrate", "sql", "-e", "--yes", "--config", "/etc/config/config.yaml"]
+          args:
+            [
+              "migrate",
+              "sql",
+              "-e",
+              "--yes",
+              "--config",
+              "/etc/config/config.yaml",
+            ]
           volumeMounts:
-            -
-              name: kratos-config-volume
+            - name: kratos-config-volume
               mountPath: /etc/config
               readOnly: true
           env:
-            -
-              name: DSN
+            - name: DSN
               valueFrom:
                 secretKeyRef:
                   name: kratos
                   key: dsn
-            -
-              name: SECRETS_DEFAULT
+            - name: SECRETS_DEFAULT
               valueFrom:
                 secretKeyRef:
                   name: kratos
                   key: secretsDefault
-            -
-              name: SECRETS_COOKIE
+            - name: SECRETS_COOKIE
               valueFrom:
                 secretKeyRef:
                   name: kratos
