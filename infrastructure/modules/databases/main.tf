@@ -1,11 +1,18 @@
 # This requires the postgresql and kubernetes providers to be set up properly.
 # Run `terraform apply -target module.platform` to set up their requirements
 # before attempting to apply this module.
+locals {
+  databases = [
+    "kratos-db",
+    "workspace-db",
+  ]
+}
 
-resource "random_password" "kratos_postgresql_password" {
-  length  = 50
-  special = false
-  upper   = true
+resource "random_password" "postgresql_password" {
+  for_each = toset(local.databases)
+  length   = 50
+  special  = false
+  upper    = true
 }
 resource "random_password" "kratos_secrets_default" {
   length  = 32
@@ -18,49 +25,53 @@ resource "random_password" "kratos_secrets_cookie" {
   upper   = true
 }
 
-resource "postgresql_role" "kratos" {
-  name     = "kratos_user"
+resource "postgresql_role" "service" {
+  for_each = toset(local.databases)
+  name     = "${each.value}_user"
   login    = true
-  password = random_password.kratos_postgresql_password.result
+  password = random_password.postgresql_password[each.value].result
 }
 
 # we are using the postgresql provider here because azurerm_postgresql_database
 # doesn't let us set the owner to a role other than the server admin.
-resource "postgresql_database" "kratos" {
-  name              = "kratos"
-  owner             = postgresql_role.kratos.name
+resource "postgresql_database" "service" {
+  for_each          = toset(local.databases)
+  name              = each.value
+  owner             = postgresql_role.service[each.value].name
   lc_collate        = "C"
   connection_limit  = -1
   allow_connections = true
 }
 
-resource "kubernetes_namespace" "kratos" {
+resource "kubernetes_namespace" "db" {
+  for_each = toset(local.databases)
   metadata {
-    name = "kratos"
+    name = each.value
     annotations = {
       "linkerd.io/inject" = "enabled"
     }
   }
 }
 
-resource "kubernetes_secret" "kratos_db_creds" {
+resource "kubernetes_secret" "db_creds" {
+  for_each = toset(local.databases)
   metadata {
-    name      = "kratos"
-    namespace = "kratos"
+    name      = "${each.value}-db-creds"
+    namespace = each.value
   }
   data = {
     secretsDefault = random_password.kratos_secrets_default.result
     secretsCookie  = random_password.kratos_secrets_cookie.result
     dsn = "postgres://${
-      postgresql_role.kratos.name
+      postgresql_role.service[each.value].name
       }@${
       var.postgresql_server_name
       }:${
-      random_password.kratos_postgresql_password.result
+      random_password.postgresql_password[each.value].result
       }@${
       var.postgresql_server_name
       }.postgres.database.azure.com:5432/${
-      postgresql_database.kratos.name
+      postgresql_database.service[each.value].name
     }"
   }
 }

@@ -12,3 +12,5 @@ The following are used within CI to verify formatting. You may find it useful to
 - [rustfmt](https://github.com/rust-lang/rustfmt)
 - [prettier](https://prettier.io)
 - [eslint](https://eslint.org/)
+
+Note: Prettier formats all relevent code in this repo, and therefore is installed at the top level. - run `yarn` to install.

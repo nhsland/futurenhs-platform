@@ -19,7 +19,7 @@
     "KRATOS_WEB_ROOT": "https://fnhs-dev-jan.westeurope.cloudapp.azure.com"
   },
   "matt": {
-    "BRANCH": "pr-argocd-branch",
+    "BRANCH": "create-workspace-service",
     "KRATOS_WEB_ROOT": "https://fnhs-dev-matt.westeurope.cloudapp.azure.com"
   },
   "potts": {

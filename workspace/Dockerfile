@@ -35,6 +35,7 @@ RUN useradd svc
 FROM build-context AS build
 
 COPY ./src ./src
+COPY sql ./sql
 
 RUN cargo clippy --release -- -D warnings &&
     cargo test --release &&
