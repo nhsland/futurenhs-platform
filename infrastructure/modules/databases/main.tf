@@ -43,6 +43,11 @@ resource "postgresql_database" "service" {
   allow_connections = true
 }
 
+resource "postgresql_extension" "uuid-ossp" {
+  name     = "uuid-ossp"
+  database = "workspace-db"
+}
+
 resource "kubernetes_namespace" "db" {
   for_each = toset(local.databases)
   metadata {
