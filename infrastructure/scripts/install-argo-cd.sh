@@ -17,7 +17,7 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 fi
 
 if [ "x$BRANCH" = "x--mine" ]; then
-	BRANCH=pr-`git branch --show-current`
+	BRANCH=pr-$(git branch --show-current)
 fi
 
 echo "Expanding dev overlays"
@@ -33,7 +33,6 @@ echo "Installing Argo CD"
 kustomize build ../kubernetes/argocd/install |
 	kubectl apply -n argocd -f -
 kubectl rollout status -n argocd deployment argocd-server
-
 
 echo "Creating applications"
 if [ ! -d ../kubernetes/argocd/apps/$ENVIRONMENT ]; then
