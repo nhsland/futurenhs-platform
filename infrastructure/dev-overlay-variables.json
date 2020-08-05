@@ -1,8 +1,9 @@
 {
   "__doc__": {
     "BRANCH": [
-      "The branch on futurenhs-deployments repo that you want to deploy",
-      "Should be of the form 'pr-$LOCALBRANCH'"],
+      "This is only used by argocd for deciding which branch to deploy",
+      "and it often overridden by `install-argo-cd.sh` anyway. It should be fine to leave this as `master`"
+    ],
     "KRATOS_WEB_ROOT": [
       "Set this to 'https://fnhs-dev-$YOURNAME.westeurope.cloudapp.azure.com' for testing your cluster",
       "or 'http://localhost:4455' for local testing.",
@@ -14,7 +15,7 @@
     ]
   },
   "david": {
-    "BRANCH": "pr-kratos-fixups",
+    "BRANCH": "master",
     "KRATOS_WEB_ROOT": "https://fnhs-dev-david.westeurope.cloudapp.azure.com",
     "INSTRUMENTATION_KEY": "a8da8ece-72c3-4711-a72f-83049651f298"
   },
