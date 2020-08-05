@@ -15,6 +15,17 @@ spec:
       containers:
         - name: frontend
           image: fnhsproduction.azurecr.io/frontend
+          env:
+            - name: EVENTGRID_TOPIC_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: frontend
+                  key: eventgrid_topic_endpoint
+            - name: EVENTGRID_TOPIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: frontend
+                  key: eventgrid_topic_key
           ports:
             - containerPort: 3000
           resources:
