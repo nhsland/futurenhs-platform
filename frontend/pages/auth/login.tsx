@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import axios from "axios";
+import { generateFields, FormConfig } from "../../lib/login";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const request = context.query.request;
@@ -12,51 +12,52 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res.end();
   }
 
-  const res = await axios.get(
-    `http://kratos-admin.kratos/self-service/browser/flows/requests/login?request=${request}`
-  );
-  const formattedDetails = res.data;
-
-  const csrfToken = formattedDetails.methods.password.config.fields.find(
-    (element: any) => element.name === "csrf_token"
-  ).value;
+  const formFields = await generateFields(context);
 
   return {
     props: {
       request,
-      csrfToken,
+      formFields,
     },
   };
 };
 
 const Login = ({
   request,
-  csrfToken,
+  formFields,
 }: {
   request: string;
-  csrfToken: string;
+  formFields: FormConfig;
 }) => {
   return (
     <>
+      {formFields.messages?.map(({ text }) => {
+        return (
+          <>
+            <div>{text}</div>
+          </>
+        );
+      })}
       {request ? (
-        <form
-          action={`/.ory/kratos/public/self-service/browser/flows/login/strategies/password?request=${request}`}
-          method="POST"
-        >
-          <input
-            name="csrf_token"
-            type="hidden"
-            required={true}
-            value={csrfToken}
-          />
-          <div>
-            <label>Username: </label>
-            <input type="text" name="identifier" id="identifier" required />
-          </div>
-          <div>
-            <label>Password: </label>
-            <input type="password" name="password" id="password" required />
-          </div>
+        <form action={formFields.action} method={formFields.method}>
+          {formFields.fields.map(({ name, type, required, value }) => {
+            return (
+              <>
+                <div>
+                  {type !== "hidden" ? (
+                    <label htmlFor={name}>{name}</label>
+                  ) : null}
+                  <input
+                    id={name}
+                    name={name}
+                    type={type}
+                    required={required}
+                    defaultValue={value}
+                  />
+                </div>
+              </>
+            );
+          })}
           <div>
             <input type="submit" value="Submit!" />
           </div>
