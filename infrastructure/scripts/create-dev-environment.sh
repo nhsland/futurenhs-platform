@@ -9,13 +9,13 @@ if [ "$NAME" != "${NAME//[^a-z]/-}" ]; then
 	exit 1
 fi
 
-# We might want to write a CLEAN=full version later that does a terraform destroy etc.
-CLEAN="${CLEAN:-check}"
-if [[ "$CLEAN" != "local" && "$CLEAN" != "localstate" && "$CLEAN" != "check" ]]; then
-	echo "Unexpected value for CLEAN environment variable: '$CLEAN'"
-	echo "Use CLEAN=local to clean your local files and configs."
-	echo "Use CLEAN=localstate to clean just .terraform, but keep your terraform.tfvars config."
-	echo "Use CLEAN=check (the default) if you are using a clean envionment."
+# We might want to write a OVERWRITE=full version later that does a terraform destroy etc.
+OVERWRITE="${OVERWRITE:-nothing}"
+if [[ "$OVERWRITE" != "localfiles" && "$OVERWRITE" != "justdotterraform" && "$OVERWRITE" != "nothing" ]]; then
+	echo "Unexpected value for OVERWRITE environment variable: '$OVERWRITE'"
+	echo "Use OVERWRITE=localfiles to clean your local terraform.tfvars and .terraform."
+	echo "Use OVERWRITE=justdotterraform to clean just .terraform, but leave your terraform.tfvars alone."
+	echo "Use OVERWRITE=nothing (the default) if you are using a clean envionment."
 	exit 1
 fi
 
@@ -30,9 +30,9 @@ setup_terraform() {
 	STORAGE_ACCOUNT_NAME=fnhstfstatedev$NAME
 	CONTAINER_NAME=tfstate
 
-	if [ "$CLEAN" = "local" ]; then
+	if [ "$OVERWRITE" = "localfiles" ]; then
 		rm -r $DEV_CONFIG_FILE $TERRAFORM_DIR
-	elif [ "$CLEAN" = "localstate" ]; then
+	elif [ "$OVERWRITE" = "justdotterraform" ]; then
 		rm -r $TERRAFORM_DIR
 	elif [ -f "$DEV_CONFIG_FILE" ]; then
 		echo "File $DEV_CONFIG_FILE already exists."
@@ -77,7 +77,7 @@ setup_terraform() {
 		--account-key "$ACCESS_KEY" \
 		--output none
 
-	if [ "$CLEAN" = "localstate" ]; then
+	if [ "$OVERWRITE" = "localfiles" ] || [ ! -f "$DEV_CONFIG_FILE" ]; then
 		cat >"$DEV_CONFIG_FILE" <<EOF
 resource_group_name="$RESOURCE_GROUP_NAME"
 storage_account_name="$STORAGE_ACCOUNT_NAME"
