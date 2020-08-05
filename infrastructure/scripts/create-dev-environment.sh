@@ -47,6 +47,12 @@ setup_terraform() {
 	elif [ -d "$TERRAFORM_DIR" ]; then
 		echo "Folder $TERRAFORM_DIR already exists."
 		echo "If you want to initialize your environment again, please delete that directory and rerun this script."
+		echo "or run:"
+		echo ""
+		echo "    OVERWRITE=localfiles $0 $NAME"
+		echo "or:"
+		echo "    OVERWRITE=justdotterraform $0 $NAME"
+		echo ""
 		exit 1
 	fi
 
