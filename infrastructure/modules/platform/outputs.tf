@@ -25,3 +25,7 @@ output "postgresql_admin" {
 output "postgresql_admin_password" {
   value = azurerm_postgresql_server.postgresql_server.administrator_login_password
 }
+
+output "eventgrid_topic_name" {
+  value = azurerm_eventgrid_topic.platform.name
+}

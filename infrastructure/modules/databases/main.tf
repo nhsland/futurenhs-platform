@@ -82,7 +82,7 @@ resource "kubernetes_namespace" "frontend" {
 resource "kubernetes_secret" "frontend" {
   metadata {
     name      = "frontend"
-    namespace = kubernetes_namespace.frontend.metadata.name
+    namespace = kubernetes_namespace.frontend.metadata[0].name
   }
   data = {
     eventgrid_topic_endpoint = data.azurerm_eventgrid_topic.platform.endpoint

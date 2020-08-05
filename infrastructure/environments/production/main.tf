@@ -79,4 +79,6 @@ module databases {
   source                 = "../../modules/databases"
   environment            = "production"
   postgresql_server_name = module.platform.postgresql_server_name
+  resource_group_name    = module.platform.resource_group_name
+  eventgrid_topic_name   = module.platform.eventgrid_topic_name
 }
