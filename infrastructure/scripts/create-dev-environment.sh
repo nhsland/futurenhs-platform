@@ -10,12 +10,12 @@ if [ "$NAME" != "${NAME//[^a-z]/-}" ]; then
 fi
 
 # We might want to write a OVERWRITE=full version later that does a terraform destroy etc.
-OVERWRITE="${OVERWRITE:-nothing}"
-if [[ "$OVERWRITE" != "localfiles" && "$OVERWRITE" != "justdotterraform" && "$OVERWRITE" != "nothing" ]]; then
+OVERWRITE="${OVERWRITE:-forbidden}"
+if [[ "$OVERWRITE" != "localfiles" && "$OVERWRITE" != "justdotterraform" && "$OVERWRITE" != "forbidden" ]]; then
 	echo "Unexpected value for OVERWRITE environment variable: '$OVERWRITE'"
 	echo "Use OVERWRITE=localfiles to clean your local terraform.tfvars and .terraform."
 	echo "Use OVERWRITE=justdotterraform to clean just .terraform, but leave your terraform.tfvars alone."
-	echo "Use OVERWRITE=nothing (the default) if you are using a clean envionment."
+	echo "Use OVERWRITE=forbidden (the default) if you are using a clean envionment and want to abort if anything is unclean."
 	exit 1
 fi
 
@@ -89,7 +89,7 @@ setup_terraform() {
 		--account-key "$ACCESS_KEY" \
 		--output none
 
-	if [ "$OVERWRITE" = "localfiles" ] || [ ! -f "$DEV_CONFIG_FILE" ]; then
+	if [ ! -f "$DEV_CONFIG_FILE" ]; then
 		cat >"$DEV_CONFIG_FILE" <<EOF
 resource_group_name="$RESOURCE_GROUP_NAME"
 storage_account_name="$STORAGE_ACCOUNT_NAME"
