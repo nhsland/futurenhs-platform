@@ -36,7 +36,13 @@ setup_terraform() {
 		rm -r $TERRAFORM_DIR
 	elif [ -f "$DEV_CONFIG_FILE" ]; then
 		echo "File $DEV_CONFIG_FILE already exists."
-		echo "If you want to initialize your environment again, please delete the file and rerun this script."
+		echo "If you want to initialize your environment again, please delete the file and rerun this script,"
+		echo "or run:"
+		echo ""
+		echo "    OVERWRITE=localfiles $0 $NAME"
+		echo "or:"
+		echo "    OVERWRITE=justdotterraform $0 $NAME"
+		echo ""
 		exit 1
 	elif [ -d "$TERRAFORM_DIR" ]; then
 		echo "Folder $TERRAFORM_DIR already exists."
@@ -86,8 +92,8 @@ ip_whitelist_postgresql={"$NAME" = $(dig TXT +short o-o.myaddr.l.google.com @ns1
 EOF
 	fi
 
-  # terraform init is idempotent, so we might as well run it for the user.
-  cd $REPO_ROOT/infrastructure/environments/dev && terraform init -backend-config=terraform.tfvars
+	# terraform init is idempotent, so we might as well run it for the user.
+	cd $REPO_ROOT/infrastructure/environments/dev && terraform init -backend-config=terraform.tfvars
 
 	echo "Your dev terraform environment is ready to go. To initialize run:"
 	echo "("
