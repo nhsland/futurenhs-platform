@@ -4,6 +4,7 @@ import { ServerResponse } from "http";
 import { getServerSideProps } from "../../pages/auth/login";
 
 jest.mock("axios");
+jest.mock("../../lib/events");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -61,7 +62,7 @@ describe("getServerSideProps", () => {
   } as unknown) as GetServerSidePropsContext;
 
   test("redirects when there is no request id", async () => {
-    getServerSideProps({ ...context, query: {} });
+    await getServerSideProps({ ...context, query: {} });
 
     expect(context.res.writeHead).toHaveBeenCalledWith(302, {
       Location: "/.ory/kratos/public/self-service/browser/flows/login",

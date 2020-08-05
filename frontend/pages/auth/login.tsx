@@ -1,33 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { generateFields, FormConfig } from "../../lib/login";
-import { v4 as uuid } from "uuid";
-import EventGridClient from "azure-eventgrid";
-import { TopicCredentials } from "ms-rest-azure";
-
-interface Event {
-  subject: string;
-  eventType: string;
-  data: any;
-  dataVersion: string;
-}
-
-const sendEvent = async (event: Event) => {
-  const loginAttemptEvent = {
-    id: uuid(),
-    subject: event.subject,
-    eventType: event.eventType,
-    eventTime: new Date(),
-    data: event.data,
-    dataVersion: event.dataVersion,
-  };
-  const client = new EventGridClient(
-    new TopicCredentials(process.env.EVENTGRID_TOPIC_KEY!)
-  );
-  await client.publishEvents(process.env.EVENTGRID_TOPIC_ENDPOINT!, [
-    loginAttemptEvent,
-  ]);
-};
+import { sendEvent } from "../../lib/events";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const request = context.query.request;
@@ -37,6 +11,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       Location: "/.ory/kratos/public/self-service/browser/flows/login",
     });
     context.res.end();
+    return { props: {} };
   }
 
   const formFields = await generateFields(context);
