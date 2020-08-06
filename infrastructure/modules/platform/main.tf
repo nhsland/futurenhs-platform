@@ -188,7 +188,7 @@ resource "azurerm_eventhub_namespace" "platform" {
 }
 
 resource "azurerm_eventhub" "analytics" {
-  name                = "analytics-${var.environment}"
+  name                = "analytics"
   namespace_name      = azurerm_eventhub_namespace.platform.name
   resource_group_name = azurerm_resource_group.platform.name
   partition_count     = 1
