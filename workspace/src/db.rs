@@ -30,4 +30,20 @@ impl Workspace {
 
         Ok(workspace)
     }
+
+    pub async fn update(id: Uuid, title: String, pool: &PgPool) -> Result<Workspace> {
+        let workspace = sqlx::query_file_as!(Workspace, "sql/update.sql", title, id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(workspace)
+    }
+
+    pub async fn delete(id: Uuid, pool: &PgPool) -> Result<Workspace> {
+        let workspace = sqlx::query_file_as!(Workspace, "sql/delete.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(workspace)
+    }
 }

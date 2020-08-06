@@ -28,6 +28,11 @@ struct NewWorkspace {
     title: String,
 }
 
+#[InputObject]
+struct UpdateWorkspace {
+    title: String,
+}
+
 #[derive(Clone)]
 pub struct State {
     pub schema: Schema<QueryRoot, MutationRoot, EmptySubscription>,
@@ -47,14 +52,14 @@ pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
-    #[field(desc = "Get all Workspaces")]
+    #[field(description = "Get all Workspaces")]
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
         let workspaces = db::Workspace::find_all(pool).await?;
         Ok(workspaces.iter().cloned().map(Into::into).collect())
     }
 
-    #[field(desc = "Get Workspace by id")]
+    #[field(description = "Get Workspace by id")]
     async fn workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
@@ -67,7 +72,7 @@ pub struct MutationRoot;
 
 #[Object]
 impl MutationRoot {
-    #[field(desc = "Create a new workspace (returns the created workspace)")]
+    #[field(description = "Create a new workspace (returns the created workspace)")]
     async fn create_workspace(
         &self,
         context: &Context<'_>,
@@ -75,6 +80,28 @@ impl MutationRoot {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let workspace = db::Workspace::create(workspace.title, pool).await?;
+        Ok(workspace.into())
+    }
+
+    #[field(description = "Update workspace(returns updated workspace")]
+    async fn update_workspace(
+        &self,
+        context: &Context<'_>,
+        id: ID,
+        workspace: UpdateWorkspace,
+    ) -> FieldResult<Workspace> {
+        let pool = context.data()?;
+        let workspace =
+            db::Workspace::update(Uuid::parse_str(id.as_str())?, workspace.title, pool).await?;
+
+        Ok(workspace.into())
+    }
+
+    #[field(description = "Delete workspace(returns updated workspace")]
+    async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
+        let pool = context.data()?;
+        let workspace = db::Workspace::delete(Uuid::parse_str(id.as_str())?, pool).await?;
+
         Ok(workspace.into())
     }
 }
