@@ -8,11 +8,26 @@ pub struct Workspace {
 }
 
 impl Workspace {
+    pub async fn create(title: String, pool: &PgPool) -> Result<Workspace> {
+        let workspace = sqlx::query_file_as!(Workspace, "sql/create.sql", title)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(workspace)
+    }
     pub async fn find_all(pool: &PgPool) -> Result<Vec<Workspace>> {
         let workspaces = sqlx::query_file_as!(Workspace, "sql/find_all.sql")
             .fetch_all(pool)
             .await?;
 
         Ok(workspaces)
+    }
+
+    pub async fn find_by_id(id: Uuid, pool: &PgPool) -> Result<Workspace> {
+        let workspace = sqlx::query_file_as!(Workspace, "sql/find_by_id.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(workspace)
     }
 }
