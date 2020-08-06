@@ -1,10 +1,13 @@
+use anyhow::Result;
+use dotenv::dotenv;
 use opentelemetry::{api::Provider, sdk, sdk::BatchSpanProcessor};
 use std::env;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
 
 #[tokio::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> Result<()> {
+    dotenv().ok();
     let instrumentation_key =
         env::var("INSTRUMENTATION_KEY").expect("env var INSTRUMENTATION_KEY should exist");
     let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
@@ -19,5 +22,10 @@ async fn main() -> std::io::Result<()> {
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
-    workspace::create_app().listen("0.0.0.0:3030").await
+    let database_url = env::var("DATABASE_URL").expect("API_URL env var not found");
+
+    let app = workspace::create_app(&database_url).await?;
+    app.listen("0.0.0.0:3030").await?;
+
+    Ok(())
 }
