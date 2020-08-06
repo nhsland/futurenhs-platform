@@ -2234,6 +2234,7 @@ dependencies = [
  "scoped-tls",
  "slab",
  "socket2",
+ "tokio",
  "wepoll-sys-stjepang",
  "winapi 0.3.9",
 ]
@@ -3017,6 +3018,7 @@ dependencies = [
  "http-types",
  "opentelemetry",
  "opentelemetry-application-insights",
+ "smol",
  "sqlx",
  "surf",
  "tide",

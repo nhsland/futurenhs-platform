@@ -20,6 +20,7 @@ async-graphql = "1.17.2"
 async-graphql-tide = "1.17.2"
 uuid = "0.8.1"
 http-types = "2.4.0"
+smol = { version = "0.1.18", features = ["tokio02"] }
 
 [dev-dependencies]
 surf = "1.0.3"
