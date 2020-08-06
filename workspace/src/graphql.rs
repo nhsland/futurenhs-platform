@@ -1,9 +1,10 @@
 use super::db;
 use async_graphql::{
+    http::{playground_source, GraphQLPlaygroundConfig},
     Context, EmptySubscription, FieldResult, InputObject, Object, Schema, SimpleObject, ID,
 };
 use sqlx::PgPool;
-use tide::Request;
+use tide::{http::mime, Body, Request, Response, StatusCode};
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A workspace")]
@@ -109,4 +110,15 @@ impl MutationRoot {
 pub async fn handle_graphql(req: Request<State>) -> tide::Result {
     let schema = req.state().schema.clone();
     async_graphql_tide::graphql(req, schema, |query_builder| query_builder).await
+}
+
+pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
+    let mut response = Response::new(StatusCode::Ok);
+    response.set_body(Body::from_string(playground_source(
+        GraphQLPlaygroundConfig::new("/graphql"),
+    )));
+
+    response.set_content_type(mime::HTML);
+
+    Ok(response)
 }

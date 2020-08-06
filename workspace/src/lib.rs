@@ -37,6 +37,7 @@ pub async fn create_app(database_url: &str) -> anyhow::Result<Server<graphql::St
     app.at("/").get(Redirect::permanent("/graphiql"));
     app.at("/healthz").get(|_| async { Ok(Response::new(204)) });
     app.at("/graphql").post(graphql::handle_graphql);
+    app.at("/graphiql").post(graphql::handle_graphiql);
 
     Ok(app)
 }
