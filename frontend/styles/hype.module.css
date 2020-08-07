@@ -1,0 +1,17 @@
+.page {
+  background-color: #005eb8;
+  color: #fff;
+}
+
+.futureIsComing {
+  height: 100vh;
+  font-size: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.marty {
+  margin-left: auto;
+}
