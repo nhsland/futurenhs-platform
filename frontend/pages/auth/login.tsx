@@ -16,9 +16,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const formFields = await generateFields(context);
 
-  // FIXME: This is just an example event. We need to figure out the schema for custom events and change this to events we really need.
+  // TODO: This is just an example event. We need to figure out the schema for custom events and change this to events we really need.
   await sendEvent({
-    subject: "anonymous",
+    subject: "frontend",
     eventType: "frontend.login.attempt",
     data: { messages: formFields.messages?.map((msg) => msg.text) },
     dataVersion: "1",
