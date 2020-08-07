@@ -26,6 +26,11 @@ spec:
                 secretKeyRef:
                   name: frontend
                   key: eventgrid_topic_key
+            - name: NEXT_PUBLIC_INSTRUMENTATION_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: telemetry
+                  key: instrumentation_key
           ports:
             - containerPort: 3000
           resources:

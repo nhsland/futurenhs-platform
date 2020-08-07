@@ -13,3 +13,7 @@ variable "eventgrid_topic_endpoint" {
 variable "eventgrid_topic_key" {
   description = "Access key of the platform Event Grid Topic"
 }
+
+variable "instrumentation_key" {
+  description = "Application Insights instrumentation key"
+}

@@ -15,6 +15,12 @@ spec:
       containers:
         - name: hello-world
           image: fnhsproduction.azurecr.io/hello-world
+          env:
+            - name: INSTRUMENTATION_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: telemetry
+                  key: instrumentation_key
           ports:
             - containerPort: 3030
           resources:
