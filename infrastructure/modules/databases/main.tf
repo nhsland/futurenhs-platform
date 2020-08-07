@@ -89,3 +89,12 @@ resource "kubernetes_secret" "frontend" {
     eventgrid_topic_key      = data.azurerm_eventgrid_topic.platform.primary_access_key
   }
 }
+
+resource "kubernetes_namespace" "hello_world" {
+  metadata {
+    name = "hello-world"
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+  }
+}
