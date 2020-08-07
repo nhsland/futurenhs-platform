@@ -44,9 +44,9 @@ RUN cargo clippy --release -- -D warnings &&
 # Create the release
 FROM release-context AS release
 
-COPY --from=build /usr/src/workspace/target/release/workspace-service /
+COPY --from=build /usr/src/workspace-service/target/release/workspace-service /
 
-RUN chown -R svc /workspace-workspace
+RUN chown -R svc /workspace-service
 
 USER svc
 

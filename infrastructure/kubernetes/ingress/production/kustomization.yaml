@@ -6,6 +6,7 @@ resources:
   - ingress-frontend.yaml
   - ingress-hello-world.yaml
   - ingress-kratos.yaml
+  - ingress-workspace-service.yaml
 patchesStrategicMerge:
   - patch-replicas.yaml
   - patch-dns.yaml
