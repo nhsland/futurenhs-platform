@@ -3,8 +3,8 @@
 # before attempting to apply this module.
 locals {
   databases = [
-    "kratos-db",
-    "workspace-db",
+    "kratos",
+    "workspace",
   ]
 }
 
