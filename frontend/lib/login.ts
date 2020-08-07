@@ -23,17 +23,9 @@ export const generateFields = async (
   context: GetServerSidePropsContext
 ): Promise<FormConfig> => {
   const request = context.query.request;
-  try {
-    const res = await axios.get(
-      `http://kratos-admin.kratos/self-service/browser/flows/requests/login?request=${request}`
-    );
-    const formattedDetails = res.data;
-
-    const config = formattedDetails.methods.password.config;
-
-    return config;
-  } catch (error) {
-    console.error(error.response.statusText);
-    throw error;
-  }
+  const res = await axios.get(
+    `http://kratos-admin.kratos/self-service/browser/flows/requests/login?request=${request}`
+  );
+  const formattedDetails = res.data;
+  return formattedDetails.methods.password.config;
 };
