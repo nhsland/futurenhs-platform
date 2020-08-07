@@ -65,11 +65,6 @@ resource "kubernetes_secret" "kratos_db_creds" {
   }
 }
 
-data "azurerm_eventgrid_topic" "platform" {
-  name                = var.eventgrid_topic_name
-  resource_group_name = var.resource_group_name
-}
-
 resource "kubernetes_namespace" "frontend" {
   metadata {
     name = "frontend"
@@ -85,8 +80,8 @@ resource "kubernetes_secret" "frontend" {
     namespace = kubernetes_namespace.frontend.metadata[0].name
   }
   data = {
-    eventgrid_topic_endpoint = data.azurerm_eventgrid_topic.platform.endpoint
-    eventgrid_topic_key      = data.azurerm_eventgrid_topic.platform.primary_access_key
+    eventgrid_topic_endpoint = var.eventgrid_topic_endpoint
+    eventgrid_topic_key      = var.eventgrid_topic_key
   }
 }
 
