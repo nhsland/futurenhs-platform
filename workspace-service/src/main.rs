@@ -24,7 +24,7 @@ async fn main() -> Result<()> {
 
     let database_url = env::var("DATABASE_URL").expect("API_URL env var not found");
 
-    let app = workspace-service::create_app(&database_url).await?;
+    let app = workspace_service::create_app(&database_url).await?;
     app.listen("0.0.0.0:3030").await?;
 
     Ok(())

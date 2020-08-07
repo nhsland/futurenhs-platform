@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   annotations:
     linkerd.io/inject: enabled
-  name: workspace
+  name: workspace-service
