@@ -1,5 +1,5 @@
-import axios from "axios";
-import { GetServerSidePropsContext } from "next";
+import { LoginRequest } from "@oryd/kratos-client";
+import { adminApi } from "../utils/kratos";
 
 export type FormConfig = {
   action: string;
@@ -20,12 +20,11 @@ export type FormConfig = {
 };
 
 export const generateFields = async (
-  context: GetServerSidePropsContext
-): Promise<FormConfig> => {
-  const request = context.query.request;
-  const res = await axios.get(
-    `http://kratos-admin.kratos/self-service/browser/flows/requests/login?request=${request}`
-  );
-  const formattedDetails = res.data;
-  return formattedDetails.methods.password.config;
+  request: string
+): Promise<LoginRequest> => {
+  const res = await adminApi.getSelfServiceBrowserLoginRequest(request);
+
+  const formattedDetails = res.body;
+
+  return formattedDetails;
 };

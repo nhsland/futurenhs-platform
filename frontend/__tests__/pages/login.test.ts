@@ -1,52 +1,41 @@
-import axios, { AxiosResponse } from "axios";
-import { GetServerSidePropsContext } from "next";
 import { ServerResponse } from "http";
+import { GetServerSidePropsContext } from "next";
+import { LoginRequest } from "@oryd/kratos-client";
 import { getServerSideProps } from "../../pages/auth/login";
+import { adminApi } from "../../utils/kratos";
 
-jest.mock("axios");
 jest.mock("../../lib/events");
+jest.mock("../../utils/kratos");
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAdminApi = adminApi as jest.Mocked<typeof adminApi>;
 
 describe("getServerSideProps", () => {
-  const formFields = {
+  const formConfig = {
+    action: "http://url.com",
     fields: [
-      {
-        name: "identifier",
-        type: "text",
-        required: true,
-        value: "tracy@gmail.com",
-      },
-      { name: "password", type: "password", required: true },
+      { name: "identifier", type: "text" },
+      { name: "password", type: "password" },
       {
         name: "csrf_token",
         type: "hidden",
-        required: true,
-        value:
-          "OktXW1Xvbj2wUI+o0iB0OxJOEFlLQ5hQ4rL2c/za9TibZlb7CnBU6DfiMQ//t4llq24KFhnq3Kiagmz2wTinwQ==",
       },
     ],
+    method: "post",
   };
-  const testJson = {
-    expires_at: "2020-07-27T14:40:28.4155578Z",
-    forced: false,
-    id: "4a62445d-e238-46dd-95ca-611a2df94960",
-    issued_at: "2020-07-27T14:30:28.4155723Z",
-    messages: null,
+
+  const body: LoginRequest = {
+    active: "password",
+    expiresAt: new Date(),
+    id: "598a45d2-e107-41ba-885a-c5c39e4a26d5",
+    issuedAt: new Date(),
+    messages: undefined,
     methods: {
       password: {
-        config: formFields,
+        config: formConfig,
         method: "password",
       },
     },
-    request_url: "http://localhost:4455/self-service/browser/flows/login",
-  };
-  const axiosResponse: AxiosResponse = {
-    data: testJson,
-    status: 200,
-    statusText: "OK",
-    config: {},
-    headers: {},
+    requestUrl: "http://localhost:4455/self-service/browser/flows/login",
   };
 
   const requestValue = "test123";
@@ -71,26 +60,30 @@ describe("getServerSideProps", () => {
   });
 
   test("with request id ", async () => {
-    mockedAxios.get.mockResolvedValue(axiosResponse);
+    mockedAdminApi.getSelfServiceBrowserLoginRequest.mockResolvedValue({
+      response: null as any,
+      body: body,
+    });
 
     const props = await getServerSideProps(context);
 
     expect(props).toEqual({
       props: {
         request: requestValue,
-        formFields: formFields,
+        formConfig: formConfig,
       },
     });
   });
+
   test("throws error", async () => {
-    mockedAxios.get.mockRejectedValue({
-      response: { statusText: "something went wrong" },
+    mockedAdminApi.getSelfServiceBrowserLoginRequest.mockRejectedValue({
+      body: { messages: "something went wrong" },
     });
 
     const result = await getServerSideProps(context).catch((e) => e);
 
     expect(result).toEqual({
-      response: { statusText: "something went wrong" },
+      body: { messages: "something went wrong" },
     });
   });
 });
