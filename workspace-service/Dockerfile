@@ -13,14 +13,11 @@ COPY Cargo.lock .
 
 # it was borrowed from here:
 # https://github.com/deislabs/krustlet/blob/master/Dockerfile#L7
-RUN mkdir -p ./src/ &&
-    echo 'fn main() {}' >./src/main.rs &&
-    echo '' >./src/lib.rs
+RUN mkdir -p ./src/ && echo 'fn main() {}' >./src/main.rs && echo '' >./src/lib.rs
 
 RUN cargo fetch
 
-RUN cargo build --release &&
-    rm -rf ./target/release/.fingerprint/workspace-service-*
+RUN cargo build --release && rm -rf ./target/release/.fingerprint/workspace-service-*
 
 # Setup debian release environment
 FROM debian:buster-slim AS release-context
@@ -37,9 +34,7 @@ FROM build-context AS build
 COPY ./src ./src
 COPY sql ./sql
 
-RUN cargo clippy --release -- -D warnings &&
-    cargo test --release &&
-    cargo build --release
+RUN cargo clippy --release -- -D warnings && cargo test --release && cargo build --release
 
 # Create the release
 FROM release-context AS release
