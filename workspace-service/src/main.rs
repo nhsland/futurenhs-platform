@@ -17,14 +17,14 @@ async fn main() -> Result<()> {
         .with_batch_exporter(batch_exporter)
         .build();
 
-    let tracer = provider.get_tracer("workspace");
+    let tracer = provider.get_tracer("workspace-service");
     let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
     let database_url = env::var("DATABASE_URL").expect("API_URL env var not found");
 
-    let app = workspace::create_app(&database_url).await?;
+    let app = workspace-service::create_app(&database_url).await?;
     app.listen("0.0.0.0:3030").await?;
 
     Ok(())

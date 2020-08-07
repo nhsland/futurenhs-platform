@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: workspace
+  name: workspace-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: workspace
+      app: workspace-service
   template:
     metadata:
       labels:
-        app: workspace
+        app: workspace-service
     spec:
       containers:
-        - name: workspace
-          image: fnhsproduction.azurecr.io/workspace
+        - name: workspace-service
+          image: fnhsproduction.azurecr.io/workspace-service
           ports:
             - containerPort: 3030
           resources:
@@ -26,14 +26,14 @@ spec:
               memory: 100Mi
           readinessProbe:
             httpGet:
-              path: /hello/test
+              path: /healthz
               port: 3030
             initialDelaySeconds: 5
             periodSeconds: 15
             timeoutSeconds: 30
           livenessProbe:
             httpGet:
-              path: /hello/test
+              path: /healthz
               port: 3030
             initialDelaySeconds: 5
             periodSeconds: 20

@@ -3,7 +3,7 @@ FROM rust:1.44.1 AS build-context
 
 RUN rustup component add rustfmt clippy
 
-WORKDIR /usr/src/workspace
+WORKDIR /usr/src/workspace-service
 
 COPY Cargo.toml .
 COPY Cargo.lock .
@@ -20,7 +20,7 @@ RUN mkdir -p ./src/ &&
 RUN cargo fetch
 
 RUN cargo build --release &&
-    rm -rf ./target/release/.fingerprint/workdpace-*
+    rm -rf ./target/release/.fingerprint/workspace-service-*
 
 # Setup debian release environment
 FROM debian:buster-slim AS release-context
@@ -44,12 +44,12 @@ RUN cargo clippy --release -- -D warnings &&
 # Create the release
 FROM release-context AS release
 
-COPY --from=build /usr/src/workspace/target/release/workspace /
+COPY --from=build /usr/src/workspace/target/release/workspace-service /
 
-RUN chown -R svc /workspace
+RUN chown -R svc /workspace-workspace
 
 USER svc
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
-CMD ["/workspace"]
+CMD ["/workspace-service"]

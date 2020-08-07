@@ -4,7 +4,7 @@
 locals {
   databases = [
     "kratos",
-    "workspace",
+    "workspace-service",
   ]
 }
 
@@ -45,7 +45,7 @@ resource "postgresql_database" "service" {
 
 resource "postgresql_extension" "uuid-ossp" {
   name     = "uuid-ossp"
-  database = "workspace-db"
+  database = "workspace-service"
 }
 
 resource "kubernetes_namespace" "db" {

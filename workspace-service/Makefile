@@ -1,4 +1,4 @@
-app := workspace
+app := workspace-service
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
 
