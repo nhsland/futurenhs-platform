@@ -10,7 +10,7 @@ const devProxy = {
     target: "http://hello-world.hello-world/",
     changeOrigin: true,
   },
-  "/.ory/kratos/public/self-service/browser/flows/login": {
+  "/.ory/kratos/public/": {
     target: "http://kratos-public.kratos",
     pathRewrite: { "/.ory/kratos/public": "" },
     changeOrigin: false,

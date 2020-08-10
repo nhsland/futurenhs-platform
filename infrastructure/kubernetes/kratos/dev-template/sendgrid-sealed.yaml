@@ -1,0 +1,14 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: sendgrid
+  namespace: kratos
+spec:
+  encryptedData:
+    connection_uri: AgCn0Z94YfXl0wX88CiSVNv0KCxQQIqdQSxZ+4PvQnzG9lVxOOUvAqrOLUTWiDAO2M1BA52f1c4gqIOG/v/lMoCuIUOeQcD+Blx/4NGOYQ2rPZmblVmww238DBV4d1oJG2Qzdu5ShrvUv0mq40h6YcGdrRoXfd7oYvr1UVQeQYBC0gaQRC0wAkVko7ryjgdogtUtbRFOvvdTliNXglvYgvNO9O+Gdihj/G3+u4y1JCkhA2I4cU/E57Osru2SZRZgvea+xj5nQfumDU3oqMh43hV/Gg6UScC2MYzGAZQXVmlfZ40+oRX2DZe0gzOGcTO3FmU4kTXAUZSLRcLnp3rnalV4T7PYdNToVX/Mx2Kv6/wsP2zBsIui4xTZnHvx2L7XrugJdvNsTW+R75CAcrBL7CfOdXpCA1Q/3Az6ePGuX/iKLZ/82jgAkbC9uTvnx8u2deoDvVE5wFj7wHO5E/byHterWDrGX82fMHWEybrvZt4t2Ybzm3kHlkbbxcK1t7Fm4oQFITmCSIpxpQyWYxXB7QABFcLtUq1iE//Pgeb0oe8IDPePF1mIGvcQDe6ULPYEI9WZvAf/uP+J5ugjvUhqG5FkhU3/Wnoz1D9vXmCS6Sl8CrxqUSb0HhiRLont6b1RXoOferL/HhhczjgLCo+ylCWJqyXfoqhiQ8k+xxPFBnuV+EIkMdvlllktHIvmUSa1AeIW3idAG4bF+IVHcTzbHAW611L0Mh78hceqp1M1uK6902ND5Q7wjPsF0OHiMvQt6LXWgj8JcvpTAhjnGCBTHZj45r4kxaa0qMZ6r124ZKTzlmuuek9EW1A19YHE6QC8w43AVSfMuoeJdkRkVA==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: sendgrid
+      namespace: kratos

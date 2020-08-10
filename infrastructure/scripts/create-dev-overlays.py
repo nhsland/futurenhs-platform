@@ -4,6 +4,7 @@ import json
 import os
 from string import Template
 import argparse
+from glob import glob
 
 repo_root = os.path.join(os.path.dirname(__file__), '../..')
 services = [
@@ -18,11 +19,20 @@ services = [
 def create_overlays(name, variables):
     for service in  services:
         os.makedirs(f'{repo_root}/{service}/dev-{name}', exist_ok=True)
-        for filename in os.listdir(f'{repo_root}/{service}/dev-template'):
-            with open(f'{repo_root}/{service}/dev-template/{filename}') as f:
+        template_dir = f'{repo_root}/{service}/dev-template'
+        template_files = glob(f'{template_dir}/**/*', recursive=True)
+        for filename in template_files:
+            outfilename = filename.replace(template_dir, f'{repo_root}/{service}/dev-{name}')
+            if os.path.isdir(filename):
+                try:
+                    os.mkdir(outfilename)
+                except FileExistsError:
+                    pass
+                continue
+            with open(filename) as f:
                 content = f.read()
             content = Template(content).substitute(NAME=name, **variables)
-            with open(f'{repo_root}/{service}/dev-{name}/{filename}', 'w') as f:
+            with open(outfilename, 'w') as f:
                 f.write(content)
 
 def main():

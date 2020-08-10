@@ -10,3 +10,4 @@ configMapGenerator:
     namespace: kratos
     files:
       - identity.traits.schema.json
+      - config.yaml

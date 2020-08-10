@@ -1,7 +1,8 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { generateFields, FormConfig } from "../../lib/login";
+import { getLoginFields } from "../../lib/auth";
 import { sendEvent } from "../../lib/events";
+import { LoginRequestMethodConfig } from "@oryd/kratos-client";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const request = context.query.request;
@@ -17,14 +18,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: {} };
   }
 
-  const formattedDetails = await generateFields(request);
+  const formattedDetails = await getLoginFields(request);
   const formConfig = formattedDetails.methods.password.config;
+  const messages = formConfig.messages?.map((msg) => msg.text ?? "") ?? null;
 
   // TODO: This is just an example event. We need to figure out the schema for custom events and change this to events we really need.
   await sendEvent({
     subject: "frontend",
     eventType: "frontend.login.attempt",
-    data: { messages: formConfig.messages?.map((msg) => msg.text ?? "") },
+    data: { messages },
     dataVersion: "1",
   });
 
@@ -41,7 +43,7 @@ const Login = ({
   formConfig,
 }: {
   request: string;
-  formConfig: FormConfig;
+  formConfig: LoginRequestMethodConfig;
 }) => {
   return (
     <>
@@ -66,7 +68,7 @@ const Login = ({
                     name={name}
                     type={type}
                     required={required}
-                    defaultValue={value}
+                    defaultValue={(value as unknown) as string}
                   />
                 </div>
               </>
