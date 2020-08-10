@@ -16,6 +16,8 @@
 
 - [ ] Feature flag
 
+- [ ] Data columns adhere to the [Dublin Core Metatdata schema](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/). Further information is available [here](https://www.gov.uk/government/publications/recommended-open-standards-for-government/using-metadata-to-describe-data-shared-within-government)
+
 ## Testing information
 
 - Is there any special setup required?
