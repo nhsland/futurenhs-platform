@@ -17,6 +17,12 @@ spec:
           image: fnhsproduction.azurecr.io/workspace-service
           ports:
             - containerPort: 3030
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: workspace-service
+                  key: url
           resources:
             limits:
               cpu: 100m

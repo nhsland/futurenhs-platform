@@ -87,7 +87,7 @@ resource "kubernetes_secret" "workspace_service_db_creds" {
     namespace = "workspace-service"
   }
   data = {
-    dsn = "postgres://${
+    url = "postgres://${
       postgresql_role.service["workspace-service"].name
       }@${
       var.postgresql_server_name
