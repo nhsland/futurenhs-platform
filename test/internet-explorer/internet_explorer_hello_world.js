@@ -1,19 +1,20 @@
 require("dotenv").config();
-var webdriver = require("selenium-webdriver");
-var assert = require("assert");
 
-var userName = process.env.BROWSERSTACK_USERNAME;
-var accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
+const webdriver = require("selenium-webdriver");
+const assert = require("assert");
 
-var baseUrl = process.env.IE_BASE_URL;
-var browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack.com/wd/hub`;
+const userName = process.env.BROWSERSTACK_USERNAME;
+const accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
+
+const baseUrl = process.env.IE_BASE_URL;
+const browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack.com/wd/hub`;
 
 describe("Page loads", function () {
   this.timeout(15000);
   let driver;
 
   before(function () {
-    let capabilities = {
+    const capabilities = {
       os: "Windows",
       os_version: "10",
       browserName: "IE",
@@ -29,8 +30,8 @@ describe("Page loads", function () {
       .build();
   });
 
-  it("should render FutureNHS", (done) => {
-    const expected = "FutureNHS";
+  it("should render hype page", (done) => {
+    const expected = "The new Future is coming...";
 
     driver
       .get(baseUrl)
