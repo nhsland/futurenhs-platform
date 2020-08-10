@@ -58,25 +58,45 @@ resource "kubernetes_namespace" "db" {
   }
 }
 
-resource "kubernetes_secret" "db_creds" {
-  for_each = toset(local.databases)
+resource "kubernetes_secret" "kratos_db_creds" {
   metadata {
-    name      = "${each.value}-db-creds"
-    namespace = each.value
+    name      = "kratos"
+    namespace = "kratos"
   }
   data = {
     secretsDefault = random_password.kratos_secrets_default.result
     secretsCookie  = random_password.kratos_secrets_cookie.result
     dsn = "postgres://${
-      postgresql_role.service[each.value].name
+      postgresql_role.service["kratos"].name
       }@${
       var.postgresql_server_name
       }:${
-      random_password.postgresql_password[each.value].result
+      random_password.postgresql_password["kratos"].result
       }@${
       var.postgresql_server_name
       }.postgres.database.azure.com:5432/${
-      postgresql_database.service[each.value].name
+      postgresql_database.service["kratos"].name
+    }"
+  }
+}
+
+
+resource "kubernetes_secret" "workspace_service_db_creds" {
+  metadata {
+    name      = "workspace-service"
+    namespace = "workspace-service"
+  }
+  data = {
+    dsn = "postgres://${
+      postgresql_role.service["workspace-service"].name
+      }@${
+      var.postgresql_server_name
+      }:${
+      random_password.postgresql_password["workspace-service"].result
+      }@${
+      var.postgresql_server_name
+      }.postgres.database.azure.com:5432/${
+      postgresql_database.service["workspace-service"].name
     }"
   }
 }
