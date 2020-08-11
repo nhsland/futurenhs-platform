@@ -20,7 +20,7 @@ RUN mkdir -p ./src/ && echo 'fn main() {}' >./src/main.rs && echo '' >./src/lib.
 
 RUN cargo fetch
 
-RUN cargo build --release && rm -rf ./target/release/.fingerprint/workspace-service-*
+RUN cargo build --release && rm -rf ./target/release/.fingerprint/workspace_service-*
 
 # Setup debian release environment
 FROM debian:buster-slim AS release-context
@@ -36,18 +36,19 @@ FROM build-context AS build
 
 COPY ./src ./src
 COPY sql ./sql
+COPY ./migrations ./migrations
 
 RUN cargo clippy --release -- -D warnings && cargo test --release && cargo build --release
 
 # Create the release
 FROM release-context AS release
 
-COPY --from=build /usr/src/workspace-service/target/release/workspace-service /
+COPY --from=build /usr/src/workspace-service/target/release/workspace_service /
 
-RUN chown -R svc /workspace-service
+RUN chown -R svc /workspace_service
 
 USER svc
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
-CMD ["/workspace-service"]
+CMD ["/workspace_service"]
