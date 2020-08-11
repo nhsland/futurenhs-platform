@@ -8,6 +8,8 @@ WORKDIR /usr/src/workspace-service
 COPY Cargo.toml .
 COPY Cargo.lock .
 
+ENV DATABASE_URL=postgres://postgres@postgres:postgres:5432
+
 # Layer hack: Build an empty program to compile dependencies and place on their own layer.
 # This cuts down build time
 
