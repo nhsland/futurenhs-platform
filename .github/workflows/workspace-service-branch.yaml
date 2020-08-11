@@ -35,15 +35,18 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
       - name: Connect to PostgreSQL
-        # Runs a script that creates a PostgreSQL client, populates
-        # the client with data, and retrieves data TODO: Work out what to do here.....
+        working-directory: futurenhs-platform/workspace-service
         run: |
-          
+          set -e
+          cargo install --version=0.1.0-beta.1 sqlx-cli --no-default-features --features postgres
+          export DATABASE_URL=postgres://postgres:postgres@postgres:5432
+          sqlx migrate run
         env:
-          # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
-          # The default PostgreSQL port
           POSTGRES_PORT: 5432
       - name: "Build & Push image"
         working-directory: futurenhs-platform/workspace-service
