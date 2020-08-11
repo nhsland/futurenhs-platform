@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Event",
+  "allOf": [
+    { "$ref": "#/definitions/BaseEvent" },
+    {
+      "oneOf": [
+        { "$ref": "#/definitions/LoggedInEvent" },
+        { "$ref": "#/definitions/LoggedInEventV2" },
+        { "$ref": "#/definitions/LoginFailedEvent" }
+      ]
+    }
+  ],
+  "definitions": {
+    "BaseEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "eventTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "subject", "eventTime"]
+    },
+    "LoggedInEvent": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["loggedin"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "LoggedInEventV2": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["loggedin"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["2"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "LoginFailedEvent": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["loginfailed"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    }
+  }
+}

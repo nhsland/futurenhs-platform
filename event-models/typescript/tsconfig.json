@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "allowJs": false,
+    "strict": true,
+    "alwaysStrict": true,
+    "outDir": "dist",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": ["*.ts", "examples/*.ts"],
+  "exclude": ["node_modules"]
+}
