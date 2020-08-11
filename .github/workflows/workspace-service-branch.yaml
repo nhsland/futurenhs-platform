@@ -24,6 +24,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - name: Clone Platform repo
         uses: actions/checkout@v2
@@ -43,7 +45,7 @@ jobs:
         run: |
           set -e
           cargo install --version=0.1.0-beta.1 sqlx-cli --no-default-features --features postgres
-          export DATABASE_URL=postgres://postgres:postgres@postgres:5432
+          export DATABASE_URL=postgres://postgres:postgres@localhost:5432
           sqlx migrate run
         env:
           POSTGRES_HOST: postgres
