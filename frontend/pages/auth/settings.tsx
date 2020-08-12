@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import { getSettingsFields } from "../../lib/auth";
 import { sendEvent } from "../../lib/events";
 import { RequestMethodConfig } from "@oryd/kratos-client";
+import { redirect } from "../../utils/pages/redirect";
 
 type SettingsProps = {
   request: string;
@@ -15,15 +16,11 @@ export const getServerSideProps: GetServerSideProps = async (
 ): Promise<{ props: SettingsProps }> => {
   const request = context.query.request;
 
-  if (!request && context.res) {
-    context.res.writeHead(302, {
-      Location: "/.ory/kratos/public/self-service/browser/flows/settings",
-    });
-    context.res.end();
-    return { props: {} as any };
-  }
   if (!request || Array.isArray(request)) {
-    return { props: {} as any };
+    return redirect(
+      context,
+      "/.ory/kratos/public/self-service/browser/flows/settings"
+    );
   }
 
   const settings = await getSettingsFields(request);

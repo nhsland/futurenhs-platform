@@ -3,19 +3,16 @@ import { GetServerSideProps } from "next";
 import { getLoginFields } from "../../lib/auth";
 import { sendEvent } from "../../lib/events";
 import { LoginRequestMethodConfig } from "@oryd/kratos-client";
+import { redirect } from "../../utils/pages/redirect";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const request = context.query.request;
 
-  if (!request && context.res) {
-    context.res.writeHead(302, {
-      Location: "/.ory/kratos/public/self-service/browser/flows/login",
-    });
-    context.res.end();
-    return { props: {} };
-  }
   if (!request || Array.isArray(request)) {
-    return { props: {} };
+    return redirect(
+      context,
+      "/.ory/kratos/public/self-service/browser/flows/login"
+    );
   }
 
   const formattedDetails = await getLoginFields(request);
