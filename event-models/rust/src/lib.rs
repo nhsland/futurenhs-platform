@@ -9,10 +9,6 @@ schemafy::schemafy!(
     "../schema.json"
 );
 
-// Adjacently tagged enum, which is flattened in the main event struct comes close.
-// But it's still missing the dataVersion
-// Maybe a custom struct serialization can help: https://serde.rs/deserialize-struct.html
-// But is that too much?
 #[derive(Debug)]
 pub enum CustomEventData {
     LoggedIn(LoggedInEventData),
