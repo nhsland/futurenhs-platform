@@ -98,7 +98,7 @@ impl MutationRoot {
         Ok(workspace.into())
     }
 
-    #[field(description = "Delete workspace(returns updated workspace")]
+    #[field(description = "Delete workspace(returns deleted workspace")]
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let workspace = db::Workspace::delete(Uuid::parse_str(id.as_str())?, pool).await?;

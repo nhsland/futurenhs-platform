@@ -11,14 +11,10 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     services:
-      # Label used to access the service container
       postgres:
-        # Docker Hub image
         image: postgres
-        # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -40,16 +36,13 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - name: Connect to PostgreSQL
+      - name: Run DB migrations on test database
         working-directory: futurenhs-platform/workspace-service
         run: |
           set -e
           cargo install --version=0.1.0-beta.1 sqlx-cli --no-default-features --features postgres
           export DATABASE_URL=postgres://postgres:postgres@localhost:5432
           sqlx migrate run
-        env:
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
       - name: "Build & Push image"
         working-directory: futurenhs-platform/workspace-service
         run: |

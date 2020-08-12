@@ -15,6 +15,7 @@ impl Workspace {
 
         Ok(workspace)
     }
+
     pub async fn find_all(pool: &PgPool) -> Result<Vec<Workspace>> {
         let workspaces = sqlx::query_file_as!(Workspace, "sql/find_all.sql")
             .fetch_all(pool)
