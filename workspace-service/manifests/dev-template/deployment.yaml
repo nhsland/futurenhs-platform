@@ -7,6 +7,3 @@ spec:
     spec:
       containers:
         - name: workspace-service
-          env:
-            - name: INSTRUMENTATION_KEY
-              value: "$INSTRUMENTATION_KEY"

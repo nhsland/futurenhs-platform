@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
     tini \
     ;
 
-RUN apt install openssl -y
+RUN apt install libssl1.1 -y
 
 RUN useradd svc
 

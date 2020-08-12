@@ -23,6 +23,11 @@ spec:
                 secretKeyRef:
                   name: workspace-service
                   key: url
+            - name: INSTRUMENTATION_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: telemetry
+                  key: instrumentation_key
           resources:
             limits:
               cpu: 100m
