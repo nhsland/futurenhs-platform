@@ -19,7 +19,7 @@ describe(sendEvent, () => {
     test("sends event to event grid", async () => {
       await sendEvent({
         subject: "test",
-        eventType: "test",
+        eventType: "frontend.login.attempt",
         data: {},
         dataVersion: "1",
       });
@@ -31,7 +31,7 @@ describe(sendEvent, () => {
         {
           id: expect.any(String),
           subject: "test",
-          eventType: "test",
+          eventType: "frontend.login.attempt",
           eventTime: expect.any(Date),
           data: {},
           dataVersion: "1",
@@ -46,7 +46,7 @@ describe(sendEvent, () => {
     test("logs event to console", async () => {
       await sendEvent({
         subject: "test",
-        eventType: "test",
+        eventType: "frontend.login.attempt",
         data: {},
         dataVersion: "1",
       });
