@@ -10,6 +10,12 @@ The API is built with [Rust](https://www.rust-lang.org/), using a web server cra
 1. Build a Docker image `make docker-build`
 1. Run docker image `make docker-run`
 
+## Development cluster port forwarding.
+
+To interact with the GraphQL playground, use portforwarding:
+
+`kubectl port-forward -n workspace-service deployments/workspace-service 3030:3030`
+
 ## Formatting
 
 [rustfmt](https://github.com/rust-lang/rustfmt) is used for formatting our rust code. CI will fail if code is not formatted correctly.
