@@ -5,7 +5,14 @@ import { sendEvent } from "../../lib/events";
 import { LoginRequestMethodConfig } from "@oryd/kratos-client";
 import { redirect } from "../../utils/pages/redirect";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+type LoginProps = {
+  request: string;
+  formConfig: LoginRequestMethodConfig;
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context
+): Promise<{ props: LoginProps }> => {
   const request = context.query.request;
 
   if (!request || Array.isArray(request)) {
@@ -35,13 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Login = ({
-  request,
-  formConfig,
-}: {
-  request: string;
-  formConfig: LoginRequestMethodConfig;
-}) => {
+const Login = ({ request, formConfig }: LoginProps) => {
   return (
     <>
       {formConfig.messages?.map(({ text }) => {
