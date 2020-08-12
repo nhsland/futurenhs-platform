@@ -107,7 +107,7 @@ as opposed to sharing a staging environment.
 1. After verifying the plan above, apply changes. The infrastructure will be created in Azure.
 
    ```bash
-   terraform apply
+   terraform apply -target module.platform && terraform apply
    ```
 
 1. Give the Kubernetes cluster permissions to pull images from our Docker registry.

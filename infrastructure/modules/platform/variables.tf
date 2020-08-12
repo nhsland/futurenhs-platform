@@ -10,3 +10,21 @@ variable "ip_whitelist_postgresql" {
   description = "List of allowed IPs for use with PostgreSQL"
   type        = map(string)
 }
+
+variable "enable_analytics" {
+  description = "Should analytics be enabled? true or false"
+  type        = bool
+}
+
+variable "ip_whitelist_analytics" {
+  description = "List of allowed IPs"
+  type        = map(string)
+}
+
+variable "ad_username" {
+  description = "Active Directory Username"
+}
+
+variable "ad_object_id" {
+  description = "Active Directory Object ID"
+}

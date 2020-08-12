@@ -130,6 +130,12 @@ resource "random_password" "postgresql_password" {
   upper   = true
 }
 
+resource "random_string" "random_string_10_chars" {
+  length  = 10
+  special = false
+  upper   = false
+}
+
 resource "azurerm_postgresql_server" "postgresql_server" {
   name                = "postgresql-${var.environment}"
   location            = azurerm_resource_group.platform.location
@@ -185,18 +191,4 @@ resource "azurerm_eventhub_namespace" "platform" {
   tags = {
     environment = var.environment
   }
-}
-
-resource "azurerm_eventhub" "analytics" {
-  name                = "analytics"
-  namespace_name      = azurerm_eventhub_namespace.platform.name
-  resource_group_name = azurerm_resource_group.platform.name
-  partition_count     = 1
-  message_retention   = 1
-}
-
-resource "azurerm_eventgrid_event_subscription" "analytics" {
-  name                 = "analytics-events"
-  scope                = azurerm_eventgrid_topic.platform.id
-  eventhub_endpoint_id = azurerm_eventhub.analytics.id
 }

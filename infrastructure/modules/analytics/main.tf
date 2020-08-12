@@ -38,6 +38,7 @@ resource "azurerm_key_vault" "secret_vault" {
   }
 }
 
+
 resource "azurerm_key_vault_secret" "synapse_password" {
   name         = "synapse-password"
   value        = random_password.password.result
