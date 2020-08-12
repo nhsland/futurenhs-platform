@@ -98,13 +98,7 @@ as opposed to sharing a staging environment.
    terraform init -backend-config=terraform.tfvars
    ```
 
-1. Create an execution plan:
-
-   ```bash
-   terraform plan
-   ```
-
-1. After verifying the plan above, apply changes. The infrastructure will be created in Azure.
+1. Apply changes. The infrastructure will be created in Azure.
 
    ```bash
    terraform apply -target module.platform && terraform apply

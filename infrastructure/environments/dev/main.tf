@@ -26,7 +26,7 @@ module platform {
   location                = var.location
   ip_whitelist_postgresql = var.ip_whitelist_postgresql
   ip_whitelist_analytics  = var.ip_whitelist_analytics
-  enable_analytics        = false
+  enable_analytics        = var.enable_analytics
   ad_username             = "FutureNHS Developers"
   ad_object_id            = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
 }

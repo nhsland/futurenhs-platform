@@ -130,12 +130,6 @@ resource "random_password" "postgresql_password" {
   upper   = true
 }
 
-resource "random_string" "random_string_10_chars" {
-  length  = 10
-  special = false
-  upper   = false
-}
-
 resource "azurerm_postgresql_server" "postgresql_server" {
   name                = "postgresql-${var.environment}"
   location            = azurerm_resource_group.platform.location
