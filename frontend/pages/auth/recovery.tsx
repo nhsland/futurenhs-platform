@@ -27,10 +27,8 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 
   const recovery = await getRecoveryFields(request);
-  console.log(JSON.stringify(recovery, null, 4));
   const formConfig = recovery.methods.link.config!;
   const messages = recovery.messages?.map((msg) => msg.text ?? "") ?? null;
-  console.log(JSON.stringify(messages, null, 4));
 
   // TODO: This is just an example event. We need to figure out the schema for custom events and change this to events we really need.
   await sendEvent({

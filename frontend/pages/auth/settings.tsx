@@ -27,10 +27,8 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 
   const settings = await getSettingsFields(request);
-  console.log(JSON.stringify(settings, null, 4));
   const formConfig = settings.methods.password.config!;
   const messages = settings.messages?.map((msg) => msg.text ?? "") ?? null;
-  console.log(JSON.stringify(messages, null, 4));
 
   // TODO: This is just an example event. We need to figure out the schema for custom events and change this to events we really need.
   await sendEvent({
