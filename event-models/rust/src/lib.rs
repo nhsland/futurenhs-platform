@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::de;
+use serde::ser::{self, SerializeStruct};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -12,14 +13,14 @@ schemafy::schemafy!(
 // But it's still missing the dataVersion
 // Maybe a custom struct serialization can help: https://serde.rs/deserialize-struct.html
 // But is that too much?
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub enum CustomEventData {
     LoggedIn(LoggedInEventData),
     LoggedInV2(LoggedInEventV2Data),
     LoginFailed(LoginFailedEventData),
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub struct CustomEvent {
     pub id: String,
     pub subject: String,
@@ -145,6 +146,36 @@ impl<'de> Deserialize<'de> for CustomEvent {
         ];
         const DATA_VARIANTS: &[&str] = &["see valid combinations in schema.json"];
         deserializer.deserialize_struct("CustomEvent", FIELDS, CustomEventVisitor)
+    }
+}
+
+impl Serialize for CustomEvent {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        let mut state = serializer.serialize_struct("CustomEvent", 6)?;
+        state.serialize_field("id", &self.id)?;
+        state.serialize_field("subject", &self.subject)?;
+        state.serialize_field("eventTime", &self.event_time)?;
+        match &self.data {
+            CustomEventData::LoggedIn(data) => {
+                state.serialize_field("eventType", "loggedin")?;
+                state.serialize_field("data", &data)?;
+                state.serialize_field("dataVersion", "1")?;
+            }
+            CustomEventData::LoggedInV2(data) => {
+                state.serialize_field("eventType", "loggedin")?;
+                state.serialize_field("data", &data)?;
+                state.serialize_field("dataVersion", "2")?;
+            }
+            CustomEventData::LoginFailed(data) => {
+                state.serialize_field("eventType", "loginfailed")?;
+                state.serialize_field("data", &data)?;
+                state.serialize_field("dataVersion", "1")?;
+            }
+        }
+        state.end()
     }
 }
 
