@@ -29,6 +29,8 @@ RUN apt-get update && apt-get install -y \
     tini \
     ;
 
+RUN apt install openssl -y
+
 RUN useradd svc
 
 # Build real binaries now, as late as possible
