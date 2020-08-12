@@ -1,6 +1,7 @@
 import React from "react";
 import App from "next/app";
 import { withApplicationInsights } from "../components/next-applicationinsights";
+import "../styles/global.css";
 
 class MyApp extends App {
   render() {
