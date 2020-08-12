@@ -4,7 +4,7 @@ use async_graphql::{
     Context, EmptySubscription, FieldResult, InputObject, Object, Schema, SimpleObject, ID,
 };
 use sqlx::PgPool;
-use tide::{http::mime, Body, Request, Response, StatusCode};
+use tide::{http::mime, Request, Response, StatusCode};
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A workspace")]
@@ -57,7 +57,7 @@ impl QueryRoot {
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
         let workspaces = db::Workspace::find_all(pool).await?;
-        Ok(workspaces.iter().cloned().map(Into::into).collect())
+        Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
     #[field(description = "Get Workspace by id")]
@@ -113,12 +113,10 @@ pub async fn handle_graphql(req: Request<State>) -> tide::Result {
 }
 
 pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
-    let mut response = Response::new(StatusCode::Ok);
-    response.set_body(Body::from_string(playground_source(
-        GraphQLPlaygroundConfig::new("/graphql"),
-    )));
-
-    response.set_content_type(mime::HTML);
+    let response = Response::builder(StatusCode::Ok)
+    .body(playground_source(GraphQLPlaygroundConfig::new("/graphql")))
+    .content_type(mime::HTML)
+    .build();
 
     Ok(response)
 }
