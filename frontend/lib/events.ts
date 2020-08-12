@@ -10,7 +10,7 @@ export interface Event {
     | "frontend.recovery.attempt"
     | "frontend.settings.attempt";
   data: {
-    messages: string[] | null;
+    messages?: string[] | null;
   };
   dataVersion: "1";
 }
