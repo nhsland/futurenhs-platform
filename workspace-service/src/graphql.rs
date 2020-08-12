@@ -114,9 +114,9 @@ pub async fn handle_graphql(req: Request<State>) -> tide::Result {
 
 pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
     let response = Response::builder(StatusCode::Ok)
-    .body(playground_source(GraphQLPlaygroundConfig::new("/graphql")))
-    .content_type(mime::HTML)
-    .build();
+        .body(playground_source(GraphQLPlaygroundConfig::new("/graphql")))
+        .content_type(mime::HTML)
+        .build();
 
     Ok(response)
 }
