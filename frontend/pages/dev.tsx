@@ -27,6 +27,16 @@ const Dev = () => {
             </Link>
           </li>
           <li>
+            <Link href="/.ory/kratos/public/self-service/browser/flows/logout">
+              <a>Logout</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/auth/recovery">
+              <a>Password Reset</a>
+            </Link>
+          </li>
+          <li>
             <Link href="/workspaces/private">
               <a>Private workspace</a>
             </Link>
