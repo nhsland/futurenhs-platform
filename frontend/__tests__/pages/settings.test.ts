@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { SettingsRequest } from "@oryd/kratos-client";
 import { getServerSideProps } from "../../pages/auth/settings";
 import { adminApi } from "../../utils/kratos";
+import { kratosRequestBase } from "../../lib/test-helpers/fixtures";
 
 jest.mock("../../lib/events");
 jest.mock("../../utils/kratos");
@@ -13,7 +14,6 @@ describe("getServerSideProps", () => {
   const formConfig = {
     action: "http://url.com",
     fields: [
-      { name: "identifier", type: "text" },
       { name: "password", type: "password" },
       {
         name: "csrf_token",
@@ -24,24 +24,19 @@ describe("getServerSideProps", () => {
   };
 
   const body: SettingsRequest = {
+    ...kratosRequestBase,
     identity: {
       id: "63cd5eff-7ce1-463c-9c5a-8886dc8fd3ba",
       schemaId: "default",
       traits: {},
     },
-    state: "erm...",
-    active: "password",
-    expiresAt: new Date(),
-    id: "598a45d2-e107-41ba-885a-c5c39e4a26d5",
-    issuedAt: new Date(),
-    messages: undefined,
+    state: "SOMESTATE",
     methods: {
       password: {
         config: formConfig,
         method: "password",
       },
     },
-    requestUrl: "http://localhost:4455/self-service/browser/flows/settings",
   };
 
   const requestValue = "test123";
@@ -65,10 +60,13 @@ describe("getServerSideProps", () => {
     expect(context.res.end).toHaveBeenCalled();
   });
 
-  test("with request id ", async () => {
+  test("with request id and messages", async () => {
     mockedAdminApi.getSelfServiceBrowserSettingsRequest.mockResolvedValue({
       response: null as any,
-      body: body,
+      body: {
+        ...body,
+        messages: [{ text: "success! Please reset your password now" }],
+      },
     });
 
     const props = await getServerSideProps(context);
@@ -76,7 +74,7 @@ describe("getServerSideProps", () => {
     expect(props).toEqual({
       props: {
         request: requestValue,
-        messages: null,
+        messages: ["success! Please reset your password now"],
         formConfig: formConfig,
       },
     });

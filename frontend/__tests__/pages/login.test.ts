@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { LoginRequest } from "@oryd/kratos-client";
 import { getServerSideProps } from "../../pages/auth/login";
 import { adminApi } from "../../utils/kratos";
+import { kratosRequestBase } from "../../lib/test-helpers/fixtures";
 
 jest.mock("../../lib/events");
 jest.mock("../../utils/kratos");
@@ -24,18 +25,13 @@ describe("getServerSideProps", () => {
   };
 
   const body: LoginRequest = {
-    active: "password",
-    expiresAt: new Date(),
-    id: "598a45d2-e107-41ba-885a-c5c39e4a26d5",
-    issuedAt: new Date(),
-    messages: undefined,
+    ...kratosRequestBase,
     methods: {
       password: {
         config: formConfig,
         method: "password",
       },
     },
-    requestUrl: "http://localhost:4455/self-service/browser/flows/login",
   };
 
   const requestValue = "test123";
@@ -59,7 +55,7 @@ describe("getServerSideProps", () => {
     expect(context.res.end).toHaveBeenCalled();
   });
 
-  test("with request id ", async () => {
+  test("with request id", async () => {
     mockedAdminApi.getSelfServiceBrowserLoginRequest.mockResolvedValue({
       response: null as any,
       body: body,
