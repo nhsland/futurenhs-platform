@@ -13,3 +13,7 @@ spec:
               value: "no-reply@login.fnhs-dev-$NAME.westeurope.cloudapp.azure.com"
             - name: LOG_LEAK_SENSITIVE_VALUES
               value: true
+            - name: SELFSERVICE_DEFAULT_BROWSER_RETURN_URL
+              value: /dev
+            - name: LOGOUT_AFTER_DEFAULT_BROWSER_RETURN_URL
+              value: /dev?logged_out=yes_you_should_now_be_logged_out
