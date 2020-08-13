@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use serde::ser;
 use serde::{Deserialize, Serialize};
 
 mod gen {
@@ -11,48 +12,76 @@ mod gen {
 pub use gen::{LoggedInEventData, LoggedInEventV2Data, LoginFailedEventData};
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum EventType {
-    // TODO: This would have to be generated. Possibly with some kind of macro. This is quite a
-    // generic enum, so we could add this functionality to schemafy.
-    LoggedIn,
-    LoginFailed,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-#[serde(tag = "dataVersion", content = "data")]
-pub enum EventData {
-    // TODO: This would have to be generated. Possibly with some kind of macro. This is quite a
-    // generic enum, so we could add this functionality to schemafy.
-    LoggedIn(LoggedInEventData),
-    LoggedInV2(LoggedInEventV2Data),
-    LoginFailed(LoginFailedEventData),
+#[serde(rename_all = "camelCase")]
+pub struct LoggedInEvent {
+    pub id: String,
+    pub subject: String,
+    #[serde(serialize_with = "logged_in_event_type")]
+    pub event_type: (),
+    pub event_time: DateTime<Utc>,
+    pub data: LoggedInEventData,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Event {
+pub struct LoggedInEventV2 {
     pub id: String,
     pub subject: String,
-    pub event_type: EventType,
+    #[serde(serialize_with = "logged_in_event_type")]
+    pub event_type: (),
     pub event_time: DateTime<Utc>,
-    #[serde(flatten)]
-    pub data: EventData,
+    pub data: LoggedInEventV2Data,
+}
+
+fn logged_in_event_type<S>(_: &(), serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: ser::Serializer,
+{
+    serializer.serialize_str("loggedin")
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LoginFailedEvent {
+    pub id: String,
+    pub subject: String,
+    #[serde(serialize_with = "login_failed_event_type")]
+    pub event_type: (),
+    pub event_time: DateTime<Utc>,
+    pub data: LoginFailedEventData,
+}
+
+fn login_failed_event_type<S>(_: &(), serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: ser::Serializer,
+{
+    serializer.serialize_str("loginfailed")
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+#[serde(tag = "dataVersion")]
+pub enum Event {
+    // TODO: This would have to be generated. Possibly with some kind of macro. This is quite a
+    // generic enum, so we could add this functionality to schemafy.
+    LoggedIn(LoggedInEvent),
+    LoggedInV2(LoggedInEventV2),
+    LoginFailed(LoginFailedEvent),
 }
 
 pub fn test_stringify() -> Result<(), Box<dyn std::error::Error>> {
     println!(
         "{}",
-        serde_json::to_string(&Event {
+        serde_json::to_string(&Event::LoggedInV2(LoggedInEventV2 {
             id: "id".into(),
             subject: "subj".into(),
-            event_type: EventType::LoggedIn,
+            event_type: (),
             event_time: Utc::now(),
-            data: EventData::LoggedIn(LoggedInEventData {
-                user: Some("user".into()),
-            })
-        })?
+            data: LoggedInEventV2Data {
+                id: None,
+                email: Some("".into())
+            }
+        }))?
     );
     Ok(())
 }
