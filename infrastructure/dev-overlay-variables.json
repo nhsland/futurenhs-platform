@@ -7,7 +7,8 @@
     "KRATOS_WEB_ROOT": [
       "Set this to 'https://fnhs-dev-$YOURNAME.westeurope.cloudapp.azure.com' for testing your cluster",
       "or 'http://localhost:4455' for local testing.",
-      "This is a work-around until https://github.com/ory/kratos/pull/617 gets finished and released."
+      "This is only used when sending password reset emails, so it should be safe to leave it pointed at",
+      "your cluster even when doing local development."
     ]
   },
   "david": {

@@ -18,6 +18,16 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	exit 1
 fi
 
+if ! git diff; then
+	echo "ERROR: you haven't committed yet."
+	exit 1
+fi
+
+if ! git ls-files --others --exclude-standard --error-unmatch; then
+	echo "ERROR: you have unstaged files."
+	exit 1
+fi
+
 if ! git branch -r --contains HEAD | grep origin; then
 	echo "ERROR: You haven't pushed your branch yet."
 	exit 1

@@ -1,7 +1,7 @@
 import { ServerResponse } from "http";
 import { GetServerSidePropsContext } from "next";
-import { LoginRequest } from "@oryd/kratos-client";
-import { getServerSideProps } from "../../pages/auth/login";
+import { SettingsRequest } from "@oryd/kratos-client";
+import { getServerSideProps } from "../../pages/auth/settings";
 import { adminApi } from "../../utils/kratos";
 import { kratosRequestBase } from "../../lib/test-helpers/fixtures";
 
@@ -14,7 +14,6 @@ describe("getServerSideProps", () => {
   const formConfig = {
     action: "http://url.com",
     fields: [
-      { name: "identifier", type: "text" },
       { name: "password", type: "password" },
       {
         name: "csrf_token",
@@ -24,8 +23,14 @@ describe("getServerSideProps", () => {
     method: "post",
   };
 
-  const body: LoginRequest = {
+  const body: SettingsRequest = {
     ...kratosRequestBase,
+    identity: {
+      id: "63cd5eff-7ce1-463c-9c5a-8886dc8fd3ba",
+      schemaId: "default",
+      traits: {},
+    },
+    state: "SOMESTATE",
     methods: {
       password: {
         config: formConfig,
@@ -50,15 +55,18 @@ describe("getServerSideProps", () => {
     await getServerSideProps({ ...context, query: {} });
 
     expect(context.res.writeHead).toHaveBeenCalledWith(302, {
-      Location: "/.ory/kratos/public/self-service/browser/flows/login",
+      Location: "/.ory/kratos/public/self-service/browser/flows/settings",
     });
     expect(context.res.end).toHaveBeenCalled();
   });
 
-  test("with request id", async () => {
-    mockedAdminApi.getSelfServiceBrowserLoginRequest.mockResolvedValue({
+  test("with request id and messages", async () => {
+    mockedAdminApi.getSelfServiceBrowserSettingsRequest.mockResolvedValue({
       response: null as any,
-      body: body,
+      body: {
+        ...body,
+        messages: [{ text: "success! Please reset your password now" }],
+      },
     });
 
     const props = await getServerSideProps(context);
@@ -66,13 +74,14 @@ describe("getServerSideProps", () => {
     expect(props).toEqual({
       props: {
         request: requestValue,
+        messages: ["success! Please reset your password now"],
         formConfig: formConfig,
       },
     });
   });
 
   test("throws error", async () => {
-    mockedAdminApi.getSelfServiceBrowserLoginRequest.mockRejectedValue({
+    mockedAdminApi.getSelfServiceBrowserSettingsRequest.mockRejectedValue({
       body: { messages: "something went wrong" },
     });
 

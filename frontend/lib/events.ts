@@ -5,9 +5,12 @@ import { TopicCredentials } from "ms-rest-azure";
 // TODO: Generate strongly typed models for the different event types and data versions
 export interface Event {
   subject: string;
-  eventType: "frontend.login.attempt";
+  eventType:
+    | "frontend.login.attempt"
+    | "frontend.recovery.attempt"
+    | "frontend.settings.attempt";
   data: {
-    messages: string[] | undefined;
+    messages?: string[] | null;
   };
   dataVersion: "1";
 }

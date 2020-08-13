@@ -1,30 +1,36 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { generateFields, FormConfig } from "../../lib/login";
+import { getLoginFields } from "../../lib/auth";
 import { sendEvent } from "../../lib/events";
+import { LoginRequestMethodConfig } from "@oryd/kratos-client";
+import { redirect } from "../../utils/pages/redirect";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+type LoginProps = {
+  request: string;
+  formConfig: LoginRequestMethodConfig;
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context
+): Promise<{ props: LoginProps }> => {
   const request = context.query.request;
 
-  if (!request && context.res) {
-    context.res.writeHead(302, {
-      Location: "/.ory/kratos/public/self-service/browser/flows/login",
-    });
-    context.res.end();
-    return { props: {} };
-  }
   if (!request || Array.isArray(request)) {
-    return { props: {} };
+    return redirect(
+      context,
+      "/.ory/kratos/public/self-service/browser/flows/login"
+    );
   }
 
-  const formattedDetails = await generateFields(request);
+  const formattedDetails = await getLoginFields(request);
   const formConfig = formattedDetails.methods.password.config;
+  const messages = formConfig.messages?.map((msg) => msg.text ?? "") ?? null;
 
   // TODO: This is just an example event. We need to figure out the schema for custom events and change this to events we really need.
   await sendEvent({
     subject: "frontend",
     eventType: "frontend.login.attempt",
-    data: { messages: formConfig.messages?.map((msg) => msg.text ?? "") },
+    data: { messages },
     dataVersion: "1",
   });
 
@@ -36,13 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Login = ({
-  request,
-  formConfig,
-}: {
-  request: string;
-  formConfig: FormConfig;
-}) => {
+const Login = ({ request, formConfig }: LoginProps) => {
   return (
     <>
       {formConfig.messages?.map(({ text }) => {
@@ -66,7 +66,7 @@ const Login = ({
                     name={name}
                     type={type}
                     required={required}
-                    defaultValue={value}
+                    defaultValue={(value as unknown) as string}
                   />
                 </div>
               </>

@@ -1,7 +1,7 @@
 import { ServerResponse } from "http";
 import { GetServerSidePropsContext } from "next";
-import { LoginRequest } from "@oryd/kratos-client";
-import { getServerSideProps } from "../../pages/auth/login";
+import { RecoveryRequest } from "@oryd/kratos-client";
+import { getServerSideProps } from "../../pages/auth/recovery";
 import { adminApi } from "../../utils/kratos";
 import { kratosRequestBase } from "../../lib/test-helpers/fixtures";
 
@@ -14,8 +14,7 @@ describe("getServerSideProps", () => {
   const formConfig = {
     action: "http://url.com",
     fields: [
-      { name: "identifier", type: "text" },
-      { name: "password", type: "password" },
+      { name: "email", type: "text" },
       {
         name: "csrf_token",
         type: "hidden",
@@ -24,12 +23,13 @@ describe("getServerSideProps", () => {
     method: "post",
   };
 
-  const body: LoginRequest = {
+  const body: RecoveryRequest = {
     ...kratosRequestBase,
+    state: "SOMESTATE",
     methods: {
-      password: {
+      link: {
         config: formConfig,
-        method: "password",
+        method: "link",
       },
     },
   };
@@ -50,15 +50,18 @@ describe("getServerSideProps", () => {
     await getServerSideProps({ ...context, query: {} });
 
     expect(context.res.writeHead).toHaveBeenCalledWith(302, {
-      Location: "/.ory/kratos/public/self-service/browser/flows/login",
+      Location: "/.ory/kratos/public/self-service/browser/flows/recovery",
     });
     expect(context.res.end).toHaveBeenCalled();
   });
 
-  test("with request id", async () => {
-    mockedAdminApi.getSelfServiceBrowserLoginRequest.mockResolvedValue({
+  test("with request id and messages", async () => {
+    mockedAdminApi.getSelfServiceBrowserRecoveryRequest.mockResolvedValue({
       response: null as any,
-      body: body,
+      body: {
+        ...body,
+        messages: [{ text: "success! Please enter your email address" }],
+      },
     });
 
     const props = await getServerSideProps(context);
@@ -66,13 +69,14 @@ describe("getServerSideProps", () => {
     expect(props).toEqual({
       props: {
         request: requestValue,
+        messages: ["success! Please enter your email address"],
         formConfig: formConfig,
       },
     });
   });
 
   test("throws error", async () => {
-    mockedAdminApi.getSelfServiceBrowserLoginRequest.mockRejectedValue({
+    mockedAdminApi.getSelfServiceBrowserRecoveryRequest.mockRejectedValue({
       body: { messages: "something went wrong" },
     });
 

@@ -1,27 +1,35 @@
 serve:
   public:
-    base_url: https://beta.future.nhs.uk/.ory/kratos/public/
+    base_url: /.ory/kratos/public/
     port: 4433
   admin:
     base_url: http://kratos:4434/
     port: 4434
 
 selfservice:
-  default_browser_return_url: https://beta.future.nhs.uk/
+  default_browser_return_url: /
   whitelisted_return_urls:
-    - https://beta.future.nhs.uk/
+    - /
 
   strategies:
     password:
       enabled: true
 
   flows:
+    settings:
+      ui_url: /auth/settings
+      privileged_session_max_age: 15m
+
+    recovery:
+      enabled: true
+      ui_url: /auth/recovery
+
     logout:
       after:
-        default_browser_return_url: https://beta.future.nhs.uk/auth/login
+        default_browser_return_url: /auth/login
 
     login:
-      ui_url: https://beta.future.nhs.uk/auth/login
+      ui_url: /auth/login
       request_lifespan: 10m
 
     registration:
@@ -48,4 +56,6 @@ identity:
 
 courier:
   smtp:
+    # overridden by envrionment variable COURIER_SMTP_CONNECTION_URI which is
+    # stored in sendgrid-sealed.yaml
     connection_uri: smtps://test:test@mailslurper.kratos:1025/?skip_ssl_verify=true
