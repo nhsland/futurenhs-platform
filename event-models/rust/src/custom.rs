@@ -156,7 +156,7 @@ impl Serialize for Event {
     where
         S: ser::Serializer,
     {
-        let mut state = serializer.serialize_struct("CustomEvent", 6)?;
+        let mut state = serializer.serialize_struct("Event", 6)?;
         state.serialize_field("id", &self.id)?;
         state.serialize_field("subject", &self.subject)?;
         state.serialize_field("eventTime", &self.event_time)?;
