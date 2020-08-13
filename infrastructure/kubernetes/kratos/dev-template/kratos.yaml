@@ -12,8 +12,8 @@ spec:
             - name: COURIER_SMTP_FROM_ADDRESS
               value: "no-reply@login.fnhs-dev-$NAME.westeurope.cloudapp.azure.com"
             - name: LOG_LEAK_SENSITIVE_VALUES
-              value: true
+              value: "true"
             - name: SELFSERVICE_DEFAULT_BROWSER_RETURN_URL
-              value: /dev
+              value: "/dev"
             - name: LOGOUT_AFTER_DEFAULT_BROWSER_RETURN_URL
-              value: /dev?logged_out=yes_you_should_now_be_logged_out
+              value: "/dev?logged_out=yes_you_should_now_be_logged_out"
