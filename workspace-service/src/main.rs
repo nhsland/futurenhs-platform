@@ -1,6 +1,7 @@
 use anyhow::Result;
 use dotenv::dotenv;
 use opentelemetry::{api::Provider, sdk, sdk::BatchSpanProcessor};
+use sqlx::PgPool;
 use std::env;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
@@ -30,7 +31,11 @@ async fn main() -> Result<()> {
 
     let database_url = env::var("DATABASE_URL").expect("API_URL env var not found");
 
-    let app = workspace_service::create_app(&database_url).await?;
+    let connection_pool = PgPool::connect(&database_url).await?;
+
+    sqlx::migrate!("./migrations").run(&connection_pool).await?;
+
+    let app = workspace_service::create_app(connection_pool).await?;
     app.listen("0.0.0.0:3030").await?;
 
     Ok(())

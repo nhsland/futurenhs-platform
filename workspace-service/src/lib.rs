@@ -27,9 +27,7 @@ pub fn log<'a>(
     })
 }
 
-pub async fn create_app(database_url: &str) -> anyhow::Result<Server<graphql::State>> {
-    let connection_pool = PgPool::new(database_url).await?;
-
+pub async fn create_app(connection_pool: PgPool) -> anyhow::Result<Server<graphql::State>> {
     let mut app = tide::with_state(graphql::State::new(connection_pool));
 
     app.middleware(log);

@@ -34,6 +34,16 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Run DB migrations on test database
+        working-directory: futurenhs-platform/workspace-service
+        run: |
+          set -e
+          cargo install --version=0.1.0-beta.1 sqlx-cli --no-default-features --features postgres
+          export DATABASE_URL=postgres://postgres:postgres@localhost:5432
+          sqlx migrate run
       - name: "Build & Push image"
         run: |
           cd $GITHUB_WORKSPACE/futurenhs-platform/workspace-service
