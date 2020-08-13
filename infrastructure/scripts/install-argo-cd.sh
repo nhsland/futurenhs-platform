@@ -13,7 +13,7 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "You want to deploy to:   $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
 	echo "Please change your current context using:"
-	echo "    kubectl config use-context $ENVIRONMENT'"
+	echo "    kubectl config use-context $ENVIRONMENT"
 	echo "or"
 	echo "    az account set --subscription \$SUBSCRIPTION_ID && az aks get-credentials --resource-group=platform-$ENVIRONMENT --name=$ENVIRONMENT"
 	echo "and try again."
