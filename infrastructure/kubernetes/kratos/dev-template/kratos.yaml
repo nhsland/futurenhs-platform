@@ -11,3 +11,5 @@ spec:
           env:
             - name: COURIER_SMTP_FROM_ADDRESS
               value: "no-reply@login.fnhs-dev-$NAME.westeurope.cloudapp.azure.com"
+            - name: LOG_LEAK_SENSITIVE_VALUES
+              value: true
