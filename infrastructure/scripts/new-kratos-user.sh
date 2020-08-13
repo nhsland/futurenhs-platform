@@ -13,6 +13,12 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	exit 1
 fi
 
+if [ "$ENVIRONMENT" = production ]; then
+	CLUSTER_BASE_URL="https://beta.future.nhs.uk"
+else
+	CLUSTER_BASE_URL="https://fnhs-$ENVIRONMENT.westeurope.cloudapp.azure.com"
+fi
+
 if ! curl http://kratos-admin.kratos --silent --output /dev/null; then
 	echo "Please run"
 	echo "    sudo kubefwd services --exitonfailure -n kratos"
@@ -41,14 +47,23 @@ CREATE_USER_RESPONSE=$(
 
 IDENTITY_ID=$(echo "$CREATE_USER_RESPONSE" | jq -r .id)
 
-if [ -z "$IDENTITY_ID" ]; then
+if [[ -z "$IDENTITY_ID" || "$IDENTITY_ID" = "null" ]]; then
 	echo "Something went wrong creating a user."
 	echo "$CREATE_USER_RESPONSE" | jq
-	echo "Please try again with a different email address, or go through the password reset flow yourself, at:"
-	echo "    http://localhost:4455/auth/recovery"
-	echo "or"
-	echo "    https://fnhs-$ENVIRONMENT.westeurope.cloudapp.azure.com/auth/recovery"
-	exit 1
+	echo "Maybe they already exist. Let me try to find them for you."
+	IDENTITY_ID=$(
+		curl --silent \
+			--header "Content-Type: application/json" \
+			http://kratos-admin.kratos/identities |
+			jq -r --arg email "$EMAIL" 'map(select(.traits.email == $email))[0].id'
+	)
+	if [[ -z "$IDENTITY_ID" || "$IDENTITY_ID" = "null" ]]; then
+		echo "Please try again with a different email address, or go through the password reset flow yourself, at:"
+		echo "    http://localhost:4455/auth/recovery"
+		echo "or"
+		echo "    ${CLUSTER_BASE_URL}/auth/recovery"
+		exit 1
+	fi
 fi
 
 TRIGGER_PASSWORD_RESET_BODY=$(
@@ -70,8 +85,8 @@ LINK=$(
 		jq -r .recovery_link
 )
 
-echo "SUCCESS: $EMAIL was created with user-id $IDENTITY_ID"
+echo "SUCCESS: $EMAIL exists with user-id $IDENTITY_ID"
 echo "To set a password, go to:"
 echo "    http://localhost:4455$LINK"
 echo "or"
-echo "    https://fnhs-$ENVIRONMENT.westeurope.cloudapp.azure.com$LINK"
+echo "    ${CLUSTER_BASE_URL}${LINK}"
