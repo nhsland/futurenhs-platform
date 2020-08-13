@@ -1,5 +1,5 @@
 # Setup rust build environment
-FROM rust:1.44.1 AS build-context
+FROM rust:1.45.2 AS build-context
 
 RUN rustup component add rustfmt clippy
 
