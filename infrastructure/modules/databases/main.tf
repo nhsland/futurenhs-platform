@@ -4,7 +4,7 @@
 locals {
   databases = [
     "kratos",
-    "workspace-service",
+    "workspace_service",
   ]
 }
 
@@ -45,13 +45,13 @@ resource "postgresql_database" "service" {
 
 resource "postgresql_extension" "uuid-ossp" {
   name     = "uuid-ossp"
-  database = "workspace-service"
+  database = "workspace_service"
 }
 
-resource "kubernetes_namespace" "db" {
+resource "kubernetes_namespace" "service" {
   for_each = toset(local.databases)
   metadata {
-    name = each.value
+    name = (replace(each.value, "_", "-"))
     annotations = {
       "linkerd.io/inject" = "enabled"
     }
@@ -61,7 +61,7 @@ resource "kubernetes_namespace" "db" {
 resource "kubernetes_secret" "kratos_db_creds" {
   metadata {
     name      = "kratos"
-    namespace = "kratos"
+    namespace = kubernetes_namespace.service["kratos"].metadata[0].name
   }
   data = {
     secretsDefault = random_password.kratos_secrets_default.result
@@ -84,19 +84,19 @@ resource "kubernetes_secret" "kratos_db_creds" {
 resource "kubernetes_secret" "workspace_service_db_creds" {
   metadata {
     name      = "workspace-service"
-    namespace = "workspace-service"
+    namespace = kubernetes_namespace.service["workspace_service"].metadata[0].name
   }
   data = {
     url = "postgres://${
-      postgresql_role.service["workspace-service"].name
+      postgresql_role.service["workspace_service"].name
       }@${
       var.postgresql_server_name
       }:${
-      random_password.postgresql_password["workspace-service"].result
+      random_password.postgresql_password["workspace_service"].result
       }@${
       var.postgresql_server_name
       }.postgres.database.azure.com:5432/${
-      postgresql_database.service["workspace-service"].name
+      postgresql_database.service["workspace_service"].name
     }"
   }
 }
@@ -153,7 +153,7 @@ resource "kubernetes_config_map" "hello_world_telemetry" {
 resource "kubernetes_config_map" "workspace_service_telemetry" {
   metadata {
     name      = "telemetry"
-    namespace = kubernetes_namespace.db["workspace-service"].metadata[0].name
+    namespace = kubernetes_namespace.service["workspace_service"].metadata[0].name
   }
   data = {
     instrumentation_key = var.instrumentation_key

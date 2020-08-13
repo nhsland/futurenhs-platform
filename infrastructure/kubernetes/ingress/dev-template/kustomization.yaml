@@ -16,20 +16,6 @@ patchesJSON6902:
       version: v1beta1
       kind: Ingress
       name: ingress
-      namespace: hello-world
-  - path: patch-ingress.yaml
-    target:
-      group: extensions
-      version: v1beta1
-      kind: Ingress
-      name: ingress
       namespace: kratos
-  - path: patch-ingress.yaml
-    target:
-      group: extensions
-      version: v1beta1
-      kind: Ingress
-      name: ingress
-      namespace: workspace-service
 patchesStrategicMerge:
   - patch-dns.yaml

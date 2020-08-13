@@ -9,7 +9,8 @@ COPY Cargo.toml .
 COPY Cargo.lock .
 
 # IP Address tells docker to talk to host
-ENV DATABASE_URL=postgres://postgres:postgres@172.17.0.1:5432
+ARG DATABASE_URL=postgres://postgres:postgres@172.17.0.1:5432
+ENV DATABASE_URL=$DATABASE_URL
 
 # Layer hack: Build an empty program to compile dependencies and place on their own layer.
 # This cuts down build time
