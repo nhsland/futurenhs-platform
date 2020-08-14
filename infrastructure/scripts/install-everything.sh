@@ -14,6 +14,26 @@ if [ "$ENVIRONMENT" = "production" ]; then
 	exit 1
 fi
 
+FNHSNAME=$(echo $ENVIRONMENT | sed s/dev-//)
+
+if [ "$ENVIRONMENT" != "dev-$FNHSNAME" ]; then
+    echo "environment should be of the form 'dev-*' where * is your name."
+	exit 1
+fi
+
+echo "Don't run away quite yet. Terraform will ask you to type 'yes' a couple of times."
+
+OVERWRITE=localfiles $REPO_ROOT/infrastructure/scripts/create-dev-environment.sh $FNHSNAME
+
+# These are the steps printed out by create-dev-environment.sh
+(
+    cd $REPO_ROOT/infrastructure/environments/dev &&
+    terraform apply -target module.platform &&
+    terraform apply
+)
+
+az aks get-credentials --overwrite-existing --resource-group platform-dev-$FNHSNAME --name dev-$FNHSNAME
+
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "You want to deploy to:   $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
@@ -39,7 +59,15 @@ kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
 
 ./infrastructure/scripts/install-argo-cd.sh $ENVIRONMENT
 
+echo "Waiting for argocd apps to deploy"
+
+if ! argocd app wait --timeout 300 $(argocd app list -o name); then
+  echo "That's taking quite a long time. Let me kick over the ingress controller and see if that helps."
+  kubectl -n ingress rollout restart deployment/ingress-nginx-controller
+fi
+
 echo ""
+echo "Looks like everything deployed okay"
 echo ""
 echo "Things to check:"
 echo " * This output should be about 5 lines long and shouldn't say"
