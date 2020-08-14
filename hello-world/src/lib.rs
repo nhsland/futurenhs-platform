@@ -4,7 +4,7 @@ use tide::{Next, Request, Result, Server};
 use tracing::{info, info_span};
 use tracing_futures::Instrument;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct State {}
 
 fn log<'a>(
@@ -19,7 +19,7 @@ fn log<'a>(
             http.target = req.url().as_ref()
         );
 
-        let res = next.run(req).instrument(span.clone()).await?;
+        let res = next.run(req).instrument(span.clone()).await;
         span.record("http.status_code", &u16::from(res.status()));
 
         Ok(res)
@@ -28,8 +28,7 @@ fn log<'a>(
 
 pub fn create_app() -> Server<State> {
     let mut app = tide::with_state(State {});
-    app.middleware(log);
-
+    app.with(log);
     app.at("/hello/:name").get(hello_handler);
     app
 }
