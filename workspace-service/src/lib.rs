@@ -30,7 +30,7 @@ pub fn log<'a>(
 pub async fn create_app(connection_pool: PgPool) -> anyhow::Result<Server<graphql::State>> {
     let mut app = tide::with_state(graphql::State::new(connection_pool));
 
-    app.middleware(log);
+    app.with(log);
 
     app.at("/").get(Redirect::permanent("/graphiql"));
     app.at("/healthz").get(|_| async { Ok(Response::new(204)) });
