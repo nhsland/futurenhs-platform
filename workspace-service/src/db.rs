@@ -32,6 +32,7 @@ impl Workspace {
         Ok(workspace)
     }
 
+    #[allow(clippy::suspicious_else_formatting)]
     pub async fn update(id: Uuid, title: String, pool: &PgPool) -> Result<Workspace> {
         let workspace = sqlx::query_file_as!(Workspace, "sql/update.sql", title, id)
             .fetch_one(pool)
