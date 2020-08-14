@@ -59,7 +59,7 @@ spec:
     spec:
       initContainers:
         - name: kratos-automigrate
-          image: "fnhsproduction.azurecr.io/kratos:v0.4.6-alpha.1-98-gc13b1838-merged-with-uri-reference-for-ui_url-ga42cd2bd"
+          image: "fnhsproduction.azurecr.io/kratos:v0.4.6-alpha.1-106-gbcfb2793"
           imagePullPolicy: IfNotPresent
           command: ["kratos"]
           args:
@@ -110,7 +110,7 @@ spec:
                 path: courier-templates/recovery/invalid/email.subject.gotmpl
       containers:
         - name: kratos
-          image: "fnhsproduction.azurecr.io/kratos:v0.4.6-alpha.1-98-gc13b1838-merged-with-uri-reference-for-ui_url-ga42cd2bd"
+          image: "fnhsproduction.azurecr.io/kratos:v0.4.6-alpha.1-106-gbcfb2793"
           imagePullPolicy: IfNotPresent
           command: ["kratos"]
           args: [
