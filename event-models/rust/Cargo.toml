@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 chrono = { version = "0.4.13", features = ["serde"] }
+fnhs_event_models_generate = { path = "./fnhs_event_models_generate" }
 schemafy = "0.5.1"
 serde = "1.0.115"
 serde_json = "1.0.57"
