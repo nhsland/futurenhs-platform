@@ -53,7 +53,14 @@ az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yam
   | kubectl apply -f -
 
 kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
-
+kubectl rollout status --timeout=1m --watch=true -n kube-system deployments/sealed-secrets-controller
+if [ "$(kubeseal --fetch-cert | shasum)" != "22910de9ae71989b2048923c38a886ae2dca8e80  -" ]; then
+  echo "Your cluster seems to be using a different certificate from what we were expecting."
+  kubectl -n kube-system logs -l name=sealed-secrets-controller
+  echo " ^ This output should be about 5 lines long and shouldn't say"
+  echo "   anything about generating a new private key. Can you spot anything wrong?"
+  exit 1
+fi
 
 ./infrastructure/scripts/install-linkerd.sh $ENVIRONMENT
 
@@ -67,9 +74,6 @@ if ! argocd app wait --timeout 300 $(argocd app list -o name); then
 fi
 
 echo ""
-echo "Looks like everything deployed okay"
+echo "Looks like everything deployed okay. Your cluster should be available at "
+echo "https://fnhs-$ENVIRONMENT.westeurope.cloudapp.azure.com/"
 echo ""
-echo "Things to check:"
-echo " * This output should be about 5 lines long and shouldn't say"
-echo "   anything about generating a new private key:"
-kubectl -n kube-system logs -l name=sealed-secrets-controller
