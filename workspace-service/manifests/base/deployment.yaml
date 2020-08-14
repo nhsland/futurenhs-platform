@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspace-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workspace-service
+  template:
+    metadata:
+      labels:
+        app: workspace-service
+    spec:
+      containers:
+        - name: workspace-service
+          image: fnhsproduction.azurecr.io/workspace-service
+          ports:
+            - containerPort: 3030
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: workspace-service
+                  key: url
+            - name: INSTRUMENTATION_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: telemetry
+                  key: instrumentation_key
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 100Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3030
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3030
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            timeoutSeconds: 30

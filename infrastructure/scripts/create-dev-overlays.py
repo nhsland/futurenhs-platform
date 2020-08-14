@@ -10,6 +10,7 @@ repo_root = os.path.join(os.path.dirname(__file__), '../..')
 services = [
     'frontend/manifests',
     'hello-world/manifests',
+    'workspace-service/manifests',
     'infrastructure/kubernetes/argocd/apps',
     'infrastructure/kubernetes/cert-manager',
     'infrastructure/kubernetes/ingress',

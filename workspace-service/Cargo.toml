@@ -1,0 +1,26 @@
+[package]
+name = "workspace_service"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+dotenv = "0.15.0"
+futures = "0.3.5"
+opentelemetry-application-insights = "0.1.0"
+opentelemetry = "0.6"
+sqlx = { git = "https://github.com/frigus02/sqlx", rev = "106a6a83952bfc0e3316d54f99d865e469dcc15a", default-features = false, features = [ "runtime-tokio", "macros", "migrate", "postgres", "tls","uuid" ]  }
+tide = "0.12.0"
+tokio = { version = "0.2", features = ["macros", "time", "rt-core", "stream"]}
+tracing = { version = "0.1", features = ["attributes"] }
+tracing-futures = "0.2.4"
+tracing-opentelemetry = "0.5.0"
+tracing-subscriber = "0.2.0"
+anyhow = "1.0.32"
+async-graphql = "1.17.2"
+async-graphql-tide = "1.17.2"
+uuid = "0.8.1"
+http-types = "2.4.0"
+smol = { version = "0.1.18", features = ["tokio02"] }
+
+[dev-dependencies]
+surf = "1.0.3"
