@@ -69,6 +69,18 @@ as opposed to sharing a staging environment.
    FNHSNAME=john
    ```
 
+### Easy mode
+
+1. Run the script with the name of your cluster as the parameter.
+
+   ```bash
+   ./infrastructure/scripts/install-everything.sh dev-$FNHSNAME
+   ```
+
+   and type `yes` a lot.
+
+### Manual mode
+
 1. Create the new dev environment with **your name** as the parameter.
 
    ```bash
