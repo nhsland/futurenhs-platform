@@ -1,0 +1,45 @@
+# https://docs.github.com/en/github/administering-a-repository/keeping-your-dependencies-updated-automatically
+version: 2
+updates:
+  # GitHub actions used in .github/workflows/
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  # Global Prettier
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+  # Frontend
+  - package-ecosystem: docker
+    directory: /frontend/
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /frontend/
+    schedule:
+      interval: weekly
+  # Hello World
+  - package-ecosystem: cargo
+    directory: /hello-world/
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker
+    directory: /hello-world/
+    schedule:
+      interval: weekly
+  # Test
+  - package-ecosystem: npm
+    directory: /test/
+    schedule:
+      interval: weekly
+  # Workspace Service
+  - package-ecosystem: cargo
+    directory: /workspace-service/
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker
+    directory: /workspace-service/
+    schedule:
+      interval: weekly
