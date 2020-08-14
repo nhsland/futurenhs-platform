@@ -160,8 +160,7 @@ as opposed to sharing a staging environment.
 
 1. Add your name in the `infrastructure/dev-overlay-variables.json` and create a pull request.
 
-
-1. To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
+1) To install [Argo CD](https://argoproj.github.io/argo-cd/) run the `install-argo-cd.sh` script that can be found within `infrastructure/scripts` directory.
 
    ```bash
    ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME master
@@ -214,7 +213,7 @@ as opposed to sharing a staging environment.
    ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME MINE
    ```
 
-1. Apply the ConfigMap for Azure Monitor for Containers to collect data in the Log Analytics workspace. The ConfigMap can be found in `infrastructure/kubernetes/logging` directory.
+1) Apply the ConfigMap for Azure Monitor for Containers to collect data in the Log Analytics workspace. The ConfigMap can be found in `infrastructure/kubernetes/logging` directory.
 
    ```bash
    kubectl apply -f ./infrastructure/kubernetes/logging/container-azm-ms-agentconfig.yaml
