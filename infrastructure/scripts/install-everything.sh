@@ -68,8 +68,21 @@ fi
 echo "Waiting for argocd apps to deploy"
 
 if ! argocd app wait --timeout 300 $(argocd app list -o name); then
-	echo "That's taking quite a long time. Let me kick over the ingress controller and see if that helps."
-	kubectl -n ingress rollout restart deployment/ingress-nginx-controller
+  echo "That's taking quite a long time. Let's try to debug things:"
+  if ! kubectl -n ingress rollout status --watch=false deployment/ingress-nginx-controller ; then
+    echo "Maybe try kicking over the ingress controller?"
+    echo "    kubectl -n ingress rollout restart deployment/ingress-nginx-controller"
+    exit 1
+  else
+    echo "Something is wrong with your cluster but I have no idea what it is."
+    echo "Things to try:"
+    echo "* Run 'argocd app list' and look for things that are not 'Synced  Healthy'."
+    echo "* Make sure you're on the latest master and try again"
+    echo "  (this script is idempotent so you can try as many times as you want)."
+    echo "Good luck."
+    exit 1
+  fi
+
 fi
 
 echo ""
