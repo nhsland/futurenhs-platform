@@ -57,3 +57,11 @@ if [ ! -d ../kubernetes/argocd/apps/$ENVIRONMENT ]; then
 fi
 kustomize build ../kubernetes/argocd/apps/$ENVIRONMENT |
 	kubectl apply -n argocd -f -
+
+# The user should set this in their .profile, but let's set it here just in case it's not already set.
+export ARGOCD_OPTS='--port-forward --port-forward-namespace argocd'
+
+POD_NAME=$(kubectl get pods -n argocd | grep --only-matching 'argocd-server-[^ ]*')
+argocd login --username admin --password $POD_NAME
+
+echo "Your argocd username for the web ui is 'admin' and password is '$POD_NAME'"

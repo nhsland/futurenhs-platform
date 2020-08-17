@@ -17,6 +17,12 @@ brew install linkerd || {
 	exit 1
 }
 
+echo "Checking if linkerd is already set up"
+linkerd check && {
+	echo 'Looks like linkerd is already installed. Skipping.'
+	exit 0
+}
+
 echo "Verifying cluster"
 linkerd check --pre || {
 	echo 'Cluster validation failed. Please fix issues before proceeding. Perhaps you already have Linkerd installed?'
