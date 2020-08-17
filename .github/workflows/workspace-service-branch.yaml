@@ -47,7 +47,7 @@ jobs:
         run: |
           set -e
           command -v sqlx || cargo install --version=0.1.0-beta.1 sqlx-cli --no-default-features --features postgres
-          export DATABASE_URL=postgres://postgres:postgres@localhost:5432
+          # export DATABASE_URL=postgres://postgres:postgres@localhost:5432
           sqlx migrate run
       - name: "Build & Push image"
         working-directory: futurenhs-platform/workspace-service
