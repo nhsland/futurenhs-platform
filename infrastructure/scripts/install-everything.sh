@@ -79,6 +79,8 @@ if ! argocd app wait --timeout 300 $(argocd app list -o name); then
     echo "* Run 'argocd app list' and look for things that are not 'Synced  Healthy'."
     echo "* Make sure you're on the latest master and try again"
     echo "  (this script is idempotent so you can try as many times as you want)."
+    echo "* Maybe the cluster is functional and the timeout is kinda bogus."
+    echo "  Go to https://fnhs-$ENVIRONMENT.westeurope.cloudapp.azure.com/ to check?"
     echo "Good luck."
     exit 1
   fi
