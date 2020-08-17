@@ -15,6 +15,7 @@ pub fn log<'a>(
     Box::pin(async {
         let span = info_span!(
             "request",
+            otel.kind = "server",
             http.status_code = tracing::field::Empty,
             http.method = req.method().as_ref(),
             http.target = req.url().as_ref()
