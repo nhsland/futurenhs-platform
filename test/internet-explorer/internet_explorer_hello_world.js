@@ -30,22 +30,13 @@ describe("Page loads", function () {
       .build();
   });
 
-  it("should render hype page", (done) => {
+  it("should render hype page", async () => {
     const expected = "The new Future is coming...";
 
-    driver
-      .get(baseUrl)
-      .then(() => {
-        driver.findElement(webdriver.By.css("p")).then((p) => {
-          p.getText()
-            .then((result) => {
-              assert.equal(result, expected);
-              done();
-            })
-            .catch(done);
-        });
-      })
-      .catch(done);
+    await driver.get(baseUrl);
+    const p = await driver.findElement(webdriver.By.css("p"));
+    const result = await p.getText();
+    assert.equal(result, expected);
   });
 
   after(function () {
