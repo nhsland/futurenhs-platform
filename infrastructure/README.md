@@ -54,6 +54,12 @@ We use [Terraform](https://www.terraform.io/) to build our environments.
    brew install kustomize
    ```
 
+1. Install [Kubeseal](https://github.com/bitnami-labs/sealed-secrets):
+
+   ```bash
+   brew install kubeseal
+   ```
+
 ## Development Environment
 
 Infrastructure is set up so that each developer can create their own instance of the environment in Azure,
@@ -201,7 +207,7 @@ as opposed to sharing a staging environment.
    or do
 
    ```bash
-   brew install kubefwd
+   brew install txn2/tap/kubefwd
    sudo kubefwd services -n argocd
    ```
 
