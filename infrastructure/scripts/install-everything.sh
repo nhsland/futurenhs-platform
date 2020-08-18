@@ -8,6 +8,7 @@ cd $REPO_ROOT
 
 ENVIRONMENT="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
 CURRENT_CONTEXT=$(kubectl config current-context)
+export ARGOCD_OPTS="--port-forward --port-forward-namespace argocd"
 
 if [ "$ENVIRONMENT" = "production" ]; then
 	echo "This script hasn't been tested with production yet. Please do this by hand."
@@ -18,6 +19,11 @@ FNHSNAME=$(echo $ENVIRONMENT | sed s/dev-//)
 
 if [ "$ENVIRONMENT" != "dev-$FNHSNAME" ]; then
 	echo "environment should be of the form 'dev-*' where * is your name."
+	exit 1
+fi
+
+if ! which kubeseal; then
+	echo "You need to install Kubeseal.  Please see README for instructions."
 	exit 1
 fi
 
@@ -53,6 +59,7 @@ az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yam
 
 kubectl apply -f ./infrastructure/kubernetes/sealed-secrets/controller.yaml
 kubectl rollout status --timeout=1m --watch=true -n kube-system deployments/sealed-secrets-controller
+
 if [ "$(kubeseal --fetch-cert | shasum)" != "22910de9ae71989b2048923c38a886ae2dca8e80  -" ]; then
 	echo "Your cluster seems to be using a different certificate from what we were expecting."
 	kubectl -n kube-system logs -l name=sealed-secrets-controller

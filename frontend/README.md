@@ -9,7 +9,7 @@ Frontend development server relies on some services that are available in the de
 In order to set up a development cluster, see ../infrastructure/README.md. Once your development cluster is set up, you should run this to make the cluster's services available for local development:
 
 ```bash
-sudo kubefwd services -n hello-world -n frontend -n argocd
+sudo kubefwd services -n hello-world -n argocd -n kratos
 ```
 
 Once that is running, start the dev server like this:

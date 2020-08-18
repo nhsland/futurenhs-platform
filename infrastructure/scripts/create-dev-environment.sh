@@ -31,9 +31,17 @@ setup_terraform() {
 	CONTAINER_NAME=tfstate
 
 	if [ "$OVERWRITE" = "localfiles" ]; then
-		rm -r $DEV_CONFIG_FILE $TERRAFORM_DIR
+		if [ -e "$DEV_CONFIG_FILE" ]; then
+			rm $DEV_CONFIG_FILE
+		fi
+
+		if [ -e "$TERRAFORM_DIR" ]; then
+			rm -r $TERRAFORM_DIR
+		fi
 	elif [ "$OVERWRITE" = "justdotterraform" ]; then
-		rm -r $TERRAFORM_DIR
+		if [ -e "$TERRAFORM_DIR" ]; then
+			rm -r $TERRAFORM_DIR
+		fi
 	elif [ -f "$DEV_CONFIG_FILE" ]; then
 		echo "File $DEV_CONFIG_FILE already exists."
 		echo "If you want to initialize your environment again, please delete the file and rerun this script,"
