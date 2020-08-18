@@ -42,6 +42,7 @@ jobs:
         with:
           path: |
             ~/.cargo/bin/sqlx
+            ~/.cargo/bin/cargo-sqlx
           key: 0.1.0-beta.1
       - name: Run DB migrations on test database
         working-directory: futurenhs-platform/workspace-service

@@ -8,7 +8,6 @@ WORKDIR /usr/src/workspace-service
 COPY Cargo.toml .
 COPY Cargo.lock .
 
-ENV DATABASE_URL=$DATABASE_URL
 ENV SQLX_OFFLINE=true
 
 # Layer hack: Build an empty program to compile dependencies and place on their own layer.
