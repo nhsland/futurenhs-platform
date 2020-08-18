@@ -27,16 +27,10 @@ module platform {
   environment             = "production"
   location                = var.location
   ip_whitelist_postgresql = var.ip_whitelist_postgresql
-}
-
-module analytics {
-  source              = "../../modules/analytics"
-  environment         = "production"
-  location            = var.location
-  resource_group_name = module.platform.resource_group_name
-  allowed_ips         = var.ip_whitelist_insights
-  ad_username         = "FutureNHS Developers"
-  ad_object_id        = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
+  ip_whitelist_analytics  = var.ip_whitelist_analytics
+  enable_analytics        = true
+  ad_username             = "FutureNHS Developers"
+  ad_object_id            = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
 }
 
 resource "azurerm_container_registry" "acr" {

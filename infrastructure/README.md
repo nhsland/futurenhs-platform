@@ -110,16 +110,10 @@ as opposed to sharing a staging environment.
    terraform init -backend-config=terraform.tfvars
    ```
 
-1. Create an execution plan:
+1. Apply changes. The infrastructure will be created in Azure.
 
    ```bash
-   terraform plan
-   ```
-
-1. After verifying the plan above, apply changes. The infrastructure will be created in Azure.
-
-   ```bash
-   terraform apply
+   terraform apply -target module.platform && terraform apply
    ```
 
 1. In order to use Kubernetes CLI (kubectl) commands, you need to pull the credentials from the server.

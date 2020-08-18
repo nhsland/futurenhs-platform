@@ -3,7 +3,7 @@ variable "location" {
   default     = "westeurope"
 }
 
-variable "ip_whitelist_insights" {
+variable "ip_whitelist_analytics" {
   description = "List of whitelisted IPs for use with Synapse"
   type        = map(string)
 }
