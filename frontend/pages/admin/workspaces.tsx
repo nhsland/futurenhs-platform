@@ -1,23 +1,39 @@
 // import { request, gql } from "graphql-request";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 // import { GetServerSideProps } from "next";
 
-const MAX_DESCRIPTION_CHARS = 100;
-const MAX_TITLE_CHARS = 250;
+const MAX_CHARS = {
+  title: 100,
+  description: 250,
+};
 
 const CreateWorkspace = () => {
+  const [remainingChars, setRemainingChars] = useState({
+    title: "",
+    description: "",
+  });
+
   const { errors, handleSubmit, register } = useForm();
   const router = useRouter();
   const onSubmit = () => {
-    console.log("Hello");
     router.push("/");
   };
 
   const handleDiscard = () => {
     // clear form elements
     router.push("/");
+  };
+
+  const handleCharNumber = (event: any) => {
+    setRemainingChars({
+      ...remainingChars,
+      [event.target.name]:
+        // @ts-ignore TODO
+        MAX_CHARS[event.target.name] - event.target.value.length,
+    });
+    console.log(event);
   };
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -34,8 +50,10 @@ const CreateWorkspace = () => {
           </p>
           <input
             name="title"
-            ref={register({ required: true, maxLength: MAX_TITLE_CHARS })}
+            onChange={handleCharNumber}
+            ref={register({ required: true, maxLength: MAX_CHARS.title })}
           />
+          {`${remainingChars.title} characters remaining`}
           {errors.title && "Workspace name is required"}
         </div>
 
@@ -50,11 +68,13 @@ const CreateWorkspace = () => {
 
           <textarea
             name="description"
+            onChange={handleCharNumber}
             ref={register({
               required: false,
-              maxLength: MAX_DESCRIPTION_CHARS,
+              maxLength: MAX_CHARS.description,
             })}
           />
+          {`${remainingChars.description} characters remaining`}
         </div>
         <input type="submit" value="Save and complete" />
       </form>
