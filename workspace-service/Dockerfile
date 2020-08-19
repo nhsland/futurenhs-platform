@@ -8,9 +8,7 @@ WORKDIR /usr/src/workspace-service
 COPY Cargo.toml .
 COPY Cargo.lock .
 
-# IP Address tells docker to talk to host
-ARG DATABASE_URL=postgres://postgres:postgres@172.17.0.1:5432
-ENV DATABASE_URL=$DATABASE_URL
+ENV SQLX_OFFLINE=true
 
 # Layer hack: Build an empty program to compile dependencies and place on their own layer.
 # This cuts down build time
@@ -39,6 +37,7 @@ FROM build-context AS build
 
 COPY ./src ./src
 COPY sql ./sql
+COPY sqlx-data.json .
 COPY ./migrations ./migrations
 
 RUN cargo clippy --release -- -D warnings && cargo test --release && cargo build --release
