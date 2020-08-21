@@ -9,7 +9,7 @@ Frontend development server relies on some services that are available in the de
 In order to set up a development cluster, see ../infrastructure/README.md. Once your development cluster is set up, you should run this to make the cluster's services available for local development:
 
 ```bash
-sudo kubefwd services -n hello-world -n argocd -n kratos
+sudo kubefwd services -n hello-world
 ```
 
 Once that is running, start the dev server like this:
@@ -18,7 +18,7 @@ Once that is running, start the dev server like this:
 yarn dev
 ```
 
-Open [http://localhost:4455](http://localhost:4455) with your browser to see the result.The port is currently set to 4455 to access [Kratos](https://www.ory.sh/kratos/docs/quickstart)
+Open [http://localhost:4455](http://localhost:4455) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 

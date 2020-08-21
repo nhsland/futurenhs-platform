@@ -10,12 +10,6 @@ const devProxy = {
     target: "http://hello-world.hello-world/",
     changeOrigin: true,
   },
-  "/.ory/kratos/public/": {
-    target: "http://kratos-public.kratos",
-    pathRewrite: { "/.ory/kratos/public": "" },
-    changeOrigin: false,
-  },
-  // another one that hits ory/kratos refer to http-proxy-middleware docs to understand the format
 };
 
 const port = parseInt(process.env.PORT, 10) || 4455;

@@ -18,7 +18,6 @@
     "@opentelemetry/node": "^0.10.2",
     "@opentelemetry/plugin-https": "^0.10.2",
     "@opentelemetry/tracing": "^0.10.2",
-    "@oryd/kratos-client": "^0.4.6-alpha.1",
     "axios": "^0.19.2",
     "azure-eventgrid": "^1.6.0",
     "cookie": "^0.4.1",

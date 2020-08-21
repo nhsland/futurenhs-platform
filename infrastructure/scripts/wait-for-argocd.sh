@@ -7,7 +7,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT
 
 ENVIRONMENT="${1:?"Please specify your environment name as the first parameter, e.g. dev-jane"}"
-APPNAME="${2:?"Please specify app name as the second parameter, e.g. kratos"}"
+APPNAME="${2:?"Please specify app name as the second parameter, e.g. frontend"}"
 
 CURRENT_CONTEXT=$(kubectl config current-context)
 

@@ -3,7 +3,6 @@
 # before attempting to apply this module.
 locals {
   databases = [
-    "kratos",
     "workspace_service",
   ]
 }
@@ -13,16 +12,6 @@ resource "random_password" "postgresql_password" {
   length   = 50
   special  = false
   upper    = true
-}
-resource "random_password" "kratos_secrets_default" {
-  length  = 32
-  special = false
-  upper   = true
-}
-resource "random_password" "kratos_secrets_cookie" {
-  length  = 32
-  special = false
-  upper   = true
 }
 
 resource "postgresql_role" "service" {
@@ -57,29 +46,6 @@ resource "kubernetes_namespace" "service" {
     }
   }
 }
-
-resource "kubernetes_secret" "kratos_db_creds" {
-  metadata {
-    name      = "kratos"
-    namespace = kubernetes_namespace.service["kratos"].metadata[0].name
-  }
-  data = {
-    secretsDefault = random_password.kratos_secrets_default.result
-    secretsCookie  = random_password.kratos_secrets_cookie.result
-    dsn = "postgres://${
-      postgresql_role.service["kratos"].name
-      }@${
-      var.postgresql_server_name
-      }:${
-      random_password.postgresql_password["kratos"].result
-      }@${
-      var.postgresql_server_name
-      }.postgres.database.azure.com:5432/${
-      postgresql_database.service["kratos"].name
-    }"
-  }
-}
-
 
 resource "kubernetes_secret" "workspace_service_db_creds" {
   metadata {

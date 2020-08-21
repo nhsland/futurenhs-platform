@@ -3,36 +3,24 @@
     "BRANCH": [
       "This is only used by argocd for deciding which branch to deploy",
       "and it often overridden by `install-argo-cd.sh` anyway. It should be fine to leave this as `master`"
-    ],
-    "KRATOS_WEB_ROOT": [
-      "Set this to 'https://fnhs-dev-$YOURNAME.westeurope.cloudapp.azure.com' for testing your cluster",
-      "or 'http://localhost:4455' for local testing.",
-      "This is only used when sending password reset emails, so it should be safe to leave it pointed at",
-      "your cluster even when doing local development."
     ]
   },
   "david": {
-    "BRANCH": "master",
-    "KRATOS_WEB_ROOT": "https://fnhs-dev-david.westeurope.cloudapp.azure.com"
+    "BRANCH": "master"
   },
   "jan": {
-    "BRANCH": "master",
-    "KRATOS_WEB_ROOT": "https://fnhs-dev-jan.westeurope.cloudapp.azure.com"
+    "BRANCH": "master"
   },
   "matt": {
-    "BRANCH": "create-workspace-service",
-    "KRATOS_WEB_ROOT": "https://fnhs-dev-matt.westeurope.cloudapp.azure.com"
+    "BRANCH": "create-workspace-service"
   },
   "potts": {
-    "BRANCH": "master",
-    "KRATOS_WEB_ROOT": "https://fnhs-dev-potts.westeurope.cloudapp.azure.com"
+    "BRANCH": "master"
   },
   "tracy": {
-    "BRANCH": "master",
-    "KRATOS_WEB_ROOT": "http://localhost:4455"
+    "BRANCH": "master"
   },
   "declan": {
-    "BRANCH": "master",
-    "KRATOS_WEB_ROOT": "https://fnhs-dev-declan.westeurope.cloudapp.azure.com"
+    "BRANCH": "master"
   }
 }
