@@ -1,31 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
+# Frontend
 
 ## How to use
 
-Frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the hello-world service when doing server-side rendering, and also proxies `/hello/*` to `http://hello-world.hello-world/hello/*` like how our nginx ingress does in production.
+The frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the hello-world service when doing server-side rendering, and also proxies `/hello/*` to `http://hello-world.hello-world/hello/*` like how our nginx ingress does in production.
 
-In order to set up a development cluster, see ../infrastructure/README.md. Once your development cluster is set up, you should run this to make the cluster's services available for local development:
+In order to set up a development cluster, see [infrastructure docs](../infrastructure/README.md). Once your development cluster is set up, you should run this to make the cluster's services available for local development:
 
 ```bash
 sudo kubefwd services -n hello-world
 ```
 
-Once that is running, start the dev server like this:
+In order to login you will also need to add our shared OAuth 2 client secret to your local environment variables. Ask a coworker for the secret, then create a file called `.env.development.local` with the following content:
+
+```
+AAD_B2C_CLIENT_SECRET=<secret>
+```
+
+Once that is all set up, start the dev server like this:
 
 ```bash
 yarn dev
 ```
 
-Open [http://localhost:4455](http://localhost:4455) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-## Other useful things to know
-
-### Code formatting
-
-We use [Prettier](https://prettier.io/) to format our code ((js/ts, tsx/jsx, md, yaml, graphql, html). Prettier will run in a Github action to verify code that is pushed. CI will fail if it detects formatting errors.
-
-If you use VSCode, you may find it useful to install [this extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), and (optionally) set your editor to format 'on save'.

@@ -1,9 +1,13 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { requireAuthentication } from "../../utils/pages/auth";
+import { requireAuthentication } from "../../lib/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  await requireAuthentication(context);
+  const result = requireAuthentication(context);
+  if (result) {
+    return result;
+  }
+
   return {
     props: {},
   };
