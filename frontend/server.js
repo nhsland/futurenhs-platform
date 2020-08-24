@@ -27,11 +27,12 @@ dotenv.config({ path: ".env.development.local" });
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
-const sessionStore = dev
-  ? undefined
-  : new (connectPgSimple(session))({
-      conString: requireEnv("DATABASE_URL"),
-    });
+const sessionStore =
+  dev || !process.env.DATABASE_URL
+    ? undefined
+    : new (connectPgSimple(session))({
+        conString: requireEnv("DATABASE_URL"),
+      });
 const sessionCookieSecret = requireEnv("COOKIE_SECRET");
 const app = next({
   dir: ".", // base directory where everything is, could move to src later
