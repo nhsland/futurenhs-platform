@@ -1,0 +1,29 @@
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+}
+
+directive @ifdef on FIELD
+type MutationRoot {
+  createWorkspace(workspace: NewWorkspace!): Workspace!
+  updateWorkspace(id: ID!, workspace: UpdateWorkspace!): Workspace!
+  deleteWorkspace(id: ID!): Workspace!
+}
+
+input NewWorkspace {
+  title: String!
+}
+
+type QueryRoot {
+  workspaces: [Workspace!]!
+  workspace(id: ID!): Workspace!
+}
+
+input UpdateWorkspace {
+  title: String!
+}
+
+type Workspace {
+  id: ID!
+  title: String!
+}

@@ -10,7 +10,10 @@
     "start": "NODE_ENV=production NODE_OPTIONS='--require ./tracing.js' node server.js",
     "test": "jest",
     "lint": "yarn eslint . --ext .js,.ts,.tsx",
-    "clean": "rm -rf .next"
+    "clean": "rm -rf .next",
+    "generate": "graphql-codegen --config codegen.yml",
+    "generate:watch": "yarn generate --watch",
+    "predev": "yarn generate"
   },
   "dependencies": {
     "@azure/monitor-opentelemetry-exporter": "^1.0.0-preview.3",
@@ -51,6 +54,11 @@
     "@babel/core": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
     "@testing-library/react": "^10.4.9",
+    "@graphql-codegen/cli": "1.17.8",
+    "@graphql-codegen/introspection": "1.17.8",
+    "@graphql-codegen/typescript": "1.17.8",
+    "@graphql-codegen/typescript-operations": "^1.17.8",
+    "@graphql-codegen/typescript-react-apollo": "1.17.8",
     "@types/jest": "^26.0.12",
     "@types/node": "^14.6.2",
     "@types/node-fetch": "^2.5.7",

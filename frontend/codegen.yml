@@ -1,0 +1,10 @@
+overwrite: true
+schema: "schema.graphql"
+# hooks:
+#   afterAllFileWrite:
+#     - prettier --write
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
