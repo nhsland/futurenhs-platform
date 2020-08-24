@@ -16,6 +16,21 @@ spec:
         - name: frontend
           image: fnhsproduction.azurecr.io/frontend
           env:
+            - name: AAD_B2C_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: sessions
+                  key: AAD_B2C_CLIENT_ID
+            - name: AAD_B2C_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sessions
+                  key: AAD_B2C_CLIENT_SECRET
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sessions
+                  key: COOKIE_SECRET
             - name: EVENTGRID_TOPIC_ENDPOINT
               valueFrom:
                 secretKeyRef:
