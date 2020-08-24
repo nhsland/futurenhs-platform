@@ -86,6 +86,9 @@ app
         }
       )
     );
+    if (!dev) {
+      server.set("trust proxy", 1);
+    }
     server.use(
       session({
         store: sessionStore,
