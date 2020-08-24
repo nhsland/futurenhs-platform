@@ -22,11 +22,12 @@ const requireEnv = (name) => {
   return value;
 };
 
-dotenv.config({ path: ".env.development" });
-dotenv.config({ path: ".env.development.local" });
+const dev = process.env.NODE_ENV !== "production";
+const dotEnvFileSegment = dev ? "development" : "production";
+dotenv.config({ path: `.env.${dotEnvFileSegment}` });
+dotenv.config({ path: `.env.${dotEnvFileSegment}.local` });
 
 const port = parseInt(process.env.PORT, 10) || 3000;
-const dev = process.env.NODE_ENV !== "production";
 const sessionStore =
   dev || !process.env.DATABASE_URL
     ? undefined
