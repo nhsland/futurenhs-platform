@@ -27,9 +27,9 @@ const Dev = () => {
             </Link>
           </li>
           <li>
-            <link href="/auth/resetpassword">
+            <Link href="/auth/resetpassword">
               <a>Reset password</a>
-            </link>
+            </Link>
           </li>
           <li>
             <Link href="/auth/logout">
