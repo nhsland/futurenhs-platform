@@ -32,11 +32,6 @@ const Dev = () => {
             </Link>
           </li>
           <li>
-            <Link href="/auth/recovery">
-              <a>Password Reset</a>
-            </Link>
-          </li>
-          <li>
             <Link href="/workspaces/private">
               <a>Private workspace</a>
             </Link>
