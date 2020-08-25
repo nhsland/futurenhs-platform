@@ -50,7 +50,7 @@ jobs:
       - name: Install modules
         run: yarn
       - name: Run Prettier
-        run: yarn prettier --check "**/*.{js,ts,tsx,md,yaml,graphql}"
+        run: yarn prettier --check "**/*.{js,ts,tsx,md,yml,yaml,graphql}"
   terraform-fmt:
     runs-on: ubuntu-latest
     steps:
