@@ -2,16 +2,13 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { requireAuthentication } from "../../lib/auth";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const result = requireAuthentication(context);
-  if (result) {
-    return result;
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+  async (_context, _user) => {
+    return {
+      props: {},
+    };
   }
-
-  return {
-    props: {},
-  };
-};
+);
 
 const PrivatePage = () => {
   return (
