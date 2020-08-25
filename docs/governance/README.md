@@ -17,7 +17,7 @@ Every change is:
 - Tested using automated unit and integration tests and exploratory tests before it is deployment to production
 - Tested using automated browser tests and exploratory tests in production before it is exposed to users
 
-Those tests also ensure that the change is hidden behind a feature flag and not visible to the end user, yet. See our [testing approach](testing/test-approach.md) for more details. Because these changes are not visible to end users, deployments can be made multiple times a day. This enables quick bug fixes in case an issue has not been found earlier by the different layers of testing.
+Those tests also ensure that the change is hidden behind a feature flag and not visible to the end user, yet. See our [testing approach](../testing/README.md) for more details. Because these changes are not visible to end users, deployments can be made multiple times a day. This enables quick bug fixes in case an issue has not been found earlier by the different layers of testing.
 
 ### Release
 
