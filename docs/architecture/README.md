@@ -20,4 +20,4 @@ This represents the current plan. Some parts are not implemented, yet (transpare
 
 ## Change process and approvals
 
-See [Governance documentation](../governance.md).
+See [Governance documentation](../governance/README.md).

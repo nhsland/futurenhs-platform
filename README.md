@@ -2,8 +2,8 @@
 
 ## Documentation
 
-- [./docs](General)
-- [./infrastructure](Infrastructure)
+- [General](./docs)
+- [Infrastructure](./infrastructure)
 
 ## Recommended tools for developers
 

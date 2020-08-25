@@ -225,7 +225,7 @@ as opposed to sharing a staging environment.
    ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME MINE
    ```
 
-1. To be able to login on your dev cluster, you need to add it's URL as a approved redirect URL to the Azure Active Directory B2C tenant. Please ask a colleague to get access (see "Create admin user" in [../docs/aad-b2c.md](Azure Active Directory B2C docs)), then go to "Azure AD B2C / App registrations / Development / Authentication" in the Azure Portal and add your cluster URL to the list of redirect URIs.
+1. To be able to login on your dev cluster, you need to add it's URL as a approved redirect URL to the Azure Active Directory B2C tenant. Please ask a colleague to get access (see "Create admin user" in [Azure Active Directory B2C docs](../docs/aad-b2c.md)), then go to "Azure AD B2C / App registrations / Development / Authentication" in the Azure Portal and add your cluster URL to the list of redirect URIs.
 
 1. Apply the ConfigMap for Azure Monitor for Containers to collect data in the Log Analytics workspace. The ConfigMap can be found in `infrastructure/kubernetes/logging` directory.
 

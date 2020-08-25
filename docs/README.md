@@ -2,15 +2,15 @@
 
 ## Architecture and infrastructure setup
 
-- [./architecture](Architecture)
-  - [./architecture/decisions/](Architecture Decision Records)
-- [./tech-stack](Tech Stack)
-- [./aad-b2c.md](Azure Active Directory B2C)
-- [./data-flow](Data Flow)
-- [./ci-setup.md](CI Setup)
+- [Architecture](./architecture)
+  - [Architecture Decision Records](./architecture/decisions/)
+- [Tech Stack](./tech-stack)
+- [Azure Active Directory B2C](./aad-b2c.md)
+- [Data Flow](./data-flow)
+- [CI Setup](./ci-setup.md)
 
 ## Processes and ways of working
 
-- [./governance](Governance)
-- [./testing](Testing)
-- [./working-with-sealed-secrets.md](Working with Sealed Secrets)
+- [Governance](./governance)
+- [Testing](./testing)
+- [Working with Sealed Secrets](./working-with-sealed-secrets.md)
