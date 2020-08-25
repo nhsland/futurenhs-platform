@@ -1,15 +1,51 @@
-// import { request, gql } from "graphql-request";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-// import { GetServerSideProps } from "next";
+import { GraphQLClient, gql } from "graphql-request";
+import { GetStaticProps } from "next";
 
 const MAX_CHARS = {
   title: 100,
   description: 250,
 };
 
-const CreateWorkspace = () => {
+interface Workspace {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  workspaces: Workspace[];
+}
+
+export const getStaticProps: GetStaticProps = async (): Promise<{
+  props: Props;
+}> => {
+  const endpoint = "http://localhost:3030/graphql";
+
+  const graphQLClient = new GraphQLClient(endpoint, {
+    credentials: "include",
+    mode: "cors",
+  });
+
+  const query = gql`
+    {
+      workspaces {
+        id
+        title
+      }
+    }
+  `;
+
+  const { workspaces } = await graphQLClient.request(query);
+  return {
+    props: {
+      workspaces,
+    },
+  };
+};
+
+const CreateWorkspace = ({ workspaces }: Props) => {
   const [remainingChars, setRemainingChars] = useState({
     title: "",
     description: "",
@@ -21,11 +57,6 @@ const CreateWorkspace = () => {
     router.push("/");
   };
 
-  const handleDiscard = () => {
-    // clear form elements
-    router.push("/");
-  };
-
   const handleCharNumber = (event: any) => {
     setRemainingChars({
       ...remainingChars,
@@ -33,13 +64,20 @@ const CreateWorkspace = () => {
         // @ts-ignore TODO
         MAX_CHARS[event.target.name] - event.target.value.length,
     });
-    console.log(event);
   };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+      <p>Current workspaces</p>
+      <ul>
+        {workspaces?.map((workspace: Workspace) => (
+          <li key={workspace.title}>{workspace.title}</li>
+        ))}
+      </ul>
       <h1>Create a workspace</h1>
       <h2>Workspace details</h2>
       <p> Fields marked with * are required.</p>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h3>
@@ -78,7 +116,6 @@ const CreateWorkspace = () => {
         </div>
         <input type="submit" value="Save and complete" />
       </form>
-      <button onClick={handleDiscard}>Discard</button>
     </div>
   );
 };
