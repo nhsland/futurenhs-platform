@@ -72,7 +72,7 @@ app
           clientSecret: requireEnv("AAD_B2C_CLIENT_SECRET"),
           responseType: "code",
           responseMode: "query",
-          redirectUrl: `${requireEnv("ORIGIN")}/auth/login/callback`,
+          redirectUrl: `${requireEnv("ORIGIN")}/auth/callback`,
           passReqToCallback: false,
           allowHttpForRedirectUrl: dev,
           isB2C: true,
@@ -107,23 +107,35 @@ app
     server.get(
       "/auth/login",
       (req, _res, next) => {
-        req.session["login.next"] = req.query.next;
+        req.session["auth.next"] = req.query.next;
         req.query.p = "b2c_1_signin";
         next();
       },
       passport.authenticate("aadb2c", {
         prompt: "login",
-        failureRedirect: "/auth/login/failed",
+        failureRedirect: "/auth/failed",
       })
     );
     server.get(
-      "/auth/login/callback",
+      "/auth/resetpassword",
+      (req, _res, next) => {
+        req.session["auth.next"] = req.query.next;
+        req.query.p = "b2c_1_passwordreset";
+        next();
+      },
       passport.authenticate("aadb2c", {
-        failureRedirect: "/auth/login/failed",
+        prompt: "login",
+        failureRedirect: "/auth/failed",
+      })
+    );
+    server.get(
+      "/auth/callback",
+      passport.authenticate("aadb2c", {
+        failureRedirect: "/auth/failed",
       }),
       (req, res) => {
-        const next = req.session["login.next"] || "/";
-        delete req.session["login.next"];
+        const next = req.session["auth.next"] || "/";
+        delete req.session["auth.next"];
         res.redirect(next);
       }
     );

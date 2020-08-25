@@ -18,7 +18,7 @@ We setup our Azure AD B2C tenant with the following steps:
 
    Name: Development
    Supported account types: Accounts in any organizational directory or any identity provider. For authenticating users with Azure AD B2C.
-   Redirect URI: Web, http://localhost:3000/auth/login/callback
+   Redirect URI: Web, http://localhost:3000/auth/callback
    Permissions: Grant admin consent to openid and offline_access permissions
 
 1. Create client secret for "Development" app registration. Then copy client secret, client id (called Application ID in the portal) and create a sealed secret:
@@ -36,7 +36,7 @@ We setup our Azure AD B2C tenant with the following steps:
 
    Name: Production
    Supported account types: Accounts in any organizational directory or any identity provider. For authenticating users with Azure AD B2C.
-   Redirect URI: Web, https://beta.future.nhs.uk/auth/login/callback
+   Redirect URI: Web, https://beta.future.nhs.uk/auth/callback
    Permissions: Grant admin consent to openid and offline_access permissions
 
 1. Create client secret for "Production" app registration. Then copy client secret, client id (called Application ID in the portal) and create a sealed secret:
