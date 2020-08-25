@@ -1,8 +1,6 @@
 overwrite: true
-schema: "schema.graphql"
-# hooks:
-#   afterAllFileWrite:
-#     - prettier --write
+schema: "http://localhost:8080/graphql"
+documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.tsx:
     plugins:
