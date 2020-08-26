@@ -6,7 +6,7 @@
 -- - Move primary key constraint into CREATE TABLE statement to make it easier to make this idempotent
 
 CREATE TABLE IF NOT EXISTS "session" (
-	"sid" varchar NOT NULL COLLATE "default" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE,
+	"sid" varchar NOT NULL COLLATE "default" PRIMARY KEY NOT DEFERRABLE INITIALLY IMMEDIATE,
 	"sess" json NOT NULL,
 	"expire" timestamp(6) NOT NULL
 )
