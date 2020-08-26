@@ -58,6 +58,11 @@ We setup our Azure AD B2C tenant with the following steps:
    Multifactor authentication: Disabled
    Application claims: Display Name, Email Addresses
 
+1. Change the page layout "Sign in page" of the user flow "Sign in"
+
+   Use custom page content: Yes
+   Custom page URI: https://beta.future.nhs.uk/auth-page-layouts/login
+
 1. Create user flow "Password reset"
 
    Version: Recommended
