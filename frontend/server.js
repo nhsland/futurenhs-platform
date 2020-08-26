@@ -1,7 +1,7 @@
 const express = require("express");
-var pg = require("pg"),
-  session = require("express-session"),
-  pgSession = require("connect-pg-simple")(session);
+const pg = require("pg");
+const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
 const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
@@ -25,47 +25,58 @@ const requireEnv = (name) => {
   return value;
 };
 
+const setupSessionStore = async () => {
+  const pgUrl = process.env.PG_URL;
+  if (!pgUrl) {
+    console.warn(
+      "Environment variable PG_URL not set. Using in memory session storage."
+    );
+    return;
+  }
+
+  const pgParams = url.parse(pgUrl);
+  const [pgUser, pgPassword] = pgParams.auth.split(":");
+  const pgPool = new pg.Pool({
+    user: pgUser,
+    password: pgPassword,
+    host: pgParams.hostname,
+    port: parseInt(pgParams.port, 10),
+    database: pgParams.pathname.split("/")[1],
+    ssl: true,
+  });
+  await runSessionDbMigration(pgPool);
+
+  return new pgSession({
+    pool: pgPool,
+  });
+};
+
+const runSessionDbMigration = async (pool) => {
+  const client = await pool.connect();
+  try {
+    await client.query(await fs.readFile("database/table-schema.sql", "utf8"));
+  } finally {
+    client.release();
+  }
+};
+
 async function main() {
   const dev = process.env.NODE_ENV !== "production";
   const dotEnvFileSegment = dev ? "development" : "production";
   dotenv.config({ path: `.env.${dotEnvFileSegment}` });
   dotenv.config({ path: `.env.${dotEnvFileSegment}.local` });
 
-  const params = url.parse(process.env.PG_URL);
-  const auth = params.auth.split(":");
-  const config = {
-    user: auth[0],
-    password: auth[1],
-    host: params.hostname,
-    port: parseInt(params.port, 10),
-    database: params.pathname.split("/")[1],
-    ssl: true,
-  };
-  const pgPool = new pg.Pool(config);
-
-  const client = await pgPool.connect();
-  try {
-    await client.query(await fs.readFile("database/table-schema.sql", "utf-8"));
-  } finally {
-    client.release();
-  }
-
   const port = parseInt(process.env.PORT, 10) || 3000;
-
-  const sessionStore = new pgSession({
-    pool: pgPool,
-  });
-
+  const sessionStore = await setupSessionStore();
   const sessionCookieSecret = requireEnv("COOKIE_SECRET");
 
   const app = next({
     dir: ".", // base directory where everything is, could move to src later
     dev,
   });
-
   const handle = app.getRequestHandler();
-
   await app.prepare();
+
   const server = express();
 
   // Dev proxy
@@ -77,6 +88,22 @@ async function main() {
   }
 
   // Login session
+  const aadb2cStrategy = "aadb2c";
+  const configureUserFlow = (flow) => (req, _res, next) => {
+    req.session["auth.next"] = req.query.next;
+    req.query.p = flow;
+    next();
+  };
+  const authenticateWithAADB2C = passport.authenticate(aadb2cStrategy, {
+    prompt: "login",
+    failureRedirect: "/auth/failed",
+  });
+  const redirectAuthSuccess = (req, res) => {
+    const next = req.session["auth.next"] || "/";
+    delete req.session["auth.next"];
+    res.redirect(next);
+  };
+
   passport.serializeUser((user, done) => {
     done(null, JSON.stringify(user));
   });
@@ -84,7 +111,7 @@ async function main() {
     done(null, JSON.parse(user));
   });
   passport.use(
-    "aadb2c",
+    aadb2cStrategy,
     new OIDCStrategy(
       {
         identityMetadata:
@@ -108,6 +135,8 @@ async function main() {
     )
   );
   if (!dev) {
+    // In production our frontend runs behind a Kubernetes ingress. We need to
+    // tell Express.js, so it can use X-Forwarded-* headers, etc.
     server.set("trust proxy", 1);
   }
   server.use(
@@ -127,39 +156,15 @@ async function main() {
   server.use(passport.session());
   server.get(
     "/auth/login",
-    (req, _res, next) => {
-      req.session["auth.next"] = req.query.next;
-      req.query.p = "b2c_1_signin";
-      next();
-    },
-    passport.authenticate("aadb2c", {
-      prompt: "login",
-      failureRedirect: "/auth/failed",
-    })
+    configureUserFlow("b2c_1_signin"),
+    authenticateWithAADB2C
   );
   server.get(
     "/auth/resetpassword",
-    (req, _res, next) => {
-      req.session["auth.next"] = req.query.next;
-      req.query.p = "b2c_1_passwordreset";
-      next();
-    },
-    passport.authenticate("aadb2c", {
-      prompt: "login",
-      failureRedirect: "/auth/failed",
-    })
+    configureUserFlow("b2c_1_passwordreset"),
+    authenticateWithAADB2C
   );
-  server.get(
-    "/auth/callback",
-    passport.authenticate("aadb2c", {
-      failureRedirect: "/auth/failed",
-    }),
-    (req, res) => {
-      const next = req.session["auth.next"] || "/";
-      delete req.session["auth.next"];
-      res.redirect(next);
-    }
-  );
+  server.get("/auth/callback", authenticateWithAADB2C, redirectAuthSuccess);
   server.get("/auth/logout", (req, res) => {
     req.logout();
     res.redirect("/");
