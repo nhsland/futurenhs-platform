@@ -1,0 +1,27 @@
+query WorkspacesQuery {
+  workspaces {
+    id
+    title
+  }
+}
+
+query WorkspaceByIDQuery($id: ID!) {
+  workspace(id: $id) {
+    id
+    title
+  }
+}
+
+mutation CreateWorkspaceMutation($title: String!) {
+  createWorkspace(workspace: { title: $title }) {
+    id
+    title
+  }
+}
+
+mutation DeleteWorkspaceMutation($id: ID!) {
+  deleteWorkspace(id: $id) {
+    id
+    title
+  }
+}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { GraphQLClient, gql } from "graphql-request";
-import { GetStaticProps } from "next";
+import { GraphQLClient } from "graphql-request";
+import { GetServerSideProps } from "next";
+import { getSdk } from "../../generated/graphql";
 
 const MAX_CHARS = {
   title: 100,
@@ -18,26 +18,13 @@ interface Props {
   workspaces: Workspace[];
 }
 
-export const getStaticProps: GetStaticProps = async (): Promise<{
-  props: Props;
-}> => {
-  const endpoint = "http://localhost:3030/graphql";
-
-  const graphQLClient = new GraphQLClient(endpoint, {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const client = new GraphQLClient("http://localhost:3030/graphql", {
     credentials: "include",
     mode: "cors",
   });
-
-  const query = gql`
-    {
-      workspaces {
-        id
-        title
-      }
-    }
-  `;
-
-  const { workspaces } = await graphQLClient.request(query);
+  const sdk = getSdk(client);
+  const { workspaces } = await sdk.WorkspacesQuery();
   return {
     props: {
       workspaces,
@@ -52,9 +39,17 @@ const CreateWorkspace = ({ workspaces }: Props) => {
   });
 
   const { errors, handleSubmit, register } = useForm();
-  const router = useRouter();
-  const onSubmit = () => {
-    router.push("/");
+  const onSubmit = async () => {
+    try {
+      const client = new GraphQLClient("http://localhost:3030/graphql", {
+        mode: "cors",
+      });
+      const sdk = getSdk(client);
+      await sdk.CreateWorkspaceMutation({ title: "Duckling" });
+      console.log("Success");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCharNumber = (event: any) => {
