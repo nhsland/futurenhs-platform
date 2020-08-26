@@ -4,6 +4,7 @@
 locals {
   databases = [
     "workspace_service",
+    "session",
   ]
 }
 
@@ -84,6 +85,19 @@ resource "kubernetes_secret" "frontend" {
   data = {
     eventgrid_topic_endpoint = var.eventgrid_topic_endpoint
     eventgrid_topic_key      = var.eventgrid_topic_key
+    postgresUrl = "postgres://${
+      postgresql_role.service["session"].name
+      }@${
+      var.postgresql_server_name
+      }:${
+      random_password.postgresql_password["session"].result
+      }@${
+      var.postgresql_server_name
+      }.postgres.database.azure.com:5432/${
+      postgresql_database.service["session"].name
+    }"
+    postgresUsername = "${postgresql_role.service["session"].name}@${var.postgresql_server_name}"
+    postgresPassword = random_password.postgresql_password["session"].result
   }
 }
 
