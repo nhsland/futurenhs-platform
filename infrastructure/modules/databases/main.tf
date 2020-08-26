@@ -130,7 +130,7 @@ resource "kubernetes_config_map" "hello_world_telemetry" {
 resource "kubernetes_config_map" "workspace_service_telemetry" {
   metadata {
     name      = "telemetry"
-    namespace = kubernetes_namespace.service["workspace_service"].metadata[0].name
+    namespace = kubernetes_namespace.workspace_service.metadata[0].name
   }
   data = {
     instrumentation_key = var.instrumentation_key
