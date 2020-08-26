@@ -50,7 +50,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: frontend
-                  key: postgresUrl
+                  key: postgres_url
           ports:
             - containerPort: 3000
           resources:

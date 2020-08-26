@@ -4,7 +4,7 @@
 locals {
   databases = [
     "workspace_service",
-    "session",
+    "frontend",
   ]
 }
 
@@ -33,15 +33,14 @@ resource "postgresql_database" "service" {
   allow_connections = true
 }
 
-resource "postgresql_extension" "uuid-ossp" {
+resource "postgresql_extension" "workspace_service_uuid_ossp" {
   name     = "uuid-ossp"
-  database = "workspace_service"
+  database = postgresql_database.service["workspace_service"].name
 }
 
-resource "kubernetes_namespace" "service" {
-  for_each = toset(local.databases)
+resource "kubernetes_namespace" "workspace_service" {
   metadata {
-    name = (replace(each.value, "_", "-"))
+    name = "workspace-service"
     annotations = {
       "linkerd.io/inject" = "enabled"
     }
@@ -51,7 +50,7 @@ resource "kubernetes_namespace" "service" {
 resource "kubernetes_secret" "workspace_service_db_creds" {
   metadata {
     name      = "workspace-service"
-    namespace = kubernetes_namespace.service["workspace_service"].metadata[0].name
+    namespace = kubernetes_namespace.workspace_service.metadata[0].name
   }
   data = {
     url = "postgres://${
@@ -85,19 +84,17 @@ resource "kubernetes_secret" "frontend" {
   data = {
     eventgrid_topic_endpoint = var.eventgrid_topic_endpoint
     eventgrid_topic_key      = var.eventgrid_topic_key
-    postgresUrl = "postgres://${
-      postgresql_role.service["session"].name
+    postgres_url = "postgres://${
+      postgresql_role.service["frontend"].name
       }@${
       var.postgresql_server_name
       }:${
-      random_password.postgresql_password["session"].result
+      random_password.postgresql_password["frontend"].result
       }@${
       var.postgresql_server_name
       }.postgres.database.azure.com:5432/${
-      postgresql_database.service["session"].name
+      postgresql_database.service["frontend"].name
     }"
-    postgresUsername = "${postgresql_role.service["session"].name}@${var.postgresql_server_name}"
-    postgresPassword = random_password.postgresql_password["session"].result
   }
 }
 
