@@ -183,3 +183,15 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
 ## Troubleshooting
 
 - If an error occurs when applying the terraform it is possible that there is a cached version of an existing terraform set up. You can overcome this by deleting the ./infrastructure/environments/dev/.terraform/ folder and trying again.
+
+- If your cluster fails to create, have a look at the external IP address of your ingress service:
+
+  ```sh
+  kubectl get svc -n ingress
+  ```
+
+  If it shows `<pending>` and a `kubectl describe svc -n ingress ingress-nginx-controller` shows the following error message:
+
+  > Code="LinkedAuthorizationFailed" Message="The client '6e7bca9e-a67b-4b25-a5c4-a226ce816405' with object id '6e7bca9e-a67b-4b25-a5c4-a226ce816405' has permission to perform action 'Microsoft.Network/loadBalancers/write' on scope '/subscriptions/4a4be66c-9000-4906-8253-6a73f09f418d/resourceGroups/mc_platform-dev-jan_dev-jan_westeurope/providers/Microsoft.Network/loadBalancers/kubernetes'; however, it does not have permission to perform action 'Microsoft.Network/publicIPAddresses/join/action' on the linked scope(s) '/subscriptions/4a4be66c-9000-4906-8253-6a73f09f418d/resourceGroups/platform-dev-jan/providers/Microsoft.Network/publicIPAddresses/cluster_outbound' or the linked scope(s) are invalid."
+
+  This means permissions have not propagated, yet, which seems to happen sometimes. It should start to work after ~15mins.
