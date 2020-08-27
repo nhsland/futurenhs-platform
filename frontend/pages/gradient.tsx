@@ -5,7 +5,11 @@ import { Gradient } from "../components/Gradient";
 import { LoginPanel } from "../components/Login/LoginPanel";
 
 const LoginPlaceholder = () => {
-  return <div className="loginPlaceholder"></div>;
+  return (
+    <div className="loginPlaceholder">
+      <p>.</p>
+    </div>
+  );
 };
 
 const GradientPage = () => {
@@ -16,14 +20,13 @@ const GradientPage = () => {
         imageRightURL="https://www.nhs.co.uk"
         imageRightAltText="NHS logo"
       />
-      <Gradient />
-      <section className="loginSection">
+      <Gradient>
         <LoginPlaceholder />
         <LoginPanel
           label="Welcome to FutureNHS"
           text="FutureNHS connects people and helps build relationships across the health and social care sector"
         />
-      </section>
+      </Gradient>
     </PageLayout>
   );
 };

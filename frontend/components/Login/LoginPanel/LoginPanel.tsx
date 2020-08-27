@@ -8,9 +8,13 @@ type LoginPanelProps = {
 };
 
 const StyledLoginPanel = styled(Panel)`
-  ${({ theme }) => `
-    background-color: ${theme.colorNhsukWhite};
-    padding: 15px;
+  ${() => `
+    background-color: transparent;
+    padding: 0px;
+    max-width: 392px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     `}
 `;
 

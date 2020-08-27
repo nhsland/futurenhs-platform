@@ -4,3 +4,29 @@
 // nhs frontend components
 @import "node_modules/nhsuk-frontend/packages/components/button/_button";
 @import "node_modules/nhsuk-frontend/packages/components/panel/_panel";
+
+.loginPlaceholder {
+  min-height: 421px;
+  min-width: 287px;
+  background-color: grey;
+  margin: 40px 98px;
+  //   position: relative;
+  @media (min-width: 1200px) {
+    min-width: 477px;
+  }
+  @media (min-width: 1440px) {
+    min-width: 481px;
+    min-height: 504px;
+  }
+}
+
+.loginSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media (min-width: 1200px) {
+    flex-direction: row;
+  }
+}
