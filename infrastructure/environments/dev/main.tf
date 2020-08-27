@@ -1,20 +1,35 @@
-provider "azurerm" {
-  version = "=2.14.0"
-  features {}
-  subscription_id = "4a4be66c-9000-4906-8253-6a73f09f418d"
-}
-
-provider "random" {
-  version = "~> 2.2"
-}
-
 terraform {
-  required_version = "0.12.25"
+  required_version = "0.13.0"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "2.14.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "1.12.0"
+    }
+    postgresql = {
+      source  = "terraform-providers/postgresql"
+      version = "1.7.1"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "2.2"
+    }
+  }
   backend "azurerm" {
     container_name = "tfstate"
     key            = "dev.terraform.tfstate"
   }
 }
+
+provider "azurerm" {
+  features {}
+  subscription_id = "4a4be66c-9000-4906-8253-6a73f09f418d"
+}
+
+provider "random" {}
 
 # This module should be applied first, using `terraform apply -target module.platform`
 # so that the kubernetes cluster and postresql firewall rules are set up.
