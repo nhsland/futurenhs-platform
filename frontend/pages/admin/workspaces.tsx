@@ -19,12 +19,10 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const client = new GraphQLClient("http://localhost:3030/graphql", {
-    credentials: "include",
-    mode: "cors",
-  });
+  const client = new GraphQLClient("http://localhost:4455/api/graphql");
   const sdk = getSdk(client);
   const { workspaces } = await sdk.WorkspacesQuery();
+
   return {
     props: {
       workspaces,
@@ -41,11 +39,9 @@ const CreateWorkspace = ({ workspaces }: Props) => {
   const { errors, handleSubmit, register } = useForm();
   const onSubmit = async () => {
     try {
-      const client = new GraphQLClient("http://localhost:3030/graphql", {
-        mode: "cors",
-      });
+      const client = new GraphQLClient("http://localhost:4455/api/graphql");
       const sdk = getSdk(client);
-      await sdk.CreateWorkspaceMutation({ title: "Duckling" });
+      await sdk.CreateWorkspaceMutation({ title: "Kite" });
       console.log("Success");
     } catch (error) {
       console.log(error);

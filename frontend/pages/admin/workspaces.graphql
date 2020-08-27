@@ -5,12 +5,12 @@ query WorkspacesQuery {
   }
 }
 
-query WorkspaceByIDQuery($id: ID!) {
-  workspace(id: $id) {
-    id
-    title
-  }
-}
+# query WorkspaceByIDQuery($id: ID!) {
+#   workspace(id: $id) {
+#     id
+#     title
+#   }
+# }
 
 mutation CreateWorkspaceMutation($title: String!) {
   createWorkspace(workspace: { title: $title }) {

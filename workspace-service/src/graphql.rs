@@ -36,32 +36,33 @@ struct UpdateWorkspace {
 
 #[derive(Clone)]
 pub struct State {
-    pub schema: Schema<QueryRoot, MutationRoot, EmptySubscription>,
+    pub schema: Schema<Query, MutationRoot, EmptySubscription>,
 }
 
 impl State {
     pub fn new(pool: PgPool) -> State {
         State {
-            schema: Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+            schema: Schema::build(Query, MutationRoot, EmptySubscription)
                 .data(pool)
                 .finish(),
         }
     }
 }
 
-pub struct QueryRoot;
+pub struct Query;
 
-#[Object]
-impl QueryRoot {
-    #[field(description = "Get all Workspaces")]
+#[Object(extends)]
+impl Query {
+    // #[field(description = "Get all Workspaces")]
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
         let workspaces = db::Workspace::find_all(pool).await?;
         Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
-    #[field(description = "Get Workspace by id")]
-    async fn workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
+    // FIXME: Unable to get the enable_federation method to work on the schema, hence this is here.
+    #[entity]
+    async fn workspace(&self, context: &Context<'_>,id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
         let workspace = db::Workspace::find_by_id(id, pool).await?;
