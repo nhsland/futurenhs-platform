@@ -6,7 +6,7 @@ cd $(dirname "$0")
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT
 
-ENVIRONMENT="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
+ENVIRONMENT="${1:?"Please specify your environment name as the first parameter, e.g. dev-jane"}"
 CURRENT_CONTEXT=$(kubectl config current-context)
 export ARGOCD_OPTS="--port-forward --port-forward-namespace argocd"
 
@@ -18,12 +18,12 @@ fi
 FNHSNAME=$(echo $ENVIRONMENT | sed s/dev-//)
 
 if [ "$ENVIRONMENT" != "dev-$FNHSNAME" ]; then
-	echo "environment should be of the form 'dev-*' where * is your name."
+	echo "Environment should be of the form 'dev-*' where * is your name."
 	exit 1
 fi
 
-if ! which kubeseal; then
-	echo "You need to install Kubeseal.  Please see README for instructions."
+if ! command -v kubeseal >/dev/null; then
+	echo "You need to install Kubeseal. Please see README for instructions."
 	exit 1
 fi
 
@@ -52,6 +52,8 @@ az aks update \
 	-n $ENVIRONMENT \
 	-g platform-$ENVIRONMENT \
 	--attach-acr "/subscriptions/75173371-c161-447a-9731-f042213a19da/resourceGroups/platform-production/providers/Microsoft.ContainerRegistry/registries/fnhsproduction"
+
+kubectl apply -f ./infrastructure/kubernetes/logging/container-azm-ms-agentconfig.yaml
 
 az keyvault secret show --vault-name "fnhs-shared-dev" --name "sealed-secret-yaml" |
 	jq -r '.value' |

@@ -1,61 +1,188 @@
-/// This is taken from the next.js reverse proxy example, and should
-/// only be used for local development.
-/// https://github.com/vercel/next.js/tree/master/examples/with-custom-reverse-proxy
-/* eslint-disable no-console */
 const express = require("express");
+const pg = require("pg");
+const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
+const passport = require("passport");
+const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
+const dotenv = require("dotenv");
+const url = require("url");
+const { promises: fs } = require("fs");
 
 const devProxy = {
   "/hello": {
     target: "http://hello-world.hello-world/",
     changeOrigin: true,
   },
-  "/.ory/kratos/public/": {
-    target: "http://kratos-public.kratos",
-    pathRewrite: { "/.ory/kratos/public": "" },
-    changeOrigin: false,
-  },
-  // another one that hits ory/kratos refer to http-proxy-middleware docs to understand the format
 };
 
-const port = parseInt(process.env.PORT, 10) || 4455;
-if (process.env.NODE_ENV !== "development") {
-  console.error(
-    "This server should only be used by `yarn dev`, and should never be used in production."
-  );
-  process.exit(1);
-}
+const requireEnv = (name) => {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Environment variable ${name} is required`);
+  }
 
-const app = next({
-  dir: ".", // base directory where everything is, could move to src later
-  dev: true,
-});
+  return value;
+};
 
-const handle = app.getRequestHandler();
+const setupSessionStore = async () => {
+  const pgUrl = process.env.PG_URL;
+  if (!pgUrl) {
+    console.warn(
+      "Environment variable PG_URL not set. Using in memory session storage."
+    );
+    return;
+  }
 
-let server;
-app
-  .prepare()
-  .then(() => {
-    server = express();
+  const pgParams = url.parse(pgUrl);
+  const [pgUser, pgPassword] = pgParams.auth.split(":");
+  const pgPool = new pg.Pool({
+    user: pgUser,
+    password: pgPassword,
+    host: pgParams.hostname,
+    port: parseInt(pgParams.port, 10),
+    database: pgParams.pathname.split("/")[1],
+    ssl: true,
+  });
+  await runSessionDbMigration(pgPool);
 
-    // Set up the proxy.
+  return new pgSession({
+    pool: pgPool,
+  });
+};
+
+const runSessionDbMigration = async (pool) => {
+  const client = await pool.connect();
+  try {
+    await client.query(await fs.readFile("database/table-schema.sql", "utf8"));
+  } finally {
+    client.release();
+  }
+};
+
+async function main() {
+  const dev = process.env.NODE_ENV !== "production";
+  const dotEnvFileSegment = dev ? "development" : "production";
+  dotenv.config({ path: `.env.${dotEnvFileSegment}` });
+  dotenv.config({ path: `.env.${dotEnvFileSegment}.local` });
+
+  const port = parseInt(process.env.PORT, 10) || 3000;
+  const sessionStore = await setupSessionStore();
+  const sessionCookieSecret = requireEnv("COOKIE_SECRET");
+
+  const app = next({
+    dir: ".", // base directory where everything is, could move to src later
+    dev,
+  });
+  const handle = app.getRequestHandler();
+  await app.prepare();
+
+  const server = express();
+
+  // Dev proxy
+  if (dev) {
     const { createProxyMiddleware } = require("http-proxy-middleware");
     Object.keys(devProxy).forEach(function (context) {
       server.use(context, createProxyMiddleware(devProxy[context]));
     });
+  }
 
-    // Default catch-all handler to allow Next.js to handle all other routes
-    server.all("*", (req, res) => handle(req, res));
-
-    server.listen(port, (err) => {
-      if (err) {
-        throw err;
-      }
-      console.log(`> Ready on http://localhost:${port} [development]`);
-    });
-  })
-  .catch((err) => {
-    console.log("An error occurred, unable to start the server");
-    console.log(err);
+  // Login session
+  const aadb2cStrategy = "aadb2c";
+  const configureUserFlow = (flow) => (req, _res, next) => {
+    req.session["auth.next"] = req.query.next;
+    req.query.p = flow;
+    next();
+  };
+  const authenticateWithAADB2C = passport.authenticate(aadb2cStrategy, {
+    prompt: "login",
+    failureRedirect: "/auth/failed",
   });
+  const redirectAuthSuccess = (req, res) => {
+    const next = req.session["auth.next"] || "/";
+    delete req.session["auth.next"];
+    res.redirect(next);
+  };
+
+  passport.serializeUser((user, done) => {
+    done(null, JSON.stringify(user));
+  });
+  passport.deserializeUser((user, done) => {
+    done(null, JSON.parse(user));
+  });
+  passport.use(
+    aadb2cStrategy,
+    new OIDCStrategy(
+      {
+        identityMetadata:
+          "https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/v2.0/.well-known/openid-configuration",
+        clientID: requireEnv("AAD_B2C_CLIENT_ID"),
+        clientSecret: requireEnv("AAD_B2C_CLIENT_SECRET"),
+        responseType: "code",
+        responseMode: "query",
+        redirectUrl: `${requireEnv("ORIGIN")}/auth/callback`,
+        passReqToCallback: false,
+        allowHttpForRedirectUrl: dev,
+        isB2C: true,
+      },
+      (profile, done) => {
+        done(null, {
+          id: profile.sub,
+          name: profile.displayName,
+          emails: profile.emails,
+        });
+      }
+    )
+  );
+  if (!dev) {
+    // In production our frontend runs behind a Kubernetes ingress. We need to
+    // tell Express.js, so it can use X-Forwarded-* headers, etc.
+    server.set("trust proxy", 1);
+  }
+  server.use(
+    session({
+      store: sessionStore,
+      secret: sessionCookieSecret,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        sameSite: "lax",
+        secure: !dev,
+      },
+    })
+  );
+  server.use(passport.initialize());
+  server.use(passport.session());
+  server.get(
+    "/auth/login",
+    configureUserFlow("b2c_1_signin"),
+    authenticateWithAADB2C
+  );
+  server.get(
+    "/auth/resetpassword",
+    configureUserFlow("b2c_1_passwordreset"),
+    authenticateWithAADB2C
+  );
+  server.get("/auth/callback", authenticateWithAADB2C, redirectAuthSuccess);
+  server.get("/auth/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+  });
+
+  // Default catch-all handler to allow Next.js to handle all other routes
+  server.all("*", (req, res) => handle(req, res));
+
+  server.listen(port, (err) => {
+    if (err) {
+      throw err;
+    }
+    console.log(`> Ready on http://localhost:${port}`);
+  });
+}
+
+main().catch((err) => {
+  console.error("An error occurred, unable to start the server");
+  console.error(err);
+  process.exit(1);
+});

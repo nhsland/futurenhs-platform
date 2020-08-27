@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-const requiredEnvVars = ["EVENTGRID_TOPIC_ENDPOINT", "EVENTGRID_TOPIC_KEY"];
+const requiredEnvVars = [
+  "EVENTGRID_TOPIC_ENDPOINT",
+  "EVENTGRID_TOPIC_KEY",
+  "PG_URL",
+];
 
 export default (_: NextApiRequest, res: NextApiResponse) => {
   const missingEnvVars = requiredEnvVars.filter((name) => !process.env[name]);

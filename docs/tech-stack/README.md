@@ -14,7 +14,7 @@ Proposed tech stack for the FutureNHS platform (based on open source and open st
 - [**Linkerd**](#linkerd) as a service mesh
 - [**Azure Blob Storage**](#azure-blob-storage) to store files
 - [**PostgreSQL**](#postgresql) to store other data
-- [**ORY Kratos**](#ory-kratos) for authentication
+- [**Azure Active Directory B2C**](#azure-active-directory-b2c) for authentication
 
 ## Benefits of using open source/standards
 
@@ -76,15 +76,17 @@ Microsoft Azure does a better file storage service. If we were to move to anothe
 
 We also considered **Azure CosmosDB**. CosmosDB is fully managed and scales infinitelty. Unfortunately development for CosmosDB requires Windows for the emulator.
 
-### ORY Kratos
+### Azure Active Directory B2C
 
 The FutureNHS platform is available for everyone working together with the NHS. This means users outside the NHS need to be able to register (with approval by the FutureNHS service team) and login.
 
 We also considered **Auth0** and **Okta**. Neither fit into the available budget for the the project.
 
-We also considered **Azure Active Directory B2C**. Unfortunately it currently has restrictions in how we're able to customize the login flow.
+We also considered **ORY Kratos**. Unfortunately it's still in early stages of development and some rough edges need to be ironed out before we can consider using it.
 
-ORY Kratos is free and open source. It does not come with a UI. Instead it provides APIs, which make it easy to build custom UIs. These APIs also make it easy to integrate it into our load balancer in order to enforce authentication. Kratos also supports upstream identity providers using OpenID Connect, which will enable us to add single sign-on with existing NHS identity providers.
+We also considered **FusionAuth**. It's a mature product, that we can use for free if we host it ourselves. Doing the hosting ourselves takes time, that we currently rather spend on feature development than on building an authentication solution.
+
+Azure Active Directory B2C fits into our budget, has the basic features we need and is a fully managed solution. Even through there are some shortcomings (e.g. the login page requires JavaScript), it enables us to quickly stand up an authentication solution and focus on building user features.
 
 ## A note about API gateways
 

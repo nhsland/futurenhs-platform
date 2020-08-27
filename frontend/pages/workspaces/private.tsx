@@ -1,20 +1,26 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { requireAuthentication } from "../../utils/pages/auth";
+import { requireAuthentication, User } from "../../lib/auth";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  await requireAuthentication(context);
+interface Props {
+  user: User;
+}
 
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
+  async (_context, user) => {
+    return {
+      props: { user },
+    };
+  }
+);
 
-const PrivatePage = () => {
+const PrivatePage = (props: Props) => {
   return (
     <>
       <div>Private Page</div>
-      <div>This is my cookie</div>
+      <div>User ID: {props.user.id}</div>
+      <div>Name: {props.user.name}</div>
+      <div>Emails: {props.user.emails.join(", ")}</div>
     </>
   );
 };

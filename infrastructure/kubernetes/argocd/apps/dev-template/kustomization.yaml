@@ -7,5 +7,4 @@ patchesStrategicMerge:
   - ingress.yaml
   - hello-world.yaml
   - frontend.yaml
-  - kratos.yaml
   - workspace-service.yaml

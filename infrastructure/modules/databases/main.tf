@@ -3,8 +3,8 @@
 # before attempting to apply this module.
 locals {
   databases = [
-    "kratos",
     "workspace_service",
+    "frontend",
   ]
 }
 
@@ -13,16 +13,6 @@ resource "random_password" "postgresql_password" {
   length   = 50
   special  = false
   upper    = true
-}
-resource "random_password" "kratos_secrets_default" {
-  length  = 32
-  special = false
-  upper   = true
-}
-resource "random_password" "kratos_secrets_cookie" {
-  length  = 32
-  special = false
-  upper   = true
 }
 
 resource "postgresql_role" "service" {
@@ -43,48 +33,24 @@ resource "postgresql_database" "service" {
   allow_connections = true
 }
 
-resource "postgresql_extension" "uuid-ossp" {
+resource "postgresql_extension" "workspace_service_uuid_ossp" {
   name     = "uuid-ossp"
-  database = "workspace_service"
+  database = postgresql_database.service["workspace_service"].name
 }
 
-resource "kubernetes_namespace" "service" {
-  for_each = toset(local.databases)
+resource "kubernetes_namespace" "workspace_service" {
   metadata {
-    name = (replace(each.value, "_", "-"))
+    name = "workspace-service"
     annotations = {
       "linkerd.io/inject" = "enabled"
     }
   }
 }
 
-resource "kubernetes_secret" "kratos_db_creds" {
-  metadata {
-    name      = "kratos"
-    namespace = kubernetes_namespace.service["kratos"].metadata[0].name
-  }
-  data = {
-    secretsDefault = random_password.kratos_secrets_default.result
-    secretsCookie  = random_password.kratos_secrets_cookie.result
-    dsn = "postgres://${
-      postgresql_role.service["kratos"].name
-      }@${
-      var.postgresql_server_name
-      }:${
-      random_password.postgresql_password["kratos"].result
-      }@${
-      var.postgresql_server_name
-      }.postgres.database.azure.com:5432/${
-      postgresql_database.service["kratos"].name
-    }"
-  }
-}
-
-
 resource "kubernetes_secret" "workspace_service_db_creds" {
   metadata {
     name      = "workspace-service"
-    namespace = kubernetes_namespace.service["workspace_service"].metadata[0].name
+    namespace = kubernetes_namespace.workspace_service.metadata[0].name
   }
   data = {
     url = "postgres://${
@@ -118,6 +84,17 @@ resource "kubernetes_secret" "frontend" {
   data = {
     eventgrid_topic_endpoint = var.eventgrid_topic_endpoint
     eventgrid_topic_key      = var.eventgrid_topic_key
+    postgres_url = "postgres://${
+      postgresql_role.service["frontend"].name
+      }@${
+      var.postgresql_server_name
+      }:${
+      random_password.postgresql_password["frontend"].result
+      }@${
+      var.postgresql_server_name
+      }.postgres.database.azure.com:5432/${
+      postgresql_database.service["frontend"].name
+    }"
   }
 }
 
@@ -153,7 +130,7 @@ resource "kubernetes_config_map" "hello_world_telemetry" {
 resource "kubernetes_config_map" "workspace_service_telemetry" {
   metadata {
     name      = "telemetry"
-    namespace = kubernetes_namespace.service["workspace_service"].metadata[0].name
+    namespace = kubernetes_namespace.workspace_service.metadata[0].name
   }
   data = {
     instrumentation_key = var.instrumentation_key

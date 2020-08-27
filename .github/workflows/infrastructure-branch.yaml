@@ -70,8 +70,6 @@ jobs:
           cp -r $GITHUB_WORKSPACE/futurenhs-platform/infrastructure/kubernetes/cert-manager/* $GITHUB_WORKSPACE/futurenhs-deployments/cert-manager
           mkdir -p $GITHUB_WORKSPACE/futurenhs-deployments/ingress
           cp -r $GITHUB_WORKSPACE/futurenhs-platform/infrastructure/kubernetes/ingress/* $GITHUB_WORKSPACE/futurenhs-deployments/ingress
-          mkdir -p $GITHUB_WORKSPACE/futurenhs-deployments/kratos
-          cp -r $GITHUB_WORKSPACE/futurenhs-platform/infrastructure/kubernetes/kratos/* $GITHUB_WORKSPACE/futurenhs-deployments/kratos
       - name: Deploy
         working-directory: futurenhs-deployments
         run: |

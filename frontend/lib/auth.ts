@@ -1,27 +1,27 @@
 import {
-  LoginRequest,
-  RecoveryRequest,
-  SettingsRequest,
-} from "@oryd/kratos-client";
-import { adminApi } from "../utils/kratos";
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from "next";
+import { redirect } from "./redirect";
 
-export const getLoginFields = async (
-  request: string
-): Promise<LoginRequest> => {
-  const res = await adminApi.getSelfServiceBrowserLoginRequest(request);
-  return res.body;
-};
+export interface User {
+  id: string;
+  name: string;
+  emails: string[];
+}
 
-export const getRecoveryFields = async (
-  request: string
-): Promise<RecoveryRequest> => {
-  const res = await adminApi.getSelfServiceBrowserRecoveryRequest(request);
-  return res.body;
-};
+export const requireAuthentication = <P>(
+  getServerSideProps: (
+    context: GetServerSidePropsContext,
+    user: User
+  ) => Promise<GetServerSidePropsResult<P>>
+): GetServerSideProps<P> => async (context) => {
+  // @ts-ignore
+  const user: User = context.req.user;
+  if (!user) {
+    return redirect(context, `/auth/login?next=${context.req.url}`);
+  }
 
-export const getSettingsFields = async (
-  request: string
-): Promise<SettingsRequest> => {
-  const res = await adminApi.getSelfServiceBrowserSettingsRequest(request);
-  return res.body;
+  return getServerSideProps(context, user);
 };
