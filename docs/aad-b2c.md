@@ -26,8 +26,9 @@ We setup our Azure AD B2C tenant with the following steps:
    ```sh
    kubectl create secret generic sessions \
        --from-literal="AAD_B2C_CLIENT_SECRET=<paste client secret here>" \
-       --from-literal="AAD_B2C_CLIENT_ID=<paste client id here>"
-       --from-literal="COOKIE_SECRET=$(openssl rand -base64 30)"
+       --from-literal="AAD_B2C_CLIENT_ID=<paste client id here>" \
+       --from-literal="COOKIE_SECRET=$(openssl rand -base64 30)" \
+       --namespace frontend \
        --dry-run=client -o yaml \
        | kubeseal -o yaml > frontend/manifests/dev-template/secret-sessions.yaml
    ```
@@ -44,8 +45,9 @@ We setup our Azure AD B2C tenant with the following steps:
    ```sh
    kubectl create secret generic sessions \
        --from-literal="AAD_B2C_CLIENT_SECRET=<paste client secret here>" \
-       --from-literal="AAD_B2C_CLIENT_ID=<paste client id here>"
-       --from-literal="COOKIE_SECRET=$(openssl rand -base64 30)"
+       --from-literal="AAD_B2C_CLIENT_ID=<paste client id here>" \
+       --from-literal="COOKIE_SECRET=$(openssl rand -base64 30)" \
+       --namespace frontend \
        --dry-run=client -o yaml \
        | kubeseal -o yaml --context production > frontend/manifests/production/secret-sessions.yaml
    ```
