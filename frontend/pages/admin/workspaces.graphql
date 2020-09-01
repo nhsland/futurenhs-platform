@@ -2,6 +2,7 @@ query WorkspacesQuery {
   workspaces {
     id
     title
+    longDescription
   }
 }
 
@@ -9,13 +10,17 @@ query WorkspacesQuery {
 #   workspace(id: $id) {
 #     id
 #     title
+#     longDescription
 #   }
 # }
 
-mutation CreateWorkspaceMutation($title: String!) {
-  createWorkspace(workspace: { title: $title }) {
+mutation CreateWorkspaceMutation($title: String!, $longDescription: String!) {
+  createWorkspace(
+    workspace: { title: $title, longDescription: $longDescription }
+  ) {
     id
     title
+    longDescription
   }
 }
 
@@ -23,5 +28,6 @@ mutation DeleteWorkspaceMutation($id: ID!) {
   deleteWorkspace(id: $id) {
     id
     title
+    longDescription
   }
 }
