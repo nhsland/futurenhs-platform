@@ -65,9 +65,13 @@ impl Query {
         Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
-    // FIXME: Unable to get the enable_federation method to work on the schema, hence this is here.
+    #[field(desc = "Get workspace by ID")]
+    async fn workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
+        self.get_workspace(context, id).await
+    }
+
     #[entity]
-    async fn workspace(&self, context: &Context<'_>,id: ID) -> FieldResult<Workspace> {
+    async fn get_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
         let workspace = db::Workspace::find_by_id(id, pool).await?;
