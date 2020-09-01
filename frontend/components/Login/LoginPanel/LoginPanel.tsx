@@ -17,27 +17,21 @@ const StyledLoginPanel = styled(Panel)`
     flex-direction: column;
     justify-content: center;
 
-    // .h2 {
-    //   font-size: ${theme.nhsukTypographyScale.tablet};
-    //   line-height: 36px;
-    // }
-
-    // .p {
-    //   font-size: 24px;
-    //   color: #425462;
-    // }
-
     @media (min-width: 1200px) {
       padding-left: 108px;
     }
-    `}
+
+    h2 {
+      color: ${theme.colorNhsukGrey1};
+    }
+  `}
 `;
 
 const LoginPanel = ({ label, text }: LoginPanelProps) => {
   return (
     <StyledLoginPanel>
-      <h2>{label}</h2>
-      <p>{text}</p>
+      <h1>{label}</h1>
+      <h2>{text}</h2>
     </StyledLoginPanel>
   );
 };

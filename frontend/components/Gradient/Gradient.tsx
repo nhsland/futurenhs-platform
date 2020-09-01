@@ -7,10 +7,6 @@ type GradientProps = {
 
 export const StyledGradient = styled.div`
   ${({ theme }) => `
-
-    background-color: ${theme.colorNhsukWhite};
-    height: 100vh; /* Might want to calc (100vh - header height) */
-
     .gradient-container {
       height: 144px;
       width: 100%;
@@ -33,7 +29,7 @@ export const StyledGradient = styled.div`
       display: flex;
       flex-direction: column;
 
-      @media (min-width: 641px) and (max-width: 1199px) {
+      @media (min-width: ${theme.mqBreakpoints.tablet}) and (max-width: 1199px) {
         max-width: 800px;
       }
 

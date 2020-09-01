@@ -5,23 +5,31 @@ import { Gradient } from "../components/Gradient";
 import { LoginPanel } from "../components/Login/LoginPanel";
 import styled from "styled-components";
 
+export const StyledPageWrapper = styled.div`
+  ${({ theme }) => `
+    height: 100vh;
+    width: 100%;
+    background-color: ${theme.colorNhsukWhite};
+  `}
+`;
+
 export const StyledLoginPlaceholder = styled.div`
-  ${() => `
+  ${({ theme }) => `
     height:100%;
     min-height: 421px;
     min-width: 287px;
-    background-color: grey;
+    background-color: ${theme.colorNhsukGrey5};
     margin: 40px 0;
 
-    @media (min-width: 641px) {
+    @media (min-width: ${theme.mqBreakpoints.tablet}) {
       min-width: 435px;
     }
 
-    @media (min-width: 769px) {
+    @media (min-width: ${theme.mqBreakpoints.desktop}) {
       min-width: 477px;
     }
 
-    @media (min-width: 990px) {
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       min-width: 481px;
       min-height: 504px;
     }
@@ -30,7 +38,7 @@ export const StyledLoginPlaceholder = styled.div`
 
 const GradientPage = () => {
   return (
-    <div css="background-color: white">
+    <StyledPageWrapper>
       <PageLayout>
         <Header
           imageRight="NHS.png"
@@ -45,7 +53,7 @@ const GradientPage = () => {
           />
         </Gradient>
       </PageLayout>
-    </div>
+    </StyledPageWrapper>
   );
 };
 
