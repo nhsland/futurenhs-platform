@@ -28,6 +28,13 @@ docker-push: ## Push Docker image
 	docker push $(image)
 	docker push $(image):$(tag)
 
+# You must have a version of sqlx that includes this patch 
+# cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
+.PHONY: migrate
+migrate: ## Run migrations on current cluster
+	env DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) sqlx migrate run
+
+
 .PHONY: help
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
