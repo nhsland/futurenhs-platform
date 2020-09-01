@@ -1,7 +1,10 @@
 use sqlx::PgPool;
 use std::future::Future;
 use std::pin::Pin;
-use tide::{Next, Redirect, Request, Response, Server, security:: {CorsMiddleware, Origin}};
+use tide::{
+    security::{CorsMiddleware, Origin},
+    Next, Redirect, Request, Response, Server,
+};
 use tracing::info_span;
 use tracing_futures::Instrument;
 
@@ -29,8 +32,7 @@ pub fn log<'a>(
 }
 
 pub async fn create_app(connection_pool: PgPool) -> anyhow::Result<Server<graphql::State>> {
-    let cors = CorsMiddleware::new()
-     .allow_origin(Origin::from("*"));
+    let cors = CorsMiddleware::new().allow_origin(Origin::from("*"));
     let mut app = tide::with_state(graphql::State::new(connection_pool));
 
     app.with(log);
