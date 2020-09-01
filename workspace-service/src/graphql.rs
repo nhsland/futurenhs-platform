@@ -13,6 +13,8 @@ pub struct Workspace {
     id: ID,
     #[field(desc = "The title of the workspace")]
     title: String,
+    #[field(desc = "The description of the workspace")]
+    long_description: String,
 }
 
 impl From<db::Workspace> for Workspace {
@@ -20,6 +22,7 @@ impl From<db::Workspace> for Workspace {
         Self {
             id: d.id.into(),
             title: d.title,
+            long_description: d.long_description,
         }
     }
 }
@@ -27,11 +30,13 @@ impl From<db::Workspace> for Workspace {
 #[InputObject]
 struct NewWorkspace {
     title: String,
+    long_description: String,
 }
 
 #[InputObject]
 struct UpdateWorkspace {
     title: String,
+    long_description: String,
 }
 
 #[derive(Clone)]
@@ -81,7 +86,7 @@ impl MutationRoot {
         workspace: NewWorkspace,
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
-        let workspace = db::Workspace::create(workspace.title, pool).await?;
+        let workspace = db::Workspace::create(workspace.title, workspace.long_description, pool).await?;
         Ok(workspace.into())
     }
 
@@ -94,7 +99,7 @@ impl MutationRoot {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let workspace =
-            db::Workspace::update(Uuid::parse_str(id.as_str())?, workspace.title, pool).await?;
+            db::Workspace::update(Uuid::parse_str(id.as_str())?, workspace.title, workspace.long_description, pool).await?;
 
         Ok(workspace.into())
     }

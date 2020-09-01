@@ -1,3 +1,3 @@
-INSERT INTO workspace (title)
-VALUES ($1)
-RETURNING id, title
+INSERT INTO workspace (title, long_description)
+VALUES ($1, $2)
+RETURNING id, title, long_description
