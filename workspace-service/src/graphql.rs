@@ -41,13 +41,13 @@ struct UpdateWorkspace {
 
 #[derive(Clone)]
 pub struct State {
-    pub schema: Schema<Query, MutationRoot, EmptySubscription>,
+    pub schema: Schema<Query, Mutation, EmptySubscription>,
 }
 
 impl State {
     pub fn new(pool: PgPool) -> State {
         State {
-            schema: Schema::build(Query, MutationRoot, EmptySubscription)
+            schema: Schema::build(Query, Mutation, EmptySubscription)
                 .data(pool)
                 .finish(),
         }
@@ -75,10 +75,10 @@ impl Query {
     }
 }
 
-pub struct MutationRoot;
+pub struct Mutation;
 
 #[Object]
-impl MutationRoot {
+impl Mutation {
     #[field(description = "Create a new workspace (returns the created workspace)")]
     async fn create_workspace(
         &self,
