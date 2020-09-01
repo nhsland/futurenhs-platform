@@ -28,12 +28,19 @@ docker-push: ## Push Docker image
 	docker push $(image)
 	docker push $(image):$(tag)
 
-# You must have a version of sqlx that includes this patch 
+.PHONY: watch
+watch: ## Run cargo watch in the way that David likes it.
+	env DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) cargo watch -x help -x check
+
+# You must have a version of sqlx that includes this patch
 # cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
 .PHONY: migrate
 migrate: ## Run migrations on current cluster
 	env DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) sqlx migrate run
 
+.PHONY: prepare
+prepare: ## Prepares new version of sqlx-data.json
+	cargo clean && env DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) cargo sqlx prepare -- --bin workspace_service
 
 .PHONY: help
 help: ## Display this help screen
