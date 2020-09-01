@@ -7,16 +7,21 @@ import styled from "styled-components";
 
 export const StyledLoginPlaceholder = styled.div`
   ${() => `
+    height:100%;
     min-height: 421px;
     min-width: 287px;
     background-color: grey;
-    margin: 40px 98px;
+    margin: 40px 0;
 
-    @media (min-width: 1200px) {
+    @media (min-width: 641px) {
+      min-width: 435px;
+    }
+
+    @media (min-width: 769px) {
       min-width: 477px;
     }
 
-    @media (min-width: 1440px) {
+    @media (min-width: 990px) {
       min-width: 481px;
       min-height: 504px;
     }

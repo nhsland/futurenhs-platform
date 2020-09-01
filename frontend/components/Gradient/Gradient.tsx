@@ -9,19 +9,7 @@ export const StyledGradient = styled.div`
   ${({ theme }) => `
 
     background-color: ${theme.colorNhsukWhite};
-    height: 600px;
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-
-
-      @media (min-width: 1200px) {
-        flex-direction: row;
-      }
-    }
+    height: 100vh; /* Might want to calc (100vh - header height) */
 
     .gradient-container {
       height: 144px;
@@ -34,10 +22,25 @@ export const StyledGradient = styled.div`
       @media (min-width: 1200px) {
         height: 112px;
         width: 100%;
+        padding: 0 118px;
       }
     }
 
+    .container {
+      max-width: 1200px;
+      padding: 0 15px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
 
+      @media (min-width: 641px) and (max-width: 1199px) {
+        max-width: 800px;
+      }
+
+      @media (min-width: 1200px) {
+        flex-direction: row;
+      }
+    }
   `}
 `;
 
