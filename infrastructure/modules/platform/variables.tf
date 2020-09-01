@@ -28,3 +28,8 @@ variable "ad_username" {
 variable "ad_object_id" {
   description = "Active Directory Object ID"
 }
+
+variable "kubernetes_version" {
+  description = "Kubernetes Version"
+  default     = "1.17.9"
+}
