@@ -9,7 +9,7 @@
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production NODE_OPTIONS='--require ./tracing.js' node server.js",
     "test": "jest",
-    "lint": "yarn eslint",
+    "lint": "yarn eslint . --ext .js,.ts,.tsx",
     "clean": "rm -rf .next"
   },
   "dependencies": {
@@ -53,11 +53,11 @@
     "@types/react": "^16.9.49",
     "@types/styled-components": "^5.1.2",
     "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^3.9.0",
-    "@typescript-eslint/parser": "^3.10.1",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
     "babel-jest": "^26.3.0",
     "babel-plugin-styled-components": "^1.11.1",
-    "eslint": "^7.8.0",
+    "eslint": "^7.8.1",
     "eslint-plugin-react": "^7.20.6",
     "http-proxy-middleware": "^1.0.5",
     "husky": "^4.2.5",
