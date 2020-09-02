@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GraphQLClient } from "graphql-request";
-import { GetServerSideProps } from "next";
-import { getSdk } from "../../generated/graphql";
+import { getSdk } from "../../lib/generated/graphql";
+import { Header } from "../../components/Header";
+import { PageLayout } from "../../components/PageLayout";
+import styled from "styled-components";
 
 const MAX_CHARS = {
   title: 100,
@@ -15,25 +17,15 @@ interface Workspace {
   longDescription: string;
 }
 
-interface Props {
-  workspaces: Workspace[];
-}
+// const APOLLO_GATEWAY = `${process.env.ORIGIN}/api/graphql`;
 
-const APOLLO_GATEWAY = `${process.env.ORIGIN}/api/graphql`;
+const StyledPageContent = styled.div`
+  ${({ theme }) => `
+  background-color: ${theme.colorNhsukWhite};
+  `}
+`;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const client = new GraphQLClient(APOLLO_GATEWAY);
-  const sdk = getSdk(client);
-  const { workspaces } = await sdk.WorkspacesQuery();
-
-  return {
-    props: {
-      workspaces,
-    },
-  };
-};
-
-const CreateWorkspace = ({ workspaces }: Props) => {
+const CreateWorkspace = () => {
   const [remainingChars, setRemainingChars] = useState({
     title: "",
     description: "",
@@ -44,9 +36,7 @@ const CreateWorkspace = ({ workspaces }: Props) => {
     try {
       const client = new GraphQLClient("http://localhost:3000/api/graphql");
       const sdk = getSdk(client);
-      console.log("the data is", data);
       await sdk.CreateWorkspaceMutation(data);
-      console.log("Success");
     } catch (error) {
       console.log(error);
     }
@@ -62,56 +52,57 @@ const CreateWorkspace = ({ workspaces }: Props) => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <p>Current workspaces</p>
-      <ul>
-        {workspaces?.map((workspace: Workspace) => (
-          <li key={workspace.title}>{workspace.title}</li>
-        ))}
-      </ul>
-      <h1>Create a workspace</h1>
-      <h2>Workspace details</h2>
-      <p> Fields marked with * are required.</p>
+    <PageLayout>
+      <Header
+        imageRight={require("../../public/NHS.png")}
+        imageRightURL="https://www.nhs.co.uk"
+        imageRightAltText="NHS logo"
+      />
+      <StyledPageContent>
+        <h1>Create a workspace</h1>
+        <h2>Workspace details</h2>
+        <p> Fields marked with * are required.</p>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <h3>
-            <label>Name of workspace*</label>
-          </h3>
-          <p>
-            This is the name of the workspace as seen by users of FutureNHS.
-          </p>
-          <input
-            name="title"
-            onChange={handleCharNumber}
-            ref={register({ required: true, maxLength: MAX_CHARS.title })}
-          />
-          {`${remainingChars.title} characters remaining`}
-          {errors.title && "Workspace name is required"}
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <h3>
+              <label>Name of workspace*</label>
+            </h3>
+            <p>
+              This is the name of the workspace as seen by users of FutureNHS.
+            </p>
+            <input
+              name="title"
+              onChange={handleCharNumber}
+              ref={register({ required: true, maxLength: MAX_CHARS.title })}
+            />
+            {`${remainingChars.title} characters remaining`}
+            {errors.title && "Workspace name is required"}
+          </div>
 
-        <div>
-          <h3>
-            <label>Description</label>
-          </h3>
-          <p>
-            This is the description as seen by users. Don&apos;t repeat the
-            workspace name here. Do try to be as descriptive as possible
-          </p>
+          <div>
+            <h3>
+              <label>Description</label>
+            </h3>
+            <p>
+              This is the description as seen by users. Don&apos;t repeat the
+              workspace name here. Do try to be as descriptive as possible
+            </p>
 
-          <textarea
-            name="longDescription"
-            onChange={handleCharNumber}
-            ref={register({
-              required: false,
-              maxLength: MAX_CHARS.description,
-            })}
-          />
-          {`${remainingChars.description} characters remaining`}
-        </div>
-        <input type="submit" value="Save and complete" />
-      </form>
-    </div>
+            <textarea
+              name="longDescription"
+              onChange={handleCharNumber}
+              ref={register({
+                required: false,
+                maxLength: MAX_CHARS.description,
+              })}
+            />
+            {`${remainingChars.description} characters remaining`}
+          </div>
+          <input type="submit" value="Save and complete" />
+        </form>
+      </StyledPageContent>
+    </PageLayout>
   );
 };
 
