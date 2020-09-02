@@ -12,6 +12,7 @@ const MAX_CHARS = {
 interface Workspace {
   id: string;
   title: string;
+  longDescription: string;
 }
 
 interface Props {
@@ -39,11 +40,12 @@ const CreateWorkspace = ({ workspaces }: Props) => {
   });
 
   const { errors, handleSubmit, register } = useForm();
-  const onSubmit = async () => {
+  const onSubmit = async (data: Workspace) => {
     try {
-      const client = new GraphQLClient(APOLLO_GATEWAY);
+      const client = new GraphQLClient("http://localhost:3000/api/graphql");
       const sdk = getSdk(client);
-      await sdk.CreateWorkspaceMutation({ title: "Kite" });
+      console.log("the data is", data);
+      await sdk.CreateWorkspaceMutation(data);
       console.log("Success");
     } catch (error) {
       console.log(error);
@@ -98,7 +100,7 @@ const CreateWorkspace = ({ workspaces }: Props) => {
           </p>
 
           <textarea
-            name="description"
+            name="longDescription"
             onChange={handleCharNumber}
             ref={register({
               required: false,

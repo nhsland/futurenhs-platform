@@ -14,6 +14,7 @@ impl Workspace {
         long_description: String,
         pool: &PgPool,
     ) -> Result<Workspace> {
+        #[allow(clippy::suspicious_else_formatting)]
         let workspace = sqlx::query_file_as!(Workspace, "sql/create.sql", title, long_description)
             .fetch_one(pool)
             .await?;
