@@ -9,7 +9,7 @@
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production NODE_OPTIONS='--require ./tracing.js' node server.js",
     "test": "jest",
-    "lint": "yarn eslint",
+    "lint": "yarn eslint . --ext .js,.ts,.tsx",
     "clean": "rm -rf .next"
   },
   "dependencies": {
