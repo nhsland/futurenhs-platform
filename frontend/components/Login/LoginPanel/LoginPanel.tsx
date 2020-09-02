@@ -11,7 +11,6 @@ const StyledLoginPanel = styled(Panel)`
   ${({ theme }) => `
     background-color: transparent;
     padding: 0px;
-    width: 100%;
 
     display: flex;
     flex-direction: column;

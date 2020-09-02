@@ -17,7 +17,6 @@ export const StyledGradient = styled.div`
 
       @media (min-width: 1200px) {
         height: 112px;
-        width: 100%;
         padding: 0 118px;
       }
     }

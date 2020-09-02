@@ -7,15 +7,13 @@ import styled from "styled-components";
 
 export const StyledPageWrapper = styled.div`
   ${({ theme }) => `
-    height: 100vh;
-    width: 100%;
+    min-height: 100vh;
     background-color: ${theme.colorNhsukWhite};
   `}
 `;
 
 export const StyledLoginPlaceholder = styled.div`
   ${({ theme }) => `
-    height:100%;
     min-height: 421px;
     min-width: 287px;
     background-color: ${theme.colorNhsukGrey5};
