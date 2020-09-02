@@ -40,7 +40,7 @@ migrate: ## Run migrations on current cluster
 
 .PHONY: prepare
 prepare: ## Prepares new version of sqlx-data.json
-	cargo clean && env DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) cargo sqlx prepare -- --bin workspace_service
+	cargo clean --package workspace_service && env DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) cargo sqlx prepare -- --bin workspace_service
 
 .PHONY: help
 help: ## Display this help screen
