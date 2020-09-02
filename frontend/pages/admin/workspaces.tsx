@@ -5,10 +5,11 @@ import { getSdk } from "../../lib/generated/graphql";
 import { Header } from "../../components/Header";
 import { PageLayout } from "../../components/PageLayout";
 import styled from "styled-components";
+// import { Form, Input, Textarea } from "nhsuk-react-components";
 
-const MAX_CHARS = {
+const MAX_CHARS: { [key: string]: number } = {
   title: 100,
-  description: 250,
+  longDescription: 250,
 };
 
 interface Workspace {
@@ -22,13 +23,16 @@ interface Workspace {
 const StyledPageContent = styled.div`
   ${({ theme }) => `
   background-color: ${theme.colorNhsukWhite};
+  h3 {
+    color: ${theme.colorNhsukGrey1} 
+  }
   `}
 `;
 
 const CreateWorkspace = () => {
   const [remainingChars, setRemainingChars] = useState({
-    title: "",
-    description: "",
+    title: null,
+    longDescription: null,
   });
 
   const { errors, handleSubmit, register } = useForm();
@@ -42,11 +46,12 @@ const CreateWorkspace = () => {
     }
   };
 
-  const handleCharNumber = (event: any) => {
+  const handleCharNumber = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRemainingChars({
       ...remainingChars,
       [event.target.name]:
-        // @ts-ignore TODO
         MAX_CHARS[event.target.name] - event.target.value.length,
     });
   };
@@ -59,15 +64,15 @@ const CreateWorkspace = () => {
         imageRightAltText="NHS logo"
       />
       <StyledPageContent>
-        <h1>Create a workspace</h1>
-        <h2>Workspace details</h2>
+        <h2>Create a workspace</h2>
+        <h3>Workspace details</h3>
         <p> Fields marked with * are required.</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <h3>
+            <h4>
               <label>Name of workspace*</label>
-            </h3>
+            </h4>
             <p>
               This is the name of the workspace as seen by users of FutureNHS.
             </p>
@@ -76,14 +81,14 @@ const CreateWorkspace = () => {
               onChange={handleCharNumber}
               ref={register({ required: true, maxLength: MAX_CHARS.title })}
             />
-            {`${remainingChars.title} characters remaining`}
+            {`${remainingChars.title || MAX_CHARS.title} characters remaining`}
             {errors.title && "Workspace name is required"}
           </div>
 
           <div>
-            <h3>
+            <h4>
               <label>Description</label>
-            </h3>
+            </h4>
             <p>
               This is the description as seen by users. Don&apos;t repeat the
               workspace name here. Do try to be as descriptive as possible
@@ -94,10 +99,12 @@ const CreateWorkspace = () => {
               onChange={handleCharNumber}
               ref={register({
                 required: false,
-                maxLength: MAX_CHARS.description,
+                maxLength: MAX_CHARS.longDescription,
               })}
             />
-            {`${remainingChars.description} characters remaining`}
+            {`${
+              remainingChars.longDescription || MAX_CHARS.longDescription
+            } characters remaining`}
           </div>
           <input type="submit" value="Save and complete" />
         </form>
