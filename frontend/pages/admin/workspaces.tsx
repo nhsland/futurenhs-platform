@@ -18,8 +18,10 @@ interface Props {
   workspaces: Workspace[];
 }
 
+const APOLLO_GATEWAY = `${process.env.ORIGIN}/api/graphql`;
+
 export const getServerSideProps: GetServerSideProps = async () => {
-  const client = new GraphQLClient("http://localhost:4455/api/graphql");
+  const client = new GraphQLClient(APOLLO_GATEWAY);
   const sdk = getSdk(client);
   const { workspaces } = await sdk.WorkspacesQuery();
 
@@ -39,7 +41,7 @@ const CreateWorkspace = ({ workspaces }: Props) => {
   const { errors, handleSubmit, register } = useForm();
   const onSubmit = async () => {
     try {
-      const client = new GraphQLClient("http://localhost:4455/api/graphql");
+      const client = new GraphQLClient(APOLLO_GATEWAY);
       const sdk = getSdk(client);
       await sdk.CreateWorkspaceMutation({ title: "Kite" });
       console.log("Success");

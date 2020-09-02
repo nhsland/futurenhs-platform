@@ -1,8 +1,4 @@
 {
   "presets": ["next/babel"],
-<<<<<<< HEAD
-  "plugins": [["styled-components", { "ssr": true }]]
-=======
-  "plugins": ["import-graphql"]
->>>>>>> Client talking to workspace service
+  "plugins": [["styled-components", { "ssr": true }], "import-graphql"]
 }
