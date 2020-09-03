@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GraphQLClient } from "graphql-request";
 import { getSdk } from "../../lib/generated/graphql";
+import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
 import { PageLayout } from "../../components/PageLayout";
 import { Textarea } from "../../components/Textarea";
@@ -75,57 +76,62 @@ const CreateWorkspace = () => {
   };
 
   return (
-    <PageLayout>
-      <Header />
-      <PageContent>
-        <h2>Create a workspace</h2>
-        <H3>Workspace details</H3>
-        <p> Fields marked with * are required.</p>
+    <>
+      <Head title="Admin - Create Workspace" />
+      <PageLayout>
+        <Header />
+        <PageContent>
+          <h2>Create a workspace</h2>
+          <H3>Workspace details</H3>
+          <p> Fields marked with * are required.</p>
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormField>
-            <Input
-              name="title"
-              onChange={handleCharNumber}
-              id="title"
-              label="Name of workspace*"
-              hint="This is the name of the workspace as seen by users of FutureNHS."
-              inputRef={register({
-                required: true,
-                maxLength: MAX_CHARS.title,
-              })}
-              error={
-                errors.title &&
-                `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
-              }
-            />
-            {`${remainingChars.title || MAX_CHARS.title} characters remaining`}
-          </FormField>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <FormField>
+              <Input
+                name="title"
+                onChange={handleCharNumber}
+                id="title"
+                label="Name of workspace*"
+                hint="This is the name of the workspace as seen by users of FutureNHS."
+                inputRef={register({
+                  required: true,
+                  maxLength: MAX_CHARS.title,
+                })}
+                error={
+                  errors.title &&
+                  `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
+                }
+              />
+              {`${
+                remainingChars.title || MAX_CHARS.title
+              } characters remaining`}
+            </FormField>
 
-          <FormField>
-            <Textarea
-              name="longDescription"
-              onChange={handleCharNumber}
-              id="longDescription"
-              label="Description"
-              error={
-                errors.title &&
-                `Description must be a maximum of ${MAX_CHARS.longDescription} characters`
-              }
-              hint="This is the description as seen by users. Don't repeat the workspace name here. Do try to be as descriptive as possible"
-              inputRef={register({
-                required: false,
-                maxLength: MAX_CHARS.longDescription,
-              })}
-            />
-            {`${
-              remainingChars.longDescription || MAX_CHARS.longDescription
-            } characters remaining`}
-          </FormField>
-          <Button type="submit">Save and complete</Button>
-        </Form>
-      </PageContent>
-    </PageLayout>
+            <FormField>
+              <Textarea
+                name="longDescription"
+                onChange={handleCharNumber}
+                id="longDescription"
+                label="Description"
+                error={
+                  errors.title &&
+                  `Description must be a maximum of ${MAX_CHARS.longDescription} characters`
+                }
+                hint="This is the description as seen by users. Don't repeat the workspace name here. Do try to be as descriptive as possible"
+                inputRef={register({
+                  required: false,
+                  maxLength: MAX_CHARS.longDescription,
+                })}
+              />
+              {`${
+                remainingChars.longDescription || MAX_CHARS.longDescription
+              } characters remaining`}
+            </FormField>
+            <Button type="submit">Save and complete</Button>
+          </Form>
+        </PageContent>
+      </PageLayout>
+    </>
   );
 };
 
