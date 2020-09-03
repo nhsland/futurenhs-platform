@@ -8,6 +8,16 @@ import { PageLayout } from "../../components/PageLayout";
 import { Textarea } from "../../components/Textarea";
 import styled from "styled-components";
 import { Input, Form, Button } from "nhsuk-react-components";
+import { GetServerSideProps } from "next";
+import { requireAuthentication } from "../../lib/auth";
+
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+  async () => {
+    return {
+      props: {},
+    };
+  }
+);
 
 const MAX_CHARS: { [key: string]: number } = {
   title: 100,
