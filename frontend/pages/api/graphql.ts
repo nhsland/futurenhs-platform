@@ -3,7 +3,10 @@ import { ApolloGateway } from "@apollo/gateway";
 
 const gateway = new ApolloGateway({
   serviceList: [
-    { name: "workspace-service", url: "http://localhost:3030/graphql" },
+    {
+      name: "workspace-service",
+      url: "http://workspace-service.workspace-service/graphql",
+    },
   ],
 });
 

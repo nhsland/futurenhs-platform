@@ -7,7 +7,8 @@ The frontend development server relies on some services that are available in th
 In order to set up a development cluster, see [infrastructure docs](../infrastructure/README.md). Once your development cluster is set up, you should run this to make the cluster's services available for local development:
 
 ```bash
-sudo kubefwd services -n hello-world
+brew install txn2/tap/kubefwd
+sudo kubefwd services -n hello-world -n workspace-service
 ```
 
 In order to login you will also need to add our shared OAuth 2 client secret to your local environment variables. Ask a coworker for the secret, then create a file called `.env.development.local` with the following content:

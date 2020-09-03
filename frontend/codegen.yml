@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:3030/graphql"
+schema: "http://workspace-service.workspace-service/graphql"
 documents: "pages/**/*.graphql"
 generates:
   lib/generated/graphql.ts:
