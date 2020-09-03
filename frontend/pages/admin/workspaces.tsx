@@ -57,11 +57,13 @@ const CreateWorkspace = () => {
 
   const onSubmit = async (data: Workspace) => {
     try {
-      const client = new GraphQLClient("http://localhost:3000/api/graphql");
+      const client = new GraphQLClient("/api/graphql");
       const sdk = getSdk(client);
       await sdk.CreateWorkspaceMutation(data);
+      window.alert("Workspace created successfully");
     } catch (error) {
       console.log("Create workspace failed", error);
+      window.alert("Error creating workspace, failed");
     }
   };
 
@@ -81,7 +83,7 @@ const CreateWorkspace = () => {
       <PageLayout>
         <Header />
         <PageContent>
-          <h2>Create a workspace</h2>
+          <h1>Create a workspace</h1>
           <H3>Workspace details</H3>
           <p> Fields marked with * are required.</p>
 
@@ -114,7 +116,7 @@ const CreateWorkspace = () => {
                 id="longDescription"
                 label="Description"
                 error={
-                  errors.title &&
+                  errors.longDescription &&
                   `Description must be a maximum of ${MAX_CHARS.longDescription} characters`
                 }
                 hint="This is the description as seen by users. Don't repeat the workspace name here. Do try to be as descriptive as possible"
