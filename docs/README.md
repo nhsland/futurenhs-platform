@@ -14,3 +14,4 @@
 - [Governance](./governance)
 - [Testing](./testing)
 - [Working with Sealed Secrets](./working-with-sealed-secrets.md)
+- [Maintenance](./maintenance.md)
