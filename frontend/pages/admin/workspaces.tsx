@@ -19,15 +19,31 @@ interface Workspace {
   longDescription: string;
 }
 
-// const APOLLO_GATEWAY = `${process.env.ORIGIN}/api/graphql`;
-
-const StyledPageContent = styled.div`
+const PageContent = styled.div`
   ${({ theme }) => `
   background-color: ${theme.colorNhsukWhite};
+  padding-top: 24px;
+  padding-left: 10%;
+  padding-right: 10%;
   h3 {
     color: ${theme.colorNhsukGrey1} 
   }
   `}
+`;
+
+const H3 = styled.h3`
+  ${({ theme }) => `
+  border-top: 1px solid ${theme.colorNhsukGrey1};
+  padding-top: 24px;
+  margin-bottom: 8px;
+  `}
+`;
+
+const FormField = styled.div`
+  padding-bottom: 40px;
+  #text {
+    padding-bottom: 60px;
+  }
 `;
 
 const CreateWorkspace = () => {
@@ -61,13 +77,13 @@ const CreateWorkspace = () => {
   return (
     <PageLayout>
       <Header />
-      <StyledPageContent>
+      <PageContent>
         <h2>Create a workspace</h2>
-        <h3>Workspace details</h3>
+        <H3>Workspace details</H3>
         <p> Fields marked with * are required.</p>
 
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <FormField>
             <Input
               name="title"
               onChange={handleCharNumber}
@@ -78,17 +94,24 @@ const CreateWorkspace = () => {
                 required: true,
                 maxLength: MAX_CHARS.title,
               })}
-              error={errors.title && "Workspace name is required"}
+              error={
+                errors.title &&
+                `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
+              }
             />
             {`${remainingChars.title || MAX_CHARS.title} characters remaining`}
-          </div>
+          </FormField>
 
-          <div>
+          <FormField>
             <Textarea
               name="longDescription"
               onChange={handleCharNumber}
               id="longDescription"
               label="Description"
+              error={
+                errors.title &&
+                `Description must be a maximum of ${MAX_CHARS.longDescription} characters`
+              }
               hint="This is the description as seen by users. Don't repeat the workspace name here. Do try to be as descriptive as possible"
               inputRef={register({
                 required: false,
@@ -98,10 +121,10 @@ const CreateWorkspace = () => {
             {`${
               remainingChars.longDescription || MAX_CHARS.longDescription
             } characters remaining`}
-          </div>
+          </FormField>
           <Button type="submit">Save and complete</Button>
         </Form>
-      </StyledPageContent>
+      </PageContent>
     </PageLayout>
   );
 };
