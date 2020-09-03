@@ -27,11 +27,7 @@ const LoginPage = () => {
   return (
     <StyledPageWrapper>
       <PageLayout>
-        <Header
-          imageRight={require("../../public/NHS.png")}
-          imageRightURL="https://www.nhs.co.uk"
-          imageRightAltText="NHS logo"
-        />
+        <Header />
         <Gradient>
           <Login />
           <LoginPanel

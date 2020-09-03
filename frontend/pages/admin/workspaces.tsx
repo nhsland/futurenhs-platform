@@ -37,6 +37,7 @@ const CreateWorkspace = () => {
   });
 
   const { errors, handleSubmit, register } = useForm();
+
   const onSubmit = async (data: Workspace) => {
     try {
       const client = new GraphQLClient("http://localhost:3000/api/graphql");
@@ -59,11 +60,7 @@ const CreateWorkspace = () => {
 
   return (
     <PageLayout>
-      <Header
-        imageRight={require("../../public/NHS.png")}
-        imageRightURL="https://www.nhs.co.uk"
-        imageRightAltText="NHS logo"
-      />
+      <Header />
       <StyledPageContent>
         <h2>Create a workspace</h2>
         <h3>Workspace details</h3>
