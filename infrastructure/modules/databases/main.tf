@@ -1,3 +1,21 @@
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 1.12"
+    }
+    postgresql = {
+      source  = "terraform-providers/postgresql"
+      version = ">= 1.7"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 2.2"
+    }
+  }
+}
+
 # This requires the postgresql and kubernetes providers to be set up properly.
 # Run `terraform apply -target module.platform` to set up their requirements
 # before attempting to apply this module.
