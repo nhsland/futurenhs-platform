@@ -4,8 +4,9 @@ import { GraphQLClient } from "graphql-request";
 import { getSdk } from "../../lib/generated/graphql";
 import { Header } from "../../components/Header";
 import { PageLayout } from "../../components/PageLayout";
+import { Textarea } from "../../components/Textarea";
 import styled from "styled-components";
-// import { Form, Input, Textarea } from "nhsuk-react-components";
+import { Input, Form, Button } from "nhsuk-react-components";
 
 const MAX_CHARS: { [key: string]: number } = {
   title: 100,
@@ -42,17 +43,17 @@ const CreateWorkspace = () => {
       const sdk = getSdk(client);
       await sdk.CreateWorkspaceMutation(data);
     } catch (error) {
-      console.log(error);
+      console.log("Create workspace failed", error);
     }
   };
 
   const handleCharNumber = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRemainingChars({
       ...remainingChars,
-      [event.target.name]:
-        MAX_CHARS[event.target.name] - event.target.value.length,
+      [event.currentTarget.name]:
+        MAX_CHARS[event.currentTarget.name] - event.currentTarget.value.length,
     });
   };
 
@@ -68,36 +69,31 @@ const CreateWorkspace = () => {
         <h3>Workspace details</h3>
         <p> Fields marked with * are required.</p>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <h4>
-              <label>Name of workspace*</label>
-            </h4>
-            <p>
-              This is the name of the workspace as seen by users of FutureNHS.
-            </p>
-            <input
+            <Input
               name="title"
               onChange={handleCharNumber}
-              ref={register({ required: true, maxLength: MAX_CHARS.title })}
+              id="title"
+              label="Name of workspace*"
+              hint="This is the name of the workspace as seen by users of FutureNHS."
+              inputRef={register({
+                required: true,
+                maxLength: MAX_CHARS.title,
+              })}
+              error={errors.title && "Workspace name is required"}
             />
             {`${remainingChars.title || MAX_CHARS.title} characters remaining`}
-            {errors.title && "Workspace name is required"}
           </div>
 
           <div>
-            <h4>
-              <label>Description</label>
-            </h4>
-            <p>
-              This is the description as seen by users. Don&apos;t repeat the
-              workspace name here. Do try to be as descriptive as possible
-            </p>
-
-            <textarea
+            <Textarea
               name="longDescription"
               onChange={handleCharNumber}
-              ref={register({
+              id="longDescription"
+              label="Description"
+              hint="This is the description as seen by users. Don't repeat the workspace name here. Do try to be as descriptive as possible"
+              inputRef={register({
                 required: false,
                 maxLength: MAX_CHARS.longDescription,
               })}
@@ -106,8 +102,8 @@ const CreateWorkspace = () => {
               remainingChars.longDescription || MAX_CHARS.longDescription
             } characters remaining`}
           </div>
-          <input type="submit" value="Save and complete" />
-        </form>
+          <Button type="submit">Save and complete</Button>
+        </Form>
       </StyledPageContent>
     </PageLayout>
   );
