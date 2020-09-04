@@ -6,3 +6,5 @@ dev-*/
 terraform.tfvars
 node_modules
 .vscode/
+frontend/graphql.schema.json
+frontend/lib/generated/

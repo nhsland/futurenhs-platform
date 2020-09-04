@@ -37,9 +37,6 @@ const PageContent = styled.div`
   padding-top: 24px;
   padding-left: 10%;
   padding-right: 10%;
-  h3 {
-    color: ${theme.colorNhsukGrey1} 
-  }
   .nhsuk-form-group {
     margin-bottom: 8px;
   }
@@ -51,6 +48,7 @@ const H2 = styled.h2`
   border-top: 1px solid ${theme.colorNhsukGrey1};
   padding-top: 24px;
   margin-bottom: 8px;
+  color: ${theme.colorNhsukGrey1} 
   `}
 `;
 
