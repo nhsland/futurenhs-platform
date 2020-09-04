@@ -33,16 +33,20 @@ interface Workspace {
 const PageContent = styled.div`
   ${({ theme }) => `
   background-color: ${theme.colorNhsukWhite};
+  min-height: 100vh;
   padding-top: 24px;
   padding-left: 10%;
   padding-right: 10%;
   h3 {
     color: ${theme.colorNhsukGrey1} 
   }
+  .nhsuk-form-group {
+    margin-bottom: 8px;
+  }
   `}
 `;
 
-const H3 = styled.h3`
+const H2 = styled.h2`
   ${({ theme }) => `
   border-top: 1px solid ${theme.colorNhsukGrey1};
   padding-top: 24px;
@@ -94,7 +98,7 @@ const CreateWorkspace = () => {
         <Header />
         <PageContent>
           <h1>Create a workspace</h1>
-          <H3>Workspace details</H3>
+          <H2>Workspace details</H2>
           <p> Fields marked with * are required.</p>
 
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -129,7 +133,7 @@ const CreateWorkspace = () => {
                   errors.longDescription &&
                   `Description must be a maximum of ${MAX_CHARS.longDescription} characters`
                 }
-                hint="This is the description as seen by users. Don't repeat the workspace name here. Do try to be as descriptive as possible"
+                hint="This is the description as seen by users. Try to be as descriptive as possible."
                 inputRef={register({
                   required: false,
                   maxLength: MAX_CHARS.longDescription,
