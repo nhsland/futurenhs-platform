@@ -32,7 +32,6 @@ pub fn log<'a>(
 }
 
 pub async fn create_app(connection_pool: PgPool) -> anyhow::Result<Server<graphql::State>> {
-    let cors = CorsMiddleware::new().allow_origin(Origin::from("*"));
     let mut app = tide::with_state(graphql::State::new(connection_pool));
 
     app.with(log);
