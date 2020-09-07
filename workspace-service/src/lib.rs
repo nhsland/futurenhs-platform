@@ -1,10 +1,7 @@
 use sqlx::PgPool;
 use std::future::Future;
 use std::pin::Pin;
-use tide::{
-    security::{CorsMiddleware, Origin},
-    Next, Redirect, Request, Response, Server,
-};
+use tide::{Next, Redirect, Request, Response, Server};
 use tracing::info_span;
 use tracing_futures::Instrument;
 
