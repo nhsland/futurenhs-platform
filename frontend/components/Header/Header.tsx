@@ -28,10 +28,7 @@ const StyledImg = styled.img`
 const Header = () => {
   return (
     <StyledHeader>
-      <StyledImg
-        src={require("../../public/FutureNHS.png")}
-        alt="FutureNHS logo"
-      />
+      <StyledImg src={require("../../public/FNHS.png")} alt="FutureNHS logo" />
       <a href="https://www.nhs.co.uk">
         <StyledImg
           src={require("../../public/NHS.png")}
