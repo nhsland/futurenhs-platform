@@ -16,7 +16,7 @@
     "@azure/monitor-opentelemetry-exporter": "^1.0.0-preview.3",
     "@microsoft/applicationinsights-web": "^2.5.8",
     "@opentelemetry/node": "^0.10.2",
-    "@opentelemetry/plugin-https": "^0.10.2",
+    "@opentelemetry/plugin-https": "^0.11.0",
     "@opentelemetry/tracing": "^0.10.2",
     "axios": "^0.20.0",
     "azure-eventgrid": "^1.6.0",
