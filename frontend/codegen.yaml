@@ -1,5 +1,5 @@
 overwrite: true
-schema: "graphql.schema.json"
+schema: schema.graphql
 documents: "pages/**/*.graphql"
 generates:
   lib/generated/graphql.ts:
@@ -7,6 +7,3 @@ generates:
       - "typescript"
       - "typescript-operations"
       - typescript-graphql-request
-  ./graphql.schema.json:
-    plugins:
-      - "introspection"

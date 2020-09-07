@@ -1,13 +1,13 @@
 import React from "react";
-import Head from "next/head";
+import { default as NextHead } from "next/head";
 
 interface Props {
   title: string;
 }
-const PageHead = ({ title }: Props) => (
-  <Head>
+const Head = ({ title }: Props) => (
+  <NextHead>
     <title>{title}</title>
-  </Head>
+  </NextHead>
 );
 
-export default PageHead;
+export default Head;
