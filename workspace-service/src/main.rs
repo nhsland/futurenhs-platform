@@ -29,7 +29,7 @@ async fn main() -> Result<()> {
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
-    let database_url = env::var("DATABASE_URL").expect("API_URL env var not found");
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL env var not found");
 
     let connection_pool = PgPool::connect(&database_url).await?;
 

@@ -13,6 +13,8 @@ pub struct Workspace {
     id: ID,
     #[field(desc = "The title of the workspace")]
     title: String,
+    #[field(desc = "The description of the workspace")]
+    long_description: String,
 }
 
 impl From<db::Workspace> for Workspace {
@@ -20,6 +22,7 @@ impl From<db::Workspace> for Workspace {
         Self {
             id: d.id.into(),
             title: d.title,
+            long_description: d.long_description,
         }
     }
 }
@@ -27,41 +30,48 @@ impl From<db::Workspace> for Workspace {
 #[InputObject]
 struct NewWorkspace {
     title: String,
+    long_description: String,
 }
 
 #[InputObject]
 struct UpdateWorkspace {
     title: String,
+    long_description: String,
 }
 
 #[derive(Clone)]
 pub struct State {
-    pub schema: Schema<QueryRoot, MutationRoot, EmptySubscription>,
+    pub schema: Schema<Query, Mutation, EmptySubscription>,
 }
 
 impl State {
     pub fn new(pool: PgPool) -> State {
         State {
-            schema: Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+            schema: Schema::build(Query, Mutation, EmptySubscription)
                 .data(pool)
                 .finish(),
         }
     }
 }
 
-pub struct QueryRoot;
+pub struct Query;
 
 #[Object]
-impl QueryRoot {
-    #[field(description = "Get all Workspaces")]
+impl Query {
+    #[field(desc = "Get all Workspaces")]
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
         let workspaces = db::Workspace::find_all(pool).await?;
         Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
-    #[field(description = "Get Workspace by id")]
+    #[field(desc = "Get workspace by ID")]
     async fn workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
+        self.get_workspace(context, id).await
+    }
+
+    #[entity]
+    async fn get_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
         let workspace = db::Workspace::find_by_id(id, pool).await?;
@@ -69,22 +79,23 @@ impl QueryRoot {
     }
 }
 
-pub struct MutationRoot;
+pub struct Mutation;
 
 #[Object]
-impl MutationRoot {
-    #[field(description = "Create a new workspace (returns the created workspace)")]
+impl Mutation {
+    #[field(desc = "Create a new workspace (returns the created workspace)")]
     async fn create_workspace(
         &self,
         context: &Context<'_>,
         workspace: NewWorkspace,
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
-        let workspace = db::Workspace::create(workspace.title, pool).await?;
+        let workspace =
+            db::Workspace::create(workspace.title, workspace.long_description, pool).await?;
         Ok(workspace.into())
     }
 
-    #[field(description = "Update workspace(returns updated workspace")]
+    #[field(desc = "Update workspace(returns updated workspace")]
     async fn update_workspace(
         &self,
         context: &Context<'_>,
@@ -92,13 +103,18 @@ impl MutationRoot {
         workspace: UpdateWorkspace,
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
-        let workspace =
-            db::Workspace::update(Uuid::parse_str(id.as_str())?, workspace.title, pool).await?;
+        let workspace = db::Workspace::update(
+            Uuid::parse_str(id.as_str())?,
+            workspace.title,
+            workspace.long_description,
+            pool,
+        )
+        .await?;
 
         Ok(workspace.into())
     }
 
-    #[field(description = "Delete workspace(returns deleted workspace")]
+    #[field(desc = "Delete workspace(returns deleted workspace")]
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let workspace = db::Workspace::delete(Uuid::parse_str(id.as_str())?, pool).await?;

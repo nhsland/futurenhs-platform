@@ -1,4 +1,5 @@
 UPDATE workspace
-SET title = COALESCE($1, title)
-WHERE id = $2
-RETURNING id, title
+SET title = COALESCE($2, title),
+    long_description = COALESCE($3, long_description)
+WHERE id = $1
+RETURNING id, title, long_description

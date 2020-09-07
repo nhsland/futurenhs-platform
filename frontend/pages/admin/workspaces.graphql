@@ -1,0 +1,9 @@
+mutation CreateWorkspaceMutation($title: String!, $longDescription: String!) {
+  createWorkspace(
+    workspace: { title: $title, longDescription: $longDescription }
+  ) {
+    id
+    title
+    longDescription
+  }
+}

@@ -1,12 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-type HeaderProps = {
-  imageRight: string;
-  imageRightURL?: string;
-  imageRightAltText: string;
-};
-
 const StyledHeader = styled.header`
   ${({ theme }) => `
   background-color: ${theme.colorNhsukWhite};
@@ -30,19 +24,18 @@ const StyledImg = styled.img`
   `}
 `;
 
-const Header = ({
-  imageRight,
-  imageRightURL,
-  imageRightAltText,
-}: HeaderProps) => {
+const Header = () => {
   return (
     <StyledHeader>
       <StyledImg
         src={require("../../public/FutureNHS.png")}
         alt="FutureNHS logo"
       />
-      <a href={imageRightURL}>
-        <StyledImg src={imageRight} alt={imageRightAltText} />
+      <a href="https://www.nhs.co.uk">
+        <StyledImg
+          src={require("../../public/NHS.png")}
+          alt="https://www.nhs.co.uk"
+        />
       </a>
     </StyledHeader>
   );

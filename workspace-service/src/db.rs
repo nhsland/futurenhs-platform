@@ -5,11 +5,17 @@ use sqlx::{types::Uuid, PgPool};
 pub struct Workspace {
     pub id: Uuid,
     pub title: String,
+    pub long_description: String,
 }
 
 impl Workspace {
-    pub async fn create(title: String, pool: &PgPool) -> Result<Workspace> {
-        let workspace = sqlx::query_file_as!(Workspace, "sql/create.sql", title)
+    pub async fn create(
+        title: String,
+        long_description: String,
+        pool: &PgPool,
+    ) -> Result<Workspace> {
+        #[allow(clippy::suspicious_else_formatting)]
+        let workspace = sqlx::query_file_as!(Workspace, "sql/create.sql", title, long_description)
             .fetch_one(pool)
             .await?;
 
@@ -33,10 +39,16 @@ impl Workspace {
     }
 
     #[allow(clippy::suspicious_else_formatting)]
-    pub async fn update(id: Uuid, title: String, pool: &PgPool) -> Result<Workspace> {
-        let workspace = sqlx::query_file_as!(Workspace, "sql/update.sql", title, id)
-            .fetch_one(pool)
-            .await?;
+    pub async fn update(
+        id: Uuid,
+        title: String,
+        long_description: String,
+        pool: &PgPool,
+    ) -> Result<Workspace> {
+        let workspace =
+            sqlx::query_file_as!(Workspace, "sql/update.sql", id, title, long_description)
+                .fetch_one(pool)
+                .await?;
 
         Ok(workspace)
     }

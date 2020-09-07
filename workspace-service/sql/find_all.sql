@@ -1,4 +1,5 @@
 SELECT id,
-    title
+    title,
+    long_description
 FROM workspace
 ORDER BY id
