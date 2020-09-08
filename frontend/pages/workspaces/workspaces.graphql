@@ -1,0 +1,14 @@
+query GetAllWorkspaces {
+  workspaces {
+    id
+    title
+    longDescription
+  }
+}
+
+query WorkspaceByIDQuery($id: ID!) {
+  workspace(id: $id) {
+    id
+    title
+  }
+}
