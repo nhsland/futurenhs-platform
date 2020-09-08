@@ -1,5 +1,5 @@
 SELECT id,
     title,
     long_description
-FROM workspace
+FROM workspaces
 ORDER BY id

@@ -1,7 +1,104 @@
 {
   "db": "PostgreSQL",
-  "71b69eb5939722a321f027c59f2fe65e760179a73e255eab2f51ab73f6881162": {
-    "query": "SELECT id,\n    title,\n    long_description\nFROM workspace\nORDER BY id\n",
+  "9c03b4c84ef3dd9a91efcfb2f759138f56b6f33a984b626b4f55b4d56d080802": {
+    "query": "DELETE FROM workspaces\nWHERE id = $1\nRETURNING id, title, long_description\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "long_description",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "a3e6e13063494623f1b080d8d0907274be888fa20339def49e421e832306da00": {
+    "query": "SELECT id, \n    title,\n    long_description\nFROM workspaces\nWHERE id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "long_description",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "c6394460e466102ff2dbd5039a09585a0609ebbec8598f425f205d2d29d28fad": {
+    "query": "INSERT INTO workspaces (title, long_description)\nVALUES ($1, $2)\nRETURNING id, title, long_description\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "long_description",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "e222377f3ff4f8764d1c847adc4fc9291b57081cfb7ebeb5581aac41e6f3d37c": {
+    "query": "SELECT id,\n    title,\n    long_description\nFROM workspaces\nORDER BY id\n",
     "describe": {
       "columns": [
         {
@@ -30,73 +127,8 @@
       ]
     }
   },
-  "7f50a897184424c7c05ccae5e7844d5edcaf4492ee8f9e22c0e4b6e877186121": {
-    "query": "DELETE FROM workspace\nWHERE id = $1\nRETURNING id, title, long_description\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 2,
-          "name": "long_description",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false
-      ]
-    }
-  },
-  "c0ddf07d617192a54522b51d136ea4cf4d57e7fa3adced15959ff824469d0114": {
-    "query": "INSERT INTO workspace (title, long_description)\nVALUES ($1, $2)\nRETURNING id, title, long_description\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 2,
-          "name": "long_description",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false
-      ]
-    }
-  },
-  "d6b5d1493f55902ad95479e20dc64e89a687c3cde3962eb3477e73eb430710b4": {
-    "query": "UPDATE workspace\nSET title = COALESCE($2, title),\n    long_description = COALESCE($3, long_description)\nWHERE id = $1\nRETURNING id, title, long_description\n",
+  "e4ecd6aed4131812506ee36a801287c5da1ca0e77818b19079b9606ac274ba3d": {
+    "query": "UPDATE workspaces\nSET title = COALESCE($2, title),\n    long_description = COALESCE($3, long_description)\nWHERE id = $1\nRETURNING id, title, long_description\n",
     "describe": {
       "columns": [
         {
@@ -120,38 +152,6 @@
           "Uuid",
           "Text",
           "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false
-      ]
-    }
-  },
-  "f46dd273a613e410cb25f3d0def2e431fbcff500d70532e42c8d2139368f9d34": {
-    "query": "SELECT id, \n    title,\n    long_description\nFROM workspace\nWHERE id = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 2,
-          "name": "long_description",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
         ]
       },
       "nullable": [
