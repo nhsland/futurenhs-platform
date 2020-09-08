@@ -1,14 +1,15 @@
-import { GetServerSideProps } from "next";
+import React from "react";
+
 import { GraphQLClient } from "graphql-request";
+import { GetServerSideProps } from "next";
+import styled from "styled-components";
+
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
-import React from "react";
-import { getSdk } from "../../lib/generated/graphql";
 import { requireAuthentication } from "../../lib/auth";
-
-import styled from "styled-components";
+import { getSdk } from "../../lib/generated/graphql";
 
 interface Workspace {
   id: string;
