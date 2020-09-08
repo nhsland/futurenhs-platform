@@ -42,7 +42,6 @@ impl Workspace {
         Ok(workspace)
     }
 
-    #[allow(clippy::suspicious_else_formatting)]
     pub async fn update(
         id: Uuid,
         title: String,
@@ -68,5 +67,77 @@ impl Workspace {
             .await?;
 
         Ok(workspace)
+    }
+}
+
+#[derive(Clone)]
+pub struct Folder {
+    pub id: Uuid,
+    pub title: String,
+    pub long_description: String,
+    pub workspace: Uuid,
+}
+
+impl Folder {
+    pub async fn create(
+        title: String,
+        long_description: String,
+        workspace: Uuid,
+        pool: &PgPool,
+    ) -> Result<Folder> {
+        let folder = sqlx::query_file_as!(
+            Folder,
+            "sql/folders/create.sql",
+            title,
+            long_description,
+            workspace
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(folder)
+    }
+
+    pub async fn find_by_workspace(workspace: Uuid, pool: &PgPool) -> Result<Vec<Folder>> {
+        let folders = sqlx::query_file_as!(Folder, "sql/folders/find_by_workspace.sql", workspace)
+            .fetch_all(pool)
+            .await?;
+
+        Ok(folders)
+    }
+
+    pub async fn find_by_id(id: Uuid, pool: &PgPool) -> Result<Folder> {
+        let folder = sqlx::query_file_as!(Folder, "sql/folders/find_by_id.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(folder)
+    }
+
+    pub async fn update(
+        id: Uuid,
+        title: String,
+        long_description: String,
+        pool: &PgPool,
+    ) -> Result<Folder> {
+        let folder = sqlx::query_file_as!(
+            Folder,
+            "sql/folders/update.sql",
+            id,
+            title,
+            long_description
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(folder)
+    }
+
+    pub async fn delete(id: Uuid, pool: &PgPool) -> Result<Folder> {
+        let folder = sqlx::query_file_as!(Folder, "sql/folders/delete.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(folder)
     }
 }
