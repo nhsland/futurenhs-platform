@@ -1,5 +1,4 @@
 import React from "react";
-// import { GraphQLClient } from "graphql-request";
 import { getSdk } from "../../lib/generated/graphql";
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
@@ -16,15 +15,19 @@ interface Workspace {
 }
 
 export const getServerSideProps: GetServerSideProps = requireAuthentication(
-  async () => {
+  async (context) => {
     const client = new GraphQLClient(
       "http://workspace-service.workspace-service/graphql"
     );
     const sdk = getSdk(client);
-    const { workspaces } = await sdk.GetAllWorkspaces();
+    const workspaceID = (context.params?.id as string) || "";
+    console.log(workspaceID);
+
+    const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceID });
+
     return {
       props: {
-        workspaces,
+        workspace,
       },
     };
   }
@@ -53,26 +56,19 @@ const H2 = styled.h2`
 `;
 
 interface Props {
-  workspaces: Workspace[];
+  workspace: Workspace;
 }
-const WorkspaceHomepage = ({ workspaces }: Props) => {
-  return (
-    <>
-      <Head title="TODO: My workspace" />
-      <PageLayout>
-        <Header />
-        <PageContent>
-          <h1>Create a workspace</h1>
-          <H2>Workspace details</H2>
-          <ul>
-            {workspaces.map((w) => (
-              <li key={w.id}>{w.title}</li>
-            ))}
-          </ul>
-        </PageContent>
-      </PageLayout>
-    </>
-  );
-};
+const WorkspaceHomepage = ({ workspace }: Props) => (
+  <>
+    <Head title={workspace.title} />
+    <PageLayout>
+      <Header />
+      <PageContent>
+        <h1>{workspace.title}</h1>
+        <H2>Workspace details</H2>
+      </PageContent>
+    </PageLayout>
+  </>
+);
 
 export default WorkspaceHomepage;
