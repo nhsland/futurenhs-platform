@@ -1,12 +1,14 @@
-import React from "react";
-import { getSdk } from "../../lib/generated/graphql";
+import { GetServerSideProps } from "next";
+import { GraphQLClient } from "graphql-request";
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
-import { GraphQLClient } from "graphql-request";
+import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
-import styled from "styled-components";
-import { GetServerSideProps } from "next";
+import React from "react";
+import { getSdk } from "../../lib/generated/graphql";
 import { requireAuthentication } from "../../lib/auth";
+
+import styled from "styled-components";
 
 interface Workspace {
   id: string;
@@ -21,7 +23,6 @@ export const getServerSideProps: GetServerSideProps = requireAuthentication(
     );
     const sdk = getSdk(client);
     const workspaceID = (context.params?.id as string) || "";
-    console.log(workspaceID);
 
     const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceID });
 
@@ -33,24 +34,21 @@ export const getServerSideProps: GetServerSideProps = requireAuthentication(
   }
 );
 
-const PageContent = styled.div`
-  ${({ theme }) => `
-  background-color: ${theme.colorNhsukWhite};
+const PageContent = styled.section`
   min-height: 100vh;
   padding-top: 24px;
   padding-left: 10%;
   padding-right: 10%;
-  .nhsuk-form-group {
-    margin-bottom: 8px;
-  }
+  ${({ theme }) => `
+  background-color: ${theme.colorNhsukWhite};
   `}
 `;
 
 const H2 = styled.h2`
-  ${({ theme }) => `
-  border-top: 1px solid ${theme.colorNhsukGrey1};
   padding-top: 24px;
   margin-bottom: 8px;
+  ${({ theme }) => `
+  border-top: 1px solid ${theme.colorNhsukGrey1};
   color: ${theme.colorNhsukGrey1} 
   `}
 `;
@@ -58,14 +56,15 @@ const H2 = styled.h2`
 interface Props {
   workspace: Workspace;
 }
+
 const WorkspaceHomepage = ({ workspace }: Props) => (
   <>
     <Head title={workspace.title} />
     <PageLayout>
       <Header />
       <PageContent>
-        <h1>{workspace.title}</h1>
-        <H2>Workspace details</H2>
+        <MainHeading>{workspace.title}</MainHeading>
+        <H2>Most recent items</H2>
       </PageContent>
     </PageLayout>
   </>
