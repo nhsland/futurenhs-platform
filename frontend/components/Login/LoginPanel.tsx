@@ -1,6 +1,8 @@
 import React from "react";
+
 import { Panel } from "nhsuk-react-components";
 import styled from "styled-components";
+
 import { MainHeading } from "../../components/MainHeading";
 
 type LoginPanelProps = {

@@ -1,11 +1,13 @@
+/* eslint-disable import/order */
 const express = require("express");
-const pg = require("pg");
 const session = require("express-session");
+const pg = require("pg");
 const pgSession = require("connect-pg-simple")(session);
 const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
 const dotenv = require("dotenv");
+
 const url = require("url");
 const { promises: fs } = require("fs");
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import axios from "axios";
 
+import axios from "axios";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
+
 import { getGreeting } from "../../lib/greetings";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

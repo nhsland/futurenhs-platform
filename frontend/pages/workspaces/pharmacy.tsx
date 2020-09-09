@@ -1,9 +1,11 @@
 import React from "react";
+
 import { GetServerSideProps } from "next";
-import { requireAuthentication } from "../../lib/auth";
-import { Header } from "../../components/Header";
 import Link from "next/link";
+
+import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { requireAuthentication } from "../../lib/auth";
 
 export const getServerSideProps: GetServerSideProps = requireAuthentication(
   async () => {
