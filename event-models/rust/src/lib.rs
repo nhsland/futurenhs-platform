@@ -1,7 +1,8 @@
-use chrono::{DateTime, FixedOffset};
+use chrono::{DateTime, Utc};
 use serde::de;
 use serde::ser::{self, Error as _, SerializeStruct};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 mod gen {
     use serde::{Deserialize, Serialize};
@@ -13,8 +14,19 @@ mod gen {
 pub struct Event {
     pub id: String,
     pub subject: String,
-    pub event_time: DateTime<FixedOffset>,
+    pub event_time: DateTime<Utc>,
     pub data: EventData,
+}
+
+impl Event {
+    pub fn new(subject: impl Into<String>, data: EventData) -> Self {
+        Self {
+            id: format!("{}", Uuid::new_v4()),
+            subject: subject.into(),
+            event_time: Utc::now(),
+            data,
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Event {
@@ -27,7 +39,7 @@ impl<'de> Deserialize<'de> for Event {
         struct RawEvent {
             id: String,
             subject: String,
-            event_time: DateTime<FixedOffset>,
+            event_time: DateTime<Utc>,
             event_type: String,
             data: serde_json::Value,
             data_version: String,
@@ -138,7 +150,9 @@ mod tests {
         let s = serde_json::to_string(&Event {
             id: "id".into(),
             subject: "subj".into(),
-            event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679+00:00").unwrap(),
+            event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
+                .unwrap()
+                .with_timezone(&Utc),
             data: EventData::ContentView(ContentViewEventData {
                 user_id: "user".into(),
                 content_id: "content".into(),
@@ -150,22 +164,23 @@ mod tests {
         .unwrap();
         assert_eq!(
             s,
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         );
     }
 
     #[test]
     fn deserialize() {
         let event: Event = serde_json::from_str(
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         ).unwrap();
         assert_eq!(
             event,
             Event {
                 id: "id".into(),
                 subject: "subj".into(),
-                event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679+00:00")
-                    .unwrap(),
+                event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
+                    .unwrap()
+                    .with_timezone(&Utc),
                 data: EventData::ContentView(ContentViewEventData {
                     user_id: "user".into(),
                     content_id: "content".into(),
