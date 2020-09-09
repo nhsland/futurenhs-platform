@@ -22,3 +22,9 @@ To interact with the GraphQL playground, use portforwarding:
 [rustfmt](https://github.com/rust-lang/rustfmt) is used for formatting our rust code. CI will fail if code is not formatted correctly.
 
 To run locally: `cargo fmt`
+
+## IDE Support
+
+Most of the team uses Visual Studio Code with the [rust-analyser](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) plugin.
+
+The default formatter for .sql files in vscode is not postgresql-specific, and highlights many words that are not keywords in postgresql. It is worthwhile using some postgresql-specific syntax highlighting to avoid confusion (for example, you could install a plugin like [this one](https://marketplace.visualstudio.com/items?itemName=JPTarquino.postgresql) and run `cmd+shift+p` `Change Language Mode` `Configure File Association for '.sql'...` `PGSQL`).
