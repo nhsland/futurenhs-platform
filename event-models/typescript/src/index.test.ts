@@ -5,29 +5,35 @@ it("serializes", () => {
     id: "id",
     subject: "subj",
     eventTime: "2020-09-09T10:22:42.235679+00:00",
-    eventType: "loggedin",
+    eventType: "ContentView",
     dataVersion: "1",
     data: {
-      user: "user",
+      userId: "user",
+      contentId: "content",
+      contentType: "Folder",
+      workspaceId: "workspace",
     },
   });
   expect(result).toEqual(
-    '{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"loggedin","dataVersion":"1","data":{"user":"user"}}'
+    '{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"ContentView","dataVersion":"1","data":{"userId":"user","contentId":"content","contentType":"Folder","workspaceId":"workspace"}}'
   );
 });
 
 it("deserializes", () => {
   const result = parse(
-    '{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"loggedin","dataVersion":"1","data":{"user":"user"}}'
+    '{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"ContentView","dataVersion":"1","data":{"userId":"user","contentId":"content","contentType":"Folder","workspaceId":"workspace"}}'
   );
   expect(result).toEqual({
     id: "id",
     subject: "subj",
     eventTime: "2020-09-09T10:22:42.235679+00:00",
-    eventType: "loggedin",
+    eventType: "ContentView",
     dataVersion: "1",
     data: {
-      user: "user",
+      userId: "user",
+      contentId: "content",
+      contentType: "Folder",
+      workspaceId: "workspace",
     },
   });
 });

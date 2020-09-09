@@ -4,11 +4,7 @@
   "allOf": [
     { "$ref": "#/definitions/BaseEvent" },
     {
-      "oneOf": [
-        { "$ref": "#/definitions/LoggedInEvent" },
-        { "$ref": "#/definitions/LoggedInEventV2" },
-        { "$ref": "#/definitions/LoginFailedEvent" }
-      ]
+      "oneOf": [{ "$ref": "#/definitions/ContentViewEvent" }]
     }
   ],
   "definitions": {
@@ -28,12 +24,12 @@
       },
       "required": ["id", "subject", "eventTime"]
     },
-    "LoggedInEvent": {
+    "ContentViewEvent": {
       "type": "object",
       "properties": {
         "eventType": {
           "type": "string",
-          "enum": ["loggedin"]
+          "enum": ["ContentView"]
         },
         "dataVersion": {
           "type": "string",
@@ -42,57 +38,24 @@
         "data": {
           "type": "object",
           "properties": {
-            "user": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "required": ["eventType", "dataVersion", "data"]
-    },
-    "LoggedInEventV2": {
-      "type": "object",
-      "properties": {
-        "eventType": {
-          "type": "string",
-          "enum": ["loggedin"]
-        },
-        "dataVersion": {
-          "type": "string",
-          "enum": ["2"]
-        },
-        "data": {
-          "type": "object",
-          "properties": {
-            "id": {
+            "userId": {
               "type": "string"
             },
-            "email": {
+            "contentId": {
+              "type": "string"
+            },
+            "contentType": {
+              "type": "string",
+              "enum": ["Folder", "File"]
+            },
+            "workspaceId": {
+              "type": "string"
+            },
+            "error": {
               "type": "string"
             }
-          }
-        }
-      },
-      "required": ["eventType", "dataVersion", "data"]
-    },
-    "LoginFailedEvent": {
-      "type": "object",
-      "properties": {
-        "eventType": {
-          "type": "string",
-          "enum": ["loginfailed"]
-        },
-        "dataVersion": {
-          "type": "string",
-          "enum": ["1"]
-        },
-        "data": {
-          "type": "object",
-          "properties": {
-            "message": {
-              "type": "string"
-            }
-          }
+          },
+          "required": ["userId", "contentId", "contentType", "workspaceId"]
         }
       },
       "required": ["eventType", "dataVersion", "data"]

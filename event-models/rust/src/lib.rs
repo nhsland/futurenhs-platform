@@ -126,9 +126,7 @@ macro_rules! event_serialization {
 }
 
 event_serialization!(
-    ("loggedin", "1") => LoggedIn(LoggedInEventData),
-    ("loggedin", "2") => LoggedInV2(LoggedInEventV2Data),
-    ("loginfailed", "1") => LoginFailed(LoginFailedEventData),
+    ("ContentView", "1") => ContentView(ContentViewEventData),
 );
 
 #[cfg(test)]
@@ -141,21 +139,25 @@ mod tests {
             id: "id".into(),
             subject: "subj".into(),
             event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679+00:00").unwrap(),
-            data: EventData::LoggedIn(LoggedInEventData {
-                user: Some("user".into()),
+            data: EventData::ContentView(ContentViewEventData {
+                user_id: "user".into(),
+                content_id: "content".into(),
+                content_type: "Folder".into(),
+                workspace_id: "workspace".into(),
+                error: None,
             }),
         })
         .unwrap();
         assert_eq!(
             s,
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"loggedin","data":{"user":"user"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         );
     }
 
     #[test]
     fn deserialize() {
         let event: Event = serde_json::from_str(
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"loggedin","data":{"user":"user"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679+00:00","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         ).unwrap();
         assert_eq!(
             event,
@@ -164,8 +166,12 @@ mod tests {
                 subject: "subj".into(),
                 event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679+00:00")
                     .unwrap(),
-                data: EventData::LoggedIn(LoggedInEventData {
-                    user: Some("user".into()),
+                data: EventData::ContentView(ContentViewEventData {
+                    user_id: "user".into(),
+                    content_id: "content".into(),
+                    content_type: "Folder".into(),
+                    workspace_id: "workspace".into(),
+                    error: None,
                 })
             }
         );

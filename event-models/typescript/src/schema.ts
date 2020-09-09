@@ -5,8 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type Event = BaseEvent &
-  (LoggedInEvent | LoggedInEventV2 | LoginFailedEvent);
+export type Event = BaseEvent & ContentViewEvent;
 
 export interface BaseEvent {
   id: string;
@@ -14,30 +13,15 @@ export interface BaseEvent {
   eventTime: string;
   [k: string]: unknown;
 }
-export interface LoggedInEvent {
-  eventType: "loggedin";
+export interface ContentViewEvent {
+  eventType: "ContentView";
   dataVersion: "1";
   data: {
-    user?: string;
-    [k: string]: unknown;
-  };
-  [k: string]: unknown;
-}
-export interface LoggedInEventV2 {
-  eventType: "loggedin";
-  dataVersion: "2";
-  data: {
-    id?: string;
-    email?: string;
-    [k: string]: unknown;
-  };
-  [k: string]: unknown;
-}
-export interface LoginFailedEvent {
-  eventType: "loginfailed";
-  dataVersion: "1";
-  data: {
-    message?: string;
+    userId: string;
+    contentId: string;
+    contentType: "Folder" | "File";
+    workspaceId: string;
+    error?: string;
     [k: string]: unknown;
   };
   [k: string]: unknown;
