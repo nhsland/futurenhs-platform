@@ -11,13 +11,7 @@ import { PageLayout } from "../../components/PageLayout";
 import { requireAuthentication } from "../../lib/auth";
 import { getSdk } from "../../lib/generated/graphql";
 
-interface Workspace {
-  id: string;
-  title: string;
-  longDescription: string;
-}
-
-export const getServerSideProps: GetServerSideProps = requireAuthentication(
+export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
   async (context) => {
     const client = new GraphQLClient(
       "http://workspace-service.workspace-service/graphql"
@@ -55,7 +49,9 @@ const H2 = styled.h2`
 `;
 
 interface Props {
-  workspace: Workspace;
+  workspace: {
+    title: string;
+  };
 }
 
 const WorkspaceHomepage = ({ workspace }: Props) => (
