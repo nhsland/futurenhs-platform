@@ -1,11 +1,13 @@
 import React from "react";
-import { PageLayout } from "../../components/PageLayout";
+
+import { GetServerSideProps } from "next";
+import styled from "styled-components";
+
 import { Header } from "../../components/Header";
 import { Login } from "../../components/Login";
-import { GetServerSideProps } from "next";
 import { Gradient } from "../../components/Login";
 import { LoginPanel } from "../../components/Login";
-import styled from "styled-components";
+import { PageLayout } from "../../components/PageLayout";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   context.res.setHeader(

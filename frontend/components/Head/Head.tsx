@@ -1,4 +1,5 @@
 import React from "react";
+
 import { default as NextHead } from "next/head";
 
 interface Props {

@@ -1,6 +1,7 @@
-import { ApolloServer } from "apollo-server-micro";
 import { ApolloGateway } from "@apollo/gateway";
+import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
+
 import { User } from "../../lib/auth";
 
 const gateway = new ApolloGateway({

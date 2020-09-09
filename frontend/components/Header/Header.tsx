@@ -1,4 +1,5 @@
 import React from "react";
+
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -11,15 +12,15 @@ const StyledHeader = styled.header`
 `;
 
 const StyledImg = styled.img`
+  display: block;
+  height: 40px;
   ${({ theme }) => `
-  max-height: 40px;
-
   @media (max-width: ${theme.mqBreakpoints.tablet}) {
-      max-height: 32px;
+      height: 32px;
     }
 
   @media (max-width: ${theme.mqBreakpoints.mobile}) {
-      max-height: 28px;
+      height: 28px;
     }
   `}
 `;
@@ -28,12 +29,12 @@ const Header = () => {
   return (
     <StyledHeader>
       <StyledImg
-        src={require("../../public/FutureNHS.png")}
+        src={require("../../public/FutureNHS.svg")}
         alt="FutureNHS logo"
       />
       <a href="https://www.nhs.co.uk">
         <StyledImg
-          src={require("../../public/NHS.png")}
+          src={require("../../public/NHS.svg")}
           alt="https://www.nhs.co.uk"
         />
       </a>

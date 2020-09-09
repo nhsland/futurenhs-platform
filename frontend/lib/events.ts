@@ -1,7 +1,7 @@
-import { v4 as uuid } from "uuid";
+import { Event } from "@fnhs/event-models";
 import EventGridClient from "azure-eventgrid";
 import { TopicCredentials } from "ms-rest-azure";
-import { Event } from "@fnhs/event-models";
+import { v4 as uuid } from "uuid";
 
 export const sendEvent = async (event: Event) => {
   const fullEvent = {
