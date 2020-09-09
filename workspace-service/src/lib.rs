@@ -40,3 +40,29 @@ pub async fn create_app(connection_pool: PgPool) -> anyhow::Result<Server<graphq
 
     Ok(app)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use http_types::{Method, Response, StatusCode, Url};
+    use std::env;
+
+    #[tokio::test]
+    async fn root_redirects_to_graphiql() -> anyhow::Result<()> {
+        let database_url =
+            env::var("TEST_DATABASE_URL").expect("TEST_DATABASE_URL env var not found");
+        let connection_pool = PgPool::connect(&database_url).await?;
+
+        let app = create_app(connection_pool).await?;
+        let req = http_types::Request::new(
+            Method::Get,
+            Url::parse("http://workspace-service.workspace-service/").unwrap(),
+        );
+
+        let resp: Response = app.respond(req).await.unwrap();
+        assert_eq!(resp.status(), StatusCode::PermanentRedirect);
+        assert_eq!(resp.header("location").unwrap().as_str(), "/graphiql");
+
+        Ok(())
+    }
+}
