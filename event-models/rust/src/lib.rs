@@ -79,7 +79,7 @@ impl Serialize for Event {
 }
 
 macro_rules! event_serialization {
-    ($($event_type:literal, $data_version:literal, $enum_variant:ident, $data_type:ident;)*) => {
+    ($(( $event_type:literal, $data_version:literal) => $enum_variant:ident ( $data_type:ident ),)*) => {
         pub use gen::{
             $(
                 $data_type,
@@ -126,9 +126,9 @@ macro_rules! event_serialization {
 }
 
 event_serialization!(
-    "loggedin", "1", LoggedIn, LoggedInEventData;
-    "loggedin", "2", LoggedInV2, LoggedInEventV2Data;
-    "loginfailed", "1", LoginFailed, LoginFailedEventData;
+    ("loggedin", "1") => LoggedIn(LoggedInEventData),
+    ("loggedin", "2") => LoggedInV2(LoggedInEventV2Data),
+    ("loginfailed", "1") => LoginFailed(LoginFailedEventData),
 );
 
 #[cfg(test)]
