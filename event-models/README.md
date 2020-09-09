@@ -1,19 +1,16 @@
 # Event Models
 
-This thing:
+As described in [Data Flow](../docs/data-flow/README.md), the FutureNHS platform publishes events for everything that happens (e.g. user uploaded file, left a comment or viewed a page). The event models here contain:
 
-- Generates TypeScript types and validation from a JSON schema using special node modules
+- A [centralized schema](./schema.json) for all events published by the platform.
+- Types for [Rust](./rust) and [TypeScript](./typescript), which make it easy to both publish and consume events from different parts of the platform.
 
-- Generates Rust structs using a special crate from the same JSON schema
+The centralized schema is written as a [JSON Schema](https://json-schema.org) and follows the [Azure EventGrid schema](https://docs.microsoft.com/en-us/azure/event-grid/event-schema) for events.
 
-Another idea:
+## Update schema
 
-- Manually generated
-- Each model has:
-  - Rust types
-  - TypeScript types (but how do we generate runtime validation?)
-  - a JSON example
-- There is a test for each language and model, which:
-  - Deserializes the example
-  - Serializes it back
-  - Compares the result to the example
+If you need to update the schema, e.g. to add a new event, follow these steps:
+
+1. Edit the [schema.json](./schema.json) file
+2. Update the TypeScript types by running `yarn generate` in the [`typescript`](./typescript) folder.
+3. Update the Rust types by adding a line to the `event_serialization!` macro invocation in [`lib.rs`](./rust/src/lib.rs).
