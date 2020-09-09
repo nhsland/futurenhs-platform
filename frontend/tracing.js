@@ -1,13 +1,13 @@
 "use strict";
 
+const {
+  AzureMonitorTraceExporter,
+} = require("@azure/monitor-opentelemetry-exporter");
 const { NodeTracerProvider } = require("@opentelemetry/node");
 const {
   BatchSpanProcessor,
   ConsoleSpanExporter,
 } = require("@opentelemetry/tracing");
-const {
-  AzureMonitorTraceExporter,
-} = require("@azure/monitor-opentelemetry-exporter");
 
 const provider = new NodeTracerProvider({
   plugins: {
