@@ -3,18 +3,21 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "dependencies": {
+    "ajv": "^6.12.4"
+  },
   "devDependencies": {
-    "@types/node": "^14.0.27",
-    "@types/prettier": "^2.0.2",
+    "@types/jest": "^26.0.13",
+    "@types/node": "^14.6.4",
+    "@types/prettier": "^2.1.0",
+    "jest": "^26.4.2",
     "json-schema-to-typescript": "^9.1.1",
-    "typescript": "^3.9.7"
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2"
   },
   "scripts": {
     "build": "tsc",
-	"generate": "tsc && node dist/generate.js",
-	"example": "tsc && node dist/examples/test.js"
-  },
-  "dependencies": {
-    "ajv": "^6.12.3"
+    "generate": "node generate.js",
+    "test": "jest"
   }
 }

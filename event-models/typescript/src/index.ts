@@ -20,3 +20,5 @@ export const parse = (s: string): Event => {
     );
   }
 };
+
+export const stringify = (event: Event): string => JSON.stringify(event);

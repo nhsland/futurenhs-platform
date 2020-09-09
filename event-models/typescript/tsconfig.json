@@ -6,10 +6,11 @@
     "allowJs": false,
     "strict": true,
     "alwaysStrict": true,
+	"rootDir": "src",
     "outDir": "dist",
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["*.ts", "examples/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "**/*.test.ts"]
 }
