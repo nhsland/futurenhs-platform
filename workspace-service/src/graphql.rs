@@ -151,8 +151,7 @@ impl Mutation {
         workspace: NewWorkspace,
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
-        let workspace =
-            db::Workspace::create(workspace.title, workspace.description, pool).await?;
+        let workspace = db::Workspace::create(workspace.title, workspace.description, pool).await?;
         Ok(workspace.into())
     }
 
@@ -187,8 +186,7 @@ impl Mutation {
     async fn create_folder(&self, context: &Context<'_>, folder: NewFolder) -> FieldResult<Folder> {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(folder.workspace.as_str())?;
-        let folder =
-            db::Folder::create(folder.title, folder.description, workspace, pool).await?;
+        let folder = db::Folder::create(folder.title, folder.description, workspace, pool).await?;
         Ok(folder.into())
     }
 

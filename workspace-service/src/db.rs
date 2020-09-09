@@ -9,19 +9,11 @@ pub struct Workspace {
 }
 
 impl Workspace {
-    pub async fn create(
-        title: String,
-        description: String,
-        pool: &PgPool,
-    ) -> Result<Workspace> {
-        let workspace = sqlx::query_file_as!(
-            Workspace,
-            "sql/workspaces/create.sql",
-            title,
-            description
-        )
-        .fetch_one(pool)
-        .await?;
+    pub async fn create(title: String, description: String, pool: &PgPool) -> Result<Workspace> {
+        let workspace =
+            sqlx::query_file_as!(Workspace, "sql/workspaces/create.sql", title, description)
+                .fetch_one(pool)
+                .await?;
 
         Ok(workspace)
     }
@@ -120,15 +112,9 @@ impl Folder {
         description: String,
         pool: &PgPool,
     ) -> Result<Folder> {
-        let folder = sqlx::query_file_as!(
-            Folder,
-            "sql/folders/update.sql",
-            id,
-            title,
-            description
-        )
-        .fetch_one(pool)
-        .await?;
+        let folder = sqlx::query_file_as!(Folder, "sql/folders/update.sql", id, title, description)
+            .fetch_one(pool)
+            .await?;
 
         Ok(folder)
     }
