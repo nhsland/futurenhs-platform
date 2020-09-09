@@ -1,14 +1,15 @@
-const { promises: fs } = require("fs");
-const url = require("url");
-
-const pgSession = require("connect-pg-simple")(session);
-const dotenv = require("dotenv");
+/* eslint-disable import/order */
 const express = require("express");
 const session = require("express-session");
-const next = require("next");
+const pg = require("pg");
+const pgSession = require("connect-pg-simple")(session);
 const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
-const pg = require("pg");
+const next = require("next");
+const dotenv = require("dotenv");
+
+const url = require("url");
+const { promises: fs } = require("fs");
 
 const devProxy = {
   "/hello": {
