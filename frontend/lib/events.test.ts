@@ -1,7 +1,8 @@
-import { sendEvent } from "./events";
 import EventGridClient from "azure-eventgrid";
-import { withEnvVars } from "./test-helpers/environment";
+
+import { sendEvent } from "./events";
 import { withMockedConsole } from "./test-helpers/console";
+import { withEnvVars } from "./test-helpers/environment";
 
 jest.mock("azure-eventgrid");
 

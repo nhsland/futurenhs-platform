@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+
 import { GraphQLClient } from "graphql-request";
-import { getSdk } from "../../lib/generated/graphql";
+import { GetServerSideProps } from "next";
+import { Input, Form, Button } from "nhsuk-react-components";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
+import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
 import { Textarea } from "../../components/Textarea";
-import styled from "styled-components";
-import { Input, Form, Button } from "nhsuk-react-components";
-import { GetServerSideProps } from "next";
 import { requireAuthentication } from "../../lib/auth";
-import { MainHeading } from "../../components/MainHeading";
+import { getSdk } from "../../lib/generated/graphql";
 
 export const getServerSideProps: GetServerSideProps = requireAuthentication(
   async () => {

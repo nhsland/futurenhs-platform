@@ -1,7 +1,9 @@
 import React from "react";
+
 import { GetServerSideProps } from "next";
-import { requireAuthentication, User } from "../../lib/auth";
+
 import { MainHeading } from "../../components/MainHeading";
+import { requireAuthentication, User } from "../../lib/auth";
 
 interface Props {
   user: User;

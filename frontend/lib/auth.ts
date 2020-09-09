@@ -3,6 +3,7 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next";
+
 import { redirect } from "./redirect";
 
 export interface User {

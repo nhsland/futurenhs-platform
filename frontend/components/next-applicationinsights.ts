@@ -1,12 +1,12 @@
 // This file is taken from https://github.com/goenning/next-applicationinsights and edited to remove the 'getInitialProps' method in order to allow for static generation.
 import * as React from "react";
-import { AppProps, default as NextApp } from "next/app";
 
 import {
   ApplicationInsights,
   IConfiguration,
   IConfig,
 } from "@microsoft/applicationinsights-web";
+import { AppProps, default as NextApp } from "next/app";
 
 const IS_BROWSER = typeof window !== "undefined";
 

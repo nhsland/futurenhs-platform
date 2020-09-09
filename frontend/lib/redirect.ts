@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from "querystring";
+
 import { GetServerSidePropsContext } from "next";
 
 /// Inspired by the api of the `next-redirect` package, but I couldn't find any typings

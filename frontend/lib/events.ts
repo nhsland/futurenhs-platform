@@ -1,6 +1,6 @@
-import { v4 as uuid } from "uuid";
 import EventGridClient from "azure-eventgrid";
 import { TopicCredentials } from "ms-rest-azure";
+import { v4 as uuid } from "uuid";
 
 // TODO: Generate strongly typed models for the different event types and data versions
 export interface Event {
