@@ -14,7 +14,7 @@ pub struct Workspace {
     #[field(desc = "The title of the workspace")]
     title: String,
     #[field(desc = "The description of the workspace")]
-    long_description: String,
+    description: String,
 }
 
 impl From<db::Workspace> for Workspace {
@@ -22,7 +22,7 @@ impl From<db::Workspace> for Workspace {
         Self {
             id: d.id.into(),
             title: d.title,
-            long_description: d.long_description,
+            description: d.description,
         }
     }
 }
@@ -34,7 +34,7 @@ pub struct Folder {
     #[field(desc = "The title of the folder")]
     title: String,
     #[field(desc = "The description of the folder")]
-    long_description: String,
+    description: String,
     #[field(desc = "The workspace that this folder is in")]
     workspace: ID,
 }
@@ -44,7 +44,7 @@ impl From<db::Folder> for Folder {
         Self {
             id: d.id.into(),
             title: d.title,
-            long_description: d.long_description,
+            description: d.description,
             workspace: d.workspace.into(),
         }
     }
@@ -53,26 +53,26 @@ impl From<db::Folder> for Folder {
 #[InputObject]
 struct NewWorkspace {
     title: String,
-    long_description: String,
+    description: String,
 }
 
 #[InputObject]
 struct UpdateWorkspace {
     title: String,
-    long_description: String,
+    description: String,
 }
 
 #[InputObject]
 struct NewFolder {
     title: String,
-    long_description: String,
+    description: String,
     workspace: ID,
 }
 
 #[InputObject]
 struct UpdateFolder {
     title: String,
-    long_description: String,
+    description: String,
 }
 
 #[derive(Clone)]
@@ -152,7 +152,7 @@ impl Mutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let workspace =
-            db::Workspace::create(workspace.title, workspace.long_description, pool).await?;
+            db::Workspace::create(workspace.title, workspace.description, pool).await?;
         Ok(workspace.into())
     }
 
@@ -167,7 +167,7 @@ impl Mutation {
         let workspace = db::Workspace::update(
             Uuid::parse_str(id.as_str())?,
             workspace.title,
-            workspace.long_description,
+            workspace.description,
             pool,
         )
         .await?;
@@ -188,7 +188,7 @@ impl Mutation {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(folder.workspace.as_str())?;
         let folder =
-            db::Folder::create(folder.title, folder.long_description, workspace, pool).await?;
+            db::Folder::create(folder.title, folder.description, workspace, pool).await?;
         Ok(folder.into())
     }
 
@@ -203,7 +203,7 @@ impl Mutation {
         let folder = db::Folder::update(
             Uuid::parse_str(id.as_str())?,
             folder.title,
-            folder.long_description,
+            folder.description,
             pool,
         )
         .await?;

@@ -1,5 +1,5 @@
 UPDATE folders
 SET title = COALESCE($2, title),
-    long_description = COALESCE($3, long_description)
+    description = COALESCE($3, description)
 WHERE id = $1
-RETURNING id, title, long_description, workspace
+RETURNING id, title, description, workspace

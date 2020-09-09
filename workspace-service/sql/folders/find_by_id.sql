@@ -1,6 +1,6 @@
 SELECT id, 
     title,
-    long_description,
+    description,
     workspace
 FROM folders
 WHERE id = $1

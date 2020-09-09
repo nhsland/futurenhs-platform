@@ -5,20 +5,20 @@ use sqlx::{types::Uuid, PgPool};
 pub struct Workspace {
     pub id: Uuid,
     pub title: String,
-    pub long_description: String,
+    pub description: String,
 }
 
 impl Workspace {
     pub async fn create(
         title: String,
-        long_description: String,
+        description: String,
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = sqlx::query_file_as!(
             Workspace,
             "sql/workspaces/create.sql",
             title,
-            long_description
+            description
         )
         .fetch_one(pool)
         .await?;
@@ -45,7 +45,7 @@ impl Workspace {
     pub async fn update(
         id: Uuid,
         title: String,
-        long_description: String,
+        description: String,
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = sqlx::query_file_as!(
@@ -53,7 +53,7 @@ impl Workspace {
             "sql/workspaces/update.sql",
             id,
             title,
-            long_description
+            description
         )
         .fetch_one(pool)
         .await?;
@@ -74,14 +74,14 @@ impl Workspace {
 pub struct Folder {
     pub id: Uuid,
     pub title: String,
-    pub long_description: String,
+    pub description: String,
     pub workspace: Uuid,
 }
 
 impl Folder {
     pub async fn create(
         title: String,
-        long_description: String,
+        description: String,
         workspace: Uuid,
         pool: &PgPool,
     ) -> Result<Folder> {
@@ -89,7 +89,7 @@ impl Folder {
             Folder,
             "sql/folders/create.sql",
             title,
-            long_description,
+            description,
             workspace
         )
         .fetch_one(pool)
@@ -117,7 +117,7 @@ impl Folder {
     pub async fn update(
         id: Uuid,
         title: String,
-        long_description: String,
+        description: String,
         pool: &PgPool,
     ) -> Result<Folder> {
         let folder = sqlx::query_file_as!(
@@ -125,7 +125,7 @@ impl Folder {
             "sql/folders/update.sql",
             id,
             title,
-            long_description
+            description
         )
         .fetch_one(pool)
         .await?;
