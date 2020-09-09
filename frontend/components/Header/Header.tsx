@@ -12,9 +12,9 @@ const StyledHeader = styled.header`
 `;
 
 const StyledImg = styled.img`
-  ${({ theme }) => `
+  display: block;
   max-height: 40px;
-
+  ${({ theme }) => `
   @media (max-width: ${theme.mqBreakpoints.tablet}) {
       max-height: 32px;
     }
