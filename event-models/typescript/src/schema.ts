@@ -5,7 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type Event = BaseEvent & (LoggedInEvent | LoggedInEventV2 | LoginFailedEvent);
+export type Event = BaseEvent &
+  (LoggedInEvent | LoggedInEventV2 | LoginFailedEvent);
 
 export interface BaseEvent {
   id: string;

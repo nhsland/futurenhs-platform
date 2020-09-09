@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "generate": "node generate.js",
+    "generate": "node generate.js && prettier --write src/schema.ts",
     "test": "jest"
   }
 }
