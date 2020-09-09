@@ -1,0 +1,5 @@
+query GetWorkspaceByID($id: ID!) {
+  workspace(id: $id) {
+    title
+  }
+}
