@@ -1,11 +1,3 @@
-query GetAllWorkspaces {
-  workspaces {
-    id
-    title
-    longDescription
-  }
-}
-
 query GetWorkspaceByID($id: ID!) {
   workspace(id: $id) {
     id
