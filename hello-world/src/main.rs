@@ -3,13 +3,17 @@ use std::env;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
 
-#[tokio::main]
+#[async_std::main]
 async fn main() -> std::io::Result<()> {
     let provider = match env::var("INSTRUMENTATION_KEY") {
         Ok(instrumentation_key) => {
             let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
-            let batch_exporter =
-                BatchSpanProcessor::builder(exporter, tokio::spawn, tokio::time::interval).build();
+            let batch_exporter = BatchSpanProcessor::builder(
+                exporter,
+                async_std::task::spawn,
+                async_std::stream::interval,
+            )
+            .build();
             sdk::Provider::builder()
                 .with_batch_exporter(batch_exporter)
                 .build()
