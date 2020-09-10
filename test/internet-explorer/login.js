@@ -27,6 +27,7 @@ const browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack
 
 const TEST_LOGIN_EMAIL_ADDRESS = env("TEST_LOGIN_EMAIL_ADDRESS");
 const TEST_LOGIN_PASSWORD = env("TEST_LOGIN_PASSWORD");
+const TEST_WORKSPACE_ID = env("TEST_WORKSPACE_ID");
 
 if (!TEST_LOGIN_EMAIL_ADDRESS) {
   console.error("TEST_LOGIN_EMAIL_ADDRESS is not set. Please add it to .env");
@@ -36,6 +37,19 @@ if (!TEST_LOGIN_EMAIL_ADDRESS) {
 if (!TEST_LOGIN_PASSWORD) {
   console.error("TEST_LOGIN_PASSWORD is not set. Please add it to .env");
   process.exit(1);
+}
+
+/**
+ * @param {webdriver.WebDriver} driver
+ * @param {string} filename
+ */
+async function takeScreenshot(driver, filename) {
+  await fs.promises.writeFile(
+    filename,
+    await driver.takeScreenshot(),
+    "base64"
+  );
+  console.log(`Screenshot captured to ${filename}.`);
 }
 
 /**
@@ -84,6 +98,19 @@ describe("Logging in", function () {
     await loginIfNeeded(driver, `${baseUrl}/auth/login`);
     let currentUrl = await driver.getCurrentUrl();
     assert.equal(currentUrl, baseUrl + "/");
+  });
+
+  it("should render a workspace when logged in", async () => {
+    let driver = await driverPromise;
+    await loginIfNeeded(driver, `${baseUrl}/workspaces/${TEST_WORKSPACE_ID}`);
+
+    let currentUrl = await driver.getCurrentUrl();
+    assert.equal(currentUrl, `${baseUrl}/workspaces/${TEST_WORKSPACE_ID}`);
+
+    await takeScreenshot(driver, "workspace-homepage.png");
+
+    let h2 = await driver.findElement(webdriver.By.css("h2"));
+    assert.equal(await h2.getText(), "Most recent items");
   });
 
   after(function () {
