@@ -19,7 +19,7 @@ RUN mkdir -p ./src/ && echo 'fn main() {}' >./src/main.rs && echo '' >./src/lib.
 
 RUN cargo fetch
 
-RUN cargo build --release && rm -rf ./target/release/.fingerprint/workspace_service-*
+RUN cargo build --release --locked && rm -rf ./target/release/.fingerprint/workspace_service-*
 
 # Setup debian release environment
 FROM debian:buster-slim AS release-context
