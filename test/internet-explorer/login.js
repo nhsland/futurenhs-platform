@@ -29,16 +29,6 @@ const TEST_LOGIN_EMAIL_ADDRESS = env("TEST_LOGIN_EMAIL_ADDRESS");
 const TEST_LOGIN_PASSWORD = env("TEST_LOGIN_PASSWORD");
 const TEST_WORKSPACE_ID = env("TEST_WORKSPACE_ID");
 
-if (!TEST_LOGIN_EMAIL_ADDRESS) {
-  console.error("TEST_LOGIN_EMAIL_ADDRESS is not set. Please add it to .env");
-  process.exit(1);
-}
-
-if (!TEST_LOGIN_PASSWORD) {
-  console.error("TEST_LOGIN_PASSWORD is not set. Please add it to .env");
-  process.exit(1);
-}
-
 /**
  * @param {webdriver.WebDriver} driver
  * @param {string} filename
