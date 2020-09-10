@@ -4,10 +4,10 @@
     "module": "commonjs",
     "lib": ["es6"],
     "allowJs": false,
-	"declaration": true,
+    "declaration": true,
     "strict": true,
     "alwaysStrict": true,
-	"rootDir": "src",
+    "rootDir": "src",
     "outDir": "dist",
     "noUnusedLocals": true,
     "noUnusedParameters": true
