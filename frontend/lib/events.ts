@@ -1,19 +1,7 @@
+import { Event } from "@fnhs/event-models";
 import EventGridClient from "azure-eventgrid";
 import { TopicCredentials } from "ms-rest-azure";
 import { v4 as uuid } from "uuid";
-
-// TODO: Generate strongly typed models for the different event types and data versions
-export interface Event {
-  subject: string;
-  eventType:
-    | "frontend.login.attempt"
-    | "frontend.recovery.attempt"
-    | "frontend.settings.attempt";
-  data: {
-    messages?: string[] | null;
-  };
-  dataVersion: "1";
-}
 
 export const sendEvent = async (event: Event) => {
   const fullEvent = {

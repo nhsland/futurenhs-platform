@@ -8,12 +8,16 @@ default: ## Run locally
 
 .PHONY: docker-build
 docker-build: ## Build and tag Docker image
-	DOCKER_BUILDKIT=1 docker build \
-		--progress plain \
-		--tag $(app) \
-		--tag $(image) \
-		--tag $(image):$(tag) \
-		.
+	tar cv \
+		--exclude node_modules \
+		--exclude manifests \
+		Dockerfile \
+		-C .. event-models frontend | \
+		DOCKER_BUILDKIT=1 docker build - \
+			--progress plain \
+			--tag $(app) \
+			--tag $(image) \
+			--tag $(image):$(tag)
 
 .PHONY: docker-run
 docker-run: ## Run Docker image

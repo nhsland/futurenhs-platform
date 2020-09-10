@@ -11,6 +11,15 @@ updates:
     directory: /
     schedule:
       interval: weekly
+  # Event models
+  - package-ecosystem: cargo
+    directory: /event-models/rust/
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /event-models/typescript/
+    schedule:
+      interval: weekly
   # Frontend
   - package-ecosystem: docker
     directory: /frontend/
