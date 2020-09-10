@@ -11,7 +11,7 @@ const fs = require("fs");
  * @returns {string}
  */
 function env(name) {
-  let value = process.env[name];
+  const value = process.env[name];
   if (!value) {
     console.error(`${name} is not set. Please add it to .env`);
     process.exit(1);
@@ -48,7 +48,7 @@ async function takeScreenshot(driver, filename) {
  */
 async function loginIfNeeded(driver, targetUrl) {
   await driver.get(targetUrl);
-  let currentUrl = await driver.getCurrentUrl();
+  const currentUrl = await driver.getCurrentUrl();
   if (currentUrl === targetUrl) {
     return;
   }
@@ -77,29 +77,29 @@ describe("Logging in", function () {
 
     name: "Example Internet Explorer Test",
   };
-  let driverPromise = new webdriver.Builder()
+  const driverPromise = new webdriver.Builder()
     .usingServer(browserstackURL)
     .withCapabilities(capabilities)
     .build();
 
   it("should redirect to / after login", async () => {
-    let driver = await driverPromise;
+    const driver = await driverPromise;
     // `/auth/login` *always* needs to login.
     await loginIfNeeded(driver, `${baseUrl}/auth/login`);
-    let currentUrl = await driver.getCurrentUrl();
+    const currentUrl = await driver.getCurrentUrl();
     assert.equal(currentUrl, baseUrl + "/");
   });
 
   it("should render a workspace when logged in", async () => {
-    let driver = await driverPromise;
+    const driver = await driverPromise;
     await loginIfNeeded(driver, `${baseUrl}/workspaces/${TEST_WORKSPACE_ID}`);
 
-    let currentUrl = await driver.getCurrentUrl();
+    const currentUrl = await driver.getCurrentUrl();
     assert.equal(currentUrl, `${baseUrl}/workspaces/${TEST_WORKSPACE_ID}`);
 
     await takeScreenshot(driver, "workspace-homepage.png");
 
-    let h2 = await driver.findElement(webdriver.By.css("h2"));
+    const h2 = await driver.findElement(webdriver.By.css("h2"));
     assert.equal(await h2.getText(), "Most recent items");
   });
 
