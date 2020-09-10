@@ -4,14 +4,29 @@ require("dotenv").config();
 const webdriver = require("selenium-webdriver");
 const assert = require("assert");
 
-const userName = process.env.BROWSERSTACK_USERNAME;
-const accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
+const fs = require("fs");
 
-const baseUrl = process.env.IE_BASE_URL;
+/**
+ * @param {string} name
+ * @returns {string}
+ */
+function env(name) {
+  let value = process.env[name];
+  if (!value) {
+    console.error(`${name} is not set. Please add it to .env`);
+    process.exit(1);
+  }
+  return value;
+}
+
+const userName = env("BROWSERSTACK_USERNAME");
+const accessKey = env("BROWSERSTACK_ACCESS_KEY");
+
+const baseUrl = env("IE_BASE_URL");
 const browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack.com/wd/hub`;
 
-const TEST_LOGIN_EMAIL_ADDRESS = process.env.TEST_LOGIN_EMAIL_ADDRESS;
-const TEST_LOGIN_PASSWORD = process.env.TEST_LOGIN_PASSWORD;
+const TEST_LOGIN_EMAIL_ADDRESS = env("TEST_LOGIN_EMAIL_ADDRESS");
+const TEST_LOGIN_PASSWORD = env("TEST_LOGIN_PASSWORD");
 
 if (!TEST_LOGIN_EMAIL_ADDRESS) {
   console.error("TEST_LOGIN_EMAIL_ADDRESS is not set. Please add it to .env");
@@ -21,6 +36,28 @@ if (!TEST_LOGIN_EMAIL_ADDRESS) {
 if (!TEST_LOGIN_PASSWORD) {
   console.error("TEST_LOGIN_PASSWORD is not set. Please add it to .env");
   process.exit(1);
+}
+
+/**
+ * @param {webdriver.WebDriver} driver
+ * @param {string} targetUrl
+ */
+async function loginIfNeeded(driver, targetUrl) {
+  await driver.get(targetUrl);
+  let currentUrl = await driver.getCurrentUrl();
+  if (currentUrl === targetUrl) {
+    return;
+  }
+
+  const emailInput = await driver.findElement(webdriver.By.css("#email"));
+  const passwordInput = await driver.findElement(webdriver.By.css("#password"));
+  const signInButton = await driver.findElement(webdriver.By.css("#next"));
+
+  await emailInput.sendKeys(TEST_LOGIN_EMAIL_ADDRESS);
+  await passwordInput.sendKeys(TEST_LOGIN_PASSWORD);
+  await signInButton.click();
+
+  await driver.wait(webdriver.until.urlContains(baseUrl));
 }
 
 describe("Logging in", function () {
@@ -36,23 +73,20 @@ describe("Logging in", function () {
 
     name: "Example Internet Explorer Test",
   };
-  let driver = new webdriver.Builder()
+  let driverPromise = new webdriver.Builder()
     .usingServer(browserstackURL)
     .withCapabilities(capabilities)
     .build();
 
-  it("should render login page", async () => {
-    await driver.get(`${baseUrl}/admin/create-workspace`);
-    const emailInput = await driver.findElement(webdriver.By.css("#email"));
-    const passwordInput = await driver.findElement(webdriver.By.css("#email"));
-    const signInButton = await driver.findElement(webdriver.By.css("#next"));
-
-    await emailInput.sendKeys(TEST_LOGIN_EMAIL_ADDRESS);
-    await passwordInput.sendKeys(TEST_LOGIN_PASSWORD);
-    await signInButton.click();
+  it("should redirect to / after login", async () => {
+    let driver = await driverPromise;
+    // `/auth/login` *always* needs to login.
+    await loginIfNeeded(driver, `${baseUrl}/auth/login`);
+    let currentUrl = await driver.getCurrentUrl();
+    assert.equal(currentUrl, baseUrl + "/");
   });
 
   after(function () {
-    driver.quit();
+    driverPromise.quit();
   });
 });
