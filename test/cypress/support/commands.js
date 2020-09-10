@@ -9,9 +9,6 @@
 // ***********************************************
 
 Cypress.Commands.add("login", (email, password) => {
-  const userFlow = "B2C_1_signin";
-  const baseUrl = `https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/${userFlow}`;
-
   const extract = (re, text) => {
     const result = re.exec(text);
     if (!result || !result.length === 2) {
@@ -24,11 +21,14 @@ Cypress.Commands.add("login", (email, password) => {
   cy.request("/auth/login")
     .its("body")
     .then((body) => {
+      const policy = extract(/"policy":"([a-zA-Z0-9_]+)"/, body);
       const tx = extract(/"transId":"([a-zA-Z0-9+/=]+)"/, body);
       const csrfToken = extract(/"csrf":"([a-zA-Z0-9+/=]+)"/, body);
+      const api = extract(/"api":"([a-zA-Z]+)"/, res.body);
+      const baseUrl = `https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/${policy}`;
 
       const loginUrl = new URL(`${baseUrl}/SelfAsserted`);
-      loginUrl.searchParams.set("p", userFlow);
+      loginUrl.searchParams.set("p", policy);
       loginUrl.searchParams.set("tx", tx);
       cy.request({
         method: "POST",
@@ -45,9 +45,9 @@ Cypress.Commands.add("login", (email, password) => {
       });
 
       const redirectUrl = new URL(
-        `${baseUrl}/api/CombinedSigninAndSignup/confirmed?rememberMe=false`
+        `${baseUrl}/api/${api}/confirmed?rememberMe=false`
       );
-      redirectUrl.searchParams.set("p", userFlow);
+      redirectUrl.searchParams.set("p", policy);
       redirectUrl.searchParams.set("tx", tx);
       redirectUrl.searchParams.set("csrf_token", csrfToken);
       cy.request(redirectUrl.toString());
