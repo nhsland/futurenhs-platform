@@ -5,22 +5,14 @@ use tracing_subscriber::Registry;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    let provider = match env::var("INSTRUMENTATION_KEY") {
-        Ok(instrumentation_key) => {
-            let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
-            let batch_exporter =
-                BatchSpanProcessor::builder(exporter, tokio::spawn, tokio::time::interval).build();
-            sdk::Provider::builder()
-                .with_batch_exporter(batch_exporter)
-                .build()
-        }
-        Err(_) => {
-            let exporter = opentelemetry::exporter::trace::stdout::Builder::default().init();
-            sdk::Provider::builder()
-                .with_simple_exporter(exporter)
-                .build()
-        }
-    };
+    let instrumentation_key =
+        env::var("INSTRUMENTATION_KEY").expect("env var INSTRUMENTATION_KEY should exist");
+    let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
+    let batch_exporter =
+        BatchSpanProcessor::builder(exporter, tokio::spawn, tokio::time::interval).build();
+    let provider = sdk::Provider::builder()
+        .with_batch_exporter(batch_exporter)
+        .build();
 
     let tracer = provider.get_tracer("example-tracing");
     let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
