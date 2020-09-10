@@ -55,7 +55,7 @@ mod tests {
         create_app(connection_pool).await
     }
 
-    #[tokio::test]
+    #[async_std::test]
     async fn root_redirects_to_graphiql() -> anyhow::Result<()> {
         let app = create_app_for_test().await?;
         let req = http_types::Request::new(
@@ -70,7 +70,7 @@ mod tests {
         Ok(())
     }
 
-    #[tokio::test]
+    #[async_std::test]
     async fn graphql_schema_has_query_and_mutation() -> anyhow::Result<()> {
         let app = create_app_for_test().await?;
 
