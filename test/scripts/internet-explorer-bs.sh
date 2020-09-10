@@ -15,4 +15,4 @@ elif [[ "$ENV" == prod ]]; then
 	IE_BASE_URL="https://beta.future.nhs.uk/"
 fi
 
-cd $REPO_ROOT/test && IE_BASE_URL=$IE_BASE_URL yarn mocha ./internet-explorer/internet_explorer_hello_world.js
+cd $REPO_ROOT/test && IE_BASE_URL=$IE_BASE_URL yarn mocha ./internet-explorer/
