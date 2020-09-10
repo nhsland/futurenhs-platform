@@ -19,6 +19,14 @@ docker-build: ## Build and tag Docker image
 		--tag $(image):$(tag) \
 		.
 
+.PHONY: docker-test
+docker-test: ## Run tests in Docker
+	DOCKER_BUILDKIT=1 docker build \
+		--progress plain \
+		--target test \
+		--build-arg TEST_DATABASE_URL=$$TEST_DATABASE_URL \
+		.
+
 .PHONY: docker-run
 docker-run: ## Run Docker image
 	docker run -it -p 3030:3030 $(image)

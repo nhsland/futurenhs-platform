@@ -17,7 +17,7 @@ type Mutation {
 
 input NewWorkspace {
   title: String!
-  longDescription: String!
+  description: String!
 }
 
 type Query {
@@ -32,7 +32,7 @@ type Query {
 
 input UpdateWorkspace {
   title: String!
-  longDescription: String!
+  description: String!
 }
 
 # A workspace
@@ -44,7 +44,7 @@ type Workspace {
   title: String!
 
   # The description of the workspace
-  longDescription: String!
+  description: String!
 }
 
 # The `_Any` scalar is used to pass representations of entities from external services into the root `_entities` field for execution.

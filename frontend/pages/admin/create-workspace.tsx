@@ -24,13 +24,13 @@ export const getServerSideProps: GetServerSideProps = requireAuthentication(
 
 const MAX_CHARS: { [key: string]: number } = {
   title: 100,
-  longDescription: 250,
+  description: 250,
 };
 
 interface Workspace {
   id: string;
   title: string;
-  longDescription: string;
+  description: string;
 }
 
 const PageContent = styled.div`
@@ -65,7 +65,7 @@ const FormField = styled.div`
 const CreateWorkspace = () => {
   const [remainingChars, setRemainingChars] = useState({
     title: null,
-    longDescription: null,
+    description: null,
   });
 
   const { errors, handleSubmit, register } = useForm();
@@ -126,22 +126,22 @@ const CreateWorkspace = () => {
 
             <FormField>
               <Textarea
-                name="longDescription"
+                name="description"
                 onChange={handleCharNumber}
-                id="longDescription"
+                id="description"
                 label="Description"
                 error={
-                  errors.longDescription &&
-                  `Description must be a maximum of ${MAX_CHARS.longDescription} characters`
+                  errors.description &&
+                  `Description must be a maximum of ${MAX_CHARS.description} characters`
                 }
                 hint="This is the description as seen by users. Try to be as descriptive as possible."
                 inputRef={register({
                   required: false,
-                  maxLength: MAX_CHARS.longDescription,
+                  maxLength: MAX_CHARS.description,
                 })}
               />
               {`${
-                remainingChars.longDescription || MAX_CHARS.longDescription
+                remainingChars.description || MAX_CHARS.description
               } characters remaining`}
             </FormField>
             <Button type="submit">Save and complete</Button>

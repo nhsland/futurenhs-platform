@@ -19,7 +19,7 @@ RUN mkdir -p ./src/ && echo 'fn main() {}' >./src/main.rs && echo '' >./src/lib.
 
 RUN cargo fetch
 
-RUN cargo build --release && rm -rf ./target/release/.fingerprint/workspace_service-*
+RUN cargo build --release --locked && rm -rf ./target/release/.fingerprint/workspace_service-*
 
 # Setup debian release environment
 FROM debian:buster-slim AS release-context
@@ -40,7 +40,15 @@ COPY sql ./sql
 COPY sqlx-data.json .
 COPY ./migrations ./migrations
 
-RUN cargo clippy --release -- -D warnings && cargo test --release && cargo build --release
+RUN cargo clippy --release -- -D warnings && cargo build --release
+
+# This target is skipped in the normal `docker build` flow because it requires the database
+# Use `docker build --target test` to run it
+FROM build AS test
+ARG TEST_DATABASE_URL=postgres://postgres:postgres@172.17.0.1:5432
+ENV TEST_DATABASE_URL=$TEST_DATABASE_URL
+
+RUN cargo test --release
 
 # Create the release
 FROM release-context AS release
