@@ -1,4 +1,8 @@
 use crate::Event;
+use opentelemetry::{
+    api::{Context, FutureExt, KeyValue, SpanKind, TraceContextExt, Tracer},
+    global as otel,
+};
 
 #[derive(Debug, Clone)]
 pub struct Client {
@@ -21,10 +25,32 @@ impl Client {
     ///
     /// See also: https://docs.microsoft.com/en-us/rest/api/eventgrid/dataplane/publishevents/publishevents
     pub async fn publish_events(&self, events: &[Event]) -> Result<(), PublishEventsError> {
+        let tracer = otel::tracer("fnhs_event_models");
+        let span = tracer
+            .span_builder("POST /api/events")
+            .with_kind(SpanKind::Client)
+            .with_attributes(vec![
+                KeyValue::new("http.method", "POST"),
+                KeyValue::new("http.url", self.url.as_str()),
+            ])
+            .start(&tracer);
+        let cx = Context::current_with_span(span);
+
         let res = surf::post(&self.url)
             .set_header("aeg-sas-key", &self.key)
             .body_json(&events)?
+            .with_context(cx.clone())
             .await?;
+
+        cx.span().set_attribute(KeyValue::new(
+            "http.status_code",
+            i64::from(res.status().as_u16()),
+        ));
+        if let Some(status_text) = res.status().canonical_reason() {
+            cx.span()
+                .set_attribute(KeyValue::new("http.status_text", status_text));
+        }
+
         if res.status() == 200 {
             Ok(())
         } else {
