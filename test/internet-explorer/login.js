@@ -42,13 +42,14 @@ describe("Logging in", function () {
     .build();
 
   it("should render login page", async () => {
-    await driver.get(`${baseUrl}/auth/login`);
-    console.log(await driver.takeScreenshot());
+    await driver.get(`${baseUrl}/admin/create-workspace`);
     const emailInput = await driver.findElement(webdriver.By.css("#email"));
     const passwordInput = await driver.findElement(webdriver.By.css("#email"));
+    const signInButton = await driver.findElement(webdriver.By.css("#next"));
 
-    emailInput.sendKeys(TEST_LOGIN_EMAIL_ADDRESS);
-    passwordInput.sendKeys(TEST_LOGIN_PASSWORD);
+    await emailInput.sendKeys(TEST_LOGIN_EMAIL_ADDRESS);
+    await passwordInput.sendKeys(TEST_LOGIN_PASSWORD);
+    await signInButton.click();
   });
 
   after(function () {
