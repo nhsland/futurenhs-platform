@@ -24,7 +24,7 @@ Cypress.Commands.add("login", (email, password) => {
       const policy = extract(/"policy":"([a-zA-Z0-9_]+)"/, body);
       const tx = extract(/"transId":"([a-zA-Z0-9+/=]+)"/, body);
       const csrfToken = extract(/"csrf":"([a-zA-Z0-9+/=]+)"/, body);
-      const api = extract(/"api":"([a-zA-Z]+)"/, res.body);
+      const api = extract(/"api":"([a-zA-Z]+)"/, body);
       const baseUrl = `https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/${policy}`;
 
       const loginUrl = new URL(`${baseUrl}/SelfAsserted`);
