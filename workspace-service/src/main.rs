@@ -34,12 +34,19 @@ async fn main() -> Result<()> {
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL env var not found");
-
     let connection_pool = PgPool::connect(&database_url).await?;
-
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
 
-    let app = workspace_service::create_app(connection_pool).await?;
+    let event_client = if let (Ok(eventgrid_topic_endpoint), Ok(eventgrid_topic_key)) = (
+        env::var("EVENTGRID_TOPIC_ENDPOINT"),
+        env::var("EVENTGRID_TOPIC_KEY"),
+    ) {
+        fnhs_event_models::BoxedClient::new(eventgrid_topic_endpoint, eventgrid_topic_key)
+    } else {
+        fnhs_event_models::BoxedClient::noop()
+    };
+
+    let app = workspace_service::create_app(connection_pool, event_client).await?;
     app.listen("0.0.0.0:3030").await?;
 
     Ok(())

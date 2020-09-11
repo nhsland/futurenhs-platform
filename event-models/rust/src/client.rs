@@ -3,59 +3,117 @@ use opentelemetry::{
     api::{Context, FutureExt, KeyValue, SpanKind, TraceContextExt, Tracer},
     global as otel,
 };
+use std::future::Future;
+use std::pin::Pin;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
-pub struct Client {
+pub struct BoxedClient {
+    client: Arc<dyn Client + Send + Sync>,
+    is_valid: bool,
+}
+
+impl BoxedClient {
+    pub fn new(topic_endpoint: String, topic_key: String) -> Self {
+        BoxedClient {
+            client: Arc::new(DefaultClient {
+                url: format!(
+                    "https://{}/api/events?api-version=2018-01-01",
+                    topic_endpoint
+                ),
+                key: topic_key,
+            }),
+            is_valid: true,
+        }
+    }
+
+    pub fn noop() -> Self {
+        BoxedClient {
+            client: Arc::new(NoopClient {}),
+            is_valid: false,
+        }
+    }
+
+    pub fn is_valid(&self) -> bool {
+        self.is_valid
+    }
+}
+
+impl Client for BoxedClient {
+    fn publish_events<'a>(
+        &'a self,
+        events: &'a [Event],
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
+        self.client.publish_events(events)
+    }
+}
+
+pub trait Client: std::fmt::Debug {
+    fn publish_events<'a>(
+        &'a self,
+        events: &'a [Event],
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>>;
+}
+
+#[derive(Debug)]
+struct DefaultClient {
     url: String,
     key: String,
 }
 
-impl Client {
-    pub fn new(topic_endpoint: String, topic_key: String) -> Self {
-        Self {
-            url: format!(
-                "https://{}/api/events?api-version=2018-01-01",
-                topic_endpoint
-            ),
-            key: topic_key,
-        }
-    }
-
+impl Client for DefaultClient {
     /// Publish events to Azure EventGrid.
     ///
     /// See also: https://docs.microsoft.com/en-us/rest/api/eventgrid/dataplane/publishevents/publishevents
-    pub async fn publish_events(&self, events: &[Event]) -> Result<(), PublishEventsError> {
-        let tracer = otel::tracer("fnhs_event_models");
-        let span = tracer
-            .span_builder("POST /api/events")
-            .with_kind(SpanKind::Client)
-            .with_attributes(vec![
-                KeyValue::new("http.method", "POST"),
-                KeyValue::new("http.url", self.url.as_str()),
-            ])
-            .start(&tracer);
-        let cx = Context::current_with_span(span);
+    fn publish_events<'a>(
+        &'a self,
+        events: &'a [Event],
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
+        Box::pin(async move {
+            let tracer = otel::tracer("fnhs_event_models");
+            let span = tracer
+                .span_builder("POST /api/events")
+                .with_kind(SpanKind::Client)
+                .with_attributes(vec![
+                    KeyValue::new("http.method", "POST"),
+                    KeyValue::new("http.url", self.url.as_str()),
+                ])
+                .start(&tracer);
+            let cx = Context::current_with_span(span);
 
-        let res = surf::post(&self.url)
-            .set_header("aeg-sas-key", &self.key)
-            .body_json(&events)?
-            .with_context(cx.clone())
-            .await?;
+            let res = surf::post(&self.url)
+                .set_header("aeg-sas-key", &self.key)
+                .body_json(&events)?
+                .with_context(cx.clone())
+                .await?;
 
-        cx.span().set_attribute(KeyValue::new(
-            "http.status_code",
-            i64::from(res.status().as_u16()),
-        ));
-        if let Some(status_text) = res.status().canonical_reason() {
-            cx.span()
-                .set_attribute(KeyValue::new("http.status_text", status_text));
-        }
+            cx.span().set_attribute(KeyValue::new(
+                "http.status_code",
+                i64::from(res.status().as_u16()),
+            ));
+            if let Some(status_text) = res.status().canonical_reason() {
+                cx.span()
+                    .set_attribute(KeyValue::new("http.status_text", status_text));
+            }
 
-        if res.status() == 200 {
-            Ok(())
-        } else {
-            Err(PublishEventsError::Server(res.status().as_u16()))
-        }
+            if res.status() == 200 {
+                Ok(())
+            } else {
+                Err(PublishEventsError::Server(res.status().as_u16()))
+            }
+        })
+    }
+}
+
+#[derive(Debug)]
+pub struct NoopClient {}
+
+impl Client for NoopClient {
+    fn publish_events<'a>(
+        &'a self,
+        _events: &'a [Event],
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
+        Box::pin(async move { Ok(()) })
     }
 }
 

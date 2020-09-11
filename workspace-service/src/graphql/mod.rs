@@ -12,14 +12,16 @@ use tide::{http::mime, Request, Response, StatusCode};
 #[derive(Clone)]
 pub struct State {
     schema: Schema<Query, Mutation, EmptySubscription>,
+    event_client: fnhs_event_models::BoxedClient,
 }
 
 impl State {
-    pub fn new(pool: PgPool) -> State {
+    pub fn new(pool: PgPool, event_client: fnhs_event_models::BoxedClient) -> State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
                 .finish(),
+            event_client,
         }
     }
 }
@@ -29,6 +31,16 @@ struct Query(folders::FoldersQuery, workspaces::WorkspacesQuery);
 
 #[derive(GQLMergedObject, Default)]
 struct Mutation(folders::FoldersMutation, workspaces::WorkspacesMutation);
+
+pub async fn handle_healthz(req: Request<State>) -> tide::Result {
+    let response = if !req.state().event_client.is_valid() {
+        Response::builder(500).body("invalid event client").build()
+    } else {
+        Response::new(204)
+    };
+
+    Ok(response)
+}
 
 pub async fn handle_graphql(req: Request<State>) -> tide::Result {
     let schema = req.state().schema.clone();
