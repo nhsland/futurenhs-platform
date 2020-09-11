@@ -20,6 +20,7 @@ impl State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
+                .data(event_client.clone())
                 .finish(),
             event_client,
         }

@@ -71,6 +71,7 @@ impl WorkspacesMutation {
         context: &Context<'_>,
         workspace: NewWorkspace,
     ) -> FieldResult<Workspace> {
+        // TODO: Add event
         let pool = context.data()?;
         let workspace = db::Workspace::create(workspace.title, workspace.description, pool).await?;
         Ok(workspace.into())
@@ -83,6 +84,7 @@ impl WorkspacesMutation {
         id: ID,
         workspace: UpdateWorkspace,
     ) -> FieldResult<Workspace> {
+        // TODO: Add event
         let pool = context.data()?;
         let workspace = db::Workspace::update(
             Uuid::parse_str(id.as_str())?,
@@ -97,6 +99,7 @@ impl WorkspacesMutation {
 
     #[field(desc = "Delete workspace(returns deleted workspace")]
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
+        // TODO: Add event
         let pool = context.data()?;
         let workspace = db::Workspace::delete(Uuid::parse_str(id.as_str())?, pool).await?;
 

@@ -11,7 +11,7 @@ pub trait Client: std::fmt::Debug {
     fn publish_events<'a>(
         &'a self,
         events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>>;
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>>;
 }
 
 #[derive(Debug, Clone)]
@@ -50,7 +50,7 @@ impl Client for BoxedClient {
     fn publish_events<'a>(
         &'a self,
         events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
         self.client.publish_events(events)
     }
 }
@@ -68,7 +68,7 @@ impl Client for DefaultClient {
     fn publish_events<'a>(
         &'a self,
         events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
         Box::pin(async move {
             let tracer = otel::tracer("fnhs_event_models");
             let span = tracer
@@ -112,7 +112,7 @@ impl Client for NoopClient {
     fn publish_events<'a>(
         &'a self,
         _events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
         Box::pin(async move { Ok(()) })
     }
 }

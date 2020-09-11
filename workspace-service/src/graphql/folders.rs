@@ -76,6 +76,7 @@ pub struct FoldersMutation;
 impl FoldersMutation {
     #[field(desc = "Create a new folder (returns the created folder)")]
     async fn create_folder(&self, context: &Context<'_>, folder: NewFolder) -> FieldResult<Folder> {
+        // TODO: Add event
         let pool = context.data()?;
         let workspace = Uuid::parse_str(folder.workspace.as_str())?;
         let folder = db::Folder::create(folder.title, folder.description, workspace, pool).await?;
@@ -89,6 +90,7 @@ impl FoldersMutation {
         id: ID,
         folder: UpdateFolder,
     ) -> FieldResult<Folder> {
+        // TODO: Add event
         let pool = context.data()?;
         let folder = db::Folder::update(
             Uuid::parse_str(id.as_str())?,
@@ -103,6 +105,7 @@ impl FoldersMutation {
 
     #[field(desc = "Delete folder (returns deleted folder")]
     async fn delete_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
+        // TODO: Add event
         let pool = context.data()?;
         let folder = db::Folder::delete(Uuid::parse_str(id.as_str())?, pool).await?;
 
