@@ -13,7 +13,7 @@ USAGE: $(basename $0) dev-\$FNHSNAME WORKSPACE_TITLE FOLDER_TITLE [FOLDER_DESCRI
 ENVIRONMENT="${1:?"${USAGE}Please specify your environment name as the first parameter, e.g. dev-jane"}"
 WORKSPACE_TITLE=${2:?"${USAGE}Please give workspace title as second parameter."}
 FOLDER_TITLE=${3:?"${USAGE}Please give folder title as third parameter."}
-FOLDER_DESCRIPTION=${4:-"Test folder for $FOLDER_TITLE"}
+FOLDER_DESCRIPTION=${4:-"Test folder with title $FOLDER_TITLE"}
 
 CURRENT_CONTEXT=$(kubectl config current-context)
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
