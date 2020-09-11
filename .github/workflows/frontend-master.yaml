@@ -23,31 +23,27 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: "Build & Push image"
+        working-directory: futurenhs-platform/frontend
         run: |
-          cd $GITHUB_WORKSPACE/futurenhs-platform/frontend
           TAG="$(git rev-parse --short=7 ${{ github.sha }})"
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/frontend:${TAG}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/frontend:${TAG}
+          make docker-build tag=${TAG}
+          make docker-push tag=${TAG}
           DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' ${{ secrets.REGISTRY_LOGIN_SERVER }}/frontend:${TAG})"
           echo ::set-env name=TAG::$TAG
           echo ::set-env name=DIGEST::$DIGEST
-
       - name: Clone Deployments repo
         uses: actions/checkout@v2
         with:
           repository: FutureNHS/futurenhs-deployments
           path: futurenhs-deployments
           ssh-key: ${{ secrets.DEPLOY_KEY }}
-
       - name: Copy manifests
         run: |
           set -eux
           $GITHUB_WORKSPACE/futurenhs-platform/infrastructure/scripts/create-dev-overlays.py
           mkdir -p $GITHUB_WORKSPACE/futurenhs-deployments/frontend
           cp -r $GITHUB_WORKSPACE/futurenhs-platform/frontend/manifests/* $GITHUB_WORKSPACE/futurenhs-deployments/frontend
-
       - name: Update image tag and deploy
-
         run: |
           set -eux
 

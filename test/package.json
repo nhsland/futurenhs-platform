@@ -12,6 +12,9 @@
     "local": "./scripts/local-bs-connect.sh"
   },
   "dependencies": {
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^8.0.3",
+    "@types/selenium-webdriver": "^4.0.9",
     "browserstack": "^1.6.0",
     "browserstack-cypress-cli": "^1.2.0",
     "browserstack-local": "^1.4.7",

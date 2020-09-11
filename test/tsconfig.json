@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "lib": ["es6"],
+    "types": ["mocha", "node"]
+  }
+}
