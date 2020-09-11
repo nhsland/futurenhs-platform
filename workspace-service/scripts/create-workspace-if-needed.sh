@@ -9,7 +9,8 @@ USAGE="
 USAGE: $(basename $0) dev-\$FNHSNAME WORKSPACE_TITLE [WORKSPACE_DESCRIPTION]
 
 "
-ENVIRONMENT="${1:?"Please specify your environment name as the first parameter, e.g. dev-jane"}"
+
+ENVIRONMENT="${1:?"${USAGE}Please specify your environment name as the first parameter, e.g. dev-jane"}"
 WORKSPACE_TITLE=${2:?"${USAGE}Please give workspace title as second parameter."}
 WORKSPACE_DESCRIPTION=${3:-"Test workspace with title $WORKSPACE_TITLE"}
 
