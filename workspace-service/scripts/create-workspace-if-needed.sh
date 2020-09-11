@@ -6,11 +6,26 @@ cd $(dirname $0)
 
 USAGE="
 
-USAGE: $(basename $0) WORKSPACE_TITLE [WORKSPACE_DESCRIPTION]
+USAGE: $(basename $0) dev-\$FNHSNAME WORKSPACE_TITLE [WORKSPACE_DESCRIPTION]
 
 "
-WORKSPACE_TITLE=${1:?"${USAGE}Please give workspace title as first argument."}
-WORKSPACE_DESCRIPTION=${2:-"Test workspace for $WORKSPACE_TITLE"}
+ENVIRONMENT="${1:?"Please specify your environment name as the first parameter, e.g. dev-jane"}"
+WORKSPACE_TITLE=${2:?"${USAGE}Please give workspace title as second parameter."}
+WORKSPACE_DESCRIPTION=${3:-"Test workspace for $WORKSPACE_TITLE"}
+
+CURRENT_CONTEXT=$(kubectl config current-context)
+if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
+	echo "You want to populate:    $ENVIRONMENT"
+	echo "Your current content is: $CURRENT_CONTEXT"
+	echo "Please change your current context using:"
+	echo "    kubectl config use-context $ENVIRONMENT"
+	echo "or"
+	echo "    az account set --subscription \$SUBSCRIPTION_ID && az aks get-credentials --resource-group=platform-$ENVIRONMENT --name=$ENVIRONMENT"
+	echo "to chance context. Once that is done, please run:"
+	echo "    kubefwd services -n workspace-service"
+	echo "in another tab and try again."
+	exit 1
+fi
 
 existing_workspaces=$(
 	curl -XPOST \

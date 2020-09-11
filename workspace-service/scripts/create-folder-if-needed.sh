@@ -6,15 +6,29 @@ cd $(dirname $0)
 
 USAGE="
 
-USAGE: $(basename $0) WORKSPACE_TITLE FOLDER_TITLE [FOLDER_DESCRIPTION]
+USAGE: $(basename $0) dev-\$FNHSNAME WORKSPACE_TITLE FOLDER_TITLE [FOLDER_DESCRIPTION]
 
 "
 
-WORKSPACE_TITLE=${1:?"${USAGE}Please give workspace title as first argument."}
-FOLDER_TITLE=${2:?"${USAGE}Please give folder title as second argument."}
-FOLDER_DESCRIPTION=${2:-"Test folder for $FOLDER_TITLE"}
+ENVIRONMENT="${1:?"${USAGE}Please specify your environment name as the first parameter, e.g. dev-jane"}"
+WORKSPACE_TITLE=${2:?"${USAGE}Please give workspace title as second parameter."}
+FOLDER_TITLE=${3:?"${USAGE}Please give folder title as third parameter."}
+FOLDER_DESCRIPTION=${4:-"Test folder for $FOLDER_TITLE"}
 
-workspace=$(./create-workspace-if-needed.sh "$WORKSPACE_TITLE")
+CURRENT_CONTEXT=$(kubectl config current-context)
+if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
+	echo "You want to populate:    $ENVIRONMENT"
+	echo "Your current content is: $CURRENT_CONTEXT"
+	echo "Please change your current context using:"
+	echo "    kubectl config use-context $ENVIRONMENT"
+	echo "or"
+	echo "    az account set --subscription \$SUBSCRIPTION_ID && az aks get-credentials --resource-group=platform-$ENVIRONMENT --name=$ENVIRONMENT"
+	echo "to chance context. Once that is done, please run:"
+	echo "    kubefwd services -n workspace-service"
+	echo "in another tab and try again."
+	exit 1
+fi
+workspace=$(./create-workspace-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE")
 
 if [ $workspace = "" ]; then
 	echo "Something went wrong finding/creating your workspace"
