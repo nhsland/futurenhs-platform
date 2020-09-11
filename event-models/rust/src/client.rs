@@ -1,11 +1,9 @@
 use crate::Event;
-use opentelemetry::{
-    api::{Context, FutureExt, KeyValue, SpanKind, TraceContextExt, Tracer},
-    global as otel,
-};
 use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
+use tracing::info_span;
+use tracing_futures::Instrument as _;
 
 pub trait Client: std::fmt::Debug {
     fn publish_events<'a>(
@@ -70,30 +68,24 @@ impl Client for DefaultClient {
         events: &'a [Event],
     ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
         Box::pin(async move {
-            let tracer = otel::tracer("fnhs_event_models");
-            let span = tracer
-                .span_builder("POST /api/events")
-                .with_kind(SpanKind::Client)
-                .with_attributes(vec![
-                    KeyValue::new("http.method", "POST"),
-                    KeyValue::new("http.url", self.url.as_str()),
-                ])
-                .start(&tracer);
-            let cx = Context::current_with_span(span);
+            let span = info_span!(
+                "POST /api/events",
+                otel.kind = "client",
+                http.method = "GET",
+                http.url = self.url.as_str(),
+                http.status_code = tracing::field::Empty,
+                http.status_text = tracing::field::Empty
+            );
 
             let res = surf::post(&self.url)
                 .set_header("aeg-sas-key", &self.key)
                 .body_json(&events)?
-                .with_context(cx.clone())
+                .instrument(span.clone())
                 .await?;
 
-            cx.span().set_attribute(KeyValue::new(
-                "http.status_code",
-                i64::from(res.status().as_u16()),
-            ));
+            span.record("http.status_code", &res.status().as_u16());
             if let Some(status_text) = res.status().canonical_reason() {
-                cx.span()
-                    .set_attribute(KeyValue::new("http.status_text", status_text));
+                span.record("http.status_text", &status_text);
             }
 
             if res.status() == 200 {

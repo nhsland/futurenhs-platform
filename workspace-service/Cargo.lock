@@ -936,11 +936,12 @@ name = "fnhs-event-models"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "opentelemetry",
  "schemafy",
  "serde",
  "serde_json",
  "surf",
+ "tracing",
+ "tracing-futures",
  "uuid",
 ]
 
