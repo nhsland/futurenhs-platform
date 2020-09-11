@@ -40,11 +40,11 @@ body=$(
 		--null-input \
 		--arg workspace "$workspace" \
 		'{
-      "query": "query FoldersByWorkspace($workspace: ID!) { foldersByWorkspace(workspace: $workspace) { title, id } }",
-      "variables": {
-        "workspace": $workspace,
-      }
-    }'
+		"query": "query FoldersByWorkspace($workspace: ID!) { foldersByWorkspace(workspace: $workspace) { title, id } }",
+		"variables": {
+			"workspace": $workspace,
+		}
+	}'
 )
 existing_folders=$(
 	curl \
@@ -77,11 +77,11 @@ body=$(
 		'{
 			"query": "mutation CreateFolder($workspace: ID!, $title: String!, $description: String!) { createFolder(folder: { workspace: $workspace, title: $title,  description: $description }) { id } }",
 			"variables": {
-                "workspace": $workspace,
-                "title": $title,
-                "description": $description
-            }
-        }'
+				"workspace": $workspace,
+				"title": $title,
+				"description": $description
+			}
+		}'
 )
 response=$(
 	curl \
