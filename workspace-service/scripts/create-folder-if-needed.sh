@@ -30,7 +30,7 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 fi
 workspace=$(./create-workspace-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE")
 
-if [ $workspace = "" ]; then
+if [ $workspace = "null" ]; then
 	echo "Something went wrong finding/creating your workspace"
 	exit 1
 fi
@@ -60,7 +60,7 @@ found=$(
 			--arg title "$FOLDER_TITLE" \
 			'.data.foldersByWorkspace | map(select(.title == $title))[0].id'
 )
-if [ "$found" != "" ] && [ "$found" != "null" ]; then
+if [ "$found" != "null" ]; then
 	echo $found
 	exit 0
 fi

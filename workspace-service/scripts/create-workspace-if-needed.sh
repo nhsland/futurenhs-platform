@@ -40,7 +40,7 @@ found=$(
 			--arg title "$WORKSPACE_TITLE" \
 			'.data.workspaces | map(select(.title == $title))[0].id'
 )
-if [ -n "$found" ]; then
+if [ "$found" != "null" ]; then
 	echo $found
 	exit 0
 fi
