@@ -21,7 +21,7 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "    kubectl config use-context $ENVIRONMENT"
 	echo "or"
 	echo "    az account set --subscription \$SUBSCRIPTION_ID && az aks get-credentials --resource-group=platform-$ENVIRONMENT --name=$ENVIRONMENT"
-	echo "to chance context. Once that is done, please run:"
+	echo "Once that is done, please run:"
 	echo "    kubefwd services -n workspace-service"
 	echo "in another tab and try again."
 	exit 1
