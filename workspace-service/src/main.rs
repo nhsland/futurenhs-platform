@@ -1,10 +1,11 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use dotenv::dotenv;
 use opentelemetry::{api::Provider, sdk, sdk::BatchSpanProcessor};
 use sqlx::PgPool;
 use std::env;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
+use url::Url;
 
 #[async_std::main]
 async fn main() -> Result<()> {
@@ -37,11 +38,15 @@ async fn main() -> Result<()> {
     let connection_pool = PgPool::connect(&database_url).await?;
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
 
-    let event_client = if let (Ok(eventgrid_topic_endpoint), Ok(eventgrid_topic_key)) = (
+    let event_client = if let (Ok(topic_endpoint), Ok(topic_key)) = (
         env::var("EVENTGRID_TOPIC_ENDPOINT"),
         env::var("EVENTGRID_TOPIC_KEY"),
     ) {
-        fnhs_event_models::BoxedClient::new(eventgrid_topic_endpoint, eventgrid_topic_key)
+        let topic_hostname = Url::parse(&topic_endpoint)?
+            .host_str()
+            .ok_or_else(|| anyhow!("EVENTGRID_TOPIC_ENDPOINT does not contain host name"))?
+            .to_owned();
+        fnhs_event_models::BoxedClient::new(topic_hostname, topic_key)
     } else {
         fnhs_event_models::BoxedClient::noop()
     };

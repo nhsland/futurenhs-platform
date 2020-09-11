@@ -21,12 +21,12 @@ pub struct BoxedClient {
 }
 
 impl BoxedClient {
-    pub fn new(topic_endpoint: String, topic_key: String) -> Self {
+    pub fn new(topic_hostname: String, topic_key: String) -> Self {
         BoxedClient {
             client: Arc::new(DefaultClient {
                 url: format!(
                     "https://{}/api/events?api-version=2018-01-01",
-                    topic_endpoint
+                    topic_hostname
                 ),
                 key: topic_key,
             }),
