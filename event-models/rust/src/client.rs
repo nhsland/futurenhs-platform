@@ -7,6 +7,13 @@ use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
 
+pub trait Client: std::fmt::Debug {
+    fn publish_events<'a>(
+        &'a self,
+        events: &'a [Event],
+    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>>;
+}
+
 #[derive(Debug, Clone)]
 pub struct BoxedClient {
     client: Arc<dyn Client + Send + Sync>,
@@ -46,13 +53,6 @@ impl Client for BoxedClient {
     ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>> {
         self.client.publish_events(events)
     }
-}
-
-pub trait Client: std::fmt::Debug {
-    fn publish_events<'a>(
-        &'a self,
-        events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + 'a>>;
 }
 
 #[derive(Debug)]
@@ -106,7 +106,7 @@ impl Client for DefaultClient {
 }
 
 #[derive(Debug)]
-pub struct NoopClient {}
+struct NoopClient {}
 
 impl Client for NoopClient {
     fn publish_events<'a>(
