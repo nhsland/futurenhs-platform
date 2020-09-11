@@ -28,7 +28,10 @@ if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 fi
 
 existing_workspaces=$(
-	curl -XPOST \
+	curl \
+		--silent \
+		--show-error \
+		-XPOST \
 		http://workspace-service.workspace-service/graphql \
 		-H 'Content-Type: application/json' \
 		-d '{"query": "{workspaces { title, id }}"}'
@@ -59,7 +62,10 @@ body=$(
 		}'
 )
 response=$(
-	curl -XPOST \
+	curl \
+		--silent \
+		--show-error \
+		-XPOST \
 		http://workspace-service.workspace-service/graphql \
 		-H 'Content-Type: application/json' \
 		-d "$body"

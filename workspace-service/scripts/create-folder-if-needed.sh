@@ -47,7 +47,10 @@ body=$(
     }'
 )
 existing_folders=$(
-	curl -XPOST \
+	curl \
+		--silent \
+		--show-error \
+		-XPOST \
 		http://workspace-service.workspace-service/graphql \
 		-H 'Content-Type: application/json' \
 		-d "$body"
@@ -81,7 +84,10 @@ body=$(
         }'
 )
 response=$(
-	curl -XPOST \
+	curl \
+		--silent \
+		--show-error \
+		-XPOST \
 		http://workspace-service.workspace-service/graphql \
 		-H 'Content-Type: application/json' \
 		-d "$body"
