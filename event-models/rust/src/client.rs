@@ -1,15 +1,12 @@
 use crate::Event;
-use std::future::Future;
-use std::pin::Pin;
+use async_trait::async_trait;
 use std::sync::Arc;
 use tracing::info_span;
 use tracing_futures::Instrument as _;
 
+#[async_trait]
 pub trait EventPublisher: std::fmt::Debug {
-    fn publish_events<'a>(
-        &'a self,
-        events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>>;
+    async fn publish_events<'a>(&'a self, events: &'a [Event]) -> Result<(), PublishEventsError>;
 }
 
 #[derive(Debug, Clone)]
@@ -46,12 +43,10 @@ impl Default for EventClient {
     }
 }
 
+#[async_trait]
 impl EventPublisher for EventClient {
-    fn publish_events<'a>(
-        &'a self,
-        events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
-        self.publisher.publish_events(events)
+    async fn publish_events<'a>(&'a self, events: &'a [Event]) -> Result<(), PublishEventsError> {
+        self.publisher.publish_events(events).await
     }
 }
 
@@ -61,53 +56,47 @@ struct EventGridPublisher {
     key: String,
 }
 
+#[async_trait]
 impl EventPublisher for EventGridPublisher {
     /// Publish events to Azure EventGrid.
     ///
     /// See also: https://docs.microsoft.com/en-us/rest/api/eventgrid/dataplane/publishevents/publishevents
-    fn publish_events<'a>(
-        &'a self,
-        events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
-        Box::pin(async move {
-            let span = info_span!(
-                "POST /api/events",
-                otel.kind = "client",
-                http.method = "GET",
-                http.url = self.url.as_str(),
-                http.status_code = tracing::field::Empty,
-                http.status_text = tracing::field::Empty
-            );
+    async fn publish_events<'a>(&'a self, events: &'a [Event]) -> Result<(), PublishEventsError> {
+        let span = info_span!(
+            "POST /api/events",
+            otel.kind = "client",
+            http.method = "GET",
+            http.url = self.url.as_str(),
+            http.status_code = tracing::field::Empty,
+            http.status_text = tracing::field::Empty
+        );
 
-            let res = surf::post(&self.url)
-                .set_header("aeg-sas-key", &self.key)
-                .body_json(&events)?
-                .instrument(span.clone())
-                .await?;
+        let res = surf::post(&self.url)
+            .set_header("aeg-sas-key", &self.key)
+            .body_json(&events)?
+            .instrument(span.clone())
+            .await?;
 
-            span.record("http.status_code", &res.status().as_u16());
-            if let Some(status_text) = res.status().canonical_reason() {
-                span.record("http.status_text", &status_text);
-            }
+        span.record("http.status_code", &res.status().as_u16());
+        if let Some(status_text) = res.status().canonical_reason() {
+            span.record("http.status_text", &status_text);
+        }
 
-            if res.status() == 200 {
-                Ok(())
-            } else {
-                Err(PublishEventsError::Server(res.status().as_u16()))
-            }
-        })
+        if res.status() == 200 {
+            Ok(())
+        } else {
+            Err(PublishEventsError::Server(res.status().as_u16()))
+        }
     }
 }
 
 #[derive(Debug)]
 struct NoopPublisher {}
 
+#[async_trait]
 impl EventPublisher for NoopPublisher {
-    fn publish_events<'a>(
-        &'a self,
-        _events: &'a [Event],
-    ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
-        Box::pin(async move { Ok(()) })
+    async fn publish_events<'a>(&'a self, _events: &'a [Event]) -> Result<(), PublishEventsError> {
+        Ok(())
     }
 }
 
