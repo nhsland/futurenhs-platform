@@ -1,3 +1,4 @@
+use fnhs_event_models::EventClient;
 use sqlx::PgPool;
 use std::future::Future;
 use std::pin::Pin;
@@ -30,7 +31,7 @@ pub fn log<'a>(
 
 pub async fn create_app(
     connection_pool: PgPool,
-    event_client: fnhs_event_models::EventClient,
+    event_client: EventClient,
 ) -> anyhow::Result<Server<graphql::State>> {
     let mut app = tide::with_state(graphql::State::new(connection_pool, event_client));
 
@@ -55,7 +56,7 @@ mod tests {
             env::var("TEST_DATABASE_URL").expect("TEST_DATABASE_URL env var not found");
         let connection_pool = PgPool::connect(&database_url).await?;
 
-        create_app(connection_pool, fnhs_event_models::EventClient::noop()).await
+        create_app(connection_pool, EventClient::default()).await
     }
 
     #[async_std::test]

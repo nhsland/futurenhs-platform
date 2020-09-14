@@ -6,17 +6,18 @@ use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
     EmptySubscription, GQLMergedObject, Schema,
 };
+use fnhs_event_models::EventClient;
 use sqlx::PgPool;
 use tide::{http::mime, Request, Response, StatusCode};
 
 #[derive(Clone)]
 pub struct State {
     schema: Schema<Query, Mutation, EmptySubscription>,
-    event_client: fnhs_event_models::EventClient,
+    event_client: EventClient,
 }
 
 impl State {
-    pub fn new(pool: PgPool, event_client: fnhs_event_models::EventClient) -> State {
+    pub fn new(pool: PgPool, event_client: EventClient) -> State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
