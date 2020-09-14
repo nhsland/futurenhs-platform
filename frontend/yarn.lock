@@ -53,16 +53,6 @@
   dependencies:
     cross-fetch "3.0.5"
 
-"@apollo/federation@^0.19.1":
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/@apollo/federation/-/federation-0.19.1.tgz#4d4f227a2da1efb42f6569114fb0aae7b03af505"
-  integrity sha512-32l2XoyDZfqwCObm2iazwa2vlsEYHzBLwsoCJccd6pdW8PAoK+IoKWJqNrMTwVYYNvRvd6YI+VtZPGo460GqDA==
-  dependencies:
-    apollo-graphql "^0.5.0"
-    apollo-server-env "^2.4.5"
-    core-js "^3.4.0"
-    lodash.xorby "^4.7.0"
-
 "@apollo/federation@^0.20.0":
   version "0.20.0"
   resolved "https://registry.yarnpkg.com/@apollo/federation/-/federation-0.20.0.tgz#59e084e73a0b5852d1de4da3bdafd5c94c757a83"

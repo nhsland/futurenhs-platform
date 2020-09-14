@@ -16,7 +16,7 @@
     "generate": "graphql-codegen --config codegen.yaml"
   },
   "dependencies": {
-    "@apollo/federation": "^0.19.1",
+    "@apollo/federation": "^0.20.0",
     "@apollo/gateway": "^0.20.0",
     "@azure/monitor-opentelemetry-exporter": "^1.0.0-preview.5",
     "@fnhs/event-models": "file:../event-models/typescript/",
