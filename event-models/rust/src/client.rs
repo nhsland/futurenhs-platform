@@ -5,7 +5,7 @@ use std::sync::Arc;
 use tracing::info_span;
 use tracing_futures::Instrument as _;
 
-pub trait Client: std::fmt::Debug {
+pub trait EventPublisher: std::fmt::Debug {
     fn publish_events<'a>(
         &'a self,
         events: &'a [Event],
@@ -13,53 +13,55 @@ pub trait Client: std::fmt::Debug {
 }
 
 #[derive(Debug, Clone)]
-pub struct BoxedClient {
-    client: Arc<dyn Client + Send + Sync>,
-    is_valid: bool,
+pub struct EventClient {
+    publisher: Arc<dyn EventPublisher + Send + Sync>,
+    is_configured: bool,
 }
 
-impl BoxedClient {
+impl EventClient {
     pub fn new(topic_hostname: String, topic_key: String) -> Self {
-        BoxedClient {
-            client: Arc::new(DefaultClient {
+        EventClient {
+            publisher: Arc::new(EventGridPublisher {
                 url: format!(
                     "https://{}/api/events?api-version=2018-01-01",
                     topic_hostname
                 ),
                 key: topic_key,
             }),
-            is_valid: true,
+            is_configured: true,
         }
     }
 
-    pub fn noop() -> Self {
-        BoxedClient {
-            client: Arc::new(NoopClient {}),
-            is_valid: false,
-        }
-    }
-
-    pub fn is_valid(&self) -> bool {
-        self.is_valid
+    pub fn is_configured(&self) -> bool {
+        self.is_configured
     }
 }
 
-impl Client for BoxedClient {
+impl Default for EventClient {
+    fn default() -> Self {
+        EventClient {
+            publisher: Arc::new(NoopPublisher {}),
+            is_configured: false,
+        }
+    }
+}
+
+impl EventPublisher for EventClient {
     fn publish_events<'a>(
         &'a self,
         events: &'a [Event],
     ) -> Pin<Box<dyn Future<Output = Result<(), PublishEventsError>> + Send + 'a>> {
-        self.client.publish_events(events)
+        self.publisher.publish_events(events)
     }
 }
 
 #[derive(Debug)]
-struct DefaultClient {
+struct EventGridPublisher {
     url: String,
     key: String,
 }
 
-impl Client for DefaultClient {
+impl EventPublisher for EventGridPublisher {
     /// Publish events to Azure EventGrid.
     ///
     /// See also: https://docs.microsoft.com/en-us/rest/api/eventgrid/dataplane/publishevents/publishevents
@@ -98,9 +100,9 @@ impl Client for DefaultClient {
 }
 
 #[derive(Debug)]
-struct NoopClient {}
+struct NoopPublisher {}
 
-impl Client for NoopClient {
+impl EventPublisher for NoopPublisher {
     fn publish_events<'a>(
         &'a self,
         _events: &'a [Event],

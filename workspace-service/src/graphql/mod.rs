@@ -12,11 +12,11 @@ use tide::{http::mime, Request, Response, StatusCode};
 #[derive(Clone)]
 pub struct State {
     schema: Schema<Query, Mutation, EmptySubscription>,
-    event_client: fnhs_event_models::BoxedClient,
+    event_client: fnhs_event_models::EventClient,
 }
 
 impl State {
-    pub fn new(pool: PgPool, event_client: fnhs_event_models::BoxedClient) -> State {
+    pub fn new(pool: PgPool, event_client: fnhs_event_models::EventClient) -> State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
@@ -34,7 +34,7 @@ struct Query(folders::FoldersQuery, workspaces::WorkspacesQuery);
 struct Mutation(folders::FoldersMutation, workspaces::WorkspacesMutation);
 
 pub async fn handle_healthz(req: Request<State>) -> tide::Result {
-    let response = if !req.state().event_client.is_valid() {
+    let response = if !req.state().event_client.is_configured() {
         Response::builder(500).body("invalid event client").build()
     } else {
         Response::new(204)

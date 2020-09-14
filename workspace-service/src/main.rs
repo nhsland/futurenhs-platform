@@ -46,9 +46,9 @@ async fn main() -> Result<()> {
             .host_str()
             .ok_or_else(|| anyhow!("EVENTGRID_TOPIC_ENDPOINT does not contain host name"))?
             .to_owned();
-        fnhs_event_models::BoxedClient::new(topic_hostname, topic_key)
+        fnhs_event_models::EventClient::new(topic_hostname, topic_key)
     } else {
-        fnhs_event_models::BoxedClient::noop()
+        fnhs_event_models::EventClient::noop()
     };
 
     let app = workspace_service::create_app(connection_pool, event_client).await?;
