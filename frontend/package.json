@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.19.1",
-    "@apollo/gateway": "^0.19.1",
+    "@apollo/gateway": "^0.20.0",
     "@azure/monitor-opentelemetry-exporter": "^1.0.0-preview.5",
     "@fnhs/event-models": "file:../event-models/typescript/",
     "@microsoft/applicationinsights-web": "^2.5.8",
