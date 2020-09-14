@@ -48,7 +48,7 @@ async fn main() -> Result<()> {
             .to_owned();
         fnhs_event_models::EventClient::new(topic_hostname, topic_key)
     } else {
-        fnhs_event_models::EventClient::noop()
+        fnhs_event_models::EventClient::default()
     };
 
     let app = workspace_service::create_app(connection_pool, event_client).await?;

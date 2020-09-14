@@ -4,7 +4,7 @@ set -eu
 # https://stackoverflow.com/a/1482133
 cd $(dirname "$0")
 
-ENVIRONMENT="${1:?"Please specify you environment name as the first parameter, e.g. dev-jane"}"
+ENVIRONMENT="${1:?"Please specify your environment name as the first parameter, e.g. dev-jane"}"
 BRANCH="${2:-""}"
 
 CURRENT_CONTEXT=$(kubectl config current-context)
