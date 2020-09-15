@@ -53,6 +53,7 @@ const H2 = styled.h2`
 interface Props {
   workspace: {
     title: string;
+    id: string;
   };
 }
 

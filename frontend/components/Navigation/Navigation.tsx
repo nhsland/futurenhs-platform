@@ -7,6 +7,7 @@ import { NavListItem } from "../NavListItem";
 
 interface Workspace {
   title: string;
+  id: string;
   // folders: any[]; //TODO!
 }
 interface Props {
@@ -45,7 +46,12 @@ const Navigation = ({ workspace }: Props) => (
       <h4>Folders</h4>
       <ul>
         {folders.map((folder) => (
-          <NavListItem key={uuid()} item={folder} itemType="folder" />
+          <NavListItem
+            key={uuid()}
+            item={folder}
+            workspaceId={workspace.id}
+            itemType="folder"
+          />
         ))}
       </ul>
     </section>

@@ -1,5 +1,6 @@
 import React from "react";
 
+import Link from "next/link";
 import styled from "styled-components";
 
 interface Folder {
@@ -9,6 +10,7 @@ interface Folder {
 interface Props {
   item: Folder;
   itemType: "folder";
+  workspaceId: string;
 }
 
 const ListItem = styled.li`
@@ -27,14 +29,16 @@ const icons: { [key: string]: string } = {
   folder: require("../../public/closedFolder.svg"),
 };
 
-const NavListItem = ({ item, itemType }: Props) => {
+const NavListItem = ({ item, itemType, workspaceId }: Props) => {
   const icon = icons[itemType];
   return (
     <ListItem>
-      <a>
-        <img src={icon || ""} />
-        <div>{item.title}</div>
-      </a>
+      <Link href={`${workspaceId}/folder/${item.title}`}>
+        <a>
+          <img src={icon || ""} />
+          <div>{item.title}</div>
+        </a>
+      </Link>
     </ListItem>
   );
 };
