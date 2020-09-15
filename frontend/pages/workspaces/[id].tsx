@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { Navigation } from "../../components/Navigation";
 import { PageLayout } from "../../components/PageLayout";
-import { WorkspaceNavigation } from "../../components/WorkspaceNavigation";
 import { requireAuthentication } from "../../lib/auth";
 import { getSdk } from "../../lib/generated/graphql";
 
@@ -31,6 +31,7 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
 );
 
 const PageContent = styled.section`
+  flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
   padding-left: 10%;
@@ -55,16 +56,21 @@ interface Props {
   };
 }
 
+const ContentWrapper = styled.div`
+  display: flex;
+`;
 const WorkspaceHomepage = ({ workspace }: Props) => (
   <>
     <Head title={workspace.title} />
     <PageLayout>
       <Header />
-      <PageContent>
-        <WorkspaceNavigation workspace={workspace} />
-        <MainHeading>{workspace.title}</MainHeading>
-        <H2>Most recent items</H2>
-      </PageContent>
+      <ContentWrapper>
+        <Navigation workspace={workspace} />
+        <PageContent>
+          <MainHeading>{workspace.title}</MainHeading>
+          <H2>Most recent items</H2>
+        </PageContent>
+      </ContentWrapper>
     </PageLayout>
   </>
 );
