@@ -4,7 +4,10 @@
   "allOf": [
     { "$ref": "#/definitions/BaseEvent" },
     {
-      "oneOf": [{ "$ref": "#/definitions/ContentViewEvent" }]
+      "oneOf": [
+        { "$ref": "#/definitions/ContentViewEvent" },
+        { "$ref": "#/definitions/CreateWorkspaceEvent" }
+      ]
     }
   ],
   "definitions": {
@@ -56,6 +59,47 @@
             }
           },
           "required": ["userId", "contentId", "contentType", "workspaceId"]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "CreateWorkspaceEvent": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["CreateWorkspace"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"]
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              },
+              "required": ["id"]
+            }
+          },
+          "required": ["input", "output"]
         }
       },
       "required": ["eventType", "dataVersion", "data"]

@@ -137,9 +137,14 @@ macro_rules! event_serialization {
     }
 }
 
+// Generate EventData enum and serialization logic
 event_serialization!(
     ("ContentView", "1") => ContentView(ContentViewEventData),
+    ("CreateWorkspace", "1") => CreateWorkspace(CreateWorkspaceEventData),
 );
+
+// Additional exports for types referenced in event data types.
+pub use gen::{CreateWorkspaceEventDataInput, CreateWorkspaceEventDataInputOutput};
 
 #[cfg(test)]
 mod tests {

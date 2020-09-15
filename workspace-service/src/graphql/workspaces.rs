@@ -1,5 +1,9 @@
 use crate::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use fnhs_event_models::{
+    CreateWorkspaceEventData, CreateWorkspaceEventDataInput, CreateWorkspaceEventDataInputOutput,
+    Event, EventClient, EventData, EventPublisher as _,
+};
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A workspace")]
@@ -71,10 +75,31 @@ impl WorkspacesMutation {
         context: &Context<'_>,
         workspace: NewWorkspace,
     ) -> FieldResult<Workspace> {
-        // TODO: Add event
         let pool = context.data()?;
-        let workspace = db::Workspace::create(workspace.title, workspace.description, pool).await?;
-        Ok(workspace.into())
+        let event_client: &EventClient = context.data()?;
+
+        let input = CreateWorkspaceEventDataInput {
+            title: workspace.title,
+            description: workspace.description,
+        };
+
+        let workspace: Workspace =
+            db::Workspace::create(input.title.clone(), input.description.clone(), pool)
+                .await?
+                .into();
+
+        let output = CreateWorkspaceEventDataInputOutput {
+            id: workspace.id.clone().into(),
+        };
+
+        event_client
+            .publish_events(&[Event::new(
+                workspace.id.clone(),
+                EventData::CreateWorkspace(CreateWorkspaceEventData { input, output }),
+            )])
+            .await?;
+
+        Ok(workspace)
     }
 
     #[field(desc = "Update workspace (returns updated workspace")]

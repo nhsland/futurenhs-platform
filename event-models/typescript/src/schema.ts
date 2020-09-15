@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type Event = BaseEvent & ContentViewEvent;
+export type Event = BaseEvent & (ContentViewEvent | CreateWorkspaceEvent);
 
 export interface BaseEvent {
   id: string;
@@ -22,6 +22,23 @@ export interface ContentViewEvent {
     contentType: "Folder" | "File";
     workspaceId: string;
     error?: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export interface CreateWorkspaceEvent {
+  eventType: "CreateWorkspace";
+  dataVersion: "1";
+  data: {
+    input: {
+      title: string;
+      description: string;
+      [k: string]: unknown;
+    };
+    output: {
+      id: string;
+      [k: string]: unknown;
+    };
     [k: string]: unknown;
   };
   [k: string]: unknown;
