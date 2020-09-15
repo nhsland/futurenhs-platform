@@ -94,9 +94,15 @@
               "properties": {
                 "id": {
                   "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
                 }
               },
-              "required": ["id"]
+              "required": ["id", "title", "description"]
             }
           },
           "required": ["input", "output"]

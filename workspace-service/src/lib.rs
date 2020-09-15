@@ -7,6 +7,7 @@ use tracing::info_span;
 use tracing_futures::Instrument;
 
 mod db;
+mod events;
 mod graphql;
 
 pub fn log<'a>(

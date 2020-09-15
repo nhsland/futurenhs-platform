@@ -1,4 +1,5 @@
 use crate::db;
+use crate::events::create_workspace;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use fnhs_event_models::{
     CreateWorkspaceEventData, CreateWorkspaceEventDataInput, CreateWorkspaceEventDataInputOutput,
@@ -26,10 +27,29 @@ impl From<db::Workspace> for Workspace {
     }
 }
 
+impl From<CreateWorkspaceEventDataInputOutput> for Workspace {
+    fn from(output: CreateWorkspaceEventDataInputOutput) -> Self {
+        Self {
+            id: output.id.into(),
+            title: output.title,
+            description: output.description,
+        }
+    }
+}
+
 #[InputObject]
 struct NewWorkspace {
     title: String,
     description: String,
+}
+
+impl From<NewWorkspace> for CreateWorkspaceEventDataInput {
+    fn from(workspace: NewWorkspace) -> Self {
+        Self {
+            title: workspace.title,
+            description: workspace.description,
+        }
+    }
 }
 
 #[InputObject]
@@ -78,20 +98,9 @@ impl WorkspacesMutation {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
 
-        let input = CreateWorkspaceEventDataInput {
-            title: workspace.title,
-            description: workspace.description,
-        };
-
-        let workspace: Workspace =
-            db::Workspace::create(input.title.clone(), input.description.clone(), pool)
-                .await?
-                .into();
-
-        let output = CreateWorkspaceEventDataInputOutput {
-            id: workspace.id.clone().into(),
-        };
-
+        let input: CreateWorkspaceEventDataInput = workspace.into();
+        let output = create_workspace(input.clone(), pool).await?;
+        let workspace: Workspace = output.clone().into();
         event_client
             .publish_events(&[Event::new(
                 workspace.id.clone(),
