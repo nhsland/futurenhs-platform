@@ -11,18 +11,31 @@ interface Props {
   itemType: "folder";
 }
 
-const Container = styled.li`
-  display: flex;
+const ListItem = styled.li`
+  list-style-type: none;
+  a {
+    display: flex;
+  }
+  div {
+    ${({ theme }) => `
+    color: ${theme.colorNhsukBlack};
+  `}
+  }
 `;
 
+const icons: { [key: string]: string } = {
+  folder: require("../../public/closedFolder.svg"),
+};
+
 const NavListItem = ({ item, itemType }: Props) => {
-  const icon =
-    itemType === "folder" && require("../../public/closedFolder.svg");
+  const icon = icons[itemType];
   return (
-    <Container>
-      <img src={icon || ""} />
-      <p>{item.title}</p>
-    </Container>
+    <ListItem>
+      <a>
+        <img src={icon || ""} />
+        <div>{item.title}</div>
+      </a>
+    </ListItem>
   );
 };
 

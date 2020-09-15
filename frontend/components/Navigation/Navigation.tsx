@@ -17,6 +17,9 @@ const Nav = styled.nav`
   border: 1px solid red;
   width: 270px;
   ${({ theme }) => `
+  h4 {
+    color: ${theme.colorNhsukBlue};
+  }
   @media (min-width: ${theme.mqBreakpoints.tablet}) {
       width: 300px;
     }
@@ -28,25 +31,24 @@ const Nav = styled.nav`
 `;
 
 const folders = [{ title: "Folder 1" }, { title: "Folder 2" }];
+
 const Navigation = ({ workspace }: Props) => (
   <Nav>
-    <div>
+    <section>
       <h3>{workspace.title}</h3>
       <a>About this workspace</a>
-    </div>
-    <div>
-      <section>
-        <h4>Quick Links</h4>
-      </section>
-      <section>
-        <h4>Folders</h4>
-        <ul>
-          {folders.map((folder) => (
-            <NavListItem key={uuid()} item={folder} itemType="folder" />
-          ))}
-        </ul>
-      </section>
-    </div>
+    </section>
+    <section>
+      <h4>Quick Links</h4>
+    </section>
+    <section>
+      <h4>Folders</h4>
+      <ul>
+        {folders.map((folder) => (
+          <NavListItem key={uuid()} item={folder} itemType="folder" />
+        ))}
+      </ul>
+    </section>
   </Nav>
 );
 
