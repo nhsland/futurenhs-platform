@@ -29,7 +29,7 @@ FROM debian:buster-slim AS release-context
 RUN apt-get update && apt-get install -y \
     tini \
     libssl1.1 \
-    curl \
+    libcurl4 \
     ;
 
 RUN useradd svc
