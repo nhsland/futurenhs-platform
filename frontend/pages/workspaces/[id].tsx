@@ -8,6 +8,7 @@ import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
+import { WorkspaceNavigation } from "../../components/WorkspaceNavigation";
 import { requireAuthentication } from "../../lib/auth";
 import { getSdk } from "../../lib/generated/graphql";
 
@@ -60,6 +61,7 @@ const WorkspaceHomepage = ({ workspace }: Props) => (
     <PageLayout>
       <Header />
       <PageContent>
+        <WorkspaceNavigation workspace={workspace} />
         <MainHeading>{workspace.title}</MainHeading>
         <H2>Most recent items</H2>
       </PageContent>
