@@ -42,8 +42,7 @@ const Navigation = ({ workspace }: Props) => (
         <h4>Folders</h4>
         <ul>
           {folders.map((folder) => (
-            // <li key={folder.title}>{folder.title}</li>
-            <NavListItem key={uuid()} folder={folder} />
+            <NavListItem key={uuid()} item={folder} itemType="folder" />
           ))}
         </ul>
       </section>
