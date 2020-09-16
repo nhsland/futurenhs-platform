@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 interface Folder {
   title: string;
+  id: string;
 }
 
 interface Props {
@@ -16,7 +17,6 @@ interface Props {
 
 const ListItem = styled.li<any>`
   list-style-type: none;
-  border: 1px solid red;
   background-color: ${(props) =>
     props.active ? props.theme.nhsukButtonActiveColor : "pink"};
   a {
@@ -42,7 +42,7 @@ const icons: { [key: string]: { [key: string]: string } } = {
 
 const NavListItem = ({ active, item, icon, workspaceId }: Props) => (
   <ListItem>
-    <Link href={`${workspaceId}/folder/${item.title}`}>
+    <Link href={`/workspaces/${workspaceId}/folder/${item.id}`}>
       <a>
         <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />
         <div>{item.title}</div>
