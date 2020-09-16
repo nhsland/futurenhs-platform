@@ -14,7 +14,7 @@ interface Workspace {
 const Nav = styled.nav`
   padding-top: 24px;
   padding-right: 40px;
-  padding-left: 32px;
+  padding-left: 20px;
   width: 270px;
   ${({ theme }) => `
   @media (min-width: ${theme.mqBreakpoints.tablet}) {
@@ -28,18 +28,22 @@ const Nav = styled.nav`
 `;
 
 const NavHeader = styled.nav`
-  padding-left: 8px;
+  padding-bottom: 20px;
   ${({ theme }) => `
   border-bottom: 1px solid ${theme.colorNhsukGrey1};
   `};
 `;
 
 const NavSection = styled.section`
-  padding-top: 24px;
+  padding-top: 20px;
   ${({ theme }) => `
     h4 {
     color: ${theme.colorNhsukBlue};
   }`}
+`;
+
+const NavList = styled.ul`
+  padding-left: 0px;
 `;
 
 const folders = [{ title: "Folder 1" }, { title: "Folder 2" }];
@@ -52,14 +56,14 @@ const Navigation = ({ workspace }: Props) => (
   <Nav>
     <NavHeader>
       <h3>{workspace.title}</h3>
-      {/* <a>About this workspace</a> */}
+      <a>About this workspace</a>
     </NavHeader>
     <NavSection>
       <h4>Quick Links</h4>
     </NavSection>
     <NavSection>
       <h4>Folders</h4>
-      <ul>
+      <NavList>
         {folders.map((folder) => (
           <NavListItem
             key={uuid()}
@@ -68,7 +72,7 @@ const Navigation = ({ workspace }: Props) => (
             icon="folder"
           />
         ))}
-      </ul>
+      </NavList>
     </NavSection>
   </Nav>
 );

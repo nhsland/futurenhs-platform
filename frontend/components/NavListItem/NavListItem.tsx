@@ -15,8 +15,13 @@ interface Props {
 
 const ListItem = styled.li`
   list-style-type: none;
+  border: 1px solid red;
   a {
     display: flex;
+    padding-left: 8px;
+    &:focus {
+      box-shadow: none;
+    }
   }
   div {
     ${({ theme }) => `
@@ -25,15 +30,18 @@ const ListItem = styled.li`
   }
 `;
 
-const icons: { [key: string]: string } = {
-  folder: require("../../public/closedFolder.svg"),
+const icons: { [key: string]: { [key: string]: string } } = {
+  folder: {
+    closed: require("../../public/closedFolder.svg"),
+    open: require("../../public/openFolder.svg"),
+  },
 };
 
 const NavListItem = ({ item, icon, workspaceId }: Props) => (
   <ListItem>
     <Link href={`${workspaceId}/folder/${item.title}`}>
       <a>
-        <img src={icons[icon] || ""} />
+        <img src={icons[icon]["closed"] || ""} />
         <div>{item.title}</div>
       </a>
     </Link>
