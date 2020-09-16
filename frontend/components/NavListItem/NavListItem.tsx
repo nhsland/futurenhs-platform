@@ -8,6 +8,7 @@ interface Folder {
 }
 
 interface Props {
+  active: boolean;
   item: Folder;
   icon: "folder";
   workspaceId: string;
@@ -37,15 +38,18 @@ const icons: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-const NavListItem = ({ item, icon, workspaceId }: Props) => (
-  <ListItem>
-    <Link href={`${workspaceId}/folder/${item.title}`}>
-      <a>
-        <img src={icons[icon]["closed"] || ""} />
-        <div>{item.title}</div>
-      </a>
-    </Link>
-  </ListItem>
-);
+const NavListItem = ({ active, item, icon, workspaceId }: Props) => {
+  // const active = false;
+  return (
+    <ListItem>
+      <Link href={`${workspaceId}/folder/${item.title}`}>
+        <a>
+          <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />
+          <div>{item.title}</div>
+        </a>
+      </Link>
+    </ListItem>
+  );
+};
 
 export default NavListItem;
