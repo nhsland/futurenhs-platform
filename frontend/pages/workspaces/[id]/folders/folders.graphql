@@ -4,3 +4,12 @@ query FoldersByWorkspace($workspace: ID!) {
     id
   }
 }
+
+query GetFolderById($id: ID!) {
+  folder(id: $id) {
+    title
+    id
+    description
+    workspace
+  }
+}
