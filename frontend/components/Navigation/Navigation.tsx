@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
+import { Folder } from "../../lib/generated/graphql";
 import { NavListItem } from "../NavListItem";
 
 interface Workspace {
@@ -46,16 +47,12 @@ const NavList = styled.ul`
   padding-left: 0px;
 `;
 
-const folders = [
-  { title: "Folder 1", id: "124" },
-  { title: "Folder 2", id: "1234" },
-];
-
 interface Props {
   workspace: Workspace;
+  folders: Array<Pick<Folder, "title" | "id">>;
 }
 
-const Navigation = ({ workspace }: Props) => (
+const Navigation = ({ workspace, folders }: Props) => (
   <Nav>
     <NavHeader>
       <h3>{workspace.title}</h3>

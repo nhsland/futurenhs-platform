@@ -10,7 +10,7 @@ import { MainHeading } from "../../components/MainHeading";
 import { Navigation } from "../../components/Navigation";
 import { PageLayout } from "../../components/PageLayout";
 import { requireAuthentication } from "../../lib/auth";
-import { getSdk } from "../../lib/generated/graphql";
+import { getSdk, Folder } from "../../lib/generated/graphql";
 
 export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
   async (context) => {
@@ -21,10 +21,14 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
     const workspaceID = (context.params?.id as string) || "";
 
     const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceID });
+    const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
+      workspace: workspaceID,
+    });
 
     return {
       props: {
         workspace,
+        folders: foldersByWorkspace,
       },
     };
   }
@@ -55,18 +59,19 @@ interface Props {
     title: string;
     id: string;
   };
+  folders: Array<Pick<Folder, "title" | "id">>;
 }
 
 const ContentWrapper = styled.div`
   display: flex;
 `;
-const WorkspaceHomepage = ({ workspace }: Props) => (
+const WorkspaceHomepage = ({ workspace, folders }: Props) => (
   <>
     <Head title={workspace.title} />
     <PageLayout>
       <Header />
       <ContentWrapper>
-        <Navigation workspace={workspace} />
+        <Navigation workspace={workspace} folders={folders} />
         <PageContent>
           <MainHeading>{workspace.title}</MainHeading>
           <H2>Most recent items</H2>

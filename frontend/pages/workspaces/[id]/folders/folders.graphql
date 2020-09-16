@@ -1,0 +1,6 @@
+query FoldersByWorkspace($workspace: ID!) {
+  foldersByWorkspace(workspace: $workspace) {
+    title
+    id
+  }
+}
