@@ -9,7 +9,7 @@ interface Folder {
 
 interface Props {
   item: Folder;
-  itemType: "folder";
+  icon: "folder";
   workspaceId: string;
 }
 
@@ -29,18 +29,15 @@ const icons: { [key: string]: string } = {
   folder: require("../../public/closedFolder.svg"),
 };
 
-const NavListItem = ({ item, itemType, workspaceId }: Props) => {
-  const icon = icons[itemType];
-  return (
-    <ListItem>
-      <Link href={`${workspaceId}/folder/${item.title}`}>
-        <a>
-          <img src={icon || ""} />
-          <div>{item.title}</div>
-        </a>
-      </Link>
-    </ListItem>
-  );
-};
+const NavListItem = ({ item, icon, workspaceId }: Props) => (
+  <ListItem>
+    <Link href={`${workspaceId}/folder/${item.title}`}>
+      <a>
+        <img src={icons[icon] || ""} />
+        <div>{item.title}</div>
+      </a>
+    </Link>
+  </ListItem>
+);
 
 export default NavListItem;

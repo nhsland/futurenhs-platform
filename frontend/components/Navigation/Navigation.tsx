@@ -10,17 +10,13 @@ interface Workspace {
   id: string;
   // folders: any[]; //TODO!
 }
-interface Props {
-  workspace: Workspace;
-}
 
 const Nav = styled.nav`
-  border: 1px solid red;
+  padding-top: 24px;
+  padding-right: 40px;
+  padding-left: 32px;
   width: 270px;
   ${({ theme }) => `
-  h4 {
-    color: ${theme.colorNhsukBlue};
-  }
   @media (min-width: ${theme.mqBreakpoints.tablet}) {
       width: 300px;
     }
@@ -31,18 +27,37 @@ const Nav = styled.nav`
   `}
 `;
 
+const NavHeader = styled.nav`
+  padding-left: 8px;
+  ${({ theme }) => `
+  border-bottom: 1px solid ${theme.colorNhsukGrey1};
+  `};
+`;
+
+const NavSection = styled.section`
+  padding-top: 24px;
+  ${({ theme }) => `
+    h4 {
+    color: ${theme.colorNhsukBlue};
+  }`}
+`;
+
 const folders = [{ title: "Folder 1" }, { title: "Folder 2" }];
+
+interface Props {
+  workspace: Workspace;
+}
 
 const Navigation = ({ workspace }: Props) => (
   <Nav>
-    <section>
+    <NavHeader>
       <h3>{workspace.title}</h3>
-      <a>About this workspace</a>
-    </section>
-    <section>
+      {/* <a>About this workspace</a> */}
+    </NavHeader>
+    <NavSection>
       <h4>Quick Links</h4>
-    </section>
-    <section>
+    </NavSection>
+    <NavSection>
       <h4>Folders</h4>
       <ul>
         {folders.map((folder) => (
@@ -50,11 +65,11 @@ const Navigation = ({ workspace }: Props) => (
             key={uuid()}
             item={folder}
             workspaceId={workspace.id}
-            itemType="folder"
+            icon="folder"
           />
         ))}
       </ul>
-    </section>
+    </NavSection>
   </Nav>
 );
 
