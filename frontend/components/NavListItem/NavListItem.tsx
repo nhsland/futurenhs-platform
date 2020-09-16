@@ -42,7 +42,7 @@ const icons: { [key: string]: { [key: string]: string } } = {
 
 const NavListItem = ({ active, item, icon, workspaceId }: Props) => (
   <ListItem>
-    <Link href={`/workspaces/${workspaceId}/folder/${item.id}`}>
+    <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
       <a>
         <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />
         <div>{item.title}</div>
