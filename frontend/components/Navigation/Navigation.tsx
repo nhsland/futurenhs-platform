@@ -46,7 +46,10 @@ const NavList = styled.ul`
   padding-left: 0px;
 `;
 
-const folders = [{ title: "Folder 1" }, { title: "Folder 2" }];
+const folders = [
+  { title: "Folder 1", id: "124" },
+  { title: "Folder 2", id: "1234" },
+];
 
 interface Props {
   workspace: Workspace;
@@ -66,6 +69,7 @@ const Navigation = ({ workspace }: Props) => (
       <NavList>
         {folders.map((folder) => (
           <NavListItem
+            active={true}
             key={uuid()}
             item={folder}
             workspaceId={workspace.id}

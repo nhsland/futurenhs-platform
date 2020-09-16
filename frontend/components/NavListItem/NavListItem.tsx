@@ -14,9 +14,11 @@ interface Props {
   workspaceId: string;
 }
 
-const ListItem = styled.li`
+const ListItem = styled.li<any>`
   list-style-type: none;
   border: 1px solid red;
+  background-color: ${(props) =>
+    props.active ? props.theme.nhsukButtonActiveColor : "pink"};
   a {
     display: flex;
     padding-left: 8px;
@@ -38,18 +40,15 @@ const icons: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-const NavListItem = ({ active, item, icon, workspaceId }: Props) => {
-  // const active = false;
-  return (
-    <ListItem>
-      <Link href={`${workspaceId}/folder/${item.title}`}>
-        <a>
-          <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />
-          <div>{item.title}</div>
-        </a>
-      </Link>
-    </ListItem>
-  );
-};
+const NavListItem = ({ active, item, icon, workspaceId }: Props) => (
+  <ListItem>
+    <Link href={`${workspaceId}/folder/${item.title}`}>
+      <a>
+        <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />
+        <div>{item.title}</div>
+      </a>
+    </Link>
+  </ListItem>
+);
 
 export default NavListItem;
