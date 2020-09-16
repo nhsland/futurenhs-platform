@@ -37,26 +37,41 @@ jobs:
         with:
           toolchain: stable
       - name: Cache sqlx
+        id: cache-sqlx
         uses: actions/cache@v2
         with:
           path: |
             ~/.cargo/bin/sqlx
             ~/.cargo/bin/cargo-sqlx
-          key: 0.1.0-beta.1
-      - name: Run DB migrations on test database
+          key: sqlx-0.1.0-beta.1
+      - name: Install sqlx
+        if: steps.cache-sqlx.outputs.cache-hit != 'true'
+        run: cargo install --git https://github.com/frigus02/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
+      - name: Cache cargo
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ hashFiles('futurenhs-platform/workspace-service/Cargo.lock') }}
+      - name: Build
         working-directory: futurenhs-platform/workspace-service
         run: |
           set -e
-          command -v cargo-sqlx || cargo install --git https://github.com/frigus02/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
           export DATABASE_URL=postgres://postgres:postgres@localhost:5432
           sqlx migrate run
           cargo sqlx prepare --check -- --bin workspace_service
-      - name: "Build & Push image"
+          export SQLX_OFFLINE=true
+          cargo clippy --release -- -D warnings
+          cargo build --release
+          export TEST_DATABASE_URL=$DATABASE_URL
+          cargo test --release
+      - name: Build & Push image
         working-directory: futurenhs-platform/workspace-service
         run: |
           TAG="$(git rev-parse --short=7 ${{ github.sha }})"
           make docker-build tag=${TAG}
-          make docker-test TEST_DATABASE_URL=postgres://postgres:postgres@postgres:5432
           make docker-push tag=${TAG}
           DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' ${{ secrets.REGISTRY_LOGIN_SERVER }}/workspace-service:${TAG})"
           echo ::set-env name=TAG::$TAG
