@@ -4,26 +4,26 @@ import { GraphQLClient } from "graphql-request";
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
-import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
+import WorkspaceDirectoryItem from "../../components/Workspaces/WorkspaceDirectoryItem";
 import { requireAuthentication } from "../../lib/auth";
 import { getSdk } from "../../lib/generated/graphql";
 
-export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
-  async (context) => {
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+  async () => {
     const client = new GraphQLClient(
       "http://workspace-service.workspace-service/graphql"
     );
-    const sdk = getSdk(client);
-    const workspaceID = (context.params?.id as string) || "";
 
-    const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceID });
+    const sdk = getSdk(client);
+
+    const { workspaces } = await sdk.GetWorkspaces();
 
     return {
       props: {
-        workspace,
+        workspaces,
       },
     };
   }
@@ -39,32 +39,30 @@ const PageContent = styled.section`
   `}
 `;
 
-const H2 = styled.h2`
-  padding-top: 24px;
-  margin-bottom: 8px;
-  ${({ theme }) => `
-  border-top: 1px solid ${theme.colorNhsukGrey1};
-  color: ${theme.colorNhsukGrey1}
-  `}
-`;
+type Workspace = { title: string; id: string };
 
 interface Props {
-  workspace: {
-    title: string;
-  };
+  workspaces: Workspace[];
 }
 
-const WorkspaceHomepage = ({ workspace }: Props) => (
-  <>
-    <Head title={workspace.title} />
+const WorkspaceDirectory = ({ workspaces }: Props) => {
+  return (
     <PageLayout>
       <Header />
       <PageContent>
-        <MainHeading>{workspace.title}</MainHeading>
-        <H2>Most recent items</H2>
+        <MainHeading withBorder>My workspaces</MainHeading>
+        {workspaces.map((workspace: Workspace) => {
+          return (
+            <WorkspaceDirectoryItem
+              title={workspace.title}
+              id={workspace.id}
+              key={workspace.id}
+            />
+          );
+        })}
       </PageContent>
     </PageLayout>
-  </>
-);
+  );
+};
 
-export default WorkspaceHomepage;
+export default WorkspaceDirectory;

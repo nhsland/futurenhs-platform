@@ -5,3 +5,10 @@ mutation CreateWorkspaceMutation($title: String!, $description: String!) {
     description
   }
 }
+
+query GetWorkspaces {
+  workspaces {
+    id
+    title
+  }
+}
