@@ -14,6 +14,7 @@ interface Props {
 }
 
 const ListItem = styled.li<any>`
+  margin-bottom: 12px;
   list-style-type: none;
   border-radius: 4px;
   &:hover {
@@ -30,11 +31,16 @@ const ListItem = styled.li<any>`
     }
   }
   img {
+    /*  */
+    padding-top: 2px;
+    align-self: baseline;
     /* stop things jumping about while svgs load */
     width: 24px;
     flex-shrink: 0;
   }
   div {
+    padding-left: 4px;
+    padding-right: 4px;
     ${({ theme }) => `
     color: ${theme.colorNhsukBlack};
   `}

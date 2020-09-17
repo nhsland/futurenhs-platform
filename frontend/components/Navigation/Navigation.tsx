@@ -9,7 +9,7 @@ import { NavSection } from "../NavSection";
 
 const Nav = styled.nav`
   padding-top: 24px;
-  padding-right: 40px;
+  padding-right: 52px;
   padding-left: 20px;
   flex-shrink: 0;
   flex-grow: 0;
