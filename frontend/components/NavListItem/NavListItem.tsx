@@ -15,6 +15,11 @@ interface Props {
 
 const ListItem = styled.li<any>`
   list-style-type: none;
+  &:hover {
+    ${({ theme }) => `
+    background-color: ${theme.colorNhsukGrey4}
+  `}
+  }
   a {
     display: flex;
     padding-left: 8px;
