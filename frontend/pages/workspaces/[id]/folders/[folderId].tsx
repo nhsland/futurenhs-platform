@@ -7,10 +7,10 @@ import styled from "styled-components";
 import { Head } from "../../../../components/Head";
 import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
-// import { Navigation } from "../../../../components/Navigation";
+import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import { requireAuthentication } from "../../../../lib/auth";
-import { getSdk, Folder } from "../../../../lib/generated/graphql";
+import { getSdk, Folder, Workspace } from "../../../../lib/generated/graphql";
 
 export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
   async (context) => {
@@ -19,16 +19,20 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
     );
     const sdk = getSdk(client);
     const folderId = (context.params?.folderId as string) || "";
+    const workspaceId = (context.params?.id as string) || "";
 
+    //TODO....
     const { folder } = await sdk.GetFolderById({ id: folderId });
-    // const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
-    //   workspace: workspaceId,
-    // });
+    const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
+      workspace: workspaceId,
+    });
+    const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceId });
 
     return {
       props: {
-        // folders: foldersByWorkspace,
+        workspaceFolders: foldersByWorkspace,
         folder,
+        workspace,
       },
     };
   }
@@ -51,15 +55,20 @@ const ContentWrapper = styled.div`
 
 interface Props {
   folder: Folder;
-  // workspace: Workspace;
+  workspaceFolders: Array<Pick<Folder, "id" | "title">>;
+  workspace: Pick<Workspace, "id" | "title">;
 }
-const FolderHomepage = ({ folder }: Props) => (
+const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
   <>
     <Head title={folder.title} />
     <PageLayout>
       <Header />
       <ContentWrapper>
-        {/* <Navigation workspace={workspace} folders={workspace.folders} /> */}
+        <Navigation
+          folders={workspaceFolders}
+          workspace={workspace}
+          activeFolder={folder.id}
+        />
         <PageContent>
           <MainHeading>{folder.title}</MainHeading>
           <p>{folder.description}</p>

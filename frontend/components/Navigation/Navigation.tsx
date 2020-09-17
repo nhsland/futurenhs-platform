@@ -9,7 +9,6 @@ import { NavListItem } from "../NavListItem";
 interface Workspace {
   title: string;
   id: string;
-  // folders: any[]; //TODO!
 }
 
 const Nav = styled.nav`
@@ -50,32 +49,37 @@ const NavList = styled.ul`
 interface Props {
   workspace: Workspace;
   folders: Array<Pick<Folder, "title" | "id">>;
+  activeFolder?: string;
 }
 
-const Navigation = ({ workspace, folders }: Props) => (
-  <Nav>
-    <NavHeader>
-      <h3>{workspace.title}</h3>
-      <a>About this workspace</a>
-    </NavHeader>
-    <NavSection>
-      <h4>Quick Links</h4>
-    </NavSection>
-    <NavSection>
-      <h4>Folders</h4>
-      <NavList>
-        {folders.map((folder) => (
-          <NavListItem
-            active={true}
-            key={uuid()}
-            item={folder}
-            workspaceId={workspace.id}
-            icon="folder"
-          />
-        ))}
-      </NavList>
-    </NavSection>
-  </Nav>
+const Navigation = ({ workspace, folders, activeFolder }: Props) => (
+  // console.log("The active folder is", activeFolder),
+  console.log("the folders are....", folders[0]["id"]),
+  (
+    <Nav>
+      <NavHeader>
+        <h3>{workspace.title}</h3>
+        <a>About this workspace</a>
+      </NavHeader>
+      <NavSection>
+        <h4>Quick Links</h4>
+      </NavSection>
+      <NavSection>
+        <h4>Folders</h4>
+        <NavList>
+          {folders.map((folder) => (
+            <NavListItem
+              active={folder.id == activeFolder}
+              key={uuid()}
+              item={folder}
+              workspaceId={workspace.id}
+              icon="folder"
+            />
+          ))}
+        </NavList>
+      </NavSection>
+    </Nav>
+  )
 );
 
 export default Navigation;
