@@ -30,10 +30,9 @@ const ListItem = styled.li<any>`
     }
   }
   img {
-    align-self: baseline;
-    padding-top: 2px;
     /* stop things jumping about while svgs load */
     width: 24px;
+    flex-shrink: 0;
   }
   div {
     ${({ theme }) => `
@@ -43,8 +42,8 @@ const ListItem = styled.li<any>`
 `;
 
 const icons: { [key: string]: string } = {
-  closed: require("../../public/closedFolder.svg"),
-  open: require("../../public/openFolder.svg"),
+  closed: require("../../public/folderClosed.svg"),
+  open: require("../../public/folderOpen.svg"),
 };
 
 const NavListItem = ({ active, item, workspaceId }: Props) => (

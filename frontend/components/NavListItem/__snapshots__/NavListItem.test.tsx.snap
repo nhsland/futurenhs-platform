@@ -4,6 +4,11 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 <DocumentFragment>
   .c0 {
   list-style-type: none;
+  border-radius: 4px;
+}
+
+.c0:hover {
+  background-color: rgb(216,221,224);
 }
 
 .c0 a {
@@ -12,10 +17,19 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding-left: 8px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .c0 a:focus {
   box-shadow: none;
+}
+
+.c0 img {
+  width: 24px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .c0 div {
@@ -24,13 +38,13 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 
 <li
     class="c0"
-    style="background: rgb(255, 235, 59);"
+    style="background: rgb(255, 235, 59); font-weight: 700;"
   >
     <a
       href="/workspaces/workspace-id/folders/folder-id"
     >
       <img
-        src="/public/openFolder.svg"
+        src="/public/folderOpen.svg"
       />
       <div>
         folder title
@@ -44,6 +58,11 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
 <DocumentFragment>
   .c0 {
   list-style-type: none;
+  border-radius: 4px;
+}
+
+.c0:hover {
+  background-color: rgb(216,221,224);
 }
 
 .c0 a {
@@ -52,10 +71,19 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding-left: 8px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .c0 a:focus {
   box-shadow: none;
+}
+
+.c0 img {
+  width: 24px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .c0 div {
@@ -69,7 +97,7 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
       href="/workspaces/workspace-id/folders/folder-id"
     >
       <img
-        src="/public/closedFolder.svg"
+        src="/public/folderClosed.svg"
       />
       <div>
         folder title

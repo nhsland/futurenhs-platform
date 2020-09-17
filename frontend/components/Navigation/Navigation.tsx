@@ -47,26 +47,32 @@ interface Props {
   activeFolder?: string;
 }
 
-const Navigation = ({ workspace, folders, activeFolder }: Props) => (
-  <Nav>
-    <Header>
-      <h3>{workspace.title}</h3>
-      <a href={`/workspaces/${workspace.id}`}>About this workspace</a>
-    </Header>
-    <Section>
-      <h4>Folders</h4>
-      <List>
-        {folders.map((folder) => (
-          <NavListItem
-            active={folder.id == activeFolder}
-            key={uuid()}
-            item={folder}
-            workspaceId={workspace.id}
-          />
-        ))}
-      </List>
-    </Section>
-  </Nav>
-);
+const Navigation = ({ workspace, folders, activeFolder }: Props) => {
+  const open = true;
+  const openChevron = require("../../public/chevronOpen.svg");
+  const closedChevron = require("../../public/chevronClosed.svg");
+  return (
+    <Nav>
+      <Header>
+        <h3>{workspace.title}</h3>
+        <a href={`/workspaces/${workspace.id}`}>About this workspace</a>
+      </Header>
+      <Section>
+        <h4>Folders</h4>
+        <img src={open ? openChevron : closedChevron} />
+        <List>
+          {folders.map((folder) => (
+            <NavListItem
+              active={folder.id == activeFolder}
+              key={uuid()}
+              item={folder}
+              workspaceId={workspace.id}
+            />
+          ))}
+        </List>
+      </Section>
+    </Nav>
+  );
+};
 
 export default Navigation;
