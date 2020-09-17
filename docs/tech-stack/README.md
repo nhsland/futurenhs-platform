@@ -52,9 +52,13 @@ The [GitOps](https://www.gitops.tech/) website explains the concept in more deta
 
 Using a container runtime has many benefits, for example it allows us to run applications with different languages on the same infrastructure without having to worry about the host machine. Docker is currently the defacto standard for containers. Many languages and applications offer Docker containers and there are lots of learning resources available.
 
+See [Docker & Kubernetes](./docker-kubernetes.md) for basic standards we want to adhere to when using Docker.
+
 ### Kubernetes
 
 We also considered **Azure App Service**. Kubernetes provides a range of features itself and through it's ecosystem, that would be harder to build on top of App Services. Examples: auto-scaling, zero-downtime deployments, automated canary/blue-green deployments, local development.
+
+See [Docker & Kubernetes](./docker-kubernetes.md) for basic standards we want to adhere to when using Kubernetes.
 
 ### Terraform
 
