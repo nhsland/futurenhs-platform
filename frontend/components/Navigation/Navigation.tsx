@@ -11,13 +11,16 @@ const Nav = styled.nav`
   padding-top: 24px;
   padding-right: 40px;
   padding-left: 20px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  box-sizing: border-box;
   width: 270px;
   ${({ theme }) => `
   @media (min-width: ${theme.mqBreakpoints.tablet}) {
       width: 300px;
     }
 
-  @media (max-width: ${theme.mqBreakpoints.largeDesktop}) {
+  @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       width: 360px;
     }
   `}
