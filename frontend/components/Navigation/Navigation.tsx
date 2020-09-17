@@ -3,13 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
-import { Folder } from "../../lib/generated/graphql";
+import { Folder, Workspace } from "../../lib/generated/graphql";
 import { NavListItem } from "../NavListItem";
-
-interface Workspace {
-  title: string;
-  id: string;
-}
 
 const Nav = styled.nav`
   padding-top: 24px;
@@ -27,14 +22,14 @@ const Nav = styled.nav`
   `}
 `;
 
-const NavHeader = styled.nav`
+const Header = styled.header`
   padding-bottom: 20px;
   ${({ theme }) => `
   border-bottom: 1px solid ${theme.colorNhsukGrey1};
   `};
 `;
 
-const NavSection = styled.section`
+const Section = styled.section`
   padding-top: 20px;
   ${({ theme }) => `
     h4 {
@@ -42,44 +37,40 @@ const NavSection = styled.section`
   }`}
 `;
 
-const NavList = styled.ul`
+const List = styled.ul`
   padding-left: 0px;
 `;
 
 interface Props {
-  workspace: Workspace;
+  workspace: Pick<Workspace, "id" | "title">;
   folders: Array<Pick<Folder, "title" | "id">>;
   activeFolder?: string;
 }
 
 const Navigation = ({ workspace, folders, activeFolder }: Props) => (
-  // console.log("The active folder is", activeFolder),
-  console.log("the folders are....", folders[0]["id"]),
-  (
-    <Nav>
-      <NavHeader>
-        <h3>{workspace.title}</h3>
-        <a>About this workspace</a>
-      </NavHeader>
-      <NavSection>
-        <h4>Quick Links</h4>
-      </NavSection>
-      <NavSection>
-        <h4>Folders</h4>
-        <NavList>
-          {folders.map((folder) => (
-            <NavListItem
-              active={folder.id == activeFolder}
-              key={uuid()}
-              item={folder}
-              workspaceId={workspace.id}
-              icon="folder"
-            />
-          ))}
-        </NavList>
-      </NavSection>
-    </Nav>
-  )
+  <Nav>
+    <Header>
+      <h3>{workspace.title}</h3>
+      <a>About this workspace</a>
+    </Header>
+    <Section>
+      <h4>Quick Links</h4>
+    </Section>
+    <Section>
+      <h4>Folders</h4>
+      <List>
+        {folders.map((folder) => (
+          <NavListItem
+            active={folder.id == activeFolder}
+            key={uuid()}
+            item={folder}
+            workspaceId={workspace.id}
+            icon="folder"
+          />
+        ))}
+      </List>
+    </Section>
+  </Nav>
 );
 
 export default Navigation;

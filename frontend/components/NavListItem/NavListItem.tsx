@@ -3,14 +3,13 @@ import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-interface Folder {
-  title: string;
-  id: string;
-}
+import { Folder } from "../../lib/generated/graphql";
+
+type ListItem = Pick<Folder, "id" | "title">;
 
 interface Props {
   active: boolean;
-  item: Folder;
+  item: ListItem;
   icon: "folder";
   workspaceId: string;
 }
@@ -18,7 +17,7 @@ interface Props {
 const ListItem = styled.li<any>`
   list-style-type: none;
   background-color: ${(props) =>
-    props.active ? props.theme.nhsukButtonActiveColor : "pink"};
+    props.active ? props.theme.nhsukButtonActiveColor : ""};
   a {
     display: flex;
     padding-left: 8px;
