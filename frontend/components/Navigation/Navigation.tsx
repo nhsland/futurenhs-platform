@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
 import { Folder, Workspace } from "../../lib/generated/graphql";
 import { NavListItem } from "../NavListItem";
+import { NavSection } from "../NavSection";
 
 const Nav = styled.nav`
   padding-top: 24px;
@@ -29,14 +30,6 @@ const Header = styled.header`
   `};
 `;
 
-const Section = styled.section`
-  padding-top: 20px;
-  ${({ theme }) => `
-    h4 {
-    color: ${theme.colorNhsukBlue};
-  }`}
-`;
-
 const List = styled.ul`
   padding-left: 0px;
 `;
@@ -48,43 +41,24 @@ interface Props {
 }
 
 const Navigation = ({ workspace, folders, activeFolder }: Props) => {
-  const [open, setOpen] = useState(true);
-  const openChevron = require("../../public/chevronOpen.svg");
-  const closedChevron = require("../../public/chevronClosed.svg");
   return (
     <Nav>
       <Header>
         <h3>{workspace.title}</h3>
         <a href={`/workspaces/${workspace.id}`}>About this workspace</a>
       </Header>
-      <Section>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "start",
-          }}
-        >
-          <h4>Folders</h4>
-          <img
-            src={open ? openChevron : closedChevron}
-            onClick={() => setOpen(!open)}
-          />
-        </div>
-        {open && (
-          <List>
-            {folders.map((folder) => (
-              <NavListItem
-                active={folder.id == activeFolder}
-                key={uuid()}
-                item={folder}
-                workspaceId={workspace.id}
-              />
-            ))}
-          </List>
-        )}
-      </Section>
+      <NavSection title="Folders">
+        <List>
+          {folders.map((folder) => (
+            <NavListItem
+              active={folder.id == activeFolder}
+              key={uuid()}
+              item={folder}
+              workspaceId={workspace.id}
+            />
+          ))}
+        </List>
+      </NavSection>
     </Nav>
   );
 };
