@@ -36,7 +36,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          override: true
+          default: true
           components: clippy
       - name: Cache sqlx
         id: cache-sqlx
