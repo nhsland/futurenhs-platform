@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavListItem/> renders matching snapshot when active 1`] = `
+<DocumentFragment>
+  .c0 {
+  list-style-type: none;
+}
+
+.c0 a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+}
+
+.c0 a:focus {
+  box-shadow: none;
+}
+
+.c0 div {
+  color: rgb(33,43,50);
+}
+
+<li
+    class="c0"
+    style="background: rgb(255, 235, 59);"
+  >
+    <a
+      href="/workspaces/workspace-id/folders/folder-id"
+    >
+      <img
+        src="/public/openFolder.svg"
+      />
+      <div>
+        folder title
+      </div>
+    </a>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
+<DocumentFragment>
+  .c0 {
+  list-style-type: none;
+}
+
+.c0 a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+}
+
+.c0 a:focus {
+  box-shadow: none;
+}
+
+.c0 div {
+  color: rgb(33,43,50);
+}
+
+<li
+    class="c0"
+  >
+    <a
+      href="/workspaces/workspace-id/folders/folder-id"
+    >
+      <img
+        src="/public/closedFolder.svg"
+      />
+      <div>
+        folder title
+      </div>
+    </a>
+  </li>
+</DocumentFragment>
+`;
