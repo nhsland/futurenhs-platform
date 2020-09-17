@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
@@ -48,7 +48,7 @@ interface Props {
 }
 
 const Navigation = ({ workspace, folders, activeFolder }: Props) => {
-  const open = true;
+  const [open, setOpen] = useState(true);
   const openChevron = require("../../public/chevronOpen.svg");
   const closedChevron = require("../../public/chevronClosed.svg");
   return (
@@ -58,18 +58,32 @@ const Navigation = ({ workspace, folders, activeFolder }: Props) => {
         <a href={`/workspaces/${workspace.id}`}>About this workspace</a>
       </Header>
       <Section>
-        <h4>Folders</h4>
-        <img src={open ? openChevron : closedChevron} />
-        <List>
-          {folders.map((folder) => (
-            <NavListItem
-              active={folder.id == activeFolder}
-              key={uuid()}
-              item={folder}
-              workspaceId={workspace.id}
-            />
-          ))}
-        </List>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "start",
+          }}
+        >
+          <h4>Folders</h4>
+          <img
+            src={open ? openChevron : closedChevron}
+            onClick={() => setOpen(!open)}
+          />
+        </div>
+        {open && (
+          <List>
+            {folders.map((folder) => (
+              <NavListItem
+                active={folder.id == activeFolder}
+                key={uuid()}
+                item={folder}
+                workspaceId={workspace.id}
+              />
+            ))}
+          </List>
+        )}
       </Section>
     </Nav>
   );
