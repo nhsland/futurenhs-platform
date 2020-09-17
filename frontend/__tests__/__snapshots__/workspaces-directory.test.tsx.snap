@@ -109,7 +109,7 @@ exports[`takes a snapshot of the component 1`] = `
       <img
         alt="FutureNHS logo"
         class="c2"
-        src="[object Object]"
+        src="/public/FutureNHS.svg"
       />
       <a
         href="https://www.nhs.co.uk"
@@ -117,7 +117,7 @@ exports[`takes a snapshot of the component 1`] = `
         <img
           alt="https://www.nhs.co.uk"
           class="c2"
-          src="[object Object]"
+          src="/public/NHS.svg"
         />
       </a>
     </header>
@@ -140,7 +140,7 @@ exports[`takes a snapshot of the component 1`] = `
         >
           <img
             alt="https://www.nhs.co.uk"
-            src="[object Object]"
+            src="/public/Placeholder_Workspace_Image.svg"
           />
           <h3>
             hospital
@@ -155,7 +155,7 @@ exports[`takes a snapshot of the component 1`] = `
         >
           <img
             alt="https://www.nhs.co.uk"
-            src="[object Object]"
+            src="/public/Placeholder_Workspace_Image.svg"
           />
           <h3>
             pharmacy
@@ -170,7 +170,7 @@ exports[`takes a snapshot of the component 1`] = `
         >
           <img
             alt="https://www.nhs.co.uk"
-            src="[object Object]"
+            src="/public/Placeholder_Workspace_Image.svg"
           />
           <h3>
             ambulance
