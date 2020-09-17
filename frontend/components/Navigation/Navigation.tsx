@@ -51,7 +51,7 @@ const Navigation = ({ workspace, folders, activeFolder }: Props) => (
   <Nav>
     <Header>
       <h3>{workspace.title}</h3>
-      <a>About this workspace</a>
+      <a href={`/workspaces/${workspace.id}`}>About this workspace</a>
     </Header>
     <Section>
       <h4>Quick Links</h4>
