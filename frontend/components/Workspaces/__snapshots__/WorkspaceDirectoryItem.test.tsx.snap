@@ -59,7 +59,7 @@ exports[`snapshot of component 1`] = `
     >
       <img
         alt="https://www.nhs.co.uk"
-        src="[object Object]"
+        src="/public/Placeholder_Workspace_Image.svg"
       />
       <h3>
         workspace name
