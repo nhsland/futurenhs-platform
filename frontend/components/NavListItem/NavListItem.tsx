@@ -16,8 +16,6 @@ interface Props {
 
 const ListItem = styled.li<any>`
   list-style-type: none;
-  background-color: ${(props) =>
-    props.active ? props.theme.nhsukButtonActiveColor : ""};
   a {
     display: flex;
     padding-left: 8px;
@@ -40,7 +38,7 @@ const icons: { [key: string]: { [key: string]: string } } = {
 };
 
 const NavListItem = ({ active, item, icon, workspaceId }: Props) => (
-  <ListItem>
+  <ListItem style={{ background: active ? "#ffeb3b" : "" }}>
     <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
       <a>
         <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />

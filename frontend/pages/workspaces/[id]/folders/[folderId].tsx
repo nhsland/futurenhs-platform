@@ -21,7 +21,6 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
     const folderId = (context.params?.folderId as string) || "";
     const workspaceId = (context.params?.id as string) || "";
 
-    //TODO....Can we get back everything we need in one call? Do we want that?
     const { folder } = await sdk.GetFolderById({ id: folderId });
     const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
       workspace: workspaceId,
@@ -58,6 +57,7 @@ interface Props {
   workspaceFolders: Array<Pick<Folder, "id" | "title">>;
   workspace: Pick<Workspace, "id" | "title">;
 }
+
 const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
   <>
     <Head title={folder.title} />
