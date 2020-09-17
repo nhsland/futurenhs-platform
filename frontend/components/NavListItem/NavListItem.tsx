@@ -10,7 +10,6 @@ type ListItem = Pick<Folder, "id" | "title">;
 interface Props {
   active: boolean;
   item: ListItem;
-  icon: "folder";
   workspaceId: string;
 }
 
@@ -30,18 +29,16 @@ const ListItem = styled.li<any>`
   }
 `;
 
-const icons: { [key: string]: { [key: string]: string } } = {
-  folder: {
-    closed: require("../../public/closedFolder.svg"),
-    open: require("../../public/openFolder.svg"),
-  },
+const icons: { [key: string]: string } = {
+  closed: require("../../public/closedFolder.svg"),
+  open: require("../../public/openFolder.svg"),
 };
 
-const NavListItem = ({ active, item, icon, workspaceId }: Props) => (
+const NavListItem = ({ active, item, workspaceId }: Props) => (
   <ListItem style={{ background: active ? "#ffeb3b" : "" }}>
     <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
       <a>
-        <img src={active ? icons[icon]["open"] : icons[icon]["closed"]} />
+        <img src={active ? icons["open"] : icons["closed"]} />
         <div>{item.title}</div>
       </a>
     </Link>

@@ -65,7 +65,6 @@ const Navigation = ({ workspace, folders, activeFolder }: Props) => (
             key={uuid()}
             item={folder}
             workspaceId={workspace.id}
-            icon="folder"
           />
         ))}
       </List>
