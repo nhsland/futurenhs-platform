@@ -66,7 +66,8 @@ impl Workspace {
     }
 }
 
-// Fake implementation for tests. If you want integration tests, use selenium?
+// Fake implementation for tests. If you want integration tests that exercise the database,
+// see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
 #[cfg(test)]
 impl Workspace {
     pub async fn create(title: String, description: String, _pool: &PgPool) -> Result<Workspace> {
