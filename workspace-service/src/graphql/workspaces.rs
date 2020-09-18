@@ -1,6 +1,6 @@
 use crate::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
-use fnhs_event_models::{Event, EventClient, EventData, EventPublisher as _, WorkspaceCreatedData};
+use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A workspace")]
@@ -83,11 +83,12 @@ impl WorkspacesMutation {
         event_client
             .publish_events(&[Event::new(
                 workspace.id.clone(),
-                EventData::WorkspaceCreated(WorkspaceCreatedData {
+                WorkspaceCreatedData {
                     workspace_id: workspace.id.clone().into(),
+                    // TODO: Fill this in when we have users in the db.
                     user_id: "".into(),
                     title: workspace.title.clone(),
-                }),
+                },
             )])
             .await?;
 

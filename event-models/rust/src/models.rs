@@ -19,12 +19,12 @@ pub struct Event {
 }
 
 impl Event {
-    pub fn new(subject: impl Into<String>, data: EventData) -> Self {
+    pub fn new(subject: impl Into<String>, data: impl Into<EventData>) -> Self {
         Self {
             id: format!("{}", Uuid::new_v4()),
             subject: subject.into(),
             event_time: Utc::now(),
-            data,
+            data: data.into(),
         }
     }
 }
@@ -97,6 +97,12 @@ macro_rules! event_serialization {
                 $data_type,
             )*
         };
+
+        $(impl From<$data_type> for EventData {
+            fn from(data: $data_type) -> Self {
+                Self::$enum_variant(data)
+            }
+        })*
 
         #[derive(Debug, PartialEq)]
         pub enum EventData {
