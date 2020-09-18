@@ -34,7 +34,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - uses: actions-rs/toolchain@v1
-        working-directory: futurenhs-platform
       - name: Cache sqlx
         id: cache-sqlx
         uses: actions/cache@v2
