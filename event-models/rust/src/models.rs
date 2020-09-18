@@ -139,12 +139,9 @@ macro_rules! event_serialization {
 
 // Generate EventData enum and serialization logic
 event_serialization!(
-    ("ContentView", "1") => ContentView(ContentViewEventData),
-    ("CreateWorkspace", "1") => CreateWorkspace(CreateWorkspaceEventData),
+    ("ContentViewed", "1") => ContentViewed(ContentViewedData),
+    ("WorkspaceCreated", "1") => WorkspaceCreated(WorkspaceCreatedData),
 );
-
-// Additional exports for types referenced in event data types.
-pub use gen::{CreateWorkspaceEventDataInput, CreateWorkspaceEventDataInputOutput};
 
 #[cfg(test)]
 mod tests {
@@ -158,7 +155,7 @@ mod tests {
             event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
                 .unwrap()
                 .with_timezone(&Utc),
-            data: EventData::ContentView(ContentViewEventData {
+            data: EventData::ContentViewed(ContentViewedData {
                 user_id: "user".into(),
                 content_id: "content".into(),
                 content_type: "Folder".into(),
@@ -169,14 +166,14 @@ mod tests {
         .unwrap();
         assert_eq!(
             s,
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         );
     }
 
     #[test]
     fn deserialize() {
         let event: Event = serde_json::from_str(
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         ).unwrap();
         assert_eq!(
             event,
@@ -186,7 +183,7 @@ mod tests {
                 event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
                     .unwrap()
                     .with_timezone(&Utc),
-                data: EventData::ContentView(ContentViewEventData {
+                data: EventData::ContentViewed(ContentViewedData {
                     user_id: "user".into(),
                     content_id: "content".into(),
                     content_type: "Folder".into(),

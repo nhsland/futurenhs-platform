@@ -5,8 +5,8 @@
     { "$ref": "#/definitions/BaseEvent" },
     {
       "oneOf": [
-        { "$ref": "#/definitions/ContentViewEvent" },
-        { "$ref": "#/definitions/CreateWorkspaceEvent" }
+        { "$ref": "#/definitions/ContentViewed" },
+        { "$ref": "#/definitions/WorkspaceCreated" }
       ]
     }
   ],
@@ -27,12 +27,12 @@
       },
       "required": ["id", "subject", "eventTime"]
     },
-    "ContentViewEvent": {
+    "ContentViewed": {
       "type": "object",
       "properties": {
         "eventType": {
           "type": "string",
-          "enum": ["ContentView"]
+          "enum": ["ContentViewed"]
         },
         "dataVersion": {
           "type": "string",
@@ -63,12 +63,12 @@
       },
       "required": ["eventType", "dataVersion", "data"]
     },
-    "CreateWorkspaceEvent": {
+    "WorkspaceCreated": {
       "type": "object",
       "properties": {
         "eventType": {
           "type": "string",
-          "enum": ["CreateWorkspace"]
+          "enum": ["WorkspaceCreated"]
         },
         "dataVersion": {
           "type": "string",
@@ -77,29 +77,18 @@
         "data": {
           "type": "object",
           "properties": {
-            "input": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              },
-              "required": ["title", "description"]
+            "workspaceId": {
+              "type": "string"
             },
-            "output": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                }
-              },
-              "required": ["id"]
+            "title": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The id of the user that created the workspace",
+              "type": "string"
             }
           },
-          "required": ["input", "output"]
+          "required": ["userId", "title", "workspaceId"]
         }
       },
       "required": ["eventType", "dataVersion", "data"]
