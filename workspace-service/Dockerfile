@@ -3,6 +3,7 @@ FROM debian:buster-slim
 RUN apt-get update && apt-get install -y \
     tini \
     libssl1.1 \
+    libcurl4 \
     ;
 
 RUN useradd svc
