@@ -37,8 +37,6 @@ export interface CreateWorkspaceEvent {
     };
     output: {
       id: string;
-      title: string;
-      description: string;
       [k: string]: unknown;
     };
     [k: string]: unknown;
