@@ -161,13 +161,13 @@ mod tests {
             event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
                 .unwrap()
                 .with_timezone(&Utc),
-            data: EventData::ContentViewed(ContentViewedData {
+            data: ContentViewedData {
                 user_id: "user".into(),
                 content_id: "content".into(),
                 content_type: "Folder".into(),
                 workspace_id: "workspace".into(),
                 error: None,
-            }),
+            }.into(),
         })
         .unwrap();
         assert_eq!(
@@ -189,13 +189,13 @@ mod tests {
                 event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
                     .unwrap()
                     .with_timezone(&Utc),
-                data: EventData::ContentViewed(ContentViewedData {
+                data: ContentViewedData {
                     user_id: "user".into(),
                     content_id: "content".into(),
                     content_type: "Folder".into(),
                     workspace_id: "workspace".into(),
                     error: None,
-                })
+                }.into()
             }
         );
     }
