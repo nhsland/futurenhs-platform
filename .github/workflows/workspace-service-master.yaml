@@ -34,6 +34,8 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Make toolchain version available in current directory
+        run: cp futurenhs-platform/rust-toolchain .
       - uses: actions-rs/toolchain@v1
       - name: Cache sqlx
         id: cache-sqlx
