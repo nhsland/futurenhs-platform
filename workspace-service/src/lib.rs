@@ -153,13 +153,12 @@ mod tests {
             resp.take_body().into_string().await.unwrap(),
             r#"{"data":{"createWorkspace":{"title":"t"}}}"#,
         );
-        {
-            assert!(events
-                .try_iter()
-                .find(|e| matches!(e.data, EventData::WorkspaceCreated(_)))
-                .is_some());
-        }
         assert_eq!(resp.status(), StatusCode::Ok);
+
+        assert!(events
+            .try_iter()
+            .find(|e| matches!(e.data, EventData::WorkspaceCreated(_)))
+            .is_some());
 
         Ok(())
     }
