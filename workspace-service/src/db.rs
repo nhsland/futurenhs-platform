@@ -11,6 +11,7 @@ pub struct Workspace {
     pub description: String,
 }
 
+#[cfg(not(test))]
 impl Workspace {
     pub async fn create(title: String, description: String, pool: &PgPool) -> Result<Workspace> {
         let workspace =
@@ -61,6 +62,55 @@ impl Workspace {
             .fetch_one(pool)
             .await?;
 
+        Ok(workspace)
+    }
+}
+
+// Fake implementation for tests. If you want integration tests, use selenium?
+#[cfg(test)]
+impl Workspace {
+    pub async fn create(title: String, description: String, _pool: &PgPool) -> Result<Workspace> {
+        let workspace = Workspace {
+            id: Uuid::new_v4(),
+            title,
+            description,
+        };
+        Ok(workspace)
+    }
+
+    pub async fn find_all(_pool: &PgPool) -> Result<Vec<Workspace>> {
+        Ok(vec![])
+    }
+
+    pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<Workspace> {
+        let workspace = Workspace {
+            id,
+            title: "fake workspace".into(),
+            description: "fake workspace for tests".into(),
+        };
+        Ok(workspace)
+    }
+
+    pub async fn update(
+        id: Uuid,
+        title: String,
+        description: String,
+        _pool: &PgPool,
+    ) -> Result<Workspace> {
+        let workspace = Workspace {
+            id,
+            title,
+            description,
+        };
+        Ok(workspace)
+    }
+
+    pub async fn delete(id: Uuid, _pool: &PgPool) -> Result<Workspace> {
+        let workspace = Workspace {
+            id,
+            title: "fake deleted workspace".into(),
+            description: "fake deleted workspace for tests".into(),
+        };
         Ok(workspace)
     }
 }

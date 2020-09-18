@@ -49,11 +49,9 @@ pub async fn create_app(
 mod tests {
     use super::*;
     use http_types::{Method, Response, StatusCode, Url};
-    use std::env;
 
     async fn create_app_for_test() -> anyhow::Result<Server<graphql::State>> {
-        let database_url =
-            env::var("TEST_DATABASE_URL").expect("TEST_DATABASE_URL env var not found");
+        let database_url = "postgresql://COMPLETELY_BOGUS_DB_URL";
         let connection_pool = PgPool::connect(&database_url).await?;
 
         create_app(connection_pool, EventClient::default()).await
