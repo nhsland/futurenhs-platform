@@ -12,30 +12,11 @@ test: ## Run tests [TEST=test_name (optional)]
 
 .PHONY: docker-build
 docker-build: ## Build and tag Docker image
-	tar cv \
-		--exclude event-models/typescript \
-		--exclude manifests \
-		--exclude target \
-		Dockerfile \
-		-C .. event-models workspace-service | \
-		DOCKER_BUILDKIT=1 docker build - \
-			--progress plain \
-			--tag $(app) \
-			--tag $(image) \
-			--tag $(image):$(tag)
-
-.PHONY: docker-test
-docker-test: ## Run tests in Docker
-	tar cv \
-		--exclude event-models/typescript \
-		--exclude manifests \
-		--exclude target \
-		Dockerfile \
-		-C .. event-models workspace-service | \
-		DOCKER_BUILDKIT=1 docker build - \
-			--progress plain \
-			--target test \
-			--build-arg TEST_DATABASE_URL=$$TEST_DATABASE_URL
+	DOCKER_BUILDKIT=1 docker build . \
+		--progress plain \
+		--tag $(app) \
+		--tag $(image) \
+		--tag $(image):$(tag)
 
 .PHONY: docker-run
 docker-run: ## Run Docker image

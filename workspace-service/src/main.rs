@@ -12,6 +12,11 @@ use url::Url;
 async fn main() -> Result<()> {
     dotenv().ok();
 
+    if env::var_os("SELFCHECK_ONLY").is_some() {
+        println!("SELFCHECK_ONLY is set. Exiting...");
+        return Ok(());
+    }
+
     let provider = if let Ok(instrumentation_key) = env::var("INSTRUMENTATION_KEY") {
         let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
         let batch_exporter = BatchSpanProcessor::builder(
