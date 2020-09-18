@@ -10,7 +10,7 @@ mod gen {
     schemafy::schemafy!("../schema.json");
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Event {
     pub id: String,
     pub subject: String,
@@ -104,7 +104,7 @@ macro_rules! event_serialization {
             }
         })*
 
-        #[derive(Debug, PartialEq)]
+        #[derive(Debug, PartialEq, Clone)]
         pub enum EventData {
             $(
                 $enum_variant($data_type),

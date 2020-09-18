@@ -48,18 +48,29 @@ pub async fn create_app(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use fnhs_event_models::{Event, EventData};
     use http_types::{Method, Response, StatusCode, Url};
+    use std::sync::mpsc::{sync_channel, Receiver};
+    use std::sync::Arc;
 
-    async fn create_app_for_test() -> anyhow::Result<Server<graphql::State>> {
+    async fn create_app_for_test() -> anyhow::Result<(Receiver<Event>, Server<graphql::State>)> {
         let database_url = "postgresql://COMPLETELY_BOGUS_DB_URL";
         let connection_pool = PgPool::connect(&database_url).await?;
 
-        create_app(connection_pool, EventClient::default()).await
+        let (sender, receiver) = sync_channel(1000);
+        Ok((
+            receiver,
+            create_app(
+                connection_pool,
+                EventClient::with_publisher(Arc::new(sender)),
+            )
+            .await?,
+        ))
     }
 
     #[async_std::test]
     async fn root_redirects_to_graphiql() -> anyhow::Result<()> {
-        let app = create_app_for_test().await?;
+        let (_, app) = create_app_for_test().await?;
         let req = http_types::Request::new(
             Method::Get,
             Url::parse("http://workspace-service.workspace-service/").unwrap(),
@@ -74,7 +85,7 @@ mod tests {
 
     #[async_std::test]
     async fn graphql_schema_has_query_and_mutation() -> anyhow::Result<()> {
-        let app = create_app_for_test().await?;
+        let (_, app) = create_app_for_test().await?;
 
         let mut req = http_types::Request::new(
             Method::Post,
@@ -105,6 +116,49 @@ mod tests {
             resp.take_body().into_string().await.unwrap(),
             r#"{"data":{"__schema":{"queryType":{"name":"Query"},"mutationType":{"name":"Mutation"},"subscriptionType":null}}}"#,
         );
+        assert_eq!(resp.status(), StatusCode::Ok);
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn creating_workspace_emits_an_event() -> anyhow::Result<()> {
+        let (events, app) = create_app_for_test().await?;
+
+        let mut req = http_types::Request::new(
+            Method::Post,
+            Url::parse("http://workspace-service.workspace-service/graphql").unwrap(),
+        );
+        req.set_body(
+            r#"{"variables": {"title": "t", "description": "d"}, "query": "
+                mutation CreateWorkspace(
+                    $title: String!,
+                    $description: String!,
+                ) {
+                    createWorkspace(
+                        newWorkspace: {
+                            title: $title,
+                            description: $description
+                        }
+                    )
+                    { title }
+                }
+            "}"#
+            .replace("\n", "\\n"),
+        );
+
+        let mut resp: Response = dbg!(app.respond(req).await.unwrap());
+
+        assert_eq!(
+            resp.take_body().into_string().await.unwrap(),
+            r#"{"data":{"createWorkspace":{"title":"t"}}}"#,
+        );
+        {
+            assert!(events
+                .try_iter()
+                .find(|e| matches!(e.data, EventData::WorkspaceCreated(_)))
+                .is_some());
+        }
         assert_eq!(resp.status(), StatusCode::Ok);
 
         Ok(())
