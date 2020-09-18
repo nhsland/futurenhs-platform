@@ -33,10 +33,13 @@ const NavSection = ({
     <Section>
       <div>
         <h4>{title}</h4>
-        <img
-          src={open ? openChevron : closedChevron}
-          onClick={() => setOpen(!open)}
-        />
+        <button onClick={() => setOpen(!open)}>
+          {open ? (
+            <img src={openChevron} alt={`Collapse ${title}`} />
+          ) : (
+            <img src={closedChevron} alt={`Expand ${title}`} />
+          )}
+        </button>
       </div>
       {open && children}
     </Section>
