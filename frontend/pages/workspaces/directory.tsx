@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
 import { Header } from "../../components/Header";
+import { NavHeader } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
 import WorkspaceDirectoryItem from "../../components/Workspaces/WorkspaceDirectoryItem";
@@ -49,6 +50,7 @@ const WorkspaceDirectory = ({ workspaces }: Props) => {
   return (
     <PageLayout>
       <Header />
+      <NavHeader />
       <PageContent>
         <MainHeading withBorder>My workspaces</MainHeading>
         {workspaces.map((workspace: Workspace) => {
