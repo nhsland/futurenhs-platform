@@ -13,17 +13,18 @@ const StyledHeader = styled(Header)`
 `;
 
 const StyledHeaderContainer = styled.div`
+  padding: 20px;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    right: 0;
+  }
+
   ${({ theme }) => `
     background-color: ${theme.colorNhsukBlue};
-    padding: 20px;
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    button {
-      right: 0;
-    }
 
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       background-color: ${theme.colorNhsukWhite};
@@ -55,11 +56,12 @@ const StyledSvgIcon = styled.svg.attrs({
   xmlns: "http://www.w3.org/2000/svg",
   xmlnsXlink: "http://www.w3.org/1999/xlink",
 })`
+  height: 20px;
+  width: 20px;
+  margin-right: 18px;
   ${({ theme }) => `
-    height: 20px;
-    width: 20px;
-    margin-right: 18px;
     color: ${theme.colorNhsukBlue};
+
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       color: ${theme.colorNhsukWhite};
       margin-right: 10px;
@@ -76,17 +78,13 @@ const StyledHeaderNav = styled(Header.Nav)`
 `;
 
 const StyledHeaderNavItem = styled(Header.NavItem)`
+  a {
+    display: flex;
+    align-items: center;
+  }
+
   ${({ theme }) => `
-    a {
-      display: flex;
-      align-items: center;
-
-
-    }
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-      .nav-item-hide {
-        display: none;
-      }
       #nav-item-hide {
         display: none;
       }

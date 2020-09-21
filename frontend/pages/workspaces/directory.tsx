@@ -4,7 +4,6 @@ import { GraphQLClient } from "graphql-request";
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
-import { Header } from "../../components/Header";
 import { NavHeader } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
 import { PageLayout } from "../../components/PageLayout";
