@@ -221,9 +221,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-tide"
-version = "1.17.9"
+version = "1.18.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4332bccab7c56a0f23311fbefbcaf1c304d8e430428eff43e25729d3bb02c6b"
+checksum = "d2f3e2ead6d820b85187e8d8b1255f259575808e8c4933c45418d1f0e5bb9bd9"
 dependencies = [
  "async-graphql",
  "async-std",
