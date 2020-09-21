@@ -49,7 +49,6 @@ interface Props {
 const WorkspaceDirectory = ({ workspaces }: Props) => {
   return (
     <PageLayout>
-      <Header />
       <NavHeader />
       <PageContent>
         <MainHeading withBorder>My workspaces</MainHeading>
