@@ -24,6 +24,11 @@ exports[`<NavSection/> does not render children when closed 1`] = `
   align-items: start;
 }
 
+.c0 button {
+  border: none;
+  background: inherit;
+}
+
 .c0 h4 {
   color: rgb(0,94,184);
 }
@@ -35,9 +40,12 @@ exports[`<NavSection/> does not render children when closed 1`] = `
       <h4>
         Folders
       </h4>
-      <img
-        src="/public/chevronClosed.svg"
-      />
+      <button>
+        <img
+          alt="Show Folders"
+          src="/public/chevronClosed.svg"
+        />
+      </button>
     </div>
   </section>
 </DocumentFragment>
@@ -67,6 +75,11 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
   align-items: start;
 }
 
+.c0 button {
+  border: none;
+  background: inherit;
+}
+
 .c0 h4 {
   color: rgb(0,94,184);
 }
@@ -78,9 +91,12 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
       <h4>
         Folders
       </h4>
-      <img
-        src="/public/chevronOpen.svg"
-      />
+      <button>
+        <img
+          alt="Hide Folders"
+          src="/public/chevronOpen.svg"
+        />
+      </button>
     </div>
     Look at me! I am children!
   </section>
