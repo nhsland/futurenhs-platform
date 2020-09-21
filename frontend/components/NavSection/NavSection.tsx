@@ -10,6 +10,10 @@ const Section = styled.section`
     justify-content: space-between;
     align-items: start;
   }
+  button {
+    border: none;
+    background: inherit;
+  }
   ${({ theme }) => `
     h4 {
       color: ${theme.colorNhsukBlue};
