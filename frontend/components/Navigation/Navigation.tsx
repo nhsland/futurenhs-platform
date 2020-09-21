@@ -29,9 +29,6 @@ const Nav = styled.nav`
 
 const Header = styled.header`
   padding-bottom: 20px;
-  h3 {
-    text-decoration: none;
-  }
   ${({ theme }) => `
   border-bottom: 1px solid ${theme.colorNhsukGrey1};
   `};
