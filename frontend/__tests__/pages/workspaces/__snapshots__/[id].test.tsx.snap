@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
+<DocumentFragment>
+  .c1 {
+  background-color: rgb(255,255,255);
+  padding: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c2 {
+  display: block;
+  height: 40px;
+}
+
+.c9 {
+  margin-bottom: 12px;
+  list-style-type: none;
+  border-radius: 4px;
+}
+
+.c9:hover {
+  background-color: rgb(216,221,224);
+}
+
+.c9 a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c9 a:focus {
+  box-shadow: none;
+}
+
+.c9 img {
+  padding-top: 2px;
+  -webkit-align-self: baseline;
+  -ms-flex-item-align: baseline;
+  align-self: baseline;
+  width: 24px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c9 div {
+  padding-left: 4px;
+  padding-right: 4px;
+  color: rgb(33,43,50);
+}
+
+.c7 {
+  padding-top: 20px;
+}
+
+.c7 div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c7 button {
+  border: none;
+  background: inherit;
+}
+
+.c7 h4 {
+  color: rgb(0,94,184);
+}
+
+.c4 {
+  padding-top: 24px;
+  padding-right: 52px;
+  padding-left: 20px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  box-sizing: border-box;
+  width: 270px;
+}
+
+.c5 {
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(76,98,114);
+}
+
+.c6 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+.c6:hover {
+  color: inherit;
+}
+
+.c6:visited {
+  color: inherit;
+}
+
+.c8 {
+  padding-left: 0px;
+}
+
+.c0 {
+  max-width: 1200px;
+  margin: 0px auto;
+}
+
+.c10 {
+  -webkit-box-flex: 3;
+  -webkit-flex-grow: 3;
+  -ms-flex-positive: 3;
+  flex-grow: 3;
+  min-height: 100vh;
+  padding-top: 24px;
+  padding-left: 10%;
+  padding-right: 10%;
+  background-color: rgb(255,255,255);
+}
+
+.c11 {
+  padding-top: 24px;
+  margin-bottom: 8px;
+  border-top: 1px solid rgb(76,98,114);
+  color: rgb(76,98,114);
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width:641px) {
+  .c2 {
+    height: 32px;
+  }
+}
+
+@media (max-width:320px) {
+  .c2 {
+    height: 28px;
+  }
+}
+
+@media (min-width:641px) {
+  .c4 {
+    width: 300px;
+  }
+}
+
+@media (min-width:990px) {
+  .c4 {
+    width: 360px;
+  }
+}
+
+<div
+    class="c0"
+  >
+    <header
+      class="c1"
+    >
+      <img
+        alt="FutureNHS logo"
+        class="c2"
+        src="/public/FutureNHS.svg"
+      />
+      <a
+        href="https://www.nhs.co.uk"
+      >
+        <img
+          alt="https://www.nhs.co.uk"
+          class="c2"
+          src="/public/NHS.svg"
+        />
+      </a>
+    </header>
+    <div
+      class="c3"
+    >
+      <nav
+        class="c4"
+      >
+        <header
+          class="c5"
+        >
+          <a
+            class="c6"
+            href="/workspaces/1"
+          >
+            <h3>
+              hospital
+            </h3>
+          </a>
+          <a
+            href="/workspaces/1"
+          >
+            About this workspace
+          </a>
+        </header>
+        <section
+          class="c7"
+        >
+          <div>
+            <h4>
+              Folders
+            </h4>
+            <button>
+              <img
+                alt="Hide Folders"
+                src="/public/chevronOpen.svg"
+              />
+            </button>
+          </div>
+          <ul
+            class="c8"
+          >
+            <li
+              class="c9"
+            >
+              <a
+                href="/workspaces/1/folders/f1"
+              >
+                <img
+                  src="/public/folderClosed.svg"
+                />
+                <div>
+                  folder 1
+                </div>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </nav>
+      <section
+        class="c10"
+      >
+        <h1
+          aria-live="polite"
+        >
+          hospital
+        </h1>
+        <h2
+          class="c11"
+        >
+          Most recent items
+        </h2>
+      </section>
+    </div>
+  </div>
+</DocumentFragment>
+`;
