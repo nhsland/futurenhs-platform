@@ -104,6 +104,10 @@ exports[`<Navigation/> renders correctly 1`] = `
   color: inherit;
 }
 
+.c2:visited {
+  color: inherit;
+}
+
 .c4 {
   padding-left: 0px;
 }

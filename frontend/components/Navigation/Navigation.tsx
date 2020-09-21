@@ -40,6 +40,9 @@ const WorkspaceTitleLink = styled.a`
   &:hover {
     color: inherit;
   }
+  &:visited {
+    color: inherit;
+  }
 `;
 
 const List = styled.ul`
