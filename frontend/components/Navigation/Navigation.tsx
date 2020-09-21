@@ -1,5 +1,6 @@
 import React from "react";
 
+import Link from "next/link";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
@@ -28,9 +29,20 @@ const Nav = styled.nav`
 
 const Header = styled.header`
   padding-bottom: 20px;
+  h3 {
+    text-decoration: none;
+  }
   ${({ theme }) => `
   border-bottom: 1px solid ${theme.colorNhsukGrey1};
   `};
+`;
+
+const WorkspaceTitleLink = styled.a`
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
 `;
 
 const List = styled.ul`
@@ -47,8 +59,15 @@ const Navigation = ({ workspace, folders, activeFolder }: Props) => {
   return (
     <Nav>
       <Header>
-        <h3>{workspace.title}</h3>
-        <a href={`/workspaces/${workspace.id}`}>About this workspace</a>
+        <Link href={`/workspaces/${workspace.id}`} passHref>
+          <WorkspaceTitleLink>
+            <h3>{workspace.title}</h3>
+          </WorkspaceTitleLink>
+        </Link>
+
+        <Link href={`/workspaces/${workspace.id}`}>
+          <a>About this workspace</a>
+        </Link>
       </Header>
       <NavSection title="Folders">
         <List>
