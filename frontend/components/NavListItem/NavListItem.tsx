@@ -31,7 +31,6 @@ const ListItem = styled.li<any>`
     }
   }
   img {
-    /*  */
     padding-top: 2px;
     align-self: baseline;
     /* stop things jumping about while svgs load */
