@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eux
 
 # https://stackoverflow.com/a/1482133
 cd $(dirname "$0")
