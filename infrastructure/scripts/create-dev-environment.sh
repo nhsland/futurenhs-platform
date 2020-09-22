@@ -108,8 +108,15 @@ enable_analytics=false
 EOF
 	fi
 
+	# Always set the backend config, because this is always what we want
+	# and I can't imagine anyone ever hand-editing it.
+	cat >"$REPO_ROOT/infrastructure/environments/dev/backend-config.tfvars" <<EOF
+resource_group_name="$RESOURCE_GROUP_NAME"
+storage_account_name="$STORAGE_ACCOUNT_NAME"
+EOF
+
 	# terraform init is idempotent, so we might as well run it for the user.
-	cd $REPO_ROOT/infrastructure/environments/dev && terraform init -backend-config=terraform.tfvars
+	cd $REPO_ROOT/infrastructure/environments/dev && terraform init -backend-config=backend-config.tfvars
 
 	echo "Your dev terraform environment is ready to go. To initialize run:"
 	echo "("
