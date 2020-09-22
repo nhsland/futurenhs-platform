@@ -23,6 +23,9 @@
   "declan": {
     "BRANCH": "master"
   },
+  "stu": {
+    "BRANCH": "master"
+  },
   "ed": {
     "BRANCH": "master"
   }
