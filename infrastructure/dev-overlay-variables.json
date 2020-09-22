@@ -25,5 +25,8 @@
   },
   "stu": {
     "BRANCH": "master"
+  },
+  "ed": {
+    "BRANCH": "master"
   }
 }
