@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - workspace-service/**
+      - infrastructure/dev-overlay-variables.json
       - .github/workflows/workspace-service-branch.yaml
 jobs:
   ci:
