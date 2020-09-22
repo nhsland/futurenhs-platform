@@ -101,7 +101,7 @@ const NavHeader = () => {
         <Header.MenuToggle />
       </StyledHeaderContainer>
       <StyledHeaderNav>
-        <Link href="/workspaces/directory">
+        <Link href="/workspaces/directory" passHref>
           <StyledHeaderNavItem>
             <StyledSvgIcon viewBox="0 0 20 16">
               <path
