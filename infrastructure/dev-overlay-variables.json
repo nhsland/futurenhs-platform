@@ -22,5 +22,8 @@
   },
   "declan": {
     "BRANCH": "master"
+  },
+  "ed": {
+    "BRANCH": "master"
   }
 }
