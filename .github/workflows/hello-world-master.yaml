@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - hello-world/**
+      - infrastructure/dev-overlay-variables.json
       - .github/workflows/hello-world-master.yaml
 
 jobs:
