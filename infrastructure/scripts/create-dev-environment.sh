@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
 NAME="${1:?"Please enter your name as first argument"}"
 
