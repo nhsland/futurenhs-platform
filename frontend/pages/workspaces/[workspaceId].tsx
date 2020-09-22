@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
       "http://workspace-service.workspace-service/graphql"
     );
     const sdk = getSdk(client);
-    const workspaceID = (context.params?.id as string) || "";
+    const workspaceID = (context.params?.workspaceId as string) || "";
 
     const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceID });
     const { foldersByWorkspace } = await sdk.FoldersByWorkspace({

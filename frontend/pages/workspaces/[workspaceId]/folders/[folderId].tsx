@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
     );
     const sdk = getSdk(client);
     const folderId = (context.params?.folderId as string) || "";
-    const workspaceId = (context.params?.id as string) || "";
+    const workspaceId = (context.params?.workspaceId as string) || "";
 
     const { folder } = await sdk.GetFolderById({ id: folderId });
     const { foldersByWorkspace } = await sdk.FoldersByWorkspace({

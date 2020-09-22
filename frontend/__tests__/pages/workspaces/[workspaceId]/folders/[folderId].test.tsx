@@ -4,7 +4,7 @@ import { render } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
 
 import theme from "../../../../../lib/fixtures/theme.json";
-import FolderHomepage from "../../../../../pages/workspaces/[id]/folders/[folderId]";
+import FolderHomepage from "../../../../../pages/workspaces/[workspaceId]/folders/[folderId]";
 
 describe(FolderHomepage, () => {
   test("renders matching snapshot", () => {
