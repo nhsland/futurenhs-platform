@@ -13,10 +13,13 @@ interface Props {
   workspaceId: string;
 }
 
-const ListItem = styled.li<any>`
-  margin-bottom: 12px;
-  list-style-type: none;
+const ListItem = styled.li<{ active: boolean }>`
+  background: ${({ active, theme }) =>
+    active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
+  font-weight: ${({ active }) => (active ? 700 : "inherit")};
+  list-style-type: none;
+  margin-bottom: 12px;
   &:hover {
     ${({ theme }) => `
     background-color: ${theme.colorNhsukGrey4}
@@ -52,7 +55,7 @@ const icons: { [key: string]: string } = {
 };
 
 const NavListItem = ({ active, item, workspaceId }: Props) => (
-  <ListItem style={active ? { background: "#ffeb3b", fontWeight: 700 } : {}}>
+  <ListItem active={active}>
     <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
       <a>
         <img src={active ? icons["open"] : icons["closed"]} />

@@ -21,9 +21,11 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
 }
 
 .c9 {
-  margin-bottom: 12px;
-  list-style-type: none;
+  background: rgb(255,235,59);
   border-radius: 4px;
+  font-weight: 700;
+  list-style-type: none;
+  margin-bottom: 12px;
 }
 
 .c9:hover {
@@ -241,7 +243,6 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
           >
             <li
               class="c9"
-              style="background: rgb(255, 235, 59); font-weight: 700;"
             >
               <a
                 href="/workspaces/1/folders/f1"

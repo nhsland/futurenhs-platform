@@ -3,9 +3,11 @@
 exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 <DocumentFragment>
   .c0 {
-  margin-bottom: 12px;
-  list-style-type: none;
+  background: rgb(255,235,59);
   border-radius: 4px;
+  font-weight: 700;
+  list-style-type: none;
+  margin-bottom: 12px;
 }
 
 .c0:hover {
@@ -45,7 +47,6 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 
 <li
     class="c0"
-    style="background: rgb(255, 235, 59); font-weight: 700;"
   >
     <a
       href="/workspaces/workspace-id/folders/folder-id"
@@ -64,9 +65,11 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
 <DocumentFragment>
   .c0 {
-  margin-bottom: 12px;
-  list-style-type: none;
+  background: inherit;
   border-radius: 4px;
+  font-weight: inherit;
+  list-style-type: none;
+  margin-bottom: 12px;
 }
 
 .c0:hover {

@@ -3,9 +3,11 @@
 exports[`<Navigation/> renders correctly 1`] = `
 <DocumentFragment>
   .c5 {
-  margin-bottom: 12px;
-  list-style-type: none;
+  background: inherit;
   border-radius: 4px;
+  font-weight: inherit;
+  list-style-type: none;
+  margin-bottom: 12px;
 }
 
 .c5:hover {
