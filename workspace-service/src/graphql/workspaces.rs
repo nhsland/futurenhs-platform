@@ -138,3 +138,51 @@ async fn create_workspace(
 
     Ok(workspace)
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    use fnhs_event_models::{Event, EventData};
+    use http_types::{Method, Response, StatusCode, Url};
+    use std::sync::mpsc::{sync_channel, Receiver};
+    use std::sync::Arc;
+
+    /// Should explode if you actually try to use it.
+    async fn mock_connection_pool() -> anyhow::Result<PgPool> {
+        let database_url = "postgresql://COMPLETELY_BOGUS_DB_URL";
+        let connection_pool = PgPool::connect(&database_url).await?;
+        Ok(connection_pool)
+    }
+
+    /// Returns an EventClient and a channel to see what was published.
+    fn mock_event_emitter() -> (Receiver<Event>, EventClient) {
+        let (sender, receiver) = sync_channel(1000);
+        (receiver, EventClient::with_publisher(Arc::new(sender)))
+    }
+
+    #[async_std::test]
+    async fn creating_workspace_emits_an_event() -> anyhow::Result<()> {
+        let pool = mock_connection_pool().await?;
+        let (events, event_client) = mock_event_emitter();
+
+        let workspace = create_workspace(
+            "title".to_string(),
+            "description".to_string(),
+            &pool,
+            &event_client,
+        )
+        .await
+        .unwrap();
+
+        assert_eq!(workspace.title, "title");
+        assert_eq!(workspace.description, "description");
+
+        assert!(events
+            .try_iter()
+            .find(|e| matches!(e.data, EventData::WorkspaceCreated(_)))
+            .is_some());
+
+        Ok(())
+    }
+}
