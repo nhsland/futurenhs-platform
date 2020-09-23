@@ -49,7 +49,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^6.8.2",
-    "sass": "^1.26.10",
+    "sass": "^1.26.11",
     "sass-extract": "^2.1.0",
     "sass-extract-js": "^0.4.0",
     "sass-extract-loader": "^1.1.0",
