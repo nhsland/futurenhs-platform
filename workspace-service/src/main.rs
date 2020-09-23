@@ -11,15 +11,19 @@ use workspace_service::sas;
 
 #[derive(Debug, Clone, StructOpt)]
 pub struct Config {
-    #[structopt(long, env = "SELFCHECK_ONLY")]
+    /// Immediately exit, can be used to check that the service is configured and will run
+    #[structopt(long)]
     selfcheck_only: bool,
 
+    /// Key for OpenTelemetry exporter
     #[structopt(long, env = "INSTRUMENTATION_KEY")]
     instrumentation_key: Option<String>,
 
-    #[structopt(long, env = "DATABASE_URL")]
+    /// The URL for the Postgres database
+    #[structopt(long, env = "DATABASE_URL", required_if("selfcheck_only", "false"))]
     database_url: String,
 
+    /// Endpoint for the Azure EventGrid topic
     #[structopt(
         long,
         env = "EVENTGRID_TOPIC_ENDPOINT",
@@ -27,16 +31,25 @@ pub struct Config {
     )]
     pub eventgrid_topic_endpoint: Option<Url>,
 
-    #[structopt(long, env = "EVENTGRID_TOPIC_KEY")]
+    /// Key for the Azure EventGrid topic
+    #[structopt(long, env = "EVENTGRID_TOPIC_KEY", hide_env_values = true)]
     pub eventgrid_topic_key: Option<String>,
 
-    #[structopt(long, env = "UPLOAD_MASTER_KEY")]
+    /// The Azure Blob Storage Account key for file uploads
+    #[structopt(
+        long,
+        env = "UPLOAD_MASTER_KEY",
+        hide_env_values = true,
+        required_if("selfcheck_only", "false")
+    )]
     pub master_key: String,
 
+    /// The Azure Blob Storage Container URL for file uploads
     #[structopt(
         long,
         env = "UPLOAD_CONTAINER_URL",
-        parse(try_from_str = str::parse)
+        parse(try_from_str = str::parse),
+        required_if("selfcheck_only", "false")
     )]
     container_url: Url,
 }
@@ -47,7 +60,7 @@ async fn main() -> Result<()> {
     let config = Config::from_args();
 
     if config.selfcheck_only {
-        println!("SELFCHECK_ONLY is set. Exiting...");
+        println!("--selfcheck_only is set. Exiting...");
         return Ok(());
     }
 
