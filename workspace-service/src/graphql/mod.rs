@@ -1,3 +1,4 @@
+mod files;
 mod folders;
 mod workspaces;
 
@@ -15,7 +16,6 @@ use tide::{http::mime, Request, Response, StatusCode};
 pub struct State {
     schema: Schema<Query, Mutation, EmptySubscription>,
     event_client: EventClient,
-    sas_config: sas::Config,
 }
 
 impl State {
@@ -24,15 +24,19 @@ impl State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
                 .data(event_client.clone())
+                .data(sas_config)
                 .finish(),
             event_client,
-            sas_config,
         }
     }
 }
 
 #[derive(GQLMergedObject, Default)]
-struct Query(folders::FoldersQuery, workspaces::WorkspacesQuery);
+struct Query(
+    folders::FoldersQuery,
+    workspaces::WorkspacesQuery,
+    files::FileUploadQuery,
+);
 
 #[derive(GQLMergedObject, Default)]
 struct Mutation(folders::FoldersMutation, workspaces::WorkspacesMutation);

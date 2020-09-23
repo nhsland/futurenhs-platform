@@ -5,11 +5,11 @@ use chrono::*;
 use url::Url;
 use uuid::Uuid;
 
-pub fn create_upload_sas(config: Config, name: &Uuid) -> Result<Url> {
+pub fn create_upload_sas(config: &Config, name: &Uuid) -> Result<Url> {
     create_upload_sas_impl(config, name, Utc::now())
 }
 
-fn create_upload_sas_impl(config: Config, name: &Uuid, now: DateTime<Utc>) -> Result<Url> {
+fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> Result<Url> {
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
@@ -43,7 +43,7 @@ mod tests {
         let now = Utc::now();
 
         // the key below has been revoked ...
-        let actual = create_upload_sas_impl(Config::new(
+        let actual = create_upload_sas_impl(&Config::new(
             "LS6VHq43aBFjcwpAEK2hn3jUKraeFcR6OrtOM3VpBO81SgbSZ8ebu0CznxrrYF59dHVaUypuPdZy26SRc/CJJQ==".to_string(),
             Url::parse("https://fnhsnonproduploadstu.blob.core.windows.net/waiting").unwrap(),
         ),&uuid, now).unwrap();
