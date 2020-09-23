@@ -20,8 +20,8 @@ pub struct Config {
     instrumentation_key: Option<String>,
 
     /// The URL for the Postgres database
-    #[structopt(long, env = "DATABASE_URL", required_if("selfcheck_only", "false"))]
-    database_url: String,
+    #[structopt(long, env = "DATABASE_URL", required_unless("selfcheck-only"))]
+    database_url: Option<String>,
 
     /// Endpoint for the Azure EventGrid topic
     #[structopt(
@@ -40,18 +40,18 @@ pub struct Config {
         long,
         env = "UPLOAD_MASTER_KEY",
         hide_env_values = true,
-        required_if("selfcheck_only", "false")
+        required_unless("selfcheck-only")
     )]
-    pub master_key: String,
+    pub master_key: Option<String>,
 
     /// The Azure Blob Storage Container URL for file uploads
     #[structopt(
         long,
         env = "UPLOAD_CONTAINER_URL",
         parse(try_from_str = str::parse),
-        required_if("selfcheck_only", "false")
+        required_unless("selfcheck-only")
     )]
-    container_url: Url,
+    container_url: Option<Url>,
 }
 
 #[async_std::main]
@@ -60,7 +60,7 @@ async fn main() -> Result<()> {
     let config = Config::from_args();
 
     if config.selfcheck_only {
-        println!("--selfcheck_only is set. Exiting...");
+        println!("--selfcheck-only is set. Exiting...");
         return Ok(());
     }
 
@@ -87,7 +87,7 @@ async fn main() -> Result<()> {
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
-    let connection_pool = PgPool::connect(&config.database_url).await?;
+    let connection_pool = PgPool::connect(&config.database_url.expect("required")).await?;
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
 
     let event_client = if let (Some(topic_endpoint), Some(topic_key)) =
@@ -107,7 +107,10 @@ async fn main() -> Result<()> {
     let app = workspace_service::create_app(
         connection_pool,
         event_client,
-        sas::Config::new(config.master_key, config.container_url),
+        sas::Config::new(
+            config.master_key.expect("required"),
+            config.container_url.expect("required"),
+        ),
     )
     .await?;
     app.listen("0.0.0.0:3030").await?;
