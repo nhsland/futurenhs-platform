@@ -3648,6 +3648,7 @@ dependencies = [
  "http-types",
  "opentelemetry",
  "opentelemetry-application-insights",
+ "percent-encoding",
  "sqlx",
  "structopt",
  "tide",
