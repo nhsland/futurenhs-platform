@@ -11,7 +11,7 @@ USAGE: $(basename $0) dev-\$FNHSNAME
 "
 
 ENVIRONMENT="${1:?"${USAGE}Please specify your environment name as the first parameter, e.g. dev-jane"}"
-WORKSPACE_TITLE="Demo workspace"
+WORKSPACE_TITLE="Selenium Testing"
 
 CURRENT_CONTEXT=$(kubectl config current-context)
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
