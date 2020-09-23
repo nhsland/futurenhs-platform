@@ -39,6 +39,7 @@ OVERWRITE=localfiles $REPO_ROOT/infrastructure/scripts/create-dev-environment.sh
 )
 
 az aks get-credentials --overwrite-existing --resource-group platform-dev-$FNHSNAME --name dev-$FNHSNAME
+CURRENT_CONTEXT=$(kubectl config current-context)
 
 if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
 	echo "You want to deploy to:   $ENVIRONMENT"
