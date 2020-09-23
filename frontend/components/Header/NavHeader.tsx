@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Link from "next/link";
 import { Header } from "nhsuk-react-components";
@@ -52,24 +52,6 @@ const StyledIcon = styled.img`
   margin-right: 18px;
 `;
 
-const StyledSvgIcon = styled.svg.attrs({
-  version: "1.1",
-  xmlns: "http://www.w3.org/2000/svg",
-  xmlnsXlink: "http://www.w3.org/1999/xlink",
-})`
-  height: 20px;
-  width: 20px;
-  margin-right: 18px;
-  ${({ theme }) => `
-    color: ${theme.colorNhsukBlue};
-
-    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-      color: ${theme.colorNhsukWhite};
-      margin-right: 10px;
-    }
-  `}
-`;
-
 const StyledHeaderNav = styled(Header.Nav)`
   ${({ theme }) => `
       @media (min-width: ${theme.mqBreakpoints.tablet}) {
@@ -84,21 +66,11 @@ const StyledHeaderNavItem = styled(Header.NavItem)`
     align-items: center;
   }
 
-  p {
-    padding: 0 18px;
-  }
-
   ${({ theme }) => `
-    :hover svg,
     :hover .nhsuk-icon__chevron-right {
-      // color: ${theme.colorNhsukWhite};
-      color: currentColor;
       fill: ${theme.colorNhsukWhite};
     }
-    :active svg,
     :active .nhsuk-icon__chevron-right {
-      // color: ${theme.colorNhsukBlack};
-      color: currentColor;
       fill: ${theme.colorNhsukBlack};
     }
   `}
@@ -108,31 +80,37 @@ const items = [
   {
     title: "My workspaces",
     icon: require("../../public/workspace-blue.svg"),
+    iconHover: require("../../public/workspace-white.svg"),
     link: "/workspaces/directory",
   },
   {
     title: "My dashboard",
     icon: require("../../public/my-dashboard-blue.svg"),
+    iconHover: require("../../public/my-dashboard-white.svg"),
     link: "#",
   },
   {
     title: "Notifications",
-    icon: require("../../public/icons/notifications.svg"),
+    icon: require("../../public/notifications-blue.svg"),
+    iconHover: require("../../public/notifications-white.svg"),
     link: "#",
   },
   {
     title: "View profile",
-    icon: require("../../public/icons/profile.svg"),
+    icon: require("../../public/user-blue.svg"),
+    iconHover: require("../../public/user-white.svg"),
     link: "#",
   },
   {
     title: "Help",
     icon: require("../../public/help-blue.svg"),
+    iconHover: require("../../public/help-white.svg"),
     link: "#",
   },
   {
     title: "Log out",
     icon: require("../../public/log-out-blue.svg"),
+    iconHover: require("../../public/log-out-white.svg"),
     link: "#",
   },
 ];
@@ -140,33 +118,31 @@ const items = [
 interface Props {
   title: string;
   icon: string;
+  iconHover: string;
   link: string;
 }
 
-const NavListItem = ({ title, icon, link }: Props) => {
+// function setHover(e) {
+//   e.target.style.background = "red";
+// }
+
+const NavListItem = ({ title, icon, iconHover, link }: Props) => {
+  const [hover, setHover] = useState(false);
+  const toggle = () => setHover(!hover);
+  console.log("the icon is ....", icon);
+  console.log("the iconHover is ....", iconHover);
+
   return (
     <Link href={link} passHref>
-      <StyledNavListItem>
+      <StyledHeaderNavItem onMouseOver={toggle} onMouseOut={toggle}>
         <a>
-          <StyledIcon src={icon} alt="" />
+          <StyledIcon src={hover ? iconHover : icon} alt="" />
           <div>{title}</div>
         </a>
-      </StyledNavListItem>
+      </StyledHeaderNavItem>
     </Link>
   );
 };
-
-const StyledNavListItem = styled.li`
-  a {
-    display: flex;
-    justify-content: row;
-    align-items: center;
-    padding: 12px 16px;
-  }
-  div {
-    font-size: 16px;
-  }
-`;
 
 const NavHeader = () => {
   return (
@@ -182,6 +158,7 @@ const NavHeader = () => {
             <NavListItem
               title={item.title}
               icon={item.icon}
+              iconHover={item.iconHover}
               link={item.link}
               key={uuid()}
             />
