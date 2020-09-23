@@ -8,6 +8,7 @@ use tracing_futures::Instrument;
 
 mod db;
 mod graphql;
+pub mod sas;
 
 pub fn log<'a>(
     req: Request<graphql::State>,
@@ -32,8 +33,13 @@ pub fn log<'a>(
 pub async fn create_app(
     connection_pool: PgPool,
     event_client: EventClient,
+    sas_config: sas::Config,
 ) -> anyhow::Result<Server<graphql::State>> {
-    let mut app = tide::with_state(graphql::State::new(connection_pool, event_client));
+    let mut app = tide::with_state(graphql::State::new(
+        connection_pool,
+        event_client,
+        sas_config,
+    ));
 
     app.with(log);
 
@@ -56,7 +62,15 @@ mod tests {
             env::var("TEST_DATABASE_URL").expect("TEST_DATABASE_URL env var not found");
         let connection_pool = PgPool::connect(&database_url).await?;
 
-        create_app(connection_pool, EventClient::default()).await
+        create_app(
+            connection_pool,
+            EventClient::default(),
+            sas::Config::new(
+                "test_key".to_string(),
+                Url::parse("http://example.com/test_container_url")?,
+            ),
+        )
+        .await
     }
 
     #[async_std::test]

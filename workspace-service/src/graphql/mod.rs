@@ -2,6 +2,7 @@ mod folders;
 mod workspaces;
 
 use super::db;
+use super::sas;
 use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
     EmptySubscription, GQLMergedObject, Schema,
@@ -14,16 +15,18 @@ use tide::{http::mime, Request, Response, StatusCode};
 pub struct State {
     schema: Schema<Query, Mutation, EmptySubscription>,
     event_client: EventClient,
+    sas_config: sas::Config,
 }
 
 impl State {
-    pub fn new(pool: PgPool, event_client: EventClient) -> State {
+    pub fn new(pool: PgPool, event_client: EventClient, sas_config: sas::Config) -> State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
                 .data(event_client.clone())
                 .finish(),
             event_client,
+            sas_config,
         }
     }
 }
