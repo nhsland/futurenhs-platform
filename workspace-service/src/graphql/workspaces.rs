@@ -76,8 +76,8 @@ impl WorkspacesMutation {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
         create_workspace(
-            new_workspace.title,
-            new_workspace.description,
+            &new_workspace.title,
+            &new_workspace.description,
             pool,
             event_client,
         )
@@ -95,8 +95,8 @@ impl WorkspacesMutation {
         let pool = context.data()?;
         let workspace = db::Workspace::update(
             Uuid::parse_str(id.as_str())?,
-            workspace.title,
-            workspace.description,
+            &workspace.title,
+            &workspace.description,
             pool,
         )
         .await?;
@@ -115,8 +115,8 @@ impl WorkspacesMutation {
 }
 
 async fn create_workspace(
-    title: String,
-    description: String,
+    title: &str,
+    description: &str,
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
@@ -144,7 +144,6 @@ mod test {
     use super::*;
 
     use fnhs_event_models::{Event, EventData};
-    use http_types::{Method, Response, StatusCode, Url};
     use std::sync::mpsc::{sync_channel, Receiver};
     use std::sync::Arc;
 
@@ -166,14 +165,9 @@ mod test {
         let pool = mock_connection_pool().await?;
         let (events, event_client) = mock_event_emitter();
 
-        let workspace = create_workspace(
-            "title".to_string(),
-            "description".to_string(),
-            &pool,
-            &event_client,
-        )
-        .await
-        .unwrap();
+        let workspace = create_workspace("title", "description", &pool, &event_client)
+            .await
+            .unwrap();
 
         assert_eq!(workspace.title, "title");
         assert_eq!(workspace.description, "description");
