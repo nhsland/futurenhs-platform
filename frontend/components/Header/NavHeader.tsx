@@ -67,6 +67,12 @@ const StyledHeaderNavItem = styled(Header.NavItem)`
   }
 
   ${({ theme }) => `
+    :hover a {
+      color: ${theme.colorNhsukWhite};
+    }
+    :active a {
+      color: ${theme.colorNhsukBlack};
+    }
     :hover .nhsuk-icon__chevron-right {
       fill: ${theme.colorNhsukWhite};
     }
@@ -81,36 +87,42 @@ const items = [
     title: "My workspaces",
     icon: require("../../public/workspace-blue.svg"),
     iconHover: require("../../public/workspace-white.svg"),
+    iconActive: require("../../public/workspace-black.svg"),
     link: "/workspaces/directory",
   },
   {
     title: "My dashboard",
     icon: require("../../public/my-dashboard-blue.svg"),
     iconHover: require("../../public/my-dashboard-white.svg"),
+    iconActive: require("../../public/my-dashboard-black.svg"),
     link: "#",
   },
   {
     title: "Notifications",
     icon: require("../../public/notifications-blue.svg"),
     iconHover: require("../../public/notifications-white.svg"),
+    iconActive: require("../../public/notifications-black.svg"),
     link: "#",
   },
   {
     title: "View profile",
     icon: require("../../public/user-blue.svg"),
     iconHover: require("../../public/user-white.svg"),
+    iconActive: require("../../public/user-black.svg"),
     link: "#",
   },
   {
     title: "Help",
     icon: require("../../public/help-blue.svg"),
     iconHover: require("../../public/help-white.svg"),
+    iconActive: require("../../public/help-black.svg"),
     link: "#",
   },
   {
     title: "Log out",
     icon: require("../../public/log-out-blue.svg"),
     iconHover: require("../../public/log-out-white.svg"),
+    iconActive: require("../../public/log-out-black.svg"),
     link: "#",
   },
 ];
@@ -122,15 +134,9 @@ interface Props {
   link: string;
 }
 
-// function setHover(e) {
-//   e.target.style.background = "red";
-// }
-
 const NavListItem = ({ title, icon, iconHover, link }: Props) => {
   const [hover, setHover] = useState(false);
   const toggle = () => setHover(!hover);
-  console.log("the icon is ....", icon);
-  console.log("the iconHover is ....", iconHover);
 
   return (
     <Link href={link} passHref>
