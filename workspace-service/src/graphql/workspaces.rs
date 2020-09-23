@@ -1,6 +1,7 @@
 use crate::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
+use sqlx::PgPool;
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A workspace")]
@@ -74,25 +75,13 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
-
-        let workspace: Workspace =
-            db::Workspace::create(new_workspace.title, new_workspace.description, pool)
-                .await?
-                .into();
-
-        event_client
-            .publish_events(&[Event::new(
-                workspace.id.clone(),
-                WorkspaceCreatedData {
-                    workspace_id: workspace.id.clone().into(),
-                    // TODO: Fill this in when we have users in the db.
-                    user_id: "".into(),
-                    title: workspace.title.clone(),
-                },
-            )])
-            .await?;
-
-        Ok(workspace)
+        create_workspace(
+            new_workspace.title,
+            new_workspace.description,
+            pool,
+            event_client,
+        )
+        .await
     }
 
     #[field(desc = "Update workspace (returns updated workspace")]
@@ -123,4 +112,29 @@ impl WorkspacesMutation {
 
         Ok(workspace.into())
     }
+}
+
+async fn create_workspace(
+    title: String,
+    description: String,
+    pool: &PgPool,
+    event_client: &EventClient,
+) -> FieldResult<Workspace> {
+    let workspace: Workspace = db::Workspace::create(title, description, pool)
+        .await?
+        .into();
+
+    event_client
+        .publish_events(&[Event::new(
+            workspace.id.clone(),
+            WorkspaceCreatedData {
+                workspace_id: workspace.id.clone().into(),
+                // TODO: Fill this in when we have users in the db.
+                user_id: "".into(),
+                title: workspace.title.clone(),
+            },
+        )])
+        .await?;
+
+    Ok(workspace)
 }
