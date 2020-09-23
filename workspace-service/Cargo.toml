@@ -10,7 +10,6 @@ async-graphql-tide = "1.18.1"
 async-std = {version = "1.6.4", features = ["attributes", "unstable"]}
 azure_sdk_storage_core = "0.44.3"
 chrono = "0.4.15"
-dotenv = "0.15.0"
 fnhs-event-models = {path = "../event-models/rust"}
 http-types = "2.4.0"
 opentelemetry = "0.8.0"

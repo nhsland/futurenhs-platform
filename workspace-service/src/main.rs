@@ -1,62 +1,15 @@
 use anyhow::{anyhow, Result};
-use dotenv::dotenv;
 use fnhs_event_models::EventClient;
 use opentelemetry::{api::Provider, sdk, sdk::BatchSpanProcessor};
 use sqlx::PgPool;
 use structopt::StructOpt;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
-use url::Url;
+use workspace_service::config::Config;
 use workspace_service::sas;
-
-#[derive(Debug, Clone, StructOpt)]
-pub struct Config {
-    /// Immediately exit, can be used to check that the service is configured and will run
-    #[structopt(long)]
-    selfcheck_only: bool,
-
-    /// Key for OpenTelemetry exporter
-    #[structopt(long, env = "INSTRUMENTATION_KEY")]
-    instrumentation_key: Option<String>,
-
-    /// The URL for the Postgres database
-    #[structopt(long, env = "DATABASE_URL", required_unless("selfcheck-only"))]
-    database_url: Option<String>,
-
-    /// Endpoint for the Azure EventGrid topic
-    #[structopt(
-        long,
-        env = "EVENTGRID_TOPIC_ENDPOINT",
-        parse(try_from_str = str::parse),
-    )]
-    pub eventgrid_topic_endpoint: Option<Url>,
-
-    /// Key for the Azure EventGrid topic
-    #[structopt(long, env = "EVENTGRID_TOPIC_KEY", hide_env_values = true)]
-    pub eventgrid_topic_key: Option<String>,
-
-    /// The Azure Blob Storage Account key for file uploads
-    #[structopt(
-        long,
-        env = "UPLOAD_MASTER_KEY",
-        hide_env_values = true,
-        required_unless("selfcheck-only")
-    )]
-    pub master_key: Option<String>,
-
-    /// The Azure Blob Storage Container URL for file uploads
-    #[structopt(
-        long,
-        env = "UPLOAD_CONTAINER_URL",
-        parse(try_from_str = str::parse),
-        required_unless("selfcheck-only")
-    )]
-    container_url: Option<Url>,
-}
 
 #[async_std::main]
 async fn main() -> Result<()> {
-    dotenv().ok();
     let config = Config::from_args();
 
     if config.selfcheck_only {

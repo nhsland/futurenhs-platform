@@ -6,6 +6,7 @@ use tide::{Next, Redirect, Request, Server};
 use tracing::info_span;
 use tracing_futures::Instrument;
 
+pub mod config;
 mod db;
 mod graphql;
 pub mod sas;

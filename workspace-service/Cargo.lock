@@ -3644,7 +3644,6 @@ dependencies = [
  "async-std",
  "azure_sdk_storage_core",
  "chrono",
- "dotenv",
  "fnhs-event-models",
  "http-types",
  "opentelemetry",
