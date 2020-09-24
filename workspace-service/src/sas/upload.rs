@@ -16,17 +16,10 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
     let container_url = Url::parse(&format!("{}/", config.container_url))?;
     let path = container_url.join(&name.to_string())?;
 
-    let ip_range = IPRange {
-        start: std::net::IpAddr::V4(<std::net::Ipv4Addr>::new(0, 0, 0, 0)),
-        end: std::net::IpAddr::V4(<std::net::Ipv4Addr>::new(255, 255, 255, 255)),
-    };
-
     let sas = BlobSASBuilder::new(&path)
         .with_key(&config.master_key)
         .with_validity_start(&start)
         .with_validity_end(&end)
-        .with_ip_range(&ip_range)
-        .with_content_type("application/octet-stream")
         .allow_write()
         .finalize();
 
@@ -37,6 +30,7 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
 mod tests {
     use super::*;
     use percent_encoding::*;
+
     #[test]
     fn should_create_correct_upload_sas() {
         let uuid = Uuid::new_v4();
@@ -66,7 +60,7 @@ mod tests {
 
         let expected =
             format!(
-                "https://fnhsnonproduploadstu.blob.core.windows.net/waiting/{}?st={}&sip=0.0.0.0-255.255.255.255&rsct=application%2Foctet-stream&se={}&sp=w&sr=b&spr=https&sv=2019-02-02&sig={}",
+                "https://fnhsnonproduploadstu.blob.core.windows.net/waiting/{}?st={}&se={}&sp=w&sr=b&spr=https&sv=2019-02-02&sig={}",
                 uuid,
                 start,
                 end,
