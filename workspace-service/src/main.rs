@@ -61,7 +61,7 @@ async fn main() -> Result<()> {
         connection_pool,
         event_client,
         sas::Config::new(
-            config.master_key.expect("required"),
+            config.file_storage_access_key.expect("required"),
             config.container_url.expect("required"),
         ),
     )

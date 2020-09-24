@@ -16,8 +16,8 @@ pub struct Config {
         long,
         env = "DATABASE_URL",
         parse(try_from_str = str::parse),
+        hide_env_values = true,
         required_unless("selfcheck-only"),
-        hide_env_values = true
     )]
     pub database_url: Option<Url>,
 
@@ -33,14 +33,14 @@ pub struct Config {
     #[structopt(long, env = "EVENTGRID_TOPIC_KEY", hide_env_values = true)]
     pub eventgrid_topic_key: Option<String>,
 
-    /// The Azure Blob Storage Account key for file uploads
+    /// The Azure Blob Storage Account key for files
     #[structopt(
         long,
-        env = "UPLOAD_MASTER_KEY",
+        env = "FILE_STORAGE_ACCESS_KEY",
         hide_env_values = true,
         required_unless("selfcheck-only")
     )]
-    pub master_key: Option<String>,
+    pub file_storage_access_key: Option<String>,
 
     /// The Azure Blob Storage Container URL for file uploads
     #[structopt(

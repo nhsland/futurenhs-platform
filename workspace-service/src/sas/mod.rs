@@ -5,14 +5,14 @@ mod upload;
 
 #[derive(Debug, Clone)]
 pub struct Config {
-    pub master_key: String,
+    pub access_key: String,
     pub container_url: Url,
 }
 
 impl Config {
-    pub fn new(master_key: String, container_url: Url) -> Self {
+    pub fn new(access_key: String, container_url: Url) -> Self {
         Self {
-            master_key,
+            access_key,
             container_url,
         }
     }

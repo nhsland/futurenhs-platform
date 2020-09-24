@@ -17,7 +17,7 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
     let path = container_url.join(&name.to_string())?;
 
     let sas = BlobSASBuilder::new(&path)
-        .with_key(&config.master_key)
+        .with_key(&config.access_key)
         .with_validity_start(&start)
         .with_validity_end(&end)
         .allow_write()
