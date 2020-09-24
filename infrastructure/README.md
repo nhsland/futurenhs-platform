@@ -127,7 +127,12 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    cd infrastructure/environments/production
    ```
 
-1. Create a `terraform.tfvars` file that contains at least `ip_whitelist_postgresql = { yourname = "your.public.ip.adddress" }` (this is needed by the postgresql terraform provider).
+1. Create a `terraform.tfvars` file that contains at least (this is needed by the postgresql terraform provider).
+
+   ```hcl
+   ip_whitelist_postgresql = { "yourname" = "your.public.ip.adddress" }
+   ip_whitelist_analytics = { "yourname" = "your.public.ip.adddress" }
+   ```
 
 1. Run Terraform Init using the vars file you just created:
 

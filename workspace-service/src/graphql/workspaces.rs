@@ -174,8 +174,7 @@ mod test {
 
         assert!(events
             .try_iter()
-            .find(|e| matches!(e.data, EventData::WorkspaceCreated(_)))
-            .is_some());
+            .any(|e| matches!(e.data, EventData::WorkspaceCreated(_))));
 
         Ok(())
     }

@@ -92,3 +92,10 @@ module databases {
   eventgrid_topic_key      = module.platform.eventgrid_topic_key
   instrumentation_key      = module.platform.instrumentation_key
 }
+
+module storage {
+  source              = "../../modules/storage"
+  environment         = "production"
+  location            = var.location
+  resource_group_name = module.platform.resource_group_name
+}
