@@ -62,6 +62,11 @@ kustomize build ../kubernetes/argocd/apps/$ENVIRONMENT |
 export ARGOCD_OPTS='--port-forward --port-forward-namespace argocd'
 
 POD_NAME=$(kubectl get pods -n argocd | grep --only-matching 'argocd-server-[^ ]*')
-argocd login --username admin --password $POD_NAME
+if ! argocd login --username admin --password $POD_NAME; then
+	echo "looks like argocd has been upgraded. Resetting the password."
+	KUBE_EDITOR='sed -i "" "/admin.password/d"' kubectl edit secret -n argocd argocd-secret -o json
+	kubectl rollout restart -n argocd deployment argocd-server
+	POD_NAME=$(kubectl get pods -n argocd | grep --only-matching 'argocd-server-[^ ]*')
+fi
 
 echo "Your argocd username for the web ui is 'admin' and password is '$POD_NAME'"
