@@ -1,6 +1,6 @@
 use crate::Event;
 use async_trait::async_trait;
-use std::sync::Arc;
+use std::sync::{Arc, mpsc::SyncSender};
 use tracing::info_span;
 use tracing_futures::Instrument as _;
 
@@ -32,6 +32,13 @@ impl EventClient {
     pub fn is_configured(&self) -> bool {
         self.is_configured
     }
+
+    pub fn with_publisher(publisher: Arc<dyn EventPublisher + Send + Sync>) -> Self {
+        EventClient {
+            publisher,
+            is_configured: false,
+        }
+    }
 }
 
 impl Default for EventClient {
@@ -47,6 +54,17 @@ impl Default for EventClient {
 impl EventPublisher for EventClient {
     async fn publish_events<'a>(&'a self, events: &'a [Event]) -> Result<(), PublishEventsError> {
         self.publisher.publish_events(events).await
+    }
+}
+
+// Helper for tests.
+#[async_trait]
+impl EventPublisher for SyncSender<Event> {
+    async fn publish_events<'a>(&'a self, events: &'a [Event]) -> Result<(), PublishEventsError> {
+        for event in events {
+            self.send(event.clone()).unwrap();
+        }
+        Ok(())
     }
 }
 
