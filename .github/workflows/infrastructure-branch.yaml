@@ -18,7 +18,7 @@ jobs:
           path: futurenhs-platform
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.0
+          terraform_version: 0.13.3
       - name: Validate Terraform of dev environment
         working-directory: futurenhs-platform/infrastructure/environments/dev
         run: |

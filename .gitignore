@@ -4,5 +4,6 @@ target/
 dev-*/
 !dev-template/
 terraform.tfvars
+backend-config.tfvars
 node_modules
 .vscode/
