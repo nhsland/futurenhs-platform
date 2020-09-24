@@ -8,12 +8,18 @@ pub struct Config {
     pub selfcheck_only: bool,
 
     /// Key for OpenTelemetry exporter
-    #[structopt(long, env = "INSTRUMENTATION_KEY")]
+    #[structopt(long, env = "INSTRUMENTATION_KEY", hide_env_values = true)]
     pub instrumentation_key: Option<String>,
 
     /// The URL for the Postgres database
-    #[structopt(long, env = "DATABASE_URL", required_unless("selfcheck-only"))]
-    pub database_url: Option<String>,
+    #[structopt(
+        long,
+        env = "DATABASE_URL",
+        parse(try_from_str = str::parse),
+        required_unless("selfcheck-only"),
+        hide_env_values = true
+    )]
+    pub database_url: Option<Url>,
 
     /// Endpoint for the Azure EventGrid topic
     #[structopt(

@@ -40,7 +40,7 @@ async fn main() -> Result<()> {
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
-    let connection_pool = PgPool::connect(&config.database_url.expect("required")).await?;
+    let connection_pool = PgPool::connect(config.database_url.expect("required").as_str()).await?;
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
 
     let event_client = if let (Some(topic_endpoint), Some(topic_key)) =
