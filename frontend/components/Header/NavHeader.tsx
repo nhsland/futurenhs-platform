@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { ReactChild } from "react";
 
 import Link from "next/link";
 import { Header } from "nhsuk-react-components";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
+import {
+  WorkspacesIcon,
+  DashboardIcon,
+  HelpIcon,
+  LogOutIcon,
+  NotificationsIcon,
+  UserIcon,
+} from "../Icon";
 import { FnhsLogo } from "../Svg";
 
 const StyledHeader = styled(Header)`
@@ -46,13 +54,13 @@ const StyledHeaderLogo = styled(Header.Logo)`
   `}
 `;
 
-const StyledIcon = styled.img`
-  max-height: 24px;
-  max-width: 24px;
-  margin-right: 18px;
-`;
-
 const StyledHeaderNav = styled(Header.Nav)`
+  .nhsuk-header__navigation-list {
+  }
+
+  .nhsuk-header__navigation.js-show .nhsuk-width-container {
+  }
+
   ${({ theme }) => `
       @media (min-width: ${theme.mqBreakpoints.tablet}) {
         max-width: none;
@@ -60,7 +68,37 @@ const StyledHeaderNav = styled(Header.Nav)`
   `}
 `;
 
+const StyledNav = styled.div`
+  @media (min-width: 990px) {
+    max-width: 320px;
+  }
+  padding: 0 16px;
+  min-width: 320px;
+  width: 100%;
+  border: 1px solid red;
+  border-bottom: 4px solid #f0f4f5;
+  border-top: 4px solid #f0f4f5;
+  position: absolute;
+  right: 0;
+  background-color: white;
+
+  p {
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: centre;
+  }
+
+  span {
+    font-weight: 700;
+  }
+`;
+
 const StyledHeaderNavItem = styled(Header.NavItem)`
+  list-style: none;
+  border-top: 1px solid #f0f4f5;
+
   a {
     display: flex;
     align-items: center;
@@ -85,68 +123,118 @@ const StyledHeaderNavItem = styled(Header.NavItem)`
 const items = [
   {
     title: "My workspaces",
-    icon: require("../../public/workspace-blue.svg"),
-    iconHover: require("../../public/workspace-white.svg"),
-    iconActive: require("../../public/workspace-black.svg"),
+    icon: <WorkspacesIcon />,
     link: "/workspaces/directory",
   },
   {
     title: "My dashboard",
-    icon: require("../../public/my-dashboard-blue.svg"),
-    iconHover: require("../../public/my-dashboard-white.svg"),
-    iconActive: require("../../public/my-dashboard-black.svg"),
+    icon: <DashboardIcon />,
     link: "#",
   },
   {
     title: "Notifications",
-    icon: require("../../public/notifications-blue.svg"),
-    iconHover: require("../../public/notifications-white.svg"),
-    iconActive: require("../../public/notifications-black.svg"),
+    icon: <NotificationsIcon />,
     link: "#",
   },
   {
     title: "View profile",
-    icon: require("../../public/user-blue.svg"),
-    iconHover: require("../../public/user-white.svg"),
-    iconActive: require("../../public/user-black.svg"),
+    icon: <UserIcon />,
     link: "#",
   },
   {
     title: "Help",
-    icon: require("../../public/help-blue.svg"),
-    iconHover: require("../../public/help-white.svg"),
-    iconActive: require("../../public/help-black.svg"),
+    icon: <HelpIcon />,
     link: "#",
   },
   {
     title: "Log out",
-    icon: require("../../public/log-out-blue.svg"),
-    iconHover: require("../../public/log-out-white.svg"),
-    iconActive: require("../../public/log-out-black.svg"),
+    icon: <LogOutIcon />,
     link: "#",
   },
 ];
 
+const StyledNavTitle = styled.div`
+  padding-left: 20px;
+`;
+
 interface Props {
   title: string;
-  icon: string;
-  iconHover: string;
+  icon: ReactChild;
   link: string;
 }
 
-const NavListItem = ({ title, icon, iconHover, link }: Props) => {
-  const [hover, setHover] = useState(false);
-  const toggle = () => setHover(!hover);
-
+const NavListItem = ({ title, icon, link }: Props) => {
   return (
     <Link href={link} passHref>
-      <StyledHeaderNavItem onMouseOver={toggle} onMouseOut={toggle}>
+      <StyledHeaderNavItem>
         <a>
-          <StyledIcon src={hover ? iconHover : icon} alt="" />
-          <div>{title}</div>
+          {icon}
+          <StyledNavTitle>{title}</StyledNavTitle>
         </a>
       </StyledHeaderNavItem>
     </Link>
+  );
+};
+
+const NavList = () => {
+  return (
+    <StyledNav>
+      <p>
+        <span>Menu</span>
+        <button className="nhsuk-header__navigation-title"></button>
+      </p>
+      {items.map((item) => {
+        return (
+          <NavListItem
+            title={item.title}
+            icon={item.icon}
+            link={item.link}
+            key={uuid()}
+          />
+        );
+      })}
+    </StyledNav>
+  );
+};
+
+const StyledNavContainer = styled.div`
+  ${({ theme }) => `
+    display: flex;
+    justify-content: flex-end;
+    background-color: ${theme.colorNhsukBlue};
+    padding: 20px;
+  `}
+`;
+
+const StyledNavMenuButton = styled.button`
+  ${({ theme }) => `
+    color: ${theme.colorNhsukWhite};
+    padding: 7px 16px;
+    background-color: transparent;
+    border: 1px solid ${theme.colorNhsukWhite};
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+
+    :hover {
+      background-color: #003d78;
+      border-color: #f0f4f5;
+      box-shadow: none;
+    }
+    :active {
+      color: ${theme.colorNhsukBlack};
+      background-color: ${theme.colorNhsukYellow};
+      border-color: ${theme.colorNhsukYellow};
+    }
+  `}
+`;
+
+const NavMenu = () => {
+  return (
+    <StyledNavContainer>
+      <StyledNavMenuButton>Menu</StyledNavMenuButton>
+    </StyledNavContainer>
   );
 };
 
@@ -164,13 +252,14 @@ const NavHeader = () => {
             <NavListItem
               title={item.title}
               icon={item.icon}
-              iconHover={item.iconHover}
               link={item.link}
               key={uuid()}
             />
           );
         })}
       </StyledHeaderNav>
+      <NavMenu /> {/* EXPERIMENTAL TINGS */}
+      <NavList /> {/* EXPERIMENTAL TINGS */}
     </StyledHeader>
   );
 };
