@@ -11,12 +11,28 @@ resource "azurerm_storage_account" "files" {
   }
 }
 
+resource "azurerm_storage_container" "upload" {
+  name                  = "upload"
+  storage_account_name  = azurerm_storage_account.files.name
+  container_access_type = "private"
+}
+
 resource "kubernetes_secret" "workspace_svc_files_storage_account" {
   metadata {
     name      = "files-storage-account"
     namespace = "workspace-service"
   }
   data = {
-    blob_access_key = azurerm_storage_account.files.primary_access_key
+    primary_access_key = azurerm_storage_account.files.primary_access_key
+  }
+}
+
+resource "kubernetes_config_map" "workspace_svc_files_storage_account" {
+  metadata {
+    name      = "files-storage-account"
+    namespace = "workspace-service"
+  }
+  data = {
+    upload_container_name = azurerm_storage_container.upload.name
   }
 }
