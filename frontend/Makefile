@@ -23,6 +23,10 @@ docker-build: ## Build and tag Docker image
 docker-run: ## Run Docker image
 	docker run -it -p 3000:3000 $(image)
 
+.PHONY: cypress
+cypress: ## Run Cypress tests
+	docker build --shm-size=2GB --progress=plain -f cypress.Dockerfile -t $(image)-cypress:latest .
+
 .PHONY: docker-push
 docker-push: ## Push Docker image
 	docker push $(image)
