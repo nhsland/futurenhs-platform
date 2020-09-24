@@ -6,7 +6,7 @@ edition = "2018"
 [dependencies]
 anyhow = "1.0.32"
 async-graphql = "1.18.1"
-async-graphql-tide = "1.17.9"
+async-graphql-tide = "1.18.1"
 async-std = { version = "1.6.3", features = ["attributes", "unstable"] }
 dotenv = "0.15.0"
 fnhs-event-models = { path = "../event-models/rust" }
