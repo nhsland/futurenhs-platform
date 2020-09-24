@@ -2,7 +2,7 @@ app := workspace-service
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
 localdb := postgres://postgres:postgres@localhost:5432
-db := $(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
+db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
 
 .PHONY: default
 default: ## Run locally
