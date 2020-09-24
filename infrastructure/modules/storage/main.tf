@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "files" {
-  name                     = "fnhsfiless${replace(var.environment, "-", "")}"
+  name                     = format("fnhsfiles%s", replace(var.environment, "-", ""))
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_kind             = "StorageV2"
@@ -34,5 +34,6 @@ resource "kubernetes_config_map" "workspace_svc_files_storage_account" {
   }
   data = {
     upload_container_name = azurerm_storage_container.upload.name
+    upload_container_id   = azurerm_storage_container.upload.id
   }
 }
