@@ -6,7 +6,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd $REPO_ROOT/infrastructure/environments/dev
 
-terraform init -backend-config=terraform.tfvars
+terraform init -backend-config=backend-config.tfvars
 
 # The "uuid-ossp" Postgres extension cannot be deleted because there are tables
 # in the database using it. However it's not necessary to delete it. We can
