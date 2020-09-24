@@ -30,7 +30,7 @@ docker-push: ## Push Docker image
 	docker push $(image):$(tag)
 
 .PHONY: run-local
-run-local: ## Create a local, migrated DB for dev using a local DB rather than cluster, then cargo watch
+watch-local: ## Create a local, migrated DB for dev using a local DB rather than cluster, then cargo watch
 	docker-compose up -d \
 	&& until env DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done \
 	&& cargo watch -x help -x check
