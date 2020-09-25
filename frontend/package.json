@@ -16,7 +16,7 @@
     "clean": "rm -rf .next",
     "generate": "graphql-codegen --config codegen.yaml",
     "cypress:local": "cypress open --config-file ./cypress-config.json",
-    "cypress:ci": "yarn dev & wait-on http://localhost:3000 && cypress open --config-file ./cypress-config.json"
+    "cypress:ci": "yarn dev & wait-on http://localhost:3000 && cypress run --config-file ./cypress-config.json"
   },
   "dependencies": {
     "@apollo/federation": "^0.20.0",

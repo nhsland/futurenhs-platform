@@ -26,10 +26,9 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: "Run Cypress tests"
-        uses: cypress-io/github-action@v1.16.1
-        with:
-          start: yarn run cypress:ci
-          working-directory: futurenhs-platform/frontend
+        # uses: cypress-io/github-action@v1.16.1
+        working-directory: futurenhs-platform/frontend
+        run: yarn run cypress:ci
 
       - name: "Build & Push image"
         working-directory: futurenhs-platform/frontend
