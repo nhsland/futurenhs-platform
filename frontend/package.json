@@ -14,7 +14,9 @@
     "test": "jest",
     "lint": "yarn eslint . --ext .js,.ts,.tsx",
     "clean": "rm -rf .next",
-    "generate": "graphql-codegen --config codegen.yaml"
+    "generate": "graphql-codegen --config codegen.yaml",
+    "cypress:local": "cypress open --config-file ./cypress-config.json",
+    "cypress:ci": "yarn dev & wait-on http://localhost:3000 && cypress open --config-file ./cypress-config.json"
   },
   "dependencies": {
     "@apollo/federation": "^0.20.0",
@@ -76,7 +78,10 @@
     "@typescript-eslint/parser": "^4.1.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-styled-components": "^1.11.1",
+    "chai": "^4.2.0",
+    "cypress": "^5.2.0",
     "eslint": "^7.9.0",
+    "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-react": "^7.20.6",
     "http-proxy-middleware": "^1.0.5",
@@ -86,8 +91,10 @@
     "jest-dom": "^4.0.0",
     "jest-styled-components": "^7.0.3",
     "lint-staged": ">=10",
+    "mocha": "^8.1.3",
     "react-testing-library": "^8.0.1",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "wait-on": "^5.2.0"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --cache --fix",
