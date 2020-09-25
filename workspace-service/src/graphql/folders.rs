@@ -1,5 +1,6 @@
 use super::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use sqlx::PgPool;
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A folder")]
@@ -75,12 +76,14 @@ pub struct FoldersMutation;
 #[Object]
 impl FoldersMutation {
     #[field(desc = "Create a new folder (returns the created folder)")]
-    async fn create_folder(&self, context: &Context<'_>, folder: NewFolder) -> FieldResult<Folder> {
-        // TODO: Add event
+    async fn create_folder(
+        &self,
+        context: &Context<'_>,
+        new_folder: NewFolder,
+    ) -> FieldResult<Folder> {
         let pool = context.data()?;
-        let workspace = Uuid::parse_str(&folder.workspace)?;
-        let folder = db::Folder::create(&folder.title, &folder.description, workspace, pool).await?;
-        Ok(folder.into())
+        let workspace = Uuid::parse_str(&new_folder.workspace)?;
+        create_folder(&new_folder.title, &new_folder.description, workspace, pool).await
     }
 
     #[field(desc = "Update folder (returns updated folder")]
@@ -111,4 +114,15 @@ impl FoldersMutation {
 
         Ok(folder.into())
     }
+}
+
+async fn create_folder(
+    title: &str,
+    description: &str,
+    workspace: Uuid,
+    pool: &PgPool,
+) -> FieldResult<Folder> {
+    // TODO: Add event
+    let folder = db::Folder::create(&title, &description, workspace, pool).await?;
+    Ok(folder.into())
 }

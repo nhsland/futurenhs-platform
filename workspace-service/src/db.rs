@@ -161,12 +161,7 @@ impl Folder {
         Ok(folder)
     }
 
-    pub async fn update(
-        id: Uuid,
-        title: &str,
-        description: &str,
-        pool: &PgPool,
-    ) -> Result<Folder> {
+    pub async fn update(id: Uuid, title: &str, description: &str, pool: &PgPool) -> Result<Folder> {
         let folder = sqlx::query_file_as!(Folder, "sql/folders/update.sql", id, title, description)
             .fetch_one(pool)
             .await?;
