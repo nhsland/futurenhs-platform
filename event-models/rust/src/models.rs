@@ -146,6 +146,7 @@ macro_rules! event_serialization {
 // Generate EventData enum and serialization logic
 event_serialization!(
     ("ContentViewed", "1") => ContentViewed(ContentViewedData),
+    ("FolderCreated", "1") => FolderCreated(FolderCreatedData),
     ("WorkspaceCreated", "1") => WorkspaceCreated(WorkspaceCreatedData),
 );
 
