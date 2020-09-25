@@ -1,4 +1,4 @@
-import React, { ReactChild } from "react";
+import React, { ReactChild, useContext, useEffect, useState } from "react";
 
 import Link from "next/link";
 import { Header } from "nhsuk-react-components";
@@ -152,7 +152,21 @@ const StyledNavContainer = styled.div`
   `}
 `;
 
-const StyledNavMenuButton = styled.button`
+interface MenuProps {
+  className?: string;
+  menuOpen: boolean;
+  setMenuOpen: (open: boolean) => void;
+}
+
+const MenuButton = ({ className, menuOpen, setMenuOpen }: MenuProps) => {
+  return (
+    <button className={className} onClick={() => setMenuOpen(!menuOpen)}>
+      Menu
+    </button>
+  );
+};
+
+const StyledNavMenuButton = styled(MenuButton)`
   ${({ theme }) => `
     color: ${theme.colorNhsukWhite};
     padding: 7px 16px;
@@ -174,6 +188,7 @@ const StyledNavMenuButton = styled.button`
       background-color: ${theme.colorNhsukYellow};
       border-color: ${theme.colorNhsukYellow};
     }
+
   `}
 `;
 
@@ -193,19 +208,6 @@ const NavListItem = ({ title, icon, link }: NavListItemProps) => {
         </a>
       </StyledHeaderNavItem>
     </Link>
-  );
-};
-
-const NavMenu = () => {
-  return (
-    <StyledNavContainer>
-      <NavListItem
-        title="My workspaces"
-        icon={<WorkspacesIcon />}
-        link="/workspaces/directory"
-      />
-      <StyledNavMenuButton>Menu</StyledNavMenuButton>
-    </StyledNavContainer>
   );
 };
 
@@ -242,12 +244,16 @@ const navItems = [
   },
 ];
 
-const NavList = () => {
+interface NavListProps {
+  setMenuOpen: (open: boolean) => void;
+}
+
+const NavList = ({ setMenuOpen }: NavListProps) => {
   return (
     <StyledNav>
       <p>
         <span>Menu</span>
-        <button className="nhsuk-header__navigation-title"></button>
+        <button onClick={() => setMenuOpen(false)}></button>
       </p>
       {navItems.map((item) => {
         return (
@@ -264,27 +270,23 @@ const NavList = () => {
 };
 
 const NavHeader = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <StyledHeader>
       <StyledHeaderContainer>
         <FnhsLogo />
         <StyledHeaderLogo href="https://www.nhs.uk" />
-        <Header.MenuToggle />
+        <StyledNavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       </StyledHeaderContainer>
-      <Header.Nav>
-        {navItems.map((item) => {
-          return (
-            <NavListItem
-              title={item.title}
-              icon={item.icon}
-              link={item.link}
-              key={uuid()}
-            />
-          );
-        })}
-      </Header.Nav>
-      <NavMenu /> {/* EXPERIMENTAL TINGS */}
-      <NavList /> {/* EXPERIMENTAL TINGS */}
+      <StyledNavContainer>
+        <NavListItem
+          title="My workspaces"
+          icon={<WorkspacesIcon />}
+          link="/workspaces/directory"
+        />
+        <StyledNavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      </StyledNavContainer>
+      {menuOpen && <NavList setMenuOpen={setMenuOpen} />}
     </StyledHeader>
   );
 };
