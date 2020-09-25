@@ -1,5 +1,7 @@
 mod files;
 mod folders;
+#[cfg(test)]
+mod test_mocks;
 mod workspaces;
 
 use super::db;

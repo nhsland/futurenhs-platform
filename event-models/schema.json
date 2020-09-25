@@ -6,6 +6,7 @@
     {
       "oneOf": [
         { "$ref": "#/definitions/ContentViewed" },
+        { "$ref": "#/definitions/FolderCreated" },
         { "$ref": "#/definitions/WorkspaceCreated" }
       ]
     }
@@ -62,6 +63,39 @@
         }
       },
       "required": ["eventType", "dataVersion", "data"]
+    },
+    "FolderCreated": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FolderCreated"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "folderId": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "description": "The workspace that the folder is in",
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that created the folder",
+              "type": "string"
+            }
+          },
+          "required": ["userId", "title", "workspaceId", "folderId"]
+        }
+      }
     },
     "WorkspaceCreated": {
       "type": "object",
