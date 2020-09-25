@@ -1,5 +1,6 @@
 use super::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use fnhs_event_models::{Event, EventClient, EventPublisher, FolderCreatedData};
 use sqlx::PgPool;
 use uuid::Uuid;
 
@@ -83,7 +84,16 @@ impl FoldersMutation {
     ) -> FieldResult<Folder> {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(&new_folder.workspace)?;
-        create_folder(&new_folder.title, &new_folder.description, workspace, pool).await
+        let event_client: &EventClient = context.data()?;
+
+        create_folder(
+            &new_folder.title,
+            &new_folder.description,
+            workspace,
+            pool,
+            event_client,
+        )
+        .await
     }
 
     #[field(desc = "Update folder (returns updated folder")]
@@ -121,8 +131,50 @@ async fn create_folder(
     description: &str,
     workspace: Uuid,
     pool: &PgPool,
+    event_client: &EventClient,
 ) -> FieldResult<Folder> {
     // TODO: Add event
-    let folder = db::Folder::create(&title, &description, workspace, pool).await?;
-    Ok(folder.into())
+    let folder: Folder = db::Folder::create(&title, &description, workspace, pool)
+        .await?
+        .into();
+
+    event_client
+        .publish_events(&[Event::new(
+            folder.id.clone(),
+            FolderCreatedData {
+                folder_id: folder.id.clone().into(),
+                workspace_id: folder.workspace.clone().into(),
+                // TODO: Fill this in when we have users in the db.
+                user_id: "".into(),
+                title: folder.title.clone(),
+            },
+        )])
+        .await?;
+    Ok(folder)
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::graphql::test_helpers::*;
+    use fnhs_event_models::EventData;
+
+    #[async_std::test]
+    async fn creating_folder_emits_an_event() -> anyhow::Result<()> {
+        let pool = mock_connection_pool().await?;
+        let (events, event_client) = mock_event_emitter();
+
+        let folder = create_folder("title", "description", Uuid::new_v4(), &pool, &event_client)
+            .await
+            .unwrap();
+
+        assert_eq!(folder.title, "title");
+        assert_eq!(folder.description, "description");
+
+        assert!(events
+            .try_iter()
+            .any(|e| matches!(e.data, EventData::FolderCreated(_))));
+
+        Ok(())
+    }
 }
