@@ -1,41 +1,19 @@
 import React from "react";
 
-import { GraphQLClient } from "graphql-request";
-import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import styled from "styled-components";
+
 
 import { Head } from "../../../../components/Head";
 import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
-import { requireAuthentication } from "../../../../lib/auth";
-import { getSdk, Folder, Workspace } from "../../../../lib/generated/graphql";
-
-export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
-  async (context) => {
-    const client = new GraphQLClient(
-      "http://workspace-service.workspace-service/graphql"
-    );
-    const sdk = getSdk(client);
-    const folderId = (context.params?.folderId as string) || "";
-    const workspaceId = (context.params?.workspaceId as string) || "";
-
-    const { folder } = await sdk.GetFolderById({ id: folderId });
-    const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
-      workspace: workspaceId,
-    });
-    const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceId });
-
-    return {
-      props: {
-        workspaceFolders: foldersByWorkspace,
-        folder,
-        workspace,
-      },
-    };
-  }
-);
+import {
+  useGetFolderByIdQuery,
+  useGetWorkspaceByIdQuery,
+} from "../../../../lib/generated/graphql";
+import withUrqlClient from "../../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   flex-grow: 3;
@@ -52,30 +30,38 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
-interface Props {
-  folder: Folder;
-  workspaceFolders: Array<Pick<Folder, "id" | "title">>;
-  workspace: Pick<Workspace, "id" | "title">;
-}
+const FolderHomepage = () => {
+  const router = useRouter();
+  const { workspaceId, folderId } = router.query;
 
-const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
-  <>
-    <Head title={folder.title} />
-    <PageLayout>
-      <Header />
-      <ContentWrapper>
-        <Navigation
-          folders={workspaceFolders}
-          workspace={workspace}
-          activeFolder={folder.id}
-        />
-        <PageContent>
-          <MainHeading>{folder.title}</MainHeading>
-          <p>{folder.description}</p>
-        </PageContent>
-      </ContentWrapper>
-    </PageLayout>
-  </>
-);
+  const [workspace] = useGetWorkspaceByIdQuery({
+    variables: { id: workspaceId },
+  });
+  const [folder] = useGetFolderByIdQuery({
+    variables: { id: folderId },
+  });
 
-export default FolderHomepage;
+  return (
+    <>
+      <Head title={workspace.data?.workspace.title || "No title!"} />
+      <PageLayout>
+        <Header />
+        <ContentWrapper>
+          <Navigation
+            workspaceId={workspaceId}
+            workspaceTitle={workspace.data?.workspace.title}
+            activeFolder={folderId}
+          />
+          <PageContent>
+            <MainHeading>{folder.data?.folder.title || ""}</MainHeading>
+            <p>{folder.data?.folder.description}</p>
+            {folder.fetching && <p>Loading...</p>}
+            {folder.error && <p> Oh no... {folder.error?.message} </p>}
+          </PageContent>
+        </ContentWrapper>
+      </PageLayout>
+    </>
+  );
+};
+
+export default withUrqlClient(FolderHomepage);

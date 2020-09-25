@@ -4,7 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
-import { Folder, Workspace } from "../../lib/generated/graphql";
+import { useFoldersByWorkspaceQuery } from "../../lib/generated/graphql";
 import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
 
@@ -50,33 +50,39 @@ const List = styled.ul`
 `;
 
 interface Props {
-  workspace: Pick<Workspace, "id" | "title">;
-  folders: Array<Pick<Folder, "title" | "id">>;
+  workspaceId: string;
+  workspaceTitle: string;
   activeFolder?: string;
 }
 
-const Navigation = ({ workspace, folders, activeFolder }: Props) => {
+const Navigation = ({ workspaceId, workspaceTitle, activeFolder }: Props) => {
+  const [{ data, fetching, error }] = useFoldersByWorkspaceQuery({
+    variables: { workspace: workspaceId },
+  });
+
+  if (fetching) return <p>Loading...</p>;
+  if (error) return <p> Oh no... {error?.message} </p>;
   return (
     <Nav>
       <Header>
-        <Link href={`/workspaces/${workspace.id}`} passHref>
+        <Link href={`/workspaces/${workspaceId}`} passHref>
           <WorkspaceTitleLink>
-            <h3>{workspace.title}</h3>
+            <h3>{workspaceTitle}</h3>
           </WorkspaceTitleLink>
         </Link>
 
-        <Link href={`/workspaces/${workspace.id}`}>
+        <Link href={`/workspaces/${workspaceId}`}>
           <a>About this workspace</a>
         </Link>
       </Header>
       <NavSection title="Folders">
         <List>
-          {folders.map((folder) => (
+          {data?.foldersByWorkspace.map((folder) => (
             <NavListItem
               active={folder.id == activeFolder}
               key={uuid()}
               item={folder}
-              workspaceId={workspace.id}
+              workspaceId={workspaceId}
             />
           ))}
         </List>
