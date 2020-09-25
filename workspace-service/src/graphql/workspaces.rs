@@ -142,7 +142,7 @@ async fn create_workspace(
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::graphql::test_helpers::*;
+    use crate::graphql::test_mocks::*;
     use fnhs_event_models::EventData;
 
     #[async_std::test]
