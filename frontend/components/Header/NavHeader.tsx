@@ -39,6 +39,10 @@ const StyledHeaderContainer = styled.div`
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       background-color: ${theme.colorNhsukWhite};
 
+      button {
+        display: none;
+      }
+
       .nhsuk-header__menu {
         position: absolute;
       }
@@ -59,12 +63,13 @@ const StyledNav = styled.div`
   ${({ theme }) => `
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       max-width: 280px;
+      position: absolute;
     }
   `}
 
   padding: 0 16px;
   width: 100%;
-  position: absolute;
+
   right: 0;
   background-color: white;
   border-left: 1px solid #f0f4f5;
@@ -123,11 +128,9 @@ const StyledNavTitle = styled.div`
 `;
 
 const StyledNavContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
   align-items: center;
   padding: 0 20px;
-  border: 1px solid red;
+  display: none;
 
   li {
     display: none;
@@ -144,6 +147,7 @@ const StyledNavContainer = styled.div`
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       border-top: none;
       justify-content: space-between;
+      display: flex;
 
       li {
         display: block;
