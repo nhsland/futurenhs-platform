@@ -18,12 +18,12 @@ We use [Terraform](https://www.terraform.io/) to build our environments.
    brew install chtf
    ```
 
-1. Select version 0.13.0:
+1. Select version 0.13.3:
 
    ```bash
-   tfswitch 0.13.0
+   tfswitch 0.13.3
    # or
-   chtf 0.13.0
+   chtf 0.13.3
    ```
 
 1. Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and login to Azure:
@@ -127,7 +127,12 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    cd infrastructure/environments/production
    ```
 
-1. Create a `terraform.tfvars` file that contains at least `ip_whitelist_postgresql = { yourname = "your.public.ip.adddress" }` (this is needed by the postgresql terraform provider).
+1. Create a `terraform.tfvars` file that contains at least (this is needed by the postgresql terraform provider).
+
+   ```hcl
+   ip_whitelist_postgresql = { "yourname" = "your.public.ip.adddress" }
+   ip_whitelist_analytics = { "yourname" = "your.public.ip.adddress" }
+   ```
 
 1. Run Terraform Init using the vars file you just created:
 

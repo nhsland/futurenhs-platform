@@ -6,8 +6,10 @@ use tide::{Next, Redirect, Request, Server};
 use tracing::info_span;
 use tracing_futures::Instrument;
 
+pub mod config;
 mod db;
 mod graphql;
+pub mod sas;
 
 pub fn log<'a>(
     req: Request<graphql::State>,
@@ -32,8 +34,13 @@ pub fn log<'a>(
 pub async fn create_app(
     connection_pool: PgPool,
     event_client: EventClient,
+    sas_config: sas::Config,
 ) -> anyhow::Result<Server<graphql::State>> {
-    let mut app = tide::with_state(graphql::State::new(connection_pool, event_client));
+    let mut app = tide::with_state(graphql::State::new(
+        connection_pool,
+        event_client,
+        sas_config,
+    ));
 
     app.with(log);
 
@@ -43,72 +50,4 @@ pub async fn create_app(
     app.at("/graphiql").get(graphql::handle_graphiql);
 
     Ok(app)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use http_types::{Method, Response, StatusCode, Url};
-    use std::env;
-
-    async fn create_app_for_test() -> anyhow::Result<Server<graphql::State>> {
-        let database_url =
-            env::var("TEST_DATABASE_URL").expect("TEST_DATABASE_URL env var not found");
-        let connection_pool = PgPool::connect(&database_url).await?;
-
-        create_app(connection_pool, EventClient::default()).await
-    }
-
-    #[async_std::test]
-    async fn root_redirects_to_graphiql() -> anyhow::Result<()> {
-        let app = create_app_for_test().await?;
-        let req = http_types::Request::new(
-            Method::Get,
-            Url::parse("http://workspace-service.workspace-service/").unwrap(),
-        );
-
-        let resp: Response = app.respond(req).await.unwrap();
-        assert_eq!(resp.status(), StatusCode::PermanentRedirect);
-        assert_eq!(resp.header("location").unwrap().as_str(), "/graphiql");
-
-        Ok(())
-    }
-
-    #[async_std::test]
-    async fn graphql_schema_has_query_and_mutation() -> anyhow::Result<()> {
-        let app = create_app_for_test().await?;
-
-        let mut req = http_types::Request::new(
-            Method::Post,
-            Url::parse("http://workspace-service.workspace-service/graphql").unwrap(),
-        );
-        req.set_body(
-            r#"{ "operationName": "IntrospectionQuery", "variables": {}, "query": "
-                {
-                    __schema {
-                        queryType {
-                            name
-                        }
-                        mutationType {
-                            name
-                        }
-                        subscriptionType {
-                            name
-                        }
-                    }
-                }
-            "}"#
-            .replace("\n", "\\n"),
-        );
-
-        let mut resp: Response = dbg!(app.respond(req).await.unwrap());
-
-        assert_eq!(
-            resp.take_body().into_string().await.unwrap(),
-            r#"{"data":{"__schema":{"queryType":{"name":"Query"},"mutationType":{"name":"Mutation"},"subscriptionType":null}}}"#,
-        );
-        assert_eq!(resp.status(), StatusCode::Ok);
-
-        Ok(())
-    }
 }

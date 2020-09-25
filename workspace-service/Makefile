@@ -8,6 +8,10 @@ db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='
 default: ## Run locally
 	cargo run
 
+.PHONY: run
+run: ## Fetch DB URL and run locally
+	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) $(MAKE)
+
 .PHONY: test
 test: ## Run tests [TEST=test_name (optional)]
 	cargo test $$TEST
@@ -33,7 +37,7 @@ docker-push: ## Push Docker image
 watch-local: ## Create a local, migrated DB for dev using a local DB rather than cluster, then cargo watch
 	docker-compose up -d \
 	&& until env DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done \
-	&& cargo watch -x help -x check
+	&& env DATABASE_URL=$(db) cargo watch -x help -x check
 
 .PHONY: watch
 watch: ## Run cargo watch in the way that David likes it.

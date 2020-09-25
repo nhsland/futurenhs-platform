@@ -38,6 +38,16 @@ spec:
                 configMapKeyRef:
                   name: telemetry
                   key: instrumentation_key
+            - name: FILE_STORAGE_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: files-storage-account
+                  key: primary_access_key
+            - name: UPLOAD_CONTAINER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: files-storage-account
+                  key: upload_container_id
           resources:
             limits:
               cpu: 100m
