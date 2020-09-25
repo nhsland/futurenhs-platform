@@ -1,6 +1,8 @@
 app := workspace-service
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
+localdb := postgres://postgres:postgres@localhost:5432
+db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
 
 .PHONY: default
 default: ## Run locally
@@ -31,19 +33,25 @@ docker-push: ## Push Docker image
 	docker push $(image)
 	docker push $(image):$(tag)
 
+.PHONY: watch-local
+watch-local: ## Create a local, migrated DB for dev using a local DB rather than cluster, then cargo watch
+	docker-compose up -d \
+	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done \
+	&& DATABASE_URL=$(localdb) cargo watch -x help -x check
+
 .PHONY: watch
 watch: ## Run cargo watch in the way that David likes it.
-	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) cargo watch -x help -x check
+	DATABASE_URL=$(db) cargo watch -x help -x check
 
 # You must have a version of sqlx that includes this patch
 # cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
 .PHONY: migrate
 migrate: ## Run migrations on current cluster
-	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) sqlx migrate run
+	DATABASE_URL=$(db) cargo sqlx migrate run
 
 .PHONY: prepare
 prepare: ## Prepares new version of sqlx-data.json
-	cargo clean --package workspace_service && DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) cargo sqlx prepare -- --bin workspace_service
+	cargo clean --package workspace_service && DATABASE_URL=$(db) cargo sqlx prepare -- --bin workspace_service
 
 .PHONY: help
 help: ## Display this help screen
