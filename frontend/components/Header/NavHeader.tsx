@@ -18,6 +18,7 @@ import { FnhsLogo } from "../Svg";
 const StyledHeader = styled(Header)`
   ${({ theme }) => `
     background-color: ${theme.colorNhsukWhite};
+    position: relative;
   `}
 `;
 
@@ -54,33 +55,20 @@ const StyledHeaderLogo = styled(Header.Logo)`
   `}
 `;
 
-const StyledHeaderNav = styled(Header.Nav)`
-  .nhsuk-header__navigation-list {
-  }
-
-  .nhsuk-header__navigation.js-show .nhsuk-width-container {
-  }
-
-  ${({ theme }) => `
-      @media (min-width: ${theme.mqBreakpoints.tablet}) {
-        max-width: none;
-      }
-  `}
-`;
-
 const StyledNav = styled.div`
-  @media (min-width: 990px) {
-    max-width: 320px;
-  }
+  ${({ theme }) => `
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      max-width: 280px;
+    }
+  `}
+
   padding: 0 16px;
-  min-width: 320px;
   width: 100%;
-  border: 1px solid red;
-  border-bottom: 4px solid #f0f4f5;
-  border-top: 4px solid #f0f4f5;
   position: absolute;
   right: 0;
   background-color: white;
+  border-left: 1px solid #f0f4f5;
+  border-bottom: 1px solid #f0f4f5;
 
   p {
     margin: 0;
@@ -88,6 +76,12 @@ const StyledNav = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: centre;
+
+    ${({ theme }) => `
+      @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+        display: none;
+      }
+    `}
   }
 
   span {
@@ -102,6 +96,10 @@ const StyledHeaderNavItem = styled(Header.NavItem)`
   a {
     display: flex;
     align-items: center;
+  }
+
+  .nav-bar-item {
+    display: none;
   }
 
   ${({ theme }) => `
@@ -120,7 +118,98 @@ const StyledHeaderNavItem = styled(Header.NavItem)`
   `}
 `;
 
-const items = [
+const StyledNavTitle = styled.div`
+  padding-left: 20px;
+`;
+
+const StyledNavContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+  border: 1px solid red;
+
+  li {
+    display: none;
+    border-top: none;
+  }
+
+  ${({ theme }) => `
+    background-color: ${theme.colorNhsukBlue};
+
+    a {
+      color: white;
+    }
+
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      border-top: none;
+      justify-content: space-between;
+
+      li {
+        display: block;
+      }
+    }
+  `}
+`;
+
+const StyledNavMenuButton = styled.button`
+  ${({ theme }) => `
+    color: ${theme.colorNhsukWhite};
+    padding: 7px 16px;
+    height: 100%;
+    background-color: transparent;
+    border: 1px solid ${theme.colorNhsukWhite};
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+
+    :hover {
+      background-color: #003d78;
+      border-color: #f0f4f5;
+      box-shadow: none;
+    }
+    :active {
+      color: ${theme.colorNhsukBlack};
+      background-color: ${theme.colorNhsukYellow};
+      border-color: ${theme.colorNhsukYellow};
+    }
+  `}
+`;
+
+interface NavListItemProps {
+  title: string;
+  icon: ReactChild;
+  link: string;
+}
+
+const NavListItem = ({ title, icon, link }: NavListItemProps) => {
+  return (
+    <Link href={link} passHref>
+      <StyledHeaderNavItem>
+        <a>
+          {icon}
+          <StyledNavTitle>{title}</StyledNavTitle>
+        </a>
+      </StyledHeaderNavItem>
+    </Link>
+  );
+};
+
+const NavMenu = () => {
+  return (
+    <StyledNavContainer>
+      <NavListItem
+        title="My workspaces"
+        icon={<WorkspacesIcon />}
+        link="/workspaces/directory"
+      />
+      <StyledNavMenuButton>Menu</StyledNavMenuButton>
+    </StyledNavContainer>
+  );
+};
+
+const navItems = [
   {
     title: "My workspaces",
     icon: <WorkspacesIcon />,
@@ -153,29 +242,6 @@ const items = [
   },
 ];
 
-const StyledNavTitle = styled.div`
-  padding-left: 20px;
-`;
-
-interface Props {
-  title: string;
-  icon: ReactChild;
-  link: string;
-}
-
-const NavListItem = ({ title, icon, link }: Props) => {
-  return (
-    <Link href={link} passHref>
-      <StyledHeaderNavItem>
-        <a>
-          {icon}
-          <StyledNavTitle>{title}</StyledNavTitle>
-        </a>
-      </StyledHeaderNavItem>
-    </Link>
-  );
-};
-
 const NavList = () => {
   return (
     <StyledNav>
@@ -183,7 +249,7 @@ const NavList = () => {
         <span>Menu</span>
         <button className="nhsuk-header__navigation-title"></button>
       </p>
-      {items.map((item) => {
+      {navItems.map((item) => {
         return (
           <NavListItem
             title={item.title}
@@ -197,47 +263,6 @@ const NavList = () => {
   );
 };
 
-const StyledNavContainer = styled.div`
-  ${({ theme }) => `
-    display: flex;
-    justify-content: flex-end;
-    background-color: ${theme.colorNhsukBlue};
-    padding: 20px;
-  `}
-`;
-
-const StyledNavMenuButton = styled.button`
-  ${({ theme }) => `
-    color: ${theme.colorNhsukWhite};
-    padding: 7px 16px;
-    background-color: transparent;
-    border: 1px solid ${theme.colorNhsukWhite};
-    border-radius: 4px;
-    font-size: 16px;
-    line-height: 24px;
-    cursor: pointer;
-
-    :hover {
-      background-color: #003d78;
-      border-color: #f0f4f5;
-      box-shadow: none;
-    }
-    :active {
-      color: ${theme.colorNhsukBlack};
-      background-color: ${theme.colorNhsukYellow};
-      border-color: ${theme.colorNhsukYellow};
-    }
-  `}
-`;
-
-const NavMenu = () => {
-  return (
-    <StyledNavContainer>
-      <StyledNavMenuButton>Menu</StyledNavMenuButton>
-    </StyledNavContainer>
-  );
-};
-
 const NavHeader = () => {
   return (
     <StyledHeader>
@@ -246,8 +271,8 @@ const NavHeader = () => {
         <StyledHeaderLogo href="https://www.nhs.uk" />
         <Header.MenuToggle />
       </StyledHeaderContainer>
-      <StyledHeaderNav>
-        {items.map((item) => {
+      <Header.Nav>
+        {navItems.map((item) => {
           return (
             <NavListItem
               title={item.title}
@@ -257,7 +282,7 @@ const NavHeader = () => {
             />
           );
         })}
-      </StyledHeaderNav>
+      </Header.Nav>
       <NavMenu /> {/* EXPERIMENTAL TINGS */}
       <NavList /> {/* EXPERIMENTAL TINGS */}
     </StyledHeader>
