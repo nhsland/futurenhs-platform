@@ -29,9 +29,9 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: futurenhs-platform/frontend
-        # build: npm run build
-        # start: npm start
-        # wait-on: http://localhost:3030
+          build: yarn run build
+          start: yarn run dev
+          wait-on: http://localhost:3000
 
       - name: "Build & Push image"
         working-directory: futurenhs-platform/frontend
