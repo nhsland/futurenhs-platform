@@ -126,8 +126,8 @@ pub struct Folder {
 
 impl Folder {
     pub async fn create(
-        title: String,
-        description: String,
+        title: &str,
+        description: &str,
         workspace: Uuid,
         pool: &PgPool,
     ) -> Result<Folder> {
@@ -162,8 +162,8 @@ impl Folder {
 
     pub async fn update(
         id: Uuid,
-        title: String,
-        description: String,
+        title: &str,
+        description: &str,
         pool: &PgPool,
     ) -> Result<Folder> {
         let folder = sqlx::query_file_as!(Folder, "sql/folders/update.sql", id, title, description)

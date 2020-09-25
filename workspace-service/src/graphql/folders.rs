@@ -50,7 +50,7 @@ impl FoldersQuery {
         workspace: ID,
     ) -> FieldResult<Vec<Folder>> {
         let pool = context.data()?;
-        let workspace = Uuid::parse_str(workspace.as_str())?;
+        let workspace = Uuid::parse_str(&workspace)?;
         let folders = db::Folder::find_by_workspace(workspace, pool).await?;
         Ok(folders.into_iter().map(Into::into).collect())
     }
@@ -63,7 +63,7 @@ impl FoldersQuery {
     #[entity]
     async fn get_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         let pool = context.data()?;
-        let id = Uuid::parse_str(id.as_str())?;
+        let id = Uuid::parse_str(&id)?;
         let folder = db::Folder::find_by_id(id, pool).await?;
         Ok(folder.into())
     }
@@ -78,8 +78,8 @@ impl FoldersMutation {
     async fn create_folder(&self, context: &Context<'_>, folder: NewFolder) -> FieldResult<Folder> {
         // TODO: Add event
         let pool = context.data()?;
-        let workspace = Uuid::parse_str(folder.workspace.as_str())?;
-        let folder = db::Folder::create(folder.title, folder.description, workspace, pool).await?;
+        let workspace = Uuid::parse_str(&folder.workspace)?;
+        let folder = db::Folder::create(&folder.title, &folder.description, workspace, pool).await?;
         Ok(folder.into())
     }
 
@@ -93,9 +93,9 @@ impl FoldersMutation {
         // TODO: Add event
         let pool = context.data()?;
         let folder = db::Folder::update(
-            Uuid::parse_str(id.as_str())?,
-            folder.title,
-            folder.description,
+            Uuid::parse_str(&id)?,
+            &folder.title,
+            &folder.description,
             pool,
         )
         .await?;
@@ -107,7 +107,7 @@ impl FoldersMutation {
     async fn delete_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         // TODO: Add event
         let pool = context.data()?;
-        let folder = db::Folder::delete(Uuid::parse_str(id.as_str())?, pool).await?;
+        let folder = db::Folder::delete(Uuid::parse_str(&id)?, pool).await?;
 
         Ok(folder.into())
     }
