@@ -1,4 +1,4 @@
-import "isomorphic-fetch";
+import "isomorphic-unfetch";
 
 export const getGreeting = async (name: string | string[]) => {
   const res = await fetch(`http://hello-world.hello-world/hello/${name}`);

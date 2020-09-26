@@ -20,7 +20,7 @@ type Folder {
 
 type Mutation {
   # Create a new workspace (returns the created workspace)
-  createWorkspace(workspace: NewWorkspace!): Workspace!
+  createWorkspace(newWorkspace: NewWorkspace!): Workspace!
 
   # Update workspace (returns updated workspace
   updateWorkspace(id: ID!, workspace: UpdateWorkspace!): Workspace!
