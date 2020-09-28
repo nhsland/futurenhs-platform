@@ -111,15 +111,18 @@ const StyledNav = styled.div`
 
 interface NavItemProps {
   className?: string;
+  href: string;
   children: ReactNode;
 }
 
-const NavItem = ({ className, children }: NavItemProps) => {
+const NavItem = ({ className, href, children }: NavItemProps) => {
   return (
-    <li className={className}>
-      <a>{children}</a>
-      <ChevronRightIcon />
-    </li>
+    <Link href={href}>
+      <li className={className}>
+        <a href={href}>{children}</a>
+        <ChevronRightIcon />
+      </li>
+    </Link>
   );
 };
 
@@ -303,17 +306,15 @@ const StyledCloseIcon = styled(Icons.Close)`
 interface NavListItemProps {
   title: string;
   icon: ReactChild;
-  link: string;
+  href: string;
 }
 
-const NavListItem = ({ title, icon, link }: NavListItemProps) => {
+const NavListItem = ({ title, icon, href }: NavListItemProps) => {
   return (
-    <Link href={link} passHref>
-      <StyledHeaderNavItem>
-        {icon}
-        <StyledNavTitle>{title}</StyledNavTitle>
-      </StyledHeaderNavItem>
-    </Link>
+    <StyledHeaderNavItem href={href}>
+      {icon}
+      <StyledNavTitle>{title}</StyledNavTitle>
+    </StyledHeaderNavItem>
   );
 };
 
@@ -321,32 +322,32 @@ const navItems = [
   {
     title: "My workspaces",
     icon: <WorkspacesIcon />,
-    link: "/workspaces/directory",
+    href: "/workspaces/directory",
   },
   {
     title: "My dashboard",
     icon: <DashboardIcon />,
-    link: "#",
+    href: "#",
   },
   {
     title: "Notifications",
     icon: <NotificationsIcon />,
-    link: "#",
+    href: "#",
   },
   {
     title: "View profile",
     icon: <UserIcon />,
-    link: "#",
+    href: "#",
   },
   {
     title: "Help",
     icon: <HelpIcon />,
-    link: "#",
+    href: "#",
   },
   {
     title: "Log out",
     icon: <LogOutIcon />,
-    link: "#",
+    href: "#",
   },
 ];
 
@@ -367,7 +368,7 @@ const NavList = ({ setMenuOpen }: NavListProps) => {
             <NavListItem
               title={item.title}
               icon={item.icon}
-              link={item.link}
+              href={item.href}
               key={uuid()}
             />
           );
@@ -390,7 +391,7 @@ const NavHeader = () => {
         <NavListItem
           title="My workspaces"
           icon={<WorkspacesIcon />}
-          link="/workspaces/directory"
+          href="/workspaces/directory"
         />
         <StyledNavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       </StyledNavContainer>
