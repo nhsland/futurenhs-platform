@@ -1,5 +1,6 @@
 import React from "react";
 
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -29,7 +30,7 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
-const FolderHomepage = () => {
+const FolderHomepage: NextPage = () => {
   const router = useRouter();
   const { workspaceId, folderId } = router.query;
 
@@ -44,9 +45,9 @@ const FolderHomepage = () => {
     <>
       <Head
         title={
-          workspace.fetching || folder.fetching
+          folder.fetching
             ? "Loading..."
-            : workspace.data?.workspace.title || "No title!"
+            : folder.data?.folder.title || "No title!"
         }
       />
       <PageLayout>
@@ -60,7 +61,6 @@ const FolderHomepage = () => {
           <PageContent>
             <MainHeading>{folder.data?.folder.title || ""}</MainHeading>
             <p>{folder.data?.folder.description}</p>
-            {folder.fetching && <p>Loading...</p>}
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
           </PageContent>
         </ContentWrapper>
