@@ -61,20 +61,18 @@ const StyledHeaderLogo = styled(Header.Logo)`
 `;
 
 const StyledNav = styled.div`
+  width: 100%;
+  right: 0;
+
   ${({ theme }) => `
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       max-width: 280px;
       position: absolute;
     }
+    background-color: ${theme.colorNhsukWhite};
+    border-left: 1px solid ${theme.colorNhsukGrey5};
+    border-bottom: 1px solid ${theme.colorNhsukGrey5};
   `}
-
-  // padding: 0 16px;
-  width: 100%;
-
-  right: 0;
-  background-color: white;
-  border-left: 1px solid #f0f4f5;
-  border-bottom: 1px solid #f0f4f5;
 
   p {
     margin: 0;
@@ -90,6 +88,11 @@ const StyledNav = styled.div`
     `}
   }
 
+  span {
+    font-weight: 700;
+    align-self: center;
+  }
+
   ul {
     padding: 0;
     margin: 0;
@@ -101,11 +104,6 @@ const StyledNav = styled.div`
         display: none;
       }
     `}
-  }
-
-  span {
-    font-weight: 700;
-    align-self: center;
   }
 `;
 
@@ -145,12 +143,8 @@ const NavItem = ({ className, href, children }: NavItemProps) => {
 
 const StyledHeaderNavItem = styled(NavItem)`
   list-style: none;
-  border-top: 1px solid #f0f4f5;
   display: flex;
   align-items: center;
-  // justify-content: space-between;
-
-  cursor: pointer;
   margin: 0;
 
   a {
@@ -170,19 +164,26 @@ const StyledHeaderNavItem = styled(NavItem)`
   }
 
   ${({ theme }) => `
+    border-top: 1px solid ${theme.colorNhsukGrey5};
+
     a {
       color: ${theme.colorNhsukBlue};
       text-decoration: none;
-    }
-    a:hover:not(:active) {
-      color: ${theme.colorNhsukWhite};
-      background-color: ${theme.colorShadeNhsukBlue35};
-    }
-    :hover .nhsuk-icon__chevron-right {
-      fill: ${theme.colorNhsukWhite};
-    }
-    :active .nhsuk-icon__chevron-right {
-      fill: ${theme.colorNhsukBlack};
+
+      &:hover:not(:active) {
+        color: ${theme.colorNhsukWhite};
+        background-color: ${theme.colorShadeNhsukBlue35};
+
+        .nhsuk-icon__chevron-right {
+          fill: ${theme.colorNhsukWhite};
+        }
+      }
+
+      &:focus {
+        box-shadow: none;
+        outline: none;
+        border-bottom: 4px solid ${theme.colorNhsukBlack};
+      }
     }
   `}
 `;
@@ -197,25 +198,24 @@ const StyledNavContainer = styled.div`
   padding: 0px 20px;
   display: none;
 
-  li {
-    display: none;
-    // border-top: none;
-    fill: white;
-
-    .nhsuk-icon {
-      display: none;
-    }
-  }
-
   ${({ theme }) => `
     background-color: ${theme.colorNhsukBlue};
+
+    li {
+      display: none;
+      border-top: none;
+      fill: ${theme.colorNhsukWhite};
+
+      .nhsuk-icon {
+        display: none;
+      }
+    }
 
     a {
       padding: 12px 16px;
       color: white;
       border-bottom: 4px solid transparent;
-    border-top: 4px solid transparent;
-
+      border-top: 4px solid transparent;
     }
 
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
@@ -261,17 +261,17 @@ const StyledNavMenuButton = styled(MenuButton)`
     }
 
     :hover {
-      background-color: #003d78;
-      border-color: #f0f4f5;
+      background-color: ${theme.colorShadeNhsukBlue35};
+      border-color: ${theme.colorNhsukGrey5};
       box-shadow: none;
     }
-    :active {
+
+    :active, :focus {
       border: 1px solid ${theme.colorNhsukYellow};
       color: ${theme.colorNhsukBlack};
       background-color: ${theme.colorNhsukYellow};
       border-color: ${theme.colorNhsukYellow};
     }
-
   `}
 `;
 
