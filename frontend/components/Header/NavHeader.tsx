@@ -1,7 +1,8 @@
-import React, { ReactChild, useContext, useEffect, useState } from "react";
+import React, { ReactChild, useState, ReactNode } from "react";
 
 import Link from "next/link";
-import { Header } from "nhsuk-react-components";
+import { Header, ChevronRightIcon } from "nhsuk-react-components";
+import { Icons } from "nhsuk-react-components";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
@@ -67,7 +68,7 @@ const StyledNav = styled.div`
     }
   `}
 
-  padding: 0 16px;
+  // padding: 0 16px;
   width: 100%;
 
   right: 0;
@@ -89,30 +90,78 @@ const StyledNav = styled.div`
     `}
   }
 
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  li:first-child {
+    ${({ theme }) => `
+      @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+        display: none;
+      }
+    `}
+  }
+
   span {
     font-weight: 700;
+    align-self: center;
   }
 `;
 
-const StyledHeaderNavItem = styled(Header.NavItem)`
+interface NavItemProps {
+  className?: string;
+  children: ReactNode;
+}
+
+const NavItem = ({ className, children }: NavItemProps) => {
+  return (
+    <li className={className}>
+      <a>{children}</a>
+      <ChevronRightIcon />
+    </li>
+  );
+};
+
+const StyledHeaderNavItem = styled(NavItem)`
   list-style: none;
   border-top: 1px solid #f0f4f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  margin: 0;
 
   a {
     display: flex;
     align-items: center;
   }
 
-  .nav-bar-item {
-    display: none;
+  // .nav-bar-item {
+  //   display: none;
+  // }
+
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   ${({ theme }) => `
-    :hover a {
-      color: ${theme.colorNhsukWhite};
+    a {
+      color: ${theme.colorNhsukBlue};
     }
-    :active a {
+    :hover a, :hover {
+      color: ${theme.colorNhsukWhite};
+      background-color: ${theme.colorShadeNhsukBlue35};
+    }
+    :active {
+      border-bottom: 4px solid ${theme.colorNhsukBlack};
+    }
+    :active a, :active {
       color: ${theme.colorNhsukBlack};
+      background-color: ${theme.colorNhsukYellow};
     }
     :hover .nhsuk-icon__chevron-right {
       fill: ${theme.colorNhsukWhite};
@@ -123,18 +172,54 @@ const StyledHeaderNavItem = styled(Header.NavItem)`
   `}
 `;
 
+// const StyledHeaderNavItem = styled(Header.NavItem)`
+//   list-style: none;
+//   border-top: 1px solid #f0f4f5;
+
+//   a {
+//     display: flex;
+//     align-items: center;
+//   }
+
+//   .nav-bar-item {
+//     display: none;
+//   }
+
+//   ${({ theme }) => `
+//     a {
+//       color: ${theme.colorNhsukBlue};
+//     }
+//     :hover a {
+//       color: ${theme.colorNhsukWhite};
+//     }
+//     :active a {
+//       color: ${theme.colorNhsukBlack};
+//     }
+//     :hover .nhsuk-icon__chevron-right {
+//       fill: ${theme.colorNhsukWhite};
+//     }
+//     :active .nhsuk-icon__chevron-right {
+//       fill: ${theme.colorNhsukBlack};
+//     }
+//   `}
+// `;
+
 const StyledNavTitle = styled.div`
   padding-left: 20px;
 `;
 
 const StyledNavContainer = styled.div`
   align-items: center;
-  padding: 0 20px;
+  padding: 0px 20px;
   display: none;
 
   li {
     display: none;
     border-top: none;
+    fill: white;
+    .nhsuk-icon {
+      display: none;
+    }
   }
 
   ${({ theme }) => `
@@ -150,7 +235,7 @@ const StyledNavContainer = styled.div`
       display: flex;
 
       li {
-        display: block;
+        display: flex;
       }
     }
   `}
@@ -182,17 +267,36 @@ const StyledNavMenuButton = styled(MenuButton)`
     line-height: 24px;
     cursor: pointer;
 
+    :focus {
+      outline: none;
+    }
+
     :hover {
       background-color: #003d78;
       border-color: #f0f4f5;
       box-shadow: none;
     }
     :active {
+      border: 1px solid ${theme.colorNhsukYellow};
       color: ${theme.colorNhsukBlack};
       background-color: ${theme.colorNhsukYellow};
       border-color: ${theme.colorNhsukYellow};
     }
 
+  `}
+`;
+
+const StyledCloseIcon = styled(Icons.Close)`
+  ${({ theme }) => `
+    :hover {
+      fill: ${theme.colorNhsukWhite};
+      background-color: ${theme.colorShadeNhsukBlue35};
+    }
+    :active {
+      fill: ${theme.colorNhsukBlack};
+      background-color: ${theme.colorNhsukYellow};
+      border-bottom: 4px solid ${theme.colorNhsukBlack};
+    }
   `}
 `;
 
@@ -206,10 +310,8 @@ const NavListItem = ({ title, icon, link }: NavListItemProps) => {
   return (
     <Link href={link} passHref>
       <StyledHeaderNavItem>
-        <a>
-          {icon}
-          <StyledNavTitle>{title}</StyledNavTitle>
-        </a>
+        {icon}
+        <StyledNavTitle>{title}</StyledNavTitle>
       </StyledHeaderNavItem>
     </Link>
   );
@@ -257,18 +359,20 @@ const NavList = ({ setMenuOpen }: NavListProps) => {
     <StyledNav>
       <p>
         <span>Menu</span>
-        <button onClick={() => setMenuOpen(false)}></button>
+        <StyledCloseIcon onClick={() => setMenuOpen(false)} />
       </p>
-      {navItems.map((item) => {
-        return (
-          <NavListItem
-            title={item.title}
-            icon={item.icon}
-            link={item.link}
-            key={uuid()}
-          />
-        );
-      })}
+      <ul>
+        {navItems.map((item) => {
+          return (
+            <NavListItem
+              title={item.title}
+              icon={item.icon}
+              link={item.link}
+              key={uuid()}
+            />
+          );
+        })}
+      </ul>
     </StyledNav>
   );
 };
