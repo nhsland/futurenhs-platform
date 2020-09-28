@@ -9,7 +9,8 @@ describe("Workspace Directory", () => {
   it("Navigates to workspace page", () => {
     cy.visit(`/workspaces/directory`);
 
-    cy.get("h3:first")
+    cy.get("h3")
+      .contains(Cypress.env("TEST_WORKSPACE_NAME"))
       .click()
       .then(($h3) => {
         const text = $h3.text();
