@@ -8,6 +8,7 @@ function Strategy() {
 
 util.inherits(Strategy, passport.Strategy);
 Strategy.prototype.authenticate = function () {
+  var self = this;
   self.success({
     id: "test",
     name: "Local User",
