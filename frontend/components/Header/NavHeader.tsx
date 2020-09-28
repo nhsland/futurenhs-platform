@@ -119,31 +119,49 @@ const NavItem = ({ className, href, children }: NavItemProps) => {
   return (
     <Link href={href}>
       <li className={className}>
-        <a href={href}>{children}</a>
-        <ChevronRightIcon />
+        <a href={href}>
+          {children}
+          <ChevronRightIcon />
+        </a>
       </li>
     </Link>
   );
 };
+
+// const NavBarItem = ({ className, href, children }: NavItemProps) => {
+//   return (
+//     <Link href={href}>
+//       <li className={className}>
+//         <a href={href}>
+//           {children}
+//           <ChevronRightIcon />
+//         </a>
+//       </li>
+//     </Link>
+//   );
+// };
+
+// const StyledNavBarItem = styled(NavBarItem)
 
 const StyledHeaderNavItem = styled(NavItem)`
   list-style: none;
   border-top: 1px solid #f0f4f5;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
+  // justify-content: space-between;
+
   cursor: pointer;
   margin: 0;
 
   a {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
   }
-
-  // .nav-bar-item {
-  //   display: none;
-  // }
 
   .icon-wrapper {
     display: flex;
@@ -154,17 +172,11 @@ const StyledHeaderNavItem = styled(NavItem)`
   ${({ theme }) => `
     a {
       color: ${theme.colorNhsukBlue};
+      text-decoration: none;
     }
-    :hover a, :hover {
+    a:hover:not(:active) {
       color: ${theme.colorNhsukWhite};
       background-color: ${theme.colorShadeNhsukBlue35};
-    }
-    :active {
-      border-bottom: 4px solid ${theme.colorNhsukBlack};
-    }
-    :active a, :active {
-      color: ${theme.colorNhsukBlack};
-      background-color: ${theme.colorNhsukYellow};
     }
     :hover .nhsuk-icon__chevron-right {
       fill: ${theme.colorNhsukWhite};
@@ -175,40 +187,9 @@ const StyledHeaderNavItem = styled(NavItem)`
   `}
 `;
 
-// const StyledHeaderNavItem = styled(Header.NavItem)`
-//   list-style: none;
-//   border-top: 1px solid #f0f4f5;
-
-//   a {
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .nav-bar-item {
-//     display: none;
-//   }
-
-//   ${({ theme }) => `
-//     a {
-//       color: ${theme.colorNhsukBlue};
-//     }
-//     :hover a {
-//       color: ${theme.colorNhsukWhite};
-//     }
-//     :active a {
-//       color: ${theme.colorNhsukBlack};
-//     }
-//     :hover .nhsuk-icon__chevron-right {
-//       fill: ${theme.colorNhsukWhite};
-//     }
-//     :active .nhsuk-icon__chevron-right {
-//       fill: ${theme.colorNhsukBlack};
-//     }
-//   `}
-// `;
-
 const StyledNavTitle = styled.div`
   padding-left: 20px;
+  flex-grow: 1;
 `;
 
 const StyledNavContainer = styled.div`
@@ -218,8 +199,9 @@ const StyledNavContainer = styled.div`
 
   li {
     display: none;
-    border-top: none;
+    // border-top: none;
     fill: white;
+
     .nhsuk-icon {
       display: none;
     }
@@ -229,7 +211,11 @@ const StyledNavContainer = styled.div`
     background-color: ${theme.colorNhsukBlue};
 
     a {
+      padding: 12px 16px;
       color: white;
+      border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+
     }
 
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
