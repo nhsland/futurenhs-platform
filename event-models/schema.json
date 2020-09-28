@@ -95,7 +95,8 @@
           },
           "required": ["userId", "title", "workspaceId", "folderId"]
         }
-      }
+      },
+      "required": ["eventType", "dataVersion", "data"]
     },
     "WorkspaceCreated": {
       "type": "object",

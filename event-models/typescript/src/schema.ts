@@ -28,9 +28,9 @@ export interface ContentViewed {
   [k: string]: unknown;
 }
 export interface FolderCreated {
-  eventType?: "FolderCreated";
-  dataVersion?: "1";
-  data?: {
+  eventType: "FolderCreated";
+  dataVersion: "1";
+  data: {
     folderId: string;
     /**
      * The workspace that the folder is in
