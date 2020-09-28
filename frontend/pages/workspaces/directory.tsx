@@ -1,7 +1,7 @@
 import React from "react";
 
+import { NextPage } from "next";
 import styled from "styled-components";
-
 
 import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
@@ -20,7 +20,7 @@ const PageContent = styled.section`
   `}
 `;
 
-const WorkspaceDirectory = () => {
+const WorkspaceDirectory: NextPage = () => {
   const [{ data, fetching, error }] = useGetWorkspacesQuery();
 
   return (

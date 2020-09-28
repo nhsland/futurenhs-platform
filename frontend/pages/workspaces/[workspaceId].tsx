@@ -1,5 +1,6 @@
 import React from "react";
 
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -35,7 +36,7 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
-const WorkspaceHomepage = () => {
+const WorkspaceHomepage: NextPage = () => {
   const router = useRouter();
   const { workspaceId: id } = router.query;
 

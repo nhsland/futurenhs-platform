@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FolderHomepage renders matching snapshot 1`] = `
+exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
   .c1 {
   background-color: rgb(255,255,255);

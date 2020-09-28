@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
+import { NextPage } from "next";
 import { Input, Form, Button } from "nhsuk-react-components";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-
 
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
@@ -50,7 +50,7 @@ const FormField = styled.div`
   }
 `;
 
-const CreateWorkspace = () => {
+const CreateWorkspace: NextPage = () => {
   const [remainingChars, setRemainingChars] = useState({
     title: null,
     description: null,
