@@ -3,7 +3,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-
 import { Head } from "../../../../components/Head";
 import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
@@ -43,7 +42,13 @@ const FolderHomepage = () => {
 
   return (
     <>
-      <Head title={workspace.data?.workspace.title || "No title!"} />
+      <Head
+        title={
+          workspace.fetching || folder.fetching
+            ? "Loading..."
+            : workspace.data?.workspace.title || "No title!"
+        }
+      />
       <PageLayout>
         <Header />
         <ContentWrapper>

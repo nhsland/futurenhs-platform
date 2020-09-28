@@ -3,7 +3,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-
 import { Head } from "../../components/Head";
 import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
@@ -47,7 +46,7 @@ const WorkspaceHomepage = () => {
   const workspaceTitle = data?.workspace.title || "No title!";
   return (
     <>
-      <Head title={workspaceTitle} />
+      <Head title={fetching ? "Loading..." : workspaceTitle} />
       <PageLayout>
         <Header />
         <ContentWrapper>
@@ -55,7 +54,6 @@ const WorkspaceHomepage = () => {
           <PageContent>
             <MainHeading>{workspaceTitle}</MainHeading>
             <H2>Most recent items</H2>
-            {fetching && <p>Loading...</p>}
             {error && <p> Oh no... {error?.message} </p>}
           </PageContent>
         </ContentWrapper>
