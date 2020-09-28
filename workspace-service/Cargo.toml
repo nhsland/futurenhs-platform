@@ -9,9 +9,9 @@ async-graphql = "1.18.2"
 async-graphql-tide = "1.18.1"
 async-std = {version = "1.6.4", features = ["attributes", "unstable"]}
 azure_sdk_storage_core = "0.44.3"
-chrono = "0.4.15"
+chrono = "0.4.18"
 fnhs-event-models = {path = "../event-models/rust"}
-http-types = "2.4.0"
+http-types = "2.5.0"
 opentelemetry = "0.8.0"
 opentelemetry-application-insights = "0.4.0"
 sqlx = {git = "https://github.com/frigus02/sqlx", rev = "106a6a83952bfc0e3316d54f99d865e469dcc15a", default-features = false, features = ["runtime-async-std", "macros", "migrate", "offline", "postgres", "tls", "uuid"]}
