@@ -19,9 +19,16 @@ describe(sendEvent, () => {
 
     test("sends event to event grid", async () => {
       await sendEvent({
+        id: "id",
         subject: "test",
-        eventType: "frontend.login.attempt",
-        data: {},
+        eventTime: "2020-01-01T12:00:00Z",
+        eventType: "ContentViewed",
+        data: {
+          contentId: "",
+          contentType: "Folder",
+          userId: "",
+          workspaceId: "",
+        },
         dataVersion: "1",
       });
 
@@ -32,9 +39,14 @@ describe(sendEvent, () => {
         {
           id: expect.any(String),
           subject: "test",
-          eventType: "frontend.login.attempt",
+          eventType: "ContentViewed",
           eventTime: expect.any(Date),
-          data: {},
+          data: {
+            contentId: "",
+            contentType: "Folder",
+            userId: "",
+            workspaceId: "",
+          },
           dataVersion: "1",
         },
       ]);
@@ -46,9 +58,16 @@ describe(sendEvent, () => {
 
     test("logs event to console", async () => {
       await sendEvent({
+        id: "id",
         subject: "test",
-        eventType: "frontend.login.attempt",
-        data: {},
+        eventTime: "2020-01-01T12:00:00Z",
+        eventType: "ContentViewed",
+        data: {
+          contentId: "",
+          contentType: "Folder",
+          userId: "",
+          workspaceId: "",
+        },
         dataVersion: "1",
       });
 
