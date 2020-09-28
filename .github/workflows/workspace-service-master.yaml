@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - workspace-service/**
+      - event-models/**
       - infrastructure/dev-overlay-variables.json
       - .github/workflows/workspace-service-master.yaml
 
