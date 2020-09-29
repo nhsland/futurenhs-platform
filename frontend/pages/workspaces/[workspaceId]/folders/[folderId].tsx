@@ -32,7 +32,9 @@ const ContentWrapper = styled.div`
 
 const FolderHomepage: NextPage = () => {
   const router = useRouter();
-  const { workspaceId, folderId } = router.query;
+  let { workspaceId, folderId } = router.query;
+  workspaceId = (workspaceId || "unknown").toString();
+  folderId = (folderId || "unknown").toString();
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -55,7 +57,7 @@ const FolderHomepage: NextPage = () => {
         <ContentWrapper>
           <Navigation
             workspaceId={workspaceId}
-            workspaceTitle={workspace.data?.workspace.title}
+            workspaceTitle={workspace.data?.workspace.title || "unknown"}
             activeFolder={folderId}
           />
           <PageContent>

@@ -38,7 +38,8 @@ const ContentWrapper = styled.div`
 
 const WorkspaceHomepage: NextPage = () => {
   const router = useRouter();
-  const { workspaceId: id } = router.query;
+  const { workspaceId } = router.query;
+  const id = (workspaceId || "unknown").toString();
 
   const [{ data, fetching, error }] = useGetWorkspaceByIdQuery({
     variables: { id },
