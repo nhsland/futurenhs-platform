@@ -1,31 +1,18 @@
 import React from "react";
 
-import styled from "styled-components";
+interface Props {
+  className?: string;
+}
 
-import Svg from "./Svg";
-
-const StyledSvg = styled(Svg)`
-  display: block;
-  // width: 138px;
-  height: 40px;
-  ${({ theme }) => `
-    color: ${theme.colorNhsukWhite};
-
-    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-      color: ${theme.colorNhsukBlue};
-    }
-    @media (max-width: ${theme.mqBreakpoints.tablet}) {
-      height: 32px;
-    }
-    @media (max-width: ${theme.mqBreakpoints.mobile}) {
-      height: 28px;
-    }
-  `}
-`;
-
-const FnhsLogo = () => {
-  return (
-    <StyledSvg viewBox="0 0 138 29">
+const FnhsLogoIcon = ({ className }: Props) => (
+  <div className={`icon-wrapper fnhs-logo-icon-wrapper ${className}`}>
+    <svg
+      width="138"
+      height="29"
+      viewBox="0 0 138 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <rect width="138" height="29" fill="none" />
       <mask
         id="mask0"
@@ -117,8 +104,8 @@ const FnhsLogo = () => {
         d="M126.881 22.4281L127.173 19.56C128.437 20.2468 129.642 20.5902 130.788 20.5902C131.529 20.5902 132.176 20.4068 132.73 20.04C133.292 19.6732 133.572 19.1347 133.572 18.4245C133.572 17.7065 133.334 17.1953 132.859 16.891C132.391 16.5866 131.537 16.1691 130.297 15.6384C129.057 15.0999 128.125 14.5029 127.501 13.8473C126.885 13.184 126.577 12.2396 126.577 11.0144C126.577 9.99203 126.834 9.14137 127.349 8.4624C127.871 7.77563 128.558 7.27226 129.408 6.95228C130.265 6.62451 131.197 6.46062 132.204 6.46062C133.553 6.46062 134.824 6.67133 136.017 7.09276L135.748 9.72668C134.586 9.196 133.483 8.93065 132.438 8.93065C131.751 8.93065 131.151 9.08674 130.636 9.39891C130.129 9.70327 129.876 10.1871 129.876 10.8505C129.876 11.4826 130.067 11.9158 130.449 12.1499C130.831 12.384 131.697 12.8015 133.046 13.4025C134.403 13.9956 135.401 14.6316 136.041 15.3106C136.68 15.9818 137 16.9261 137 18.1435C137 19.0098 136.84 19.759 136.52 20.3912C136.201 21.0233 135.756 21.5462 135.187 21.9598C134.625 22.3656 133.978 22.6661 133.245 22.8612C132.519 23.0563 131.747 23.1538 130.928 23.1538C129.634 23.1538 128.285 22.9119 126.881 22.4281Z"
         fill="currentColor"
       />
-    </StyledSvg>
-  );
-};
+    </svg>
+  </div>
+);
 
-export default FnhsLogo;
+export default FnhsLogoIcon;

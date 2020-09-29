@@ -6,13 +6,13 @@ import styled from "styled-components";
 import { NavList, NavMenuListItem, NavMenuButton } from ".";
 import {
   WorkspacesIcon,
+  FnhsLogoIcon,
   DashboardIcon,
   HelpIcon,
   LogOutIcon,
   NotificationsIcon,
   UserIcon,
 } from "../Icon";
-import { FnhsLogo } from "../Svg";
 
 const StyledHeader = styled(Header)`
   ${({ theme }) => `
@@ -44,6 +44,32 @@ const StyledHeaderContainer = styled.div`
 
       .nhsuk-header__menu {
         position: absolute;
+      }
+    }
+  `}
+`;
+
+const StyledFnhsLogo = styled(FnhsLogoIcon)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    height: 40px;
+    width: auto;
+  }
+
+  ${({ theme }) => `
+    color: ${theme.colorNhsukWhite};
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      color: ${theme.colorNhsukBlue};
+    }
+    svg {
+      @media (max-width: ${theme.mqBreakpoints.tablet}) {
+        height: 32px;
+      }
+      @media (max-width: ${theme.mqBreakpoints.mobile}) {
+        height: 28px;
       }
     }
   `}
@@ -133,7 +159,7 @@ const NavHeader = () => {
   return (
     <StyledHeader>
       <StyledHeaderContainer>
-        <FnhsLogo />
+        <StyledFnhsLogo />
         <StyledHeaderLogo href="https://www.nhs.uk" />
         <NavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       </StyledHeaderContainer>
