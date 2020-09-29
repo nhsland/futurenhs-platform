@@ -5,8 +5,8 @@ import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
 import { Head } from "../../../../components/Head";
-import { LoginHeader } from "../../../../components/LoginHeader";
 import { MainHeading } from "../../../../components/MainHeading";
+import { NavHeader } from "../../../../components/NavHeader";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import { requireAuthentication } from "../../../../lib/auth";
@@ -62,7 +62,7 @@ const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
   <>
     <Head title={folder.title} />
     <PageLayout>
-      <LoginHeader />
+      <NavHeader />
       <ContentWrapper>
         <Navigation
           folders={workspaceFolders}
