@@ -5,7 +5,7 @@ interface Props {
 }
 
 const WorkspacesIcon = ({ className }: Props) => (
-  <div className={`icon-wrapper workspaces-icon-wrapper ${className}`}>
+  <div className={`icon-wrapper workspaces-icon-wrapper ${className || ""}`}>
     <svg
       width="24"
       height="24"

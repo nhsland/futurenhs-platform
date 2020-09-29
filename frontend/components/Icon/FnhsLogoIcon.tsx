@@ -5,7 +5,7 @@ interface Props {
 }
 
 const FnhsLogoIcon = ({ className }: Props) => (
-  <div className={`icon-wrapper fnhs-logo-icon-wrapper ${className}`}>
+  <div className={`icon-wrapper fnhs-logo-icon-wrapper ${className || ""}`}>
     <svg
       width="138"
       height="29"

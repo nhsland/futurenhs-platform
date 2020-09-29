@@ -5,7 +5,7 @@ interface Props {
 }
 
 const DashboardIcon = ({ className }: Props) => (
-  <div className={`icon-wrapper dashboard-icon-wrapper ${className}`}>
+  <div className={`icon-wrapper dashboard-icon-wrapper ${className || ""}`}>
     <svg
       width="24"
       height="24"
