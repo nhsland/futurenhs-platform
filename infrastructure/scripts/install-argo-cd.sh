@@ -69,7 +69,7 @@ if ! argocd login --username admin --password $POD_NAME; then
 		kubectl rollout restart -n argocd deployment argocd-server
 		POD_NAME=$(kubectl get pods -n argocd | grep --only-matching 'argocd-server-[^ ]*')
 		argocd login --username admin --password $POD_NAME
-	elif argocd app list > /dev/null; then
+	elif argocd app list >/dev/null; then
 		echo "argocd has been upgraded at some point, but has kept its old password."
 		echo "if you have trouble logging in in the browser, re-run this script with"
 		echo "RESET_PASSWORD=1 to reset and print the password."
