@@ -1,24 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Tooltip } from "../Tooltip";
 import Icon, { State } from "./SvgIcon";
 
-interface Props {
+interface Props extends React.InputHTMLAttributes<HTMLButtonElement> {
   state: State;
-  children: React.ReactNode;
 }
 
-const Meatball = ({ state, children }: Props) => {
-  const [localState, setLocalState] = useState(state);
-
-  const handleClick = () => {
-    setLocalState(State.focused);
-  };
-
+const Meatball: React.FC<Props> = ({
+  state,
+  children,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+}: Props) => {
   return (
-    <button onClick={handleClick}>
+    <button
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={onClick}
+    >
       <Tooltip tooltip="Options">
-        <Icon state={localState}>{children}</Icon>
+        <Icon state={state}>{children}</Icon>
       </Tooltip>
     </button>
   );

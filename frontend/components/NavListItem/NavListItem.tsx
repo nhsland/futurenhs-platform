@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Link from "next/link";
 import styled from "styled-components";
 
 import { Folder } from "../../lib/generated/graphql";
-import useHover from "../../lib/hooks/useHover";
 import { Meatball, State } from "../Meatball";
 
 type ListItem = Pick<Folder, "id" | "title">;
@@ -65,10 +64,21 @@ const icons: { [key: string]: string } = {
 };
 
 const NavListItem = ({ active, item, workspaceId }: Props) => {
-  const [hoverRef, isHover] = useHover<HTMLDivElement>();
+  const [localState, setLocalState] = useState(State.hidden);
+
+  const onClick = () => {
+    setLocalState(State.selected);
+  };
 
   return (
-    <ListItem ref={hoverRef as any}>
+    <ListItem
+      onMouseEnter={() => {
+        setLocalState(State.hover);
+      }}
+      onMouseLeave={() => {
+        setLocalState(State.hidden);
+      }}
+    >
       <LinkWrapper active={active}>
         <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
           <a>
@@ -77,7 +87,18 @@ const NavListItem = ({ active, item, workspaceId }: Props) => {
           </a>
         </Link>
       </LinkWrapper>
-      <Meatball state={isHover ? State.hover : State.focused}>xx</Meatball>
+      <Meatball
+        onMouseEnter={() => {
+          setLocalState(State.focused);
+        }}
+        onMouseLeave={() => {
+          setLocalState(localState);
+        }}
+        state={localState}
+        onClick={onClick}
+      >
+        xx
+      </Meatball>
     </ListItem>
   );
 };
