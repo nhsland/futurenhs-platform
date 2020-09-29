@@ -4,7 +4,7 @@ import { Icons } from "nhsuk-react-components";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
-import { NavMenuListItem } from "..";
+import { NavMenuListItem } from ".";
 
 const StyledCloseIcon = styled(Icons.Close)`
   ${({ theme }) => `
@@ -34,6 +34,7 @@ const StyledNavMenuContainer = styled.div`
     border-bottom: 1px solid ${theme.colorNhsukGrey5};
   `}
 
+  // This is the "Menu  X" item that appears only on mobile
   p {
     margin: 0;
     padding: 16px;
@@ -58,6 +59,7 @@ const StyledNavMenuContainer = styled.div`
     margin: 0;
   }
 
+  // Hiding the first li item on desktop because it appears in menu bar
   li:first-child {
     ${({ theme }) => `
       @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {

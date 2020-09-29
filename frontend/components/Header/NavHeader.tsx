@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Header } from "nhsuk-react-components";
 import styled from "styled-components";
 
-import { NavList, NavMenuListItem, NavMenuButton } from ".";
 import {
   WorkspacesIcon,
   FnhsLogoIcon,
@@ -13,6 +12,7 @@ import {
   NotificationsIcon,
   UserIcon,
 } from "../Icon";
+import { NavList, NavMenuListItem, NavMenuButton } from "./Nav/";
 
 const StyledHeader = styled(Header)`
   ${({ theme }) => `
@@ -92,21 +92,20 @@ const StyledNavContainer = styled.div`
   ${({ theme }) => `
     background-color: ${theme.colorNhsukBlue};
 
-    li {
+    .nav-bar-item {
       display: none;
       border-top: none;
-      fill: ${theme.colorNhsukWhite};
+
+      a {
+        color: ${theme.colorNhsukWhite};
+        &:focus {
+          color: ${theme.colorNhsukBlack};
+        }
+      }
 
       .nhsuk-icon {
         display: none;
       }
-    }
-
-    a {
-      padding: 12px 16px;
-      color: white;
-      border-bottom: 4px solid transparent;
-      border-top: 4px solid transparent;
     }
 
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
@@ -114,7 +113,7 @@ const StyledNavContainer = styled.div`
       justify-content: space-between;
       display: flex;
 
-      li {
+      .nav-bar-item {
         display: flex;
       }
     }
@@ -165,6 +164,7 @@ const NavHeader = () => {
       </StyledHeaderContainer>
       <StyledNavContainer>
         <NavMenuListItem
+          className="nav-bar-item"
           title="My workspaces"
           icon={<WorkspacesIcon />}
           href="/workspaces/directory"

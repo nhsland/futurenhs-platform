@@ -1,13 +1,27 @@
 import React, { ReactNode } from "react";
 
+import Link from "next/link";
+import { ChevronRightIcon } from "nhsuk-react-components";
 import styled from "styled-components";
 
-import { NavListItem } from "..";
+interface NavItemProps {
+  className?: string;
+  href: string;
+  children: ReactNode;
+}
 
-const StyledNavTitle = styled.div`
-  padding-left: 20px;
-  flex-grow: 1;
-`;
+const NavListItem = ({ className, href, children }: NavItemProps) => {
+  return (
+    <Link href={href}>
+      <li className={className}>
+        <a href={href}>
+          {children}
+          <ChevronRightIcon />
+        </a>
+      </li>
+    </Link>
+  );
+};
 
 const StyledNavListItem = styled(NavListItem)`
   list-style: none;
@@ -56,15 +70,26 @@ const StyledNavListItem = styled(NavListItem)`
   `}
 `;
 
+const StyledNavTitle = styled.div`
+  padding-left: 20px;
+  flex-grow: 1;
+`;
+
 interface NavListItemProps {
+  className?: string;
   title: string;
   icon: ReactNode;
   href: string;
 }
 
-const NavMenuListItem = ({ title, icon, href }: NavListItemProps) => {
+const NavMenuListItem = ({
+  className,
+  title,
+  icon,
+  href,
+}: NavListItemProps) => {
   return (
-    <StyledNavListItem href={href}>
+    <StyledNavListItem className={className} href={href}>
       {icon}
       <StyledNavTitle>{title}</StyledNavTitle>
     </StyledNavListItem>
