@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavSection/> does not render children when closed 1`] = `
+<DocumentFragment>
+  .c0 {
+  padding-top: 20px;
+}
+
+.c0 div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c0 button {
+  border: none;
+  background: inherit;
+}
+
+.c0 h4 {
+  color: rgb(0,94,184);
+}
+
+<section
+    class="c0"
+  >
+    <div>
+      <h4>
+        Folders
+      </h4>
+      <button>
+        <img
+          alt="Show Folders"
+          src="/public/chevronClosed.svg"
+        />
+      </button>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`<NavSection/> shows children when open (default) 1`] = `
+<DocumentFragment>
+  .c0 {
+  padding-top: 20px;
+}
+
+.c0 div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c0 button {
+  border: none;
+  background: inherit;
+}
+
+.c0 h4 {
+  color: rgb(0,94,184);
+}
+
+<section
+    class="c0"
+  >
+    <div>
+      <h4>
+        Folders
+      </h4>
+      <button>
+        <img
+          alt="Hide Folders"
+          src="/public/chevronOpen.svg"
+        />
+      </button>
+    </div>
+    Look at me! I am children!
+  </section>
+</DocumentFragment>
+`;

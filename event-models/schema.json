@@ -4,7 +4,11 @@
   "allOf": [
     { "$ref": "#/definitions/BaseEvent" },
     {
-      "oneOf": [{ "$ref": "#/definitions/ContentViewEvent" }]
+      "oneOf": [
+        { "$ref": "#/definitions/ContentViewed" },
+        { "$ref": "#/definitions/FolderCreated" },
+        { "$ref": "#/definitions/WorkspaceCreated" }
+      ]
     }
   ],
   "definitions": {
@@ -24,12 +28,12 @@
       },
       "required": ["id", "subject", "eventTime"]
     },
-    "ContentViewEvent": {
+    "ContentViewed": {
       "type": "object",
       "properties": {
         "eventType": {
           "type": "string",
-          "enum": ["ContentView"]
+          "enum": ["ContentViewed"]
         },
         "dataVersion": {
           "type": "string",
@@ -56,6 +60,70 @@
             }
           },
           "required": ["userId", "contentId", "contentType", "workspaceId"]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "FolderCreated": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FolderCreated"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "folderId": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "description": "The workspace that the folder is in",
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that created the folder",
+              "type": "string"
+            }
+          },
+          "required": ["userId", "title", "workspaceId", "folderId"]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "WorkspaceCreated": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["WorkspaceCreated"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "workspaceId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The id of the user that created the workspace",
+              "type": "string"
+            }
+          },
+          "required": ["userId", "title", "workspaceId"]
         }
       },
       "required": ["eventType", "dataVersion", "data"]

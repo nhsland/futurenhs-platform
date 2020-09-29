@@ -17,10 +17,16 @@
   "potts": {
     "BRANCH": "master"
   },
-  "tracy": {
+  "twu": {
     "BRANCH": "master"
   },
   "declan": {
+    "BRANCH": "master"
+  },
+  "stu": {
+    "BRANCH": "master"
+  },
+  "ed": {
     "BRANCH": "master"
   }
 }

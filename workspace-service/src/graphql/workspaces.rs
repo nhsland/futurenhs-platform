@@ -1,5 +1,7 @@
 use crate::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
+use sqlx::PgPool;
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A workspace")]
@@ -69,12 +71,17 @@ impl WorkspacesMutation {
     async fn create_workspace(
         &self,
         context: &Context<'_>,
-        workspace: NewWorkspace,
+        new_workspace: NewWorkspace,
     ) -> FieldResult<Workspace> {
-        // TODO: Add event
         let pool = context.data()?;
-        let workspace = db::Workspace::create(workspace.title, workspace.description, pool).await?;
-        Ok(workspace.into())
+        let event_client: &EventClient = context.data()?;
+        create_workspace(
+            &new_workspace.title,
+            &new_workspace.description,
+            pool,
+            event_client,
+        )
+        .await
     }
 
     #[field(desc = "Update workspace (returns updated workspace")]
@@ -88,8 +95,8 @@ impl WorkspacesMutation {
         let pool = context.data()?;
         let workspace = db::Workspace::update(
             Uuid::parse_str(id.as_str())?,
-            workspace.title,
-            workspace.description,
+            &workspace.title,
+            &workspace.description,
             pool,
         )
         .await?;
@@ -104,5 +111,56 @@ impl WorkspacesMutation {
         let workspace = db::Workspace::delete(Uuid::parse_str(id.as_str())?, pool).await?;
 
         Ok(workspace.into())
+    }
+}
+
+async fn create_workspace(
+    title: &str,
+    description: &str,
+    pool: &PgPool,
+    event_client: &EventClient,
+) -> FieldResult<Workspace> {
+    let workspace: Workspace = db::Workspace::create(title, description, pool)
+        .await?
+        .into();
+
+    event_client
+        .publish_events(&[Event::new(
+            workspace.id.clone(),
+            WorkspaceCreatedData {
+                workspace_id: workspace.id.clone().into(),
+                // TODO: Fill this in when we have users in the db.
+                user_id: "".into(),
+                title: workspace.title.clone(),
+            },
+        )])
+        .await?;
+
+    Ok(workspace)
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::graphql::test_mocks::*;
+    use fnhs_event_models::EventData;
+
+    #[async_std::test]
+    async fn creating_workspace_emits_an_event() -> anyhow::Result<()> {
+        let pool = mock_connection_pool().await?;
+        let (events, event_client) = mock_event_emitter();
+
+        let workspace = create_workspace("title", "description", &pool, &event_client)
+            .await
+            .unwrap();
+
+        assert_eq!(workspace.title, "title");
+        assert_eq!(workspace.description, "description");
+
+        assert!(events
+            .try_iter()
+            .any(|e| matches!(e.data, EventData::WorkspaceCreated(_))));
+
+        Ok(())
     }
 }

@@ -7,9 +7,10 @@ import styled from "styled-components";
 import { Head } from "../../components/Head";
 import { NavHeader } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { Navigation } from "../../components/Navigation";
 import { PageLayout } from "../../components/PageLayout";
 import { requireAuthentication } from "../../lib/auth";
-import { getSdk } from "../../lib/generated/graphql";
+import { getSdk, Folder } from "../../lib/generated/graphql";
 
 export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
   async (context) => {
@@ -17,19 +18,24 @@ export const getServerSideProps: GetServerSideProps<Props> = requireAuthenticati
       "http://workspace-service.workspace-service/graphql"
     );
     const sdk = getSdk(client);
-    const workspaceID = (context.params?.id as string) || "";
+    const workspaceID = (context.params?.workspaceId as string) || "";
 
     const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceID });
+    const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
+      workspace: workspaceID,
+    });
 
     return {
       props: {
         workspace,
+        folders: foldersByWorkspace,
       },
     };
   }
 );
 
 const PageContent = styled.section`
+  flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
   padding-left: 10%;
@@ -51,18 +57,26 @@ const H2 = styled.h2`
 interface Props {
   workspace: {
     title: string;
+    id: string;
   };
+  folders: Array<Pick<Folder, "title" | "id">>;
 }
 
-const WorkspaceHomepage = ({ workspace }: Props) => (
+const ContentWrapper = styled.div`
+  display: flex;
+`;
+const WorkspaceHomepage = ({ workspace, folders }: Props) => (
   <>
     <Head title={workspace.title} />
     <PageLayout>
       <NavHeader />
-      <PageContent>
-        <MainHeading>{workspace.title}</MainHeading>
-        <H2>Most recent items</H2>
-      </PageContent>
+      <ContentWrapper>
+        <Navigation workspace={workspace} folders={folders} />
+        <PageContent>
+          <MainHeading>{workspace.title}</MainHeading>
+          <H2>Most recent items</H2>
+        </PageContent>
+      </ContentWrapper>
     </PageLayout>
   </>
 );

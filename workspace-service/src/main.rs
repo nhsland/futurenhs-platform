@@ -1,18 +1,23 @@
 use anyhow::{anyhow, Result};
-use dotenv::dotenv;
 use fnhs_event_models::EventClient;
 use opentelemetry::{api::Provider, sdk, sdk::BatchSpanProcessor};
 use sqlx::PgPool;
-use std::env;
+use structopt::StructOpt;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
-use url::Url;
+use workspace_service::config::Config;
+use workspace_service::sas;
 
 #[async_std::main]
 async fn main() -> Result<()> {
-    dotenv().ok();
+    let config = Config::from_args();
 
-    let provider = if let Ok(instrumentation_key) = env::var("INSTRUMENTATION_KEY") {
+    if config.selfcheck_only {
+        println!("--selfcheck-only is set. Exiting...");
+        return Ok(());
+    }
+
+    let provider = if let Some(instrumentation_key) = config.instrumentation_key {
         let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
         let batch_exporter = BatchSpanProcessor::builder(
             exporter,
@@ -35,25 +40,33 @@ async fn main() -> Result<()> {
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL env var not found");
-    let connection_pool = PgPool::connect(&database_url).await?;
+    let connection_pool = PgPool::connect(config.database_url.expect("required").as_str()).await?;
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
 
-    let event_client = if let (Ok(topic_endpoint), Ok(topic_key)) = (
-        env::var("EVENTGRID_TOPIC_ENDPOINT"),
-        env::var("EVENTGRID_TOPIC_KEY"),
-    ) {
-        let topic_hostname = Url::parse(&topic_endpoint)?
-            .host_str()
-            .ok_or_else(|| anyhow!("EVENTGRID_TOPIC_ENDPOINT does not contain host name"))?
-            .to_owned();
-        EventClient::new(topic_hostname, topic_key)
+    let event_client = if let (Some(topic_endpoint), Some(topic_key)) =
+        (config.eventgrid_topic_endpoint, config.eventgrid_topic_key)
+    {
+        EventClient::new(
+            topic_endpoint
+                .host_str()
+                .ok_or_else(|| anyhow!("EVENTGRID_TOPIC_ENDPOINT does not contain host name"))?
+                .to_owned(),
+            topic_key,
+        )
     } else {
         EventClient::default()
     };
 
-    let app = workspace_service::create_app(connection_pool, event_client).await?;
+    let app = workspace_service::create_app(
+        connection_pool,
+        event_client,
+        sas::Config::new(
+            config.file_storage_access_key.expect("required"),
+            config.container_url.expect("required"),
+        ),
+    )
+    .await?;
     app.listen("0.0.0.0:3030").await?;
 
-    Ok(())
+    unreachable!()
 }

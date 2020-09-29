@@ -1,7 +1,11 @@
+mod files;
 mod folders;
+#[cfg(test)]
+mod test_mocks;
 mod workspaces;
 
 use super::db;
+use super::sas;
 use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
     EmptySubscription, GQLMergedObject, Schema,
@@ -17,11 +21,12 @@ pub struct State {
 }
 
 impl State {
-    pub fn new(pool: PgPool, event_client: EventClient) -> State {
+    pub fn new(pool: PgPool, event_client: EventClient, sas_config: sas::Config) -> State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
                 .data(pool)
                 .data(event_client.clone())
+                .data(sas_config)
                 .finish(),
             event_client,
         }
@@ -29,7 +34,11 @@ impl State {
 }
 
 #[derive(GQLMergedObject, Default)]
-struct Query(folders::FoldersQuery, workspaces::WorkspacesQuery);
+struct Query(
+    folders::FoldersQuery,
+    workspaces::WorkspacesQuery,
+    files::FileUploadQuery,
+);
 
 #[derive(GQLMergedObject, Default)]
 struct Mutation(folders::FoldersMutation, workspaces::WorkspacesMutation);

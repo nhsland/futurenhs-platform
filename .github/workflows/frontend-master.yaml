@@ -6,6 +6,8 @@ on:
       - master
     paths:
       - frontend/**
+      - event-models/**
+      - infrastructure/dev-overlay-variables.json
       - .github/workflows/frontend-master.yaml
 
 jobs:

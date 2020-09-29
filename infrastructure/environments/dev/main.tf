@@ -1,5 +1,5 @@
 terraform {
-  required_version = "0.13.0"
+  required_version = "0.13.3"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -31,13 +31,17 @@ provider "azurerm" {
 
 provider "random" {}
 
+locals {
+  environment = "dev-${var.USERNAME}"
+}
+
 # This module should be applied first, using `terraform apply -target module.platform`
 # so that the kubernetes cluster and postresql firewall rules are set up.
 # These are needed before the `kubernetes` and `postgresql` terraform providers can plan
 # anything.
 module platform {
   source                  = "../../modules/platform"
-  environment             = "dev-${var.USERNAME}"
+  environment             = local.environment
   location                = var.location
   ip_whitelist_postgresql = var.ip_whitelist_postgresql
   ip_whitelist_analytics  = var.ip_whitelist_analytics
@@ -70,9 +74,16 @@ provider "postgresql" {
 
 module databases {
   source                   = "../../modules/databases"
-  environment              = "dev-${var.USERNAME}"
+  environment              = local.environment
   postgresql_server_name   = module.platform.postgresql_server_name
   eventgrid_topic_endpoint = module.platform.eventgrid_topic_endpoint
   eventgrid_topic_key      = module.platform.eventgrid_topic_key
   instrumentation_key      = module.platform.instrumentation_key
+}
+
+module storage {
+  source              = "../../modules/storage"
+  environment         = local.environment
+  location            = var.location
+  resource_group_name = module.platform.resource_group_name
 }

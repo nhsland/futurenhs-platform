@@ -10,7 +10,7 @@ mod gen {
     schemafy::schemafy!("../schema.json");
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Event {
     pub id: String,
     pub subject: String,
@@ -19,12 +19,12 @@ pub struct Event {
 }
 
 impl Event {
-    pub fn new(subject: impl Into<String>, data: EventData) -> Self {
+    pub fn new(subject: impl Into<String>, data: impl Into<EventData>) -> Self {
         Self {
             id: format!("{}", Uuid::new_v4()),
             subject: subject.into(),
             event_time: Utc::now(),
-            data,
+            data: data.into(),
         }
     }
 }
@@ -98,7 +98,13 @@ macro_rules! event_serialization {
             )*
         };
 
-        #[derive(Debug, PartialEq)]
+        $(impl From<$data_type> for EventData {
+            fn from(data: $data_type) -> Self {
+                Self::$enum_variant(data)
+            }
+        })*
+
+        #[derive(Debug, PartialEq, Clone)]
         pub enum EventData {
             $(
                 $enum_variant($data_type),
@@ -137,8 +143,11 @@ macro_rules! event_serialization {
     }
 }
 
+// Generate EventData enum and serialization logic
 event_serialization!(
-    ("ContentView", "1") => ContentView(ContentViewEventData),
+    ("ContentViewed", "1") => ContentViewed(ContentViewedData),
+    ("FolderCreated", "1") => FolderCreated(FolderCreatedData),
+    ("WorkspaceCreated", "1") => WorkspaceCreated(WorkspaceCreatedData),
 );
 
 #[cfg(test)]
@@ -153,25 +162,25 @@ mod tests {
             event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
                 .unwrap()
                 .with_timezone(&Utc),
-            data: EventData::ContentView(ContentViewEventData {
+            data: ContentViewedData {
                 user_id: "user".into(),
                 content_id: "content".into(),
                 content_type: "Folder".into(),
                 workspace_id: "workspace".into(),
                 error: None,
-            }),
+            }.into(),
         })
         .unwrap();
         assert_eq!(
             s,
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         );
     }
 
     #[test]
     fn deserialize() {
         let event: Event = serde_json::from_str(
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentView","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         ).unwrap();
         assert_eq!(
             event,
@@ -181,13 +190,13 @@ mod tests {
                 event_time: DateTime::parse_from_rfc3339("2020-09-09T10:22:42.235679Z")
                     .unwrap()
                     .with_timezone(&Utc),
-                data: EventData::ContentView(ContentViewEventData {
+                data: ContentViewedData {
                     user_id: "user".into(),
                     content_id: "content".into(),
                     content_type: "Folder".into(),
                     workspace_id: "workspace".into(),
                     error: None,
-                })
+                }.into()
             }
         );
     }
