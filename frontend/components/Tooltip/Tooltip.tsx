@@ -12,8 +12,12 @@ const Outer = styled.div`
   position: relative;
 `;
 
-const Inner = styled.span<{ active: boolean }>`
-  visibility: ${({ active }) => (active ? "visible" : "inherit")};
+const Inner = styled.span`
+  ${Outer}:hover & {
+    opacity: 1;
+    transition: opacity 0s linear 0.5s;
+  }
+  opacity: 0;
   position: absolute;
   middle: 50%;
   left: 100%;
@@ -44,24 +48,10 @@ const Tooltip: React.FC<TooltipProps> = ({
   tooltip,
   children,
 }: TooltipProps) => {
-  const [active, setActive] = React.useState(false);
-  const inputRef = React.createRef<HTMLSpanElement>();
-
   return (
-    <Outer
-      onMouseEnter={() => {
-        setActive(true);
-      }}
-      onMouseLeave={() => {
-        setActive(false);
-      }}
-    >
+    <Outer>
       {children}
-      {active && (
-        <Inner active={active} ref={inputRef}>
-          {tooltip}
-        </Inner>
-      )}
+      <Inner>{tooltip}</Inner>
     </Outer>
   );
 };
