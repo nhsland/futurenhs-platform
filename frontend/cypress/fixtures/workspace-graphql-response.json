@@ -1,0 +1,16 @@
+{
+  "data": {
+    "workspaces": [
+      {
+        "id": "01bb9a4d-2977-4c43-b28c-2a72b4eda453",
+        "title": "Selenium Testing",
+        "description": "Test workspace with title Selenium Testing"
+      },
+      {
+        "id": "01bb9a4d-2977-4c43-b28c-2a72b4eda452",
+        "title": "Test Workspace",
+        "description": "Test workspace with title Test Workspace"
+      }
+    ]
+  }
+}

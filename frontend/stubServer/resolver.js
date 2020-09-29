@@ -1,0 +1,16 @@
+const folderByWorkspaceResponse = require("../cypress/fixtures/folder-by-workspace-graphql-response.json");
+const folderResponse = require("../cypress/fixtures/folder-graphql-response.json");
+const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
+
+const workspacesResolver = {
+  workspaces: async () => workspaceResponse.data.workspaces,
+  workspace: async () => workspaceResponse.data.workspaces[0],
+};
+
+const folderResolver = {
+  foldersByWorkspace: async () =>
+    folderByWorkspaceResponse.data.foldersByWorkspace,
+  folder: async () => folderResponse.data.folder,
+};
+
+module.exports = { ...workspacesResolver, ...folderResolver };
