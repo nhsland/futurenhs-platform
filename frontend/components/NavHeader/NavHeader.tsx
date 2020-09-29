@@ -153,8 +153,12 @@ const navItems = [
   },
 ];
 
-const NavHeader = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+interface NavHeaderProps {
+  initiallyOpen?: boolean;
+}
+
+const NavHeader = ({ initiallyOpen = false }: NavHeaderProps) => {
+  const [menuOpen, setMenuOpen] = useState(initiallyOpen);
   return (
     <StyledHeader>
       <StyledHeaderContainer>
