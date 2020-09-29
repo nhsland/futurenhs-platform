@@ -1,21 +1,43 @@
 import React, { ReactNode } from "react";
 
-import { Icons } from "nhsuk-react-components";
+import { CloseIcon } from "nhsuk-react-components";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
 import { NavMenuListItem } from ".";
 
-const StyledCloseIcon = styled(Icons.Close)`
+const StyledCloseIcon = styled(CloseIcon)`
+  height: 40px;
+  width: 40px;
+`;
+
+const StyledCloseIconWrapper = styled.button`
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  outline: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  height: 40px;
   ${({ theme }) => `
-    :hover {
-      fill: ${theme.colorNhsukWhite};
-      background-color: ${theme.colorShadeNhsukBlue35};
-    }
-    :active {
-      fill: ${theme.colorNhsukBlack};
+    :focus:not(:hover) {
       background-color: ${theme.colorNhsukYellow};
       border-bottom: 4px solid ${theme.colorNhsukBlack};
+      svg {
+        fill: ${theme.colorNhsukBlack};
+      }
+    }
+    :hover {
+      background-color: ${theme.colorShadeNhsukBlue35};
+      svg {
+        fill: ${theme.colorNhsukWhite};
+      }
+    }
+    :active {
+      background-color: ${theme.colorNhsukYellow};
+      border-bottom: 4px solid ${theme.colorNhsukBlack};
+      svg {
+        fill: ${theme.colorNhsukBlack};
+      }
     }
   `}
 `;
@@ -81,7 +103,9 @@ const NavList = ({ navItems, setMenuOpen }: NavListProps) => {
     <StyledNavMenuContainer>
       <p>
         <span>Menu</span>
-        <StyledCloseIcon onClick={() => setMenuOpen(false)} />
+        <StyledCloseIconWrapper>
+          <StyledCloseIcon onClick={() => setMenuOpen(false)} />
+        </StyledCloseIconWrapper>
       </p>
       <ul>
         {navItems.map((item) => {
