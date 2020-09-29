@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Header } from "nhsuk-react-components";
 import styled from "styled-components";
 
+import { NavList, NavMenuListItem, NavMenuButton } from ".";
 import {
   WorkspacesIcon,
   FnhsLogoIcon,
@@ -12,7 +13,6 @@ import {
   NotificationsIcon,
   UserIcon,
 } from "../Icon";
-import { NavList, NavMenuListItem, NavMenuButton } from "./Nav/";
 
 const StyledHeader = styled(Header)`
   ${({ theme }) => `

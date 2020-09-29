@@ -5,7 +5,7 @@ import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
 import { Head } from "../../../../components/Head";
-import { Header } from "../../../../components/Header";
+import { LoginHeader } from "../../../../components/LoginHeader";
 import { MainHeading } from "../../../../components/MainHeading";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
@@ -62,7 +62,7 @@ const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
   <>
     <Head title={folder.title} />
     <PageLayout>
-      <Header />
+      <LoginHeader />
       <ContentWrapper>
         <Navigation
           folders={workspaceFolders}

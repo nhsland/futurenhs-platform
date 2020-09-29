@@ -5,8 +5,8 @@ import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
 import { Head } from "../../components/Head";
-import { NavHeader } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { NavHeader } from "../../components/NavHeader";
 import { Navigation } from "../../components/Navigation";
 import { PageLayout } from "../../components/PageLayout";
 import { requireAuthentication } from "../../lib/auth";
