@@ -3,6 +3,7 @@ import * as React from "react";
 import styled, { withTheme, ThemeProps } from "styled-components";
 
 const Svg = styled.svg`
+  display: inline-block;
   width: 24px;
   height: 24px;
 `;

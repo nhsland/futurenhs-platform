@@ -4,6 +4,8 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { Folder } from "../../lib/generated/graphql";
+import useHover from "../../lib/hooks/useHover";
+import { Meatball, State } from "../Meatball";
 
 type ListItem = Pick<Folder, "id" | "title">;
 
@@ -13,13 +15,20 @@ interface Props {
   workspaceId: string;
 }
 
-const ListItem = styled.li<{ active: boolean }>`
+const ListItem = styled.li`
+  list-style-type: none;
+  margin-bottom: 12px;
+  display: flex;
+  // justify-content: space-between;
+`;
+
+const LinkWrapper = styled.div<{ active: boolean }>`
   background: ${({ active, theme }) =>
     active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
   font-weight: ${({ active }) => (active ? 700 : "inherit")};
-  list-style-type: none;
-  margin-bottom: 12px;
   &:hover {
     ${({ theme }) => `
     background-color: ${theme.colorNhsukGrey4}
@@ -29,6 +38,7 @@ const ListItem = styled.li<{ active: boolean }>`
     display: flex;
     padding-left: 8px;
     text-decoration: none;
+    align-self: flex-start;
     &:focus {
       box-shadow: none;
     }
@@ -54,15 +64,22 @@ const icons: { [key: string]: string } = {
   open: require("../../public/folderOpen.svg"),
 };
 
-const NavListItem = ({ active, item, workspaceId }: Props) => (
-  <ListItem active={active}>
-    <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
-      <a>
-        <img src={active ? icons["open"] : icons["closed"]} />
-        <div>{item.title}</div>
-      </a>
-    </Link>
-  </ListItem>
-);
+const NavListItem = ({ active, item, workspaceId }: Props) => {
+  const [hoverRef, isHover] = useHover<HTMLDivElement>();
+
+  return (
+    <ListItem ref={hoverRef as any}>
+      <LinkWrapper active={active}>
+        <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
+          <a>
+            <img src={active ? icons["open"] : icons["closed"]} />
+            <div>{item.title}</div>
+          </a>
+        </Link>
+      </LinkWrapper>
+      <Meatball state={isHover ? State.hover : State.focused}>xx</Meatball>
+    </ListItem>
+  );
+};
 
 export default NavListItem;
