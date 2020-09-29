@@ -6,11 +6,6 @@ import { v4 as uuid } from "uuid";
 
 import { NavMenuListItem } from ".";
 
-const StyledCloseIcon = styled(CloseIcon)`
-  height: 40px;
-  width: 40px;
-`;
-
 const StyledCloseIconWrapper = styled.button`
   border: none;
   background-color: transparent;
@@ -18,6 +13,7 @@ const StyledCloseIconWrapper = styled.button`
   outline: 4px solid transparent;
   border-bottom: 4px solid transparent;
   height: 40px;
+  width: 40px;
   ${({ theme }) => `
     :focus:not(:hover) {
       background-color: ${theme.colorNhsukYellow};
@@ -103,8 +99,8 @@ const NavList = ({ navItems, setMenuOpen }: NavListProps) => {
     <StyledNavMenuContainer>
       <p>
         <span>Menu</span>
-        <StyledCloseIconWrapper>
-          <StyledCloseIcon onClick={() => setMenuOpen(false)} />
+        <StyledCloseIconWrapper onClick={() => setMenuOpen(false)}>
+          <CloseIcon />
         </StyledCloseIconWrapper>
       </p>
       <ul>
