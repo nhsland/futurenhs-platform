@@ -1,14 +1,15 @@
 import React from "react";
 
-import Icon from "./SvgIcon";
+import Icon, { State } from "./SvgIcon";
 
 interface Props {
-  active?: boolean;
+  state: State;
   children: React.ReactNode;
 }
 
-const Meatball = ({ active, children }: Props) => {
-  return <Icon active={active || false}>{children}</Icon>;
+const Meatball = ({ state, children }: Props) => {
+  return <Icon state={state}>{children}</Icon>;
 };
 
+export { State } from "./SvgIcon";
 export default Meatball;
