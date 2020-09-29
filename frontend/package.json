@@ -16,7 +16,8 @@
     "clean": "rm -rf .next",
     "generate": "graphql-codegen --config codegen.yaml",
     "cypress:local": "cypress open --config-file ./cypress.json",
-    "start:stubs": "node stubServer"
+    "start:stubs": "node stubServer",
+    "cypress:ci": "yarn dev && yarn start:stubs"
   },
   "dependencies": {
     "@apollo/federation": "^0.20.0",

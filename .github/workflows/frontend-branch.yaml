@@ -29,8 +29,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: futurenhs-platform/frontend
-          # build: yarn run build
-          start: yarn run dev
+          start: yarn run cypress:ci
           wait-on: http://localhost:3000
         env:
           AAD_B2C_CLIENT_SECRET: ${{ secrets.AAD_B2C_CLIENT_SECRET }}
