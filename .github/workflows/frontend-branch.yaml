@@ -32,7 +32,7 @@ jobs:
           start: yarn run cypress:ci
           wait-on: http://localhost:3000
         env:
-          AAD_B2C_CLIENT_SECRET: ${{ secrets.AAD_B2C_CLIENT_SECRET }}
+          WORKSPACE_SERVER_API_ROOT: http://localhost:3001/graphql
 
       - name: "Build & Push image"
         working-directory: futurenhs-platform/frontend
