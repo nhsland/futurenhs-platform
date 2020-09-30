@@ -53,11 +53,11 @@ interface Props {
 const WorkspaceDirectoryItem = ({ title, id }: Props) => {
   return (
     <StyledContainer>
-      <Link href="/workspaces/[id]" as={`/workspaces/${id}`}>
+      <Link href="/workspaces/[id]" as={`/workspaces/${id}`} passHref>
         <StyledLink>
           <img
             src={require("../../public/Placeholder_Workspace_Image.svg")}
-            alt="https://www.nhs.co.uk"
+            alt=""
           />
           <h3>{title}</h3>
         </StyledLink>

@@ -91,10 +91,11 @@ response=$(
 		http://workspace-service.workspace-service/graphql \
 		-H 'Content-Type: application/json' \
 		-d "$body"
-)`
+)
 id=$(echo "$response" | jq -r '.data.createFolder.id')
 if [ $id = "null" ]; then
-    echo "something went wrong! $response"
-    exit 1
+	echo "something went wrong! $response"
+	exit 1
 fi
+
 echo $id

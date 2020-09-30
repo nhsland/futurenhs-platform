@@ -1,5 +1,5 @@
 terraform {
-  required_version = "0.13.0"
+  required_version = "0.13.3"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -91,4 +91,11 @@ module databases {
   eventgrid_topic_endpoint = module.platform.eventgrid_topic_endpoint
   eventgrid_topic_key      = module.platform.eventgrid_topic_key
   instrumentation_key      = module.platform.instrumentation_key
+}
+
+module storage {
+  source              = "../../modules/storage"
+  environment         = "production"
+  location            = var.location
+  resource_group_name = module.platform.resource_group_name
 }
