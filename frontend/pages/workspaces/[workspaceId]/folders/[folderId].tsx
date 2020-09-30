@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { Head } from "../../../../components/Head";
 import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
-import { Meatball, State } from "../../../../components/Meatball";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import { requireAuthentication } from "../../../../lib/auth";
@@ -71,8 +70,9 @@ const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
           activeFolder={folder.id}
         />
         <PageContent>
-          <MainHeading>{folder.title}</MainHeading>
-          <Meatball state={State.selected}>xx</Meatball>
+          <MainHeading withBorder withMeatball>
+            {folder.title}
+          </MainHeading>
           <p>{folder.description}</p>
         </PageContent>
       </ContentWrapper>

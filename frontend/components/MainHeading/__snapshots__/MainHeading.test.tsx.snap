@@ -2,22 +2,71 @@
 
 exports[`takes a snapshot of the component 1`] = `
 <DocumentFragment>
-  <h1
-    aria-live="polite"
+  .c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c1 {
+  margin-bottom: 23px;
+}
+
+<div
+    class="c0"
   >
-    example heading
-  </h1>
+    <h1
+      aria-live="polite"
+      class="c1"
+    >
+      example heading
+    </h1>
+  </div>
 </DocumentFragment>
 `;
 
 exports[`takes a snapshot with the prop 1`] = `
 <DocumentFragment>
-  <h1
-    aria-live="polite"
-  >
-    example heading
-  </h1>
   .c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c1 {
+  margin-bottom: 23px;
+}
+
+<div
+    class="c0"
+  >
+    <h1
+      aria-live="polite"
+      class="c1"
+    >
+      example heading
+    </h1>
+  </div>
+  .c0 {
+  margin-top: 0px;
   margin-bottom: 25px;
   color: rgb(76,98,114);
   border-bottom: 1px solid rgb(76,98,114);

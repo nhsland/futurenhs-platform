@@ -2,12 +2,12 @@
 
 exports[`<Navigation/> renders correctly 1`] = `
 <DocumentFragment>
-  .c8 {
+  .c9 {
   display: inline-block;
   position: relative;
 }
 
-.c10 {
+.c11 {
   opacity: 0;
   position: absolute;
   middle: 50%;
@@ -23,13 +23,13 @@ exports[`<Navigation/> renders correctly 1`] = `
   color: rgb(255,255,255);
 }
 
-.c7:hover .c9 {
+.c8:hover .c10 {
   opacity: 1;
   -webkit-transition: opacity 0s linear 0.5s;
   transition: opacity 0s linear 0.5s;
 }
 
-.c10::after {
+.c11::after {
   position: absolute;
   bottom: 33%;
   left: -10%;
@@ -38,6 +38,13 @@ exports[`<Navigation/> renders correctly 1`] = `
   border-style: solid;
   border-color: transparent rgb(76,98,114) transparent transparent;
   content: " ";
+}
+
+.c7 {
+  border: 0;
+  padding: 0;
+  width: 24px;
+  height: 24px;
 }
 
 .c5 {
@@ -230,12 +237,14 @@ exports[`<Navigation/> renders correctly 1`] = `
               </div>
             </a>
           </div>
-          <button>
+          <button
+            class="c7"
+          >
             <div
-              class="c7 c8"
+              class="c8 c9"
             >
               <span
-                class="c9 c10"
+                class="c10 c11"
               >
                 Options
               </span>
@@ -259,12 +268,14 @@ exports[`<Navigation/> renders correctly 1`] = `
               </div>
             </a>
           </div>
-          <button>
+          <button
+            class="c7"
+          >
             <div
-              class="c7 c8"
+              class="c8 c9"
             >
               <span
-                class="c9 c10"
+                class="c10 c11"
               >
                 Options
               </span>
