@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "predev": "yarn generate",
-    "dev": "NODE_ENV=development node server.js",
-    "dev:local": "yarn start:stubs & NODE_ENV=development node server.js",
+    "dev": "concurrently \"yarn start:stubs\" \"NODE_ENV=development node server.js\"",
     "dev:trace": "NODE_ENV=development NODE_OPTIONS='--require ./tracing.js' node server.js",
     "prebuild": "yarn generate",
     "build": "NODE_ENV=production next build",
@@ -16,7 +15,7 @@
     "lint": "yarn eslint . --ext .js,.ts,.tsx",
     "clean": "rm -rf .next",
     "generate": "graphql-codegen --config codegen.yaml",
-    "cypress:local": "cypress open --config-file ./cypress.json",
+    "cypress:local": "concurrently \"yarn start:stubs\" \"NODE_ENV=development node server.js\" \"cypress open --config-file ./cypress.json\"",
     "start:stubs": "node stubServer",
     "cypress:ci": "yarn start:stubs & yarn dev"
   },
@@ -80,6 +79,7 @@
     "@typescript-eslint/parser": "^4.2.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-styled-components": "^1.11.1",
+    "concurrently": "^5.3.0",
     "cypress": "^5.2.0",
     "eslint": "^7.9.0",
     "eslint-plugin-cypress": "^2.11.1",

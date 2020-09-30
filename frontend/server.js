@@ -162,7 +162,8 @@ async function main() {
   server.get(
     "/auth/login",
     configureUserFlow("b2c_1_signin"),
-    authenticateWithAADB2C
+    authenticateWithAADB2C,
+    redirectAuthSuccess
   );
   server.get(
     "/auth/resetpassword",

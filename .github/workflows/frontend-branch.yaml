@@ -29,19 +29,8 @@ jobs:
       - name: Run chrome cypress tests
         uses: cypress-io/github-action@v2
         with:
-          browser: chrome
-          headless: true
           working-directory: futurenhs-platform/frontend
           start: yarn run cypress:ci
-          wait-on: http://localhost:3000
-        env:
-          WORKSPACE_SERVER_API_ROOT: http://localhost:3001/graphql
-
-      - name: Run firefox cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          browser: firefox
-          working-directory: futurenhs-platform/frontend
           wait-on: http://localhost:3000
         env:
           WORKSPACE_SERVER_API_ROOT: http://localhost:3001/graphql
