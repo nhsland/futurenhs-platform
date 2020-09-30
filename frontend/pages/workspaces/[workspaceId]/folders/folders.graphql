@@ -20,7 +20,11 @@ mutation CreateFolderMutation(
   $workspace: ID!
 ) {
   createFolder(
-    newFolder: { title: $title, description: $description, workspace: $workspace }
+    newFolder: {
+      title: $title
+      description: $description
+      workspace: $workspace
+    }
   ) {
     id
     title
