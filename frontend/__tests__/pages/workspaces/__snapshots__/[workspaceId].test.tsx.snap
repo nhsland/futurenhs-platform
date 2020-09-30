@@ -300,7 +300,7 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
   padding-left: 0px;
 }
 
-.c8 .nav-list-item div {
+.c14 .nav-list-item div {
   font-weight: 700;
   color: rgb(0,94,184);
 }
@@ -660,6 +660,21 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
           <ul
             class="c14"
           >
+            <li
+              class="c15 nav-list-item"
+            >
+              <a
+                href="/workspaces/1/folders/create-folder"
+              >
+                <img
+                  alt=""
+                  src="/public/createFolder.svg"
+                />
+                <div>
+                  Create new folder
+                </div>
+              </a>
+            </li>
             <li
               class="c15"
             >

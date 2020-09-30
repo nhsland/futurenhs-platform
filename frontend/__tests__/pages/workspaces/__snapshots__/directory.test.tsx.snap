@@ -544,6 +544,7 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <a
           class="c12"
+          href="/workspaces/1"
         >
           <img
             alt=""
@@ -559,6 +560,7 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <a
           class="c12"
+          href="/workspaces/2"
         >
           <img
             alt=""
@@ -574,6 +576,7 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <a
           class="c12"
+          href="/workspaces/3"
         >
           <img
             alt=""
