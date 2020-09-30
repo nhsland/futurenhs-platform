@@ -33,7 +33,15 @@ const LinkWrapper = styled.div<{ active: boolean }>`
   font-weight: ${({ active }) => (active ? 700 : "inherit")};
   &:hover {
     ${({ theme }) => `
-    background-color: ${theme.colorNhsukGrey4}
+    background-color: ${theme.colorNhsukGrey4};
+    + div {
+      border-radius: 4px;
+      background-color: ${theme.colorNhsukGrey4};
+      button {
+        opacity: 1;
+        color: ${theme.colorNhsukWhite};
+      }
+    }
   `}
   }
   a {
