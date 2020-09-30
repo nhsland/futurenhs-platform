@@ -42,7 +42,6 @@ jobs:
         with:
           browser: firefox
           working-directory: futurenhs-platform/frontend
-          start: yarn run cypress:ci
           wait-on: http://localhost:3000
         env:
           WORKSPACE_SERVER_API_ROOT: http://localhost:3001/graphql
