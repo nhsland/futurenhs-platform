@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import { Header } from "nhsuk-react-components";
 import styled from "styled-components";
 
 import { NavList, NavMenuListItem, NavMenuButton } from ".";
@@ -10,11 +9,12 @@ import {
   DashboardIcon,
   HelpIcon,
   LogOutIcon,
+  NhsukLogoIcon,
   NotificationsIcon,
   UserIcon,
 } from "../Icon";
 
-const StyledHeader = styled(Header)`
+const StyledHeader = styled.header`
   ${({ theme }) => `
     background-color: ${theme.colorNhsukWhite};
     position: relative;
@@ -75,11 +75,28 @@ const StyledFnhsLogo = styled(FnhsLogoIcon)`
   `}
 `;
 
-const StyledHeaderLogo = styled(Header.Logo)`
+// const StyledHeaderLogo = styled(Header.Logo)`
+//   display: none;
+//   ${({ theme }) => `
+//     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+//       display: block;
+//     }
+//   `}
+// `;
+
+const StyledHeaderLogo = styled(NhsukLogoIcon)`
   display: none;
   ${({ theme }) => `
+
+
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       display: block;
+
+      .nhsuk-link:hover {
+        border: 4px solid ${theme.colorNhsukYellow};
+        background-color: red;
+      }
+
     }
   `}
 `;
@@ -164,7 +181,7 @@ const NavHeader = ({ initiallyOpen = false }: NavHeaderProps) => {
     <StyledHeader>
       <StyledHeaderContainer>
         <StyledFnhsLogo />
-        <StyledHeaderLogo href="https://www.nhs.uk" />
+        <StyledHeaderLogo />
         <NavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       </StyledHeaderContainer>
       <StyledNavContainer>
