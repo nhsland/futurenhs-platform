@@ -137,9 +137,10 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <a
           class="c6"
+          href="/workspaces/1"
         >
           <img
-            alt="https://www.nhs.co.uk"
+            alt=""
             src="/public/Placeholder_Workspace_Image.svg"
           />
           <h3>
@@ -152,9 +153,10 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <a
           class="c6"
+          href="/workspaces/2"
         >
           <img
-            alt="https://www.nhs.co.uk"
+            alt=""
             src="/public/Placeholder_Workspace_Image.svg"
           />
           <h3>
@@ -167,9 +169,10 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <a
           class="c6"
+          href="/workspaces/3"
         >
           <img
-            alt="https://www.nhs.co.uk"
+            alt=""
             src="/public/Placeholder_Workspace_Image.svg"
           />
           <h3>

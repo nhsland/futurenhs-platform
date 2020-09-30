@@ -12,7 +12,10 @@ terraform init -backend-config=backend-config.tfvars
 # in the database using it. However it's not necessary to delete it. We can
 # just forget it ever existed. It will be removed together with the database
 # itself.
-terraform state rm module.databases.postgresql_extension.workspace_service_uuid_ossp
+UUID_DB_EXTENSION=module.databases.postgresql_extension.workspace_service_uuid_ossp
+if terraform state show $UUID_DB_EXTENSION; then
+	terraform state rm $UUID_DB_EXTENSION
+fi
 
 # The terraform provider cannot initialise itself once the `platform` module
 # has been destroyed because it can't connect to the database. Therefore

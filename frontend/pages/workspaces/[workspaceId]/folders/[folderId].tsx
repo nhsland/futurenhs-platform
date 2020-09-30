@@ -61,7 +61,9 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading>{folder.data?.folder.title || ""}</MainHeading>
+            <MainHeading withBorder>
+              {folder.data?.folder.title || ""}
+            </MainHeading>
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
           </PageContent>
