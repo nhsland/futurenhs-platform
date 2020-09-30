@@ -15,7 +15,7 @@ describe("Workspace Directory", () => {
       .then(($h3) => {
         const text = $h3.text();
         cy.contains("h1", text);
-        cy.contains("h2", "Most");
+        cy.contains("h2", "Most recent items");
       });
   });
 });
