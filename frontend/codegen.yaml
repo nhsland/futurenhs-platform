@@ -6,4 +6,7 @@ generates:
     plugins:
       - "typescript"
       - "typescript-operations"
-      - typescript-graphql-request
+      - "typescript-urql"
+    config:
+      withComponent: false # we'll use Urql client with hooks instead
+      withHooks: true

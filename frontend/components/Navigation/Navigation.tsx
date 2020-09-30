@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { Folder, Workspace } from "../../lib/generated/graphql";
+import { useFoldersByWorkspaceQuery } from "../../lib/generated/graphql";
 import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
 
@@ -56,17 +56,28 @@ const List = styled.ul`
 `;
 
 interface Props {
-  workspace: Pick<Workspace, "id" | "title">;
-  folders: Array<Pick<Folder, "title" | "id">>;
+  workspaceId: string;
+  workspaceTitle: string;
   activeFolder?: string;
 }
 
-const Navigation: FC<Props> = ({ workspace, folders, activeFolder }) => {
+const Navigation: FC<Props> = ({
+  workspaceId,
+  workspaceTitle,
+  activeFolder,
+}) => {
+  const [{ data, fetching, error }] = useFoldersByWorkspaceQuery({
+    variables: { workspace: workspaceId },
+  });
+
+  if (fetching || !data) return <p>Loading...</p>;
+  if (error) return <p> Oh no... {error?.message} </p>;
+
   const createFolder = {
     id: "create-folder",
     title: "Create new folder",
     description: "create folder",
-    workspace: workspace.id,
+    workspace: workspaceId,
   };
 
   const icons: { [key: string]: string } = {
@@ -74,20 +85,20 @@ const Navigation: FC<Props> = ({ workspace, folders, activeFolder }) => {
     open: require("../../public/folderOpen.svg"),
   };
 
-  const alphabetisedFolders = folders.sort((a, b) =>
+  const alphabetisedFolders = [...data.foldersByWorkspace].sort((a, b) =>
     a.title.localeCompare(b.title, "en", { sensitivity: "base" })
   );
 
   return (
     <Nav>
       <Header>
-        <Link href={`/workspaces/${workspace.id}`} passHref>
+        <Link href={`/workspaces/${workspaceId}`} passHref>
           <WorkspaceTitleLink>
-            <h3>{workspace.title}</h3>
+            <h3>{workspaceTitle}</h3>
           </WorkspaceTitleLink>
         </Link>
 
-        <Link href={`/workspaces/${workspace.id}`}>
+        <Link href={`/workspaces/${workspaceId}`}>
           <a>About this workspace</a>
         </Link>
       </Header>
@@ -98,7 +109,7 @@ const Navigation: FC<Props> = ({ workspace, folders, activeFolder }) => {
             item={createFolder}
             imgSrc={require("../../public/createFolder.svg")}
             className="nav-list-item"
-            href={`/workspaces/${workspace.id}/folders/${createFolder.id}`}
+            href={`/workspaces/${workspaceId}/folders/${createFolder.id}`}
             altText=""
           />
           {alphabetisedFolders.map((folder) => (
@@ -112,7 +123,7 @@ const Navigation: FC<Props> = ({ workspace, folders, activeFolder }) => {
               altText={
                 folder.id === activeFolder ? "folder current page" : "folder"
               }
-              href={`/workspaces/${workspace.id}/folders/${folder.id}`}
+              href={`/workspaces/${workspaceId}/folders/${folder.id}`}
             />
           ))}
         </List>

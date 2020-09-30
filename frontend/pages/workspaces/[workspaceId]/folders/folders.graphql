@@ -14,11 +14,7 @@ query GetFolderById($id: ID!) {
   }
 }
 
-mutation CreateFolderMutation(
-  $title: String!
-  $description: String!
-  $workspace: ID!
-) {
+mutation CreateFolder($title: String!, $description: String!, $workspace: ID!) {
   createFolder(
     newFolder: {
       title: $title
