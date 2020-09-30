@@ -30,7 +30,7 @@ linkerd check --pre || {
 }
 
 echo "Installing Linkerd"
-linkerd install --ha | kubectl apply -f - || {
+linkerd install | kubectl apply -f - || {
 	echo 'Unable to apply to cluster.'
 	exit 1
 }
