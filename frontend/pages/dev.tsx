@@ -19,11 +19,6 @@ const Dev = () => {
         <h2>Useful links</h2>
         <ul>
           <li>
-            <Link href="/greetings/tracy">
-              <a>Greetings</a>
-            </Link>
-          </li>
-          <li>
             <Link href="/auth/login">
               <a>Login</a>
             </Link>
@@ -36,16 +31,6 @@ const Dev = () => {
           <li>
             <Link href="/auth/logout">
               <a>Logout</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/workspaces/private">
-              <a>Private workspace</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/workspaces/pharmacy">
-              <a>Pharmacy workspace</a>
             </Link>
           </li>
         </ul>

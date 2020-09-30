@@ -1,33 +1,14 @@
 import React from "react";
 
-import { GraphQLClient } from "graphql-request";
-import { GetServerSideProps } from "next";
+import { NextPage } from "next";
 import styled from "styled-components";
 
 import { MainHeading } from "../../components/MainHeading";
 import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
 import WorkspaceDirectoryItem from "../../components/Workspaces/WorkspaceDirectoryItem";
-import { requireAuthentication } from "../../lib/auth";
-import { getSdk } from "../../lib/generated/graphql";
-
-export const getServerSideProps: GetServerSideProps = requireAuthentication(
-  async () => {
-    const client = new GraphQLClient(
-      "http://workspace-service.workspace-service/graphql"
-    );
-
-    const sdk = getSdk(client);
-
-    const { workspaces } = await sdk.GetWorkspaces();
-
-    return {
-      props: {
-        workspaces,
-      },
-    };
-  }
-);
+import { useGetWorkspacesQuery } from "../../lib/generated/graphql";
+import withUrqlClient from "../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   min-height: 100vh;
@@ -39,19 +20,17 @@ const PageContent = styled.section`
   `}
 `;
 
-type Workspace = { title: string; id: string };
+const WorkspaceDirectory: NextPage = () => {
+  const [{ data, fetching, error }] = useGetWorkspacesQuery();
 
-interface Props {
-  workspaces: Workspace[];
-}
-
-const WorkspaceDirectory = ({ workspaces }: Props) => {
   return (
     <PageLayout>
       <NavHeader />
       <PageContent>
         <MainHeading withBorder>My workspaces</MainHeading>
-        {workspaces.map((workspace: Workspace) => {
+        {fetching && <p>Loading...</p>}
+        {error && <p> Oh no... {error?.message} </p>}
+        {data?.workspaces.map((workspace) => {
           return (
             <WorkspaceDirectoryItem
               title={workspace.title}
@@ -65,4 +44,4 @@ const WorkspaceDirectory = ({ workspaces }: Props) => {
   );
 };
 
-export default WorkspaceDirectory;
+export default withUrqlClient(WorkspaceDirectory);

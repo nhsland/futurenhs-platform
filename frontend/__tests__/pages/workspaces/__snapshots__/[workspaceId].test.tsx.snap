@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
+exports[`withUrql renders with folders matching snapshot 1`] = `
 <DocumentFragment>
   .c19 {
   display: inline-block;
@@ -64,6 +64,13 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
 
 .c24 {
   margin-bottom: 23px;
+}
+
+.c25 {
+  margin-top: 0px;
+  margin-bottom: 25px;
+  color: rgb(76,98,114);
+  border-bottom: 1px solid rgb(76,98,114);
 }
 
 .c1 {
@@ -396,13 +403,6 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
   padding-left: 10%;
   padding-right: 10%;
   background-color: rgb(255,255,255);
-}
-
-.c25 {
-  padding-top: 24px;
-  margin-bottom: 8px;
-  border-top: 1px solid rgb(76,98,114);
-  color: rgb(76,98,114);
 }
 
 .c9 {
@@ -816,9 +816,10 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
             hospital
           </h1>
         </div>
-        <h2
+        <hr
           class="c25"
-        >
+        />
+        <h2>
           Most recent items
         </h2>
       </section>
