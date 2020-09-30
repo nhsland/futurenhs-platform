@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { Head } from "../../../../components/Head";
-import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
+import { NavHeader } from "../../../../components/NavHeader";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import {
@@ -53,7 +53,7 @@ const FolderHomepage: NextPage = () => {
         }
       />
       <PageLayout>
-        <Header />
+        <NavHeader />
         <ContentWrapper>
           <Navigation
             workspaceId={workspaceId}

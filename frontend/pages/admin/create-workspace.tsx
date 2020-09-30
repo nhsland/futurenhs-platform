@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 import { Head } from "../../components/Head";
-import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
 import { Textarea } from "../../components/Textarea";
 import {
@@ -82,7 +82,7 @@ const CreateWorkspace: NextPage = () => {
     <>
       <Head title="Admin - Create Workspace" />
       <PageLayout>
-        <Header />
+        <NavHeader />
         <PageContent>
           <MainHeading>Create a workspace</MainHeading>
           <H2>Workspace details</H2>

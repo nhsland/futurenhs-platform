@@ -3,8 +3,8 @@ import React from "react";
 import { NextPage } from "next";
 import styled from "styled-components";
 
-import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
 import WorkspaceDirectoryItem from "../../components/Workspaces/WorkspaceDirectoryItem";
 import { useGetWorkspacesQuery } from "../../lib/generated/graphql";
@@ -25,7 +25,7 @@ const WorkspaceDirectory: NextPage = () => {
 
   return (
     <PageLayout>
-      <Header />
+      <NavHeader />
       <PageContent>
         <MainHeading withBorder>My workspaces</MainHeading>
         {fetching && <p>Loading...</p>}
