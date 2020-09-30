@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { GraphQLClient } from "graphql-request";
 import { GetServerSideProps } from "next";
@@ -47,7 +47,6 @@ const PageContent = styled.section`
   background-color: ${theme.colorNhsukWhite};
   `}
 `;
-
 const ContentWrapper = styled.div`
   display: flex;
 `;
@@ -58,7 +57,7 @@ interface Props {
   workspace: Pick<Workspace, "id" | "title">;
 }
 
-const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
+const FolderHomepage: FC<Props> = ({ folder, workspaceFolders, workspace }) => (
   <>
     <Head title={folder.title} />
     <PageLayout>
@@ -70,7 +69,7 @@ const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
           activeFolder={folder.id}
         />
         <PageContent>
-          <MainHeading>{folder.title}</MainHeading>
+          <MainHeading withBorder>{folder.title}</MainHeading>
           <p>{folder.description}</p>
         </PageContent>
       </ContentWrapper>
