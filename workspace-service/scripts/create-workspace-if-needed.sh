@@ -55,7 +55,7 @@ body=$(
 		--arg title "$WORKSPACE_TITLE" \
 		--arg description "$WORKSPACE_DESCRIPTION" \
 		'{
-			"query": "mutation CreateWorkspace($title: String!, $description: String!) { createWorkspace(workspace: { title: $title,  description: $description }) { id } }",
+			"query": "mutation CreateWorkspace($title: String!, $description: String!) { createWorkspace(newWorkspace: { title: $title,  description: $description }) { id } }",
 			"variables": {
 				"title": $title,
 				"description": $description

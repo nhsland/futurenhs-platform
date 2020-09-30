@@ -300,6 +300,11 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
   padding-left: 0px;
 }
 
+.c8 .nav-list-item div {
+  font-weight: 700;
+  color: rgb(0,94,184);
+}
+
 .c0 {
   max-width: 1200px;
   margin: 0px auto;
@@ -662,6 +667,7 @@ exports[`WorkspaceHomepage renders with folders matching snapshot 1`] = `
                 href="/workspaces/1/folders/f1"
               >
                 <img
+                  alt="folder"
                   src="/public/folderClosed.svg"
                 />
                 <div>

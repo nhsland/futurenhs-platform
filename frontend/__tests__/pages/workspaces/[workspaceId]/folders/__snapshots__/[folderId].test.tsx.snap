@@ -191,7 +191,7 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
 .c15 {
   background: rgb(255,235,59);
   border-radius: 4px;
-  font-weight: 700;
+  font-weight: inherit;
   list-style-type: none;
   margin-bottom: 12px;
 }
@@ -230,6 +230,7 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
   padding-right: 4px;
   color: rgb(33,43,50);
 }
+
 
 .c13 {
   padding-top: 20px;
@@ -300,10 +301,16 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
   padding-left: 0px;
 }
 
+.c8 .nav-list-item div {
+  font-weight: 700;
+  color: rgb(0,94,184);
+}
+
 .c0 {
   max-width: 1200px;
   margin: 0px auto;
 }
+
 
 .c16 {
   -webkit-box-flex: 3;
@@ -655,6 +662,7 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
                 href="/workspaces/1/folders/f1"
               >
                 <img
+                  alt="folder current page"
                   src="/public/folderOpen.svg"
                 />
                 <div>
@@ -673,6 +681,9 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
         >
           folder 1
         </h1>
+        <hr
+          class="c12"
+        />
         <p>
           first folder
         </p>
