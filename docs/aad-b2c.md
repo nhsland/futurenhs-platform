@@ -79,15 +79,15 @@ We setup our Azure AD B2C tenant with the following steps:
 
 1. Set Roles to "Global administrator"
 
+Note: These users can login to portal.azure.com to manage the Azure Active Directory, but will not be able to login to beta.future.nhs.uk. To do that, they need another platform member user (see below).
+
 ## Create service team user
 
-1. Create a new Azure AD B2C user
-
-   Sign in method: Email
+1. Invite a new user with their correct email address (e.g. abc@england.nhs.uk)
 
 1. Set Roles to "User administrator"
 
-1. Let them know their initial password. The password can only be changed using the above created password reset flow.
+Note: These users can login to portal.azure.com to manage users, but will not be able to login to beta.future.nhs.uk. To do that, they need another platform member user (see below).
 
 ## Create platform member user
 
