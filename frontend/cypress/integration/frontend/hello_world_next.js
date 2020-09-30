@@ -6,6 +6,6 @@ describe("Hello world", () => {
   });
 
   it("Renders page elements", () => {
-    cy.get("p").should("contain", "The new Future is coming..");
+    cy.get("p").should("contain", "The new Future is coming...");
   });
 });
