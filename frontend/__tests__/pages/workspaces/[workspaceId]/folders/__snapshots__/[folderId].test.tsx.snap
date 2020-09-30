@@ -20,19 +20,72 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
   height: 40px;
 }
 
-.c9 {
-  background: rgb(255,235,59);
-  border-radius: 4px;
-  font-weight: 700;
-  list-style-type: none;
-  margin-bottom: 12px;
+.c12 {
+  display: inline-block;
+  position: relative;
 }
 
-.c9:hover {
+.c14 {
+  opacity: 0;
+  position: absolute;
+  middle: 50%;
+  left: 100%;
+  margin-left: 13px;
+  z-index: 1000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c11:hover .c13 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c14::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c16 {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.c9 {
+  list-style-type: none;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c10 {
+  background: rgb(255,235,59);
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: 700;
+}
+
+.c10:hover {
   background-color: rgb(216,221,224);
 }
 
-.c9 a {
+.c10 a {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -40,13 +93,16 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
   padding-left: 8px;
   -webkit-text-decoration: none;
   text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
 }
 
-.c9 a:focus {
+.c10 a:focus {
   box-shadow: none;
 }
 
-.c9 img {
+.c10 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -57,7 +113,7 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
   flex-shrink: 0;
 }
 
-.c9 div {
+.c10 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
@@ -137,7 +193,7 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c10 {
+.c15 {
   -webkit-box-flex: 3;
   -webkit-flex-grow: 3;
   -ms-flex-positive: 3;
@@ -244,28 +300,74 @@ exports[`FolderHomepage renders matching snapshot 1`] = `
             <li
               class="c9"
             >
-              <a
-                href="/workspaces/1/folders/f1"
+              <div
+                class="c10"
               >
-                <img
-                  src="/public/folderOpen.svg"
-                />
-                <div>
-                  folder 1
+                <a
+                  href="/workspaces/1/folders/f1"
+                >
+                  <img
+                    src="/public/folderOpen.svg"
+                  />
+                  <div>
+                    folder 1
+                  </div>
+                </a>
+              </div>
+              <button>
+                <div
+                  class="c11 c12"
+                >
+                  <span
+                    class="c13 c14"
+                  >
+                    Options
+                  </span>
                 </div>
-              </a>
+              </button>
             </li>
           </ul>
         </section>
       </nav>
       <section
-        class="c10"
+        class="c15"
       >
         <h1
           aria-live="polite"
         >
           folder 1
         </h1>
+        <button>
+          <div
+            class="c11 c12"
+          >
+            <svg
+              class="c16"
+              fill="none"
+              height="1em"
+              viewBox="0 0 24 24"
+              width="1em"
+            >
+              <rect
+                fill="rgb(255, 235, 59)"
+                height="24"
+                rx="4"
+                width="24"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                fill="rgb(33, 43, 50)"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <span
+              class="c13 c14"
+            >
+              Options
+            </span>
+          </div>
+        </button>
         <p>
           first folder
         </p>
