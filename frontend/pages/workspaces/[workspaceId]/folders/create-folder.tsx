@@ -8,8 +8,8 @@ import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
+import { NavHeader } from "../../../../components/NavHeader";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import { Textarea } from "../../../../components/Textarea";
@@ -128,7 +128,7 @@ const CreateFolder: FC<Props> = ({ workspaceFolders, workspace }) => {
 
   return (
     <PageLayout>
-      <Header />
+      <NavHeader />
       <ContentWrapper>
         <Navigation
           folders={workspaceFolders}
