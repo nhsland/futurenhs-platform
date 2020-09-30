@@ -1,12 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { GraphQLClient } from "graphql-request";
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
 import { Head } from "../../../../components/Head";
-import { Header } from "../../../../components/Header";
 import { MainHeading } from "../../../../components/MainHeading";
+import { NavHeader } from "../../../../components/NavHeader";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import { requireAuthentication } from "../../../../lib/auth";
@@ -47,7 +47,6 @@ const PageContent = styled.section`
   background-color: ${theme.colorNhsukWhite};
   `}
 `;
-
 const ContentWrapper = styled.div`
   display: flex;
 `;
@@ -58,11 +57,11 @@ interface Props {
   workspace: Pick<Workspace, "id" | "title">;
 }
 
-const FolderHomepage = ({ folder, workspaceFolders, workspace }: Props) => (
+const FolderHomepage: FC<Props> = ({ folder, workspaceFolders, workspace }) => (
   <>
     <Head title={folder.title} />
     <PageLayout>
-      <Header />
+      <NavHeader />
       <ContentWrapper>
         <Navigation
           folders={workspaceFolders}

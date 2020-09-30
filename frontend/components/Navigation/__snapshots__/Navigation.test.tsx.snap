@@ -171,6 +171,11 @@ exports[`<Navigation/> renders correctly 1`] = `
   padding-left: 0px;
 }
 
+.c4 .nav-list-item div {
+  font-weight: 700;
+  color: rgb(0,94,184);
+}
+
 @media (min-width:641px) {
   .c0 {
     width: 300px;
@@ -221,6 +226,38 @@ exports[`<Navigation/> renders correctly 1`] = `
         class="c4"
       >
         <li
+          class="c5 nav-list-item"
+        >
+          <div
+            class="c6"
+          >
+            <a
+              href="/workspaces/1111/folders/create-folder"
+            >
+              <img
+                alt=""
+                src="/public/createFolder.svg"
+              />
+              <div>
+                Create new folder
+              </div>
+            </a>
+          </div>
+          <button
+            class="c7"
+          >
+            <div
+              class="c8 c9"
+            >
+              <span
+                class="c10 c11"
+              >
+                Options
+              </span>
+            </div>
+          </button>
+        </li>
+        <li
           class="c5"
         >
           <div
@@ -230,6 +267,7 @@ exports[`<Navigation/> renders correctly 1`] = `
               href="/workspaces/1111/folders/1234"
             >
               <img
+                alt="folder"
                 src="/public/folderClosed.svg"
               />
               <div>
@@ -261,6 +299,7 @@ exports[`<Navigation/> renders correctly 1`] = `
               href="/workspaces/1111/folders/5678"
             >
               <img
+                alt="folder"
                 src="/public/folderClosed.svg"
               />
               <div>

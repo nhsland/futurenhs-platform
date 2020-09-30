@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
 import Link from "next/link";
 import styled from "styled-components";
@@ -10,8 +10,11 @@ type ListItem = Pick<Folder, "id" | "title">;
 
 interface Props {
   active: boolean;
+  altText: string;
   item: ListItem;
-  workspaceId: string;
+  imgSrc: string;
+  className?: string;
+  href: string;
 }
 
 const ListItem = styled.li`
@@ -58,12 +61,14 @@ const LinkWrapper = styled.div<{ active: boolean }>`
   }
 `;
 
-const icons: { [key: string]: string } = {
-  closed: require("../../public/folderClosed.svg"),
-  open: require("../../public/folderOpen.svg"),
-};
-
-const NavListItem = ({ active, item, workspaceId }: Props) => {
+const NavListItem: FC<Props> = ({
+  active,
+  altText,
+  item,
+  imgSrc,
+  className,
+  href,
+}: Props) => {
   const [localState, setLocalState] = useState(State.hidden);
 
   const onClick = () => {
@@ -72,6 +77,7 @@ const NavListItem = ({ active, item, workspaceId }: Props) => {
 
   return (
     <ListItem
+      className={className}
       onMouseEnter={() => {
         setLocalState(State.hover);
       }}
@@ -80,9 +86,9 @@ const NavListItem = ({ active, item, workspaceId }: Props) => {
       }}
     >
       <LinkWrapper active={active}>
-        <Link href={`/workspaces/${workspaceId}/folders/${item.id}`}>
+        <Link href={href}>
           <a>
-            <img src={active ? icons["open"] : icons["closed"]} />
+            <img src={imgSrc} alt={altText} />
             <div>{item.title}</div>
           </a>
         </Link>

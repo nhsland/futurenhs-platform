@@ -3,10 +3,10 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
-import { Header } from "../../components/Header";
 import { Login } from "../../components/Login";
 import { Gradient } from "../../components/Login";
 import { LoginPanel } from "../../components/Login";
+import { LoginHeader } from "../../components/LoginHeader";
 import { PageLayout } from "../../components/PageLayout";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -29,7 +29,7 @@ const LoginPage = () => {
   return (
     <StyledPageWrapper>
       <PageLayout>
-        <Header />
+        <LoginHeader />
         <Gradient>
           <Login />
           <LoginPanel

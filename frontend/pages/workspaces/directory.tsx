@@ -4,8 +4,8 @@ import { GraphQLClient } from "graphql-request";
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
-import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
 import WorkspaceDirectoryItem from "../../components/Workspaces/WorkspaceDirectoryItem";
 import { requireAuthentication } from "../../lib/auth";
@@ -48,7 +48,7 @@ interface Props {
 const WorkspaceDirectory = ({ workspaces }: Props) => {
   return (
     <PageLayout>
-      <Header />
+      <NavHeader />
       <PageContent>
         <MainHeading withBorder>My workspaces</MainHeading>
         {workspaces.map((workspace: Workspace) => {
