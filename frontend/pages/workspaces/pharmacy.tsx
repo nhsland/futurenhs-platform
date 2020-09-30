@@ -3,8 +3,8 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
-import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { NavHeader } from "../../components/NavHeader";
 import { requireAuthentication } from "../../lib/auth";
 
 export const getServerSideProps: GetServerSideProps = requireAuthentication(
@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = requireAuthentication(
 const PrivatePage = () => {
   return (
     <>
-      <Header />
+      <NavHeader />
       <MainHeading>Pharmacy Page</MainHeading>
       <p>This is a different private page</p>
       <Link href="/workspaces/private">

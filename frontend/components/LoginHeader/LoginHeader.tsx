@@ -25,7 +25,7 @@ const StyledImg = styled.img`
   `}
 `;
 
-const Header = () => {
+const LoginHeader = () => {
   return (
     <StyledHeader>
       <StyledImg
@@ -42,4 +42,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default LoginHeader;
