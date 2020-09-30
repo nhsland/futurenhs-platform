@@ -1,37 +1,25 @@
 import React, { useState } from "react";
 
-import { GraphQLClient } from "graphql-request";
-import { GetServerSideProps } from "next";
+import { NextPage } from "next";
 import { Input, Form, Button } from "nhsuk-react-components";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 import { Head } from "../../components/Head";
-import { Header } from "../../components/Header";
 import { MainHeading } from "../../components/MainHeading";
+import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
 import { Textarea } from "../../components/Textarea";
-import { requireAuthentication } from "../../lib/auth";
-import { getSdk } from "../../lib/generated/graphql";
-
-export const getServerSideProps: GetServerSideProps = requireAuthentication(
-  async () => {
-    return {
-      props: {},
-    };
-  }
-);
+import {
+  useCreateWorkspaceMutation,
+  Workspace,
+} from "../../lib/generated/graphql";
+import withUrqlClient from "../../lib/withUrqlClient";
 
 const MAX_CHARS: { [key: string]: number } = {
   title: 100,
   description: 250,
 };
-
-interface Workspace {
-  id: string;
-  title: string;
-  description: string;
-}
 
 const PageContent = styled.div`
   ${({ theme }) => `
@@ -62,25 +50,23 @@ const FormField = styled.div`
   }
 `;
 
-const CreateWorkspace = () => {
+const CreateWorkspace: NextPage = () => {
   const [remainingChars, setRemainingChars] = useState({
     title: null,
     description: null,
   });
-
   const { errors, handleSubmit, register } = useForm();
+  const [, createWorkspace] = useCreateWorkspaceMutation();
 
-  const onSubmit = async (data: Workspace) => {
-    try {
-      const client = new GraphQLClient("/api/graphql");
-      const sdk = getSdk(client);
-      await sdk.CreateWorkspaceMutation(data);
-      window.alert("Workspace created successfully");
-    } catch (error) {
-      console.log("Create workspace failed", error);
-      window.alert("Error creating workspace, failed");
-    }
-  };
+  const onSubmit = (data: Workspace) =>
+    createWorkspace(data).then((result) => {
+      if (result.data) {
+        window.alert("Workspace created successfully");
+      } else {
+        console.log("Create workspace failed", result.error);
+        window.alert("Error creating workspace, failed");
+      }
+    });
 
   const handleCharNumber = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -96,7 +82,7 @@ const CreateWorkspace = () => {
     <>
       <Head title="Admin - Create Workspace" />
       <PageLayout>
-        <Header />
+        <NavHeader />
         <PageContent>
           <MainHeading>Create a workspace</MainHeading>
           <H2>Workspace details</H2>
@@ -152,4 +138,4 @@ const CreateWorkspace = () => {
   );
 };
 
-export default CreateWorkspace;
+export default withUrqlClient(CreateWorkspace);
