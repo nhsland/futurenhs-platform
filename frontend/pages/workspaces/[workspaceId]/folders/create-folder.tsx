@@ -17,6 +17,7 @@ import {
   useCreateFolderMutation,
   useGetWorkspaceByIdQuery,
 } from "../../../../lib/generated/graphql";
+import withUrqlClient from "../../../../lib/withUrqlClient";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -53,8 +54,7 @@ const MAX_CHARS: { [key: string]: number } = {
 
 const CreateFolder: NextPage = () => {
   const router = useRouter();
-  let { workspaceId } = router.query;
-  workspaceId = (workspaceId || "unknown").toString();
+  const workspaceId = (router.query.workspaceId || "unknown").toString();
 
   const [remainingChars, setRemainingChars] = useState({
     title: null,
@@ -69,13 +69,13 @@ const CreateFolder: NextPage = () => {
 
   const [, createFolder] = useCreateFolderMutation();
 
-  if (fetching || !data) return <p>Loading...</p>;
   if (error) return <p> Oh no... {error?.message} </p>;
+  if (fetching || !data) return <p>Loading...</p>;
 
   const backToPreviousPage = () => router.back();
 
   const onSubmit = async (newFolder: Folder) => {
-    createFolder(newFolder).then((result) => {
+    createFolder({ ...newFolder, workspace: workspaceId }).then((result) => {
       if (result.data) {
         router.push(
           `/workspaces/${workspaceId}/folders/${result.data.createFolder.id}`
@@ -172,4 +172,4 @@ const CreateFolder: NextPage = () => {
   );
 };
 
-export default CreateFolder;
+export default withUrqlClient(CreateFolder);

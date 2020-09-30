@@ -59,16 +59,14 @@ const CreateWorkspace: NextPage = () => {
   const [, createWorkspace] = useCreateWorkspaceMutation();
 
   const onSubmit = (data: Workspace) =>
-    createWorkspace({ title: data.title, description: data.description }).then(
-      (result) => {
-        if (result.data) {
-          window.alert("Workspace created successfully");
-        } else {
-          console.log("Create workspace failed", result.error);
-          window.alert("Error creating workspace, failed");
-        }
+    createWorkspace(data).then((result) => {
+      if (result.data) {
+        window.alert("Workspace created successfully");
+      } else {
+        console.log("Create workspace failed", result.error);
+        window.alert("Error creating workspace, failed");
       }
-    );
+    });
 
   const handleCharNumber = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
