@@ -1466,9 +1466,9 @@
     tslib "~2.0.1"
 
 "@graphql-tools/graphql-tag-pluck@^6.2.4":
-  version "6.2.4"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/graphql-tag-pluck/-/graphql-tag-pluck-6.2.4.tgz#db00122679142deea81c1c9df10ab9961806f30c"
-  integrity sha512-KUJ4vt3yzD+o3ozuCva89sA2cBMM23EIx/Ada71F2M7HGEDP2PtLOJ0H7DoV5m19ik7LWsemdmEKkTEa7jkCIA==
+  version "6.2.5"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/graphql-tag-pluck/-/graphql-tag-pluck-6.2.5.tgz#5c0c47362406a55aaf661c4af0209b542b8483dc"
+  integrity sha512-qvdIOTanBuKYLIMSYl9Tk+ej9dq00B4BqUnHqoCvYtSjD1n1UINGrqXgwMT+JXp66gUZWw8BU9Ke92mQ4UwTpg==
   dependencies:
     "@babel/parser" "7.11.5"
     "@babel/traverse" "7.11.5"

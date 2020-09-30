@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { FolderMenu } from "../../../../components/FolderMenu";
 import { Head } from "../../../../components/Head";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
@@ -61,7 +62,7 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder withMeatball>
+            <MainHeading withBorder menu={<FolderMenu visible={true} />}>
               {folder.data?.folder.title || ""}
             </MainHeading>
             <p>{folder.data?.folder.description}</p>

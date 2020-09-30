@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { useFoldersByWorkspaceQuery } from "../../lib/generated/graphql";
+import { FolderMenu } from "../FolderMenu";
 import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
 
@@ -124,6 +125,7 @@ const Navigation: FC<Props> = ({
                 folder.id === activeFolder ? "folder current page" : "folder"
               }
               href={`/workspaces/${workspaceId}/folders/${folder.id}`}
+              menu={<FolderMenu />}
             />
           ))}
         </List>

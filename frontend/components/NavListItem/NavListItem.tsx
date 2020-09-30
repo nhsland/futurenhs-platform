@@ -1,10 +1,9 @@
-import React, { FC, useState } from "react";
+import React, { FC, ReactNode } from "react";
 
 import Link from "next/link";
 import styled from "styled-components";
 
 import { Folder } from "../../lib/generated/graphql";
-import { Meatball, State } from "../Meatball";
 
 type ListItem = Pick<Folder, "id" | "title">;
 
@@ -15,16 +14,17 @@ interface Props {
   imgSrc: string;
   className?: string;
   href: string;
+  menu?: ReactNode;
 }
 
 const ListItem = styled.li`
   list-style-type: none;
   margin-bottom: 12px;
   display: flex;
-  // justify-content: space-between;
 `;
 
 const LinkWrapper = styled.div<{ active: boolean }>`
+  display: flex;
   background: ${({ active, theme }) =>
     active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
@@ -37,6 +37,7 @@ const LinkWrapper = styled.div<{ active: boolean }>`
   `}
   }
   a {
+    flex-grow: 2;
     display: flex;
     padding-left: 8px;
     text-decoration: none;
@@ -68,23 +69,10 @@ const NavListItem: FC<Props> = ({
   imgSrc,
   className,
   href,
+  menu,
 }: Props) => {
-  const [localState, setLocalState] = useState(State.hidden);
-
-  const onClick = () => {
-    setLocalState(State.selected);
-  };
-
   return (
-    <ListItem
-      className={className}
-      onMouseEnter={() => {
-        setLocalState(State.hover);
-      }}
-      onMouseLeave={() => {
-        setLocalState(State.hidden);
-      }}
-    >
+    <ListItem className={className}>
       <LinkWrapper active={active}>
         <Link href={href}>
           <a>
@@ -93,18 +81,7 @@ const NavListItem: FC<Props> = ({
           </a>
         </Link>
       </LinkWrapper>
-      <Meatball
-        onMouseEnter={() => {
-          setLocalState(State.focused);
-        }}
-        onMouseLeave={() => {
-          setLocalState(localState);
-        }}
-        state={localState}
-        onClick={onClick}
-      >
-        xx
-      </Meatball>
+      {menu}
     </ListItem>
   );
 };

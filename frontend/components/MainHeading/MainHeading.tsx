@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { FC, ReactNode } from "react";
 
 import styled from "styled-components";
-
-import { Meatball, State } from "../Meatball";
 
 const Container = styled.div`
   display: flex;
@@ -13,8 +11,6 @@ const Container = styled.div`
 const H1 = styled.h1`
   margin-bottom: 23px;
 `;
-
-const StyledMeatball = styled(Meatball)``;
 
 const StyledHorizontalRule = styled.hr`
   margin-top: 0px;
@@ -28,7 +24,7 @@ const StyledHorizontalRule = styled.hr`
 interface Props {
   children: string;
   withBorder?: boolean;
-  withMeatball?: boolean;
+  menu?: ReactNode;
 }
 
 /**
@@ -36,30 +32,12 @@ interface Props {
  * It's a workaround for a known next.js accessibility issue that doesn't read out
  * headlines on navigation
  */
-const MainHeading = ({ children, withBorder, withMeatball }: Props) => {
-  const [localState, setLocalState] = useState(State.hover);
-
-  const onClick = () => {
-    setLocalState(State.selected);
-  };
+const MainHeading: FC<Props> = ({ children, withBorder, menu }) => {
   return (
     <>
       <Container>
         <H1 aria-live="polite">{children}</H1>
-        {withMeatball && (
-          <StyledMeatball
-            onMouseEnter={() => {
-              setLocalState(State.focused);
-            }}
-            onMouseLeave={() => {
-              setLocalState(State.hover);
-            }}
-            state={localState}
-            onClick={onClick}
-          >
-            xx
-          </StyledMeatball>
-        )}
+        {menu}
       </Container>
       {withBorder && <StyledHorizontalRule />}
     </>
