@@ -24,6 +24,14 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: "Run Cypress tests"
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: futurenhs-platform/frontend
+          start: yarn run cypress:ci
+          wait-on: http://localhost:3000
+        env:
+          WORKSPACE_SERVER_API_ROOT: http://localhost:3001/graphql
       - name: "Build & Push image"
         working-directory: futurenhs-platform/frontend
         run: |
