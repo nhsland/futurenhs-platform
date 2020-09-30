@@ -69,8 +69,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   default_node_pool {
     name                = "default"
     enable_auto_scaling = true
-    max_count           = 2
-    min_count           = 1
+    max_count           = var.kubernetes_min_node_count * 2
+    min_count           = var.kubernetes_min_node_count
     vm_size             = "Standard_D2_v2"
     vnet_subnet_id      = azurerm_subnet.cluster_nodes.id
     availability_zones  = ["1", "2", "3"]

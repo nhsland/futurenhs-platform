@@ -38,14 +38,15 @@ provider "random" {}
 # These are needed before the `kubernetes` and `postgresql` terraform providers can plan
 # anything.
 module platform {
-  source                  = "../../modules/platform"
-  environment             = "production"
-  location                = var.location
-  ip_whitelist_postgresql = var.ip_whitelist_postgresql
-  ip_whitelist_analytics  = var.ip_whitelist_analytics
-  enable_analytics        = true
-  ad_username             = "FutureNHS Developers"
-  ad_object_id            = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
+  source                    = "../../modules/platform"
+  environment               = "production"
+  location                  = var.location
+  ip_whitelist_postgresql   = var.ip_whitelist_postgresql
+  ip_whitelist_analytics    = var.ip_whitelist_analytics
+  enable_analytics          = true
+  ad_username               = "FutureNHS Developers"
+  ad_object_id              = "b06ebd00-f52c-4e82-ac88-0520f4320fee"
+  kubernetes_min_node_count = 2
 }
 
 resource "azurerm_container_registry" "acr" {
