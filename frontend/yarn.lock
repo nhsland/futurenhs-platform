@@ -1696,6 +1696,11 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@hookform/error-message@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@hookform/error-message/-/error-message-0.0.4.tgz#a499aa62994af44da3d207f6ed01232f43b3a549"
+  integrity sha512-as5acnxkWuF5XrzHhZlzdXUk4zpHNzFLe+uGyaJtSrMbDVTvcNL62ESRK5DTVGPix8shJnt6G2LfrobHBPpvYg==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -5628,7 +5633,7 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-import-resolver-node@^0.3.4:
+eslint-import-resolver-node@^0.3.3:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.4.tgz#85ffa81942c25012d8231096ddf679c03042c717"
   integrity sha512-ogtf+5AB/O+nM6DIeBUNr2fuT7ot9Qg/1harBfBtaP13ekEWFQEEMP94BCB7zaNW3gyY+8SHYF00rnqYwXKWOA==

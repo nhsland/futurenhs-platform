@@ -1,8 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 
 import Link from "next/link";
 import styled from "styled-components";
-import { v4 as uuid } from "uuid";
 
 import { Folder, Workspace } from "../../lib/generated/graphql";
 import { NavListItem } from "../NavListItem";
@@ -47,6 +46,13 @@ const WorkspaceTitleLink = styled.a`
 
 const List = styled.ul`
   padding-left: 0px;
+  .nav-list-item {
+    div {
+      font-weight: 700;
+      ${({ theme }) => `
+      color: ${theme.colorNhsukBlue}`}
+    }
+  }
 `;
 
 interface Props {
@@ -55,7 +61,23 @@ interface Props {
   activeFolder?: string;
 }
 
-const Navigation = ({ workspace, folders, activeFolder }: Props) => {
+const Navigation: FC<Props> = ({ workspace, folders, activeFolder }) => {
+  const createFolder = {
+    id: "create-folder",
+    title: "Create new folder",
+    description: "create folder",
+    workspace: workspace.id,
+  };
+
+  const icons: { [key: string]: string } = {
+    closed: require("../../public/folderClosed.svg"),
+    open: require("../../public/folderOpen.svg"),
+  };
+
+  const alphabetisedFolders = folders.sort((a, b) =>
+    a.title.localeCompare(b.title, "en", { sensitivity: "base" })
+  );
+
   return (
     <Nav>
       <Header>
@@ -71,12 +93,26 @@ const Navigation = ({ workspace, folders, activeFolder }: Props) => {
       </Header>
       <NavSection title="Folders">
         <List>
-          {folders.map((folder) => (
+          <NavListItem
+            active={createFolder.id === activeFolder}
+            item={createFolder}
+            imgSrc={require("../../public/createFolder.svg")}
+            className="nav-list-item"
+            href={`/workspaces/${workspace.id}/folders/${createFolder.id}`}
+            altText=""
+          />
+          {alphabetisedFolders.map((folder) => (
             <NavListItem
-              active={folder.id == activeFolder}
-              key={uuid()}
+              active={folder.id === activeFolder}
+              key={folder.id}
               item={folder}
-              workspaceId={workspace.id}
+              imgSrc={
+                folder.id === activeFolder ? icons["open"] : icons["closed"]
+              }
+              altText={
+                folder.id === activeFolder ? "folder current page" : "folder"
+              }
+              href={`/workspaces/${workspace.id}/folders/${folder.id}`}
             />
           ))}
         </List>
