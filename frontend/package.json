@@ -6,6 +6,7 @@
   "scripts": {
     "predev": "yarn generate",
     "dev": "NODE_ENV=development node server.js",
+    "dev:local": "yarn start:stubs & NODE_ENV=development node server.js",
     "dev:trace": "NODE_ENV=development NODE_OPTIONS='--require ./tracing.js' node server.js",
     "prebuild": "yarn generate",
     "build": "NODE_ENV=production next build",

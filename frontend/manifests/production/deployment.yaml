@@ -10,3 +10,8 @@ spec:
           env:
             - name: ORIGIN
               value: https://beta.future.nhs.uk
+            - name: WORKSPACE_SERVER_API_ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: prod_config_map
+                  key: workspace_server_api_root
