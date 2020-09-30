@@ -17,7 +17,7 @@
     "generate": "graphql-codegen --config codegen.yaml",
     "cypress:local": "cypress open --config-file ./cypress.json",
     "start:stubs": "node stubServer",
-    "cypress:ci": "yarn dev && yarn start:stubs"
+    "cypress:ci": "yarn start:stubs & yarn dev"
   },
   "dependencies": {
     "@apollo/federation": "^0.20.0",
