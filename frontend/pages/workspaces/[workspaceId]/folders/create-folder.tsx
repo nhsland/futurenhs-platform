@@ -1,8 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 
 import { ErrorMessage as HookFormErrorMessage } from "@hookform/error-message";
-import { GraphQLClient } from "graphql-request";
-import { GetServerSideProps } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form";
@@ -13,33 +12,11 @@ import { MainHeading } from "../../../../components/MainHeading";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
 import { Textarea } from "../../../../components/Textarea";
-import { requireAuthentication } from "../../../../lib/auth";
-import { getSdk, Folder } from "../../../../lib/generated/graphql";
-
-export const getServerSideProps: GetServerSideProps<Props> = requireAuthentication(
-  async (context) => {
-    const client = new GraphQLClient(
-      "http://workspace-service.workspace-service/graphql"
-    );
-    const sdk = getSdk(client);
-    const workspaceId = (context.params?.workspaceId as string) || "";
-    if (!workspaceId) {
-      throw new Error("No workspace id");
-    }
-
-    const { foldersByWorkspace } = await sdk.FoldersByWorkspace({
-      workspace: workspaceId,
-    });
-    const { workspace } = await sdk.GetWorkspaceByID({ id: workspaceId });
-
-    return {
-      props: {
-        workspaceFolders: foldersByWorkspace,
-        workspace,
-      },
-    };
-  }
-);
+import {
+  Folder,
+  useCreateFolderMutation,
+  useGetWorkspaceByIdQuery,
+} from "../../../../lib/generated/graphql";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -74,18 +51,11 @@ const MAX_CHARS: { [key: string]: number } = {
   description: 250,
 };
 
-interface Workspace {
-  id: string;
-  title: string;
-  description: string;
-}
+const CreateFolder: NextPage = () => {
+  const router = useRouter();
+  let { workspaceId } = router.query;
+  workspaceId = (workspaceId || "unknown").toString();
 
-interface Props {
-  workspaceFolders: Array<Pick<Folder, "id" | "title">>;
-  workspace: Pick<Workspace, "id" | "title">;
-}
-
-const CreateFolder: FC<Props> = ({ workspaceFolders, workspace }) => {
   const [remainingChars, setRemainingChars] = useState({
     title: null,
     description: null,
@@ -93,27 +63,30 @@ const CreateFolder: FC<Props> = ({ workspaceFolders, workspace }) => {
 
   const { errors, handleSubmit, register, setError } = useForm();
 
-  const router = useRouter();
+  const [{ data, fetching, error }] = useGetWorkspaceByIdQuery({
+    variables: { id: workspaceId },
+  });
+
+  const [, createFolder] = useCreateFolderMutation();
+
+  if (fetching || !data) return <p>Loading...</p>;
+  if (error) return <p> Oh no... {error?.message} </p>;
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async (data: Folder) => {
-    try {
-      const { id: workspaceId } = workspace;
-      const newFolderDetails = { ...data, workspace: workspaceId };
-      const client = new GraphQLClient("/api/graphql");
-      const sdk = getSdk(client);
-      const newFolder = await sdk.CreateFolderMutation(newFolderDetails);
-      const {
-        createFolder: { id: folderId },
-      } = newFolder;
-      router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
-    } catch (error) {
-      setError("form", {
-        type: "server",
-        message: "Error creating folder",
-      });
-    }
+  const onSubmit = async (newFolder: Folder) => {
+    createFolder(newFolder).then((result) => {
+      if (result.data) {
+        router.push(
+          `/workspaces/${workspaceId}/folders/${result.data.createFolder.id}`
+        );
+      } else {
+        setError("form", {
+          type: "server",
+          message: "Error creating folder",
+        });
+      }
+    });
   };
 
   const handleCharNumber = (
@@ -131,8 +104,8 @@ const CreateFolder: FC<Props> = ({ workspaceFolders, workspace }) => {
       <Header />
       <ContentWrapper>
         <Navigation
-          folders={workspaceFolders}
-          workspace={workspace}
+          workspaceId={workspaceId}
+          workspaceTitle={data.workspace.title}
           activeFolder={"active"}
         />
         <PageContent>

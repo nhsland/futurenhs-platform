@@ -61,7 +61,6 @@ const CreateWorkspace: NextPage = () => {
   const onSubmit = (data: Workspace) =>
     createWorkspace({ title: data.title, description: data.description }).then(
       (result) => {
-        console.log({ result });
         if (result.data) {
           window.alert("Workspace created successfully");
         } else {
