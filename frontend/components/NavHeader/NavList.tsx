@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 
 import { CloseIcon } from "nhsuk-react-components";
 import styled from "styled-components";
-import { v4 as uuid } from "uuid";
 
 import { NavMenuListItem } from ".";
 
@@ -38,7 +37,7 @@ const StyledCloseIconWrapper = styled.button`
   `}
 `;
 
-const StyledNavMenuContainer = styled.div`
+const StyledNavMenuContainer = styled.nav`
   width: 100%;
   right: 0;
 
@@ -99,7 +98,10 @@ const NavList = ({ navItems, setMenuOpen }: NavListProps) => {
     <StyledNavMenuContainer>
       <p>
         <span>Menu</span>
-        <StyledCloseIconWrapper onClick={() => setMenuOpen(false)}>
+        <StyledCloseIconWrapper
+          aria-label="close menu"
+          onClick={() => setMenuOpen(false)}
+        >
           <CloseIcon />
         </StyledCloseIconWrapper>
       </p>
@@ -110,7 +112,7 @@ const NavList = ({ navItems, setMenuOpen }: NavListProps) => {
               title={item.title}
               icon={item.icon}
               href={item.href}
-              key={uuid()}
+              key={item.title}
             />
           );
         })}

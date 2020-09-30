@@ -122,6 +122,7 @@ const StyledNavContainer = styled.div`
 
 const navItems = [
   {
+    // This item will be hidden on desktop
     title: "My workspaces",
     icon: <WorkspacesIcon />,
     href: "/workspaces/directory",
