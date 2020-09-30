@@ -75,7 +75,7 @@ body=$(
 		--arg title "$FOLDER_TITLE" \
 		--arg description "$FOLDER_DESCRIPTION" \
 		'{
-			"query": "mutation CreateFolder($workspace: ID!, $title: String!, $description: String!) { createFolder(folder: { workspace: $workspace, title: $title,  description: $description }) { id } }",
+			"query": "mutation CreateFolder($workspace: ID!, $title: String!, $description: String!) { createFolder(newFolder: { workspace: $workspace, title: $title,  description: $description }) { id } }",
 			"variables": {
 				"workspace": $workspace,
 				"title": $title,
@@ -92,4 +92,10 @@ response=$(
 		-H 'Content-Type: application/json' \
 		-d "$body"
 )
-echo "$response" | jq -r '.data.createFolder.id'
+id=$(echo "$response" | jq -r '.data.createFolder.id')
+if [ $id = "null" ]; then
+	echo "something went wrong! $response"
+	exit 1
+fi
+
+echo $id
