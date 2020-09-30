@@ -75,15 +75,6 @@ const StyledFnhsLogo = styled(FnhsLogoIcon)`
   `}
 `;
 
-// const StyledHeaderLogo = styled(Header.Logo)`
-//   display: none;
-//   ${({ theme }) => `
-//     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-//       display: block;
-//     }
-//   `}
-// `;
-
 const StyledHeaderLogo = styled(NhsukLogoIcon)`
   display: none;
   ${({ theme }) => `
