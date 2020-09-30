@@ -3,6 +3,9 @@
 set -eu
 
 NAME="${1:?"Please enter your name as first argument"}"
+# Strip dev- prefix if it exists, because most other commands want a cluster-name, and
+# inconsistency is annoying.
+NAME=${NAME#"dev-"}
 
 if [ "$NAME" != "${NAME//[^a-z]/-}" ]; then
 	echo "Name can only contain lowercase characters a-z"
