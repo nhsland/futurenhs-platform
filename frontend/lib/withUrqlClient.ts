@@ -5,7 +5,11 @@ import NextApp from "next/app";
 import { dedupExchange, fetchExchange } from "urql";
 
 import { User } from "./auth";
-import { FoldersByWorkspaceDocument } from "./generated/graphql";
+import {
+  CreateFolderMutation,
+  FoldersByWorkspaceDocument,
+  FoldersByWorkspaceQuery,
+} from "./generated/graphql";
 
 const isServerSide = typeof window === "undefined";
 
@@ -32,17 +36,19 @@ export default function withUrqlClient(
             updates: {
               Mutation: {
                 createFolder: (result, _args, cache) => {
+                  const folderMutation = result as CreateFolderMutation;
                   cache.updateQuery(
                     {
                       query: FoldersByWorkspaceDocument,
                       variables: {
-                        // @ts-ignore
-                        workspace: result.createFolder.workspace,
+                        workspace: folderMutation.createFolder.workspace,
                       },
                     },
                     (data) => {
-                      // @ts-ignore
-                      data?.foldersByWorkspace.push(result.createFolder);
+                      const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery;
+                      foldersByWorkspaceQuery.foldersByWorkspace.push(
+                        folderMutation.createFolder
+                      );
                       return data;
                     }
                   );
