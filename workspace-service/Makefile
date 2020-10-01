@@ -13,8 +13,8 @@ run: ## Fetch DB URL and run locally
 	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) $(MAKE)
 
 .PHONY: run-local
-run-local: ## Fetch DB URL and run locally
-	DATABASE_URL=$(localdb) $(MAKE)
+run-local: migrate-local ## Fetch DB URL and run locally. Does not have file support yet.
+	UPLOAD_CONTAINER_URL=https://obviously.fake FILE_STORAGE_ACCESS_KEY=also-fake DATABASE_URL=$(localdb) $(MAKE)
 
 .PHONY: test
 test: ## Run tests [TEST=test_name (optional)]
@@ -38,14 +38,17 @@ docker-push: ## Push Docker image
 	docker push $(image):$(tag)
 
 .PHONY: watch-local
-watch-local: ## Create a local, migrated DB for dev using a local DB rather than cluster, then cargo watch
-	docker-compose up -d \
-	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done \
-	&& DATABASE_URL=$(localdb) cargo watch -x help -x check
+watch-local: migrate-local ## Create a local, migrated DB for dev using a local DB rather than cluster, then cargo watch
+	DATABASE_URL=$(localdb) cargo watch -x help -x check
 
 .PHONY: watch
 watch: ## Run cargo watch in the way that David likes it.
 	DATABASE_URL=$(db) cargo watch -x help -x check
+
+.PHONY: migrate-local
+migrate-local: ## Bring up local postgres and migrate it.
+	docker-compose up -d \
+	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
 
 # You must have a version of sqlx that includes this patch
 # cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
