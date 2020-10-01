@@ -12,6 +12,10 @@ default: ## Run locally
 run: ## Fetch DB URL and run locally
 	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) $(MAKE)
 
+.PHONY: run-local
+run-local: ## Fetch DB URL and run locally
+	DATABASE_URL=$(localdb) $(MAKE)
+
 .PHONY: test
 test: ## Run tests [TEST=test_name (optional)]
 	cargo test $$TEST

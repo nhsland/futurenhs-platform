@@ -3,12 +3,15 @@ import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { User } from "../../lib/auth";
+import { requireEnv } from "../../lib/requireEnv";
+
+const workspaceAPIServerUrl = requireEnv("WORKSPACE_SERVER_API_ROOT");
 
 const gateway = new ApolloGateway({
   serviceList: [
     {
       name: "workspace-service",
-      url: process.env.WORKSPACE_SERVER_API_ROOT,
+      url: workspaceAPIServerUrl,
     },
   ],
 });

@@ -1,7 +1,9 @@
+const fs = require("fs");
+const path = require("path");
+
 const folderByWorkspaceResponse = require("../cypress/fixtures/folder-by-workspace-graphql-response.json");
 const folderResponse = require("../cypress/fixtures/folder-graphql-response.json");
 const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
-
 const workspacesResolver = {
   workspaces: async () => workspaceResponse.data.workspaces,
   workspace: async () => workspaceResponse.data.workspaces[0],
@@ -13,4 +15,17 @@ const folderResolver = {
   folder: async () => folderResponse.data.folder,
 };
 
-module.exports = { ...workspacesResolver, ...folderResolver };
+const schema = fs.readFileSync(
+  path.join(__dirname, "schema", "../../schema.graphql"),
+  "utf8"
+);
+
+const federationResolver = {
+  _service: async () => ({
+    sdl: schema,
+  }),
+};
+
+module.exports = {
+  Query: { ...workspacesResolver, ...folderResolver, ...federationResolver },
+};
