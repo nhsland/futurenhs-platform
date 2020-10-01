@@ -11,13 +11,13 @@ import {
   MoveIcon,
   UploadIcon,
 } from "../Icon";
-import FolderMenuList from "./FolderMenuList";
+import FolderMenuList, { MenuItem } from "./FolderMenuList";
 
 interface Props {
   startHidden?: boolean;
 }
 
-const items = [
+const items: MenuItem[] = [
   {
     title: "Upload file to this folder",
     icon: <UploadIcon />,
@@ -73,7 +73,7 @@ const Container = styled.div`
   `}
 `;
 
-const NavHeader: FC<Props> = ({ startHidden }) => {
+const FolderMenu: FC<Props> = ({ startHidden }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -86,10 +86,14 @@ const NavHeader: FC<Props> = ({ startHidden }) => {
         >
           <MeatballIcon />
         </FolderMenuButton>
-        {menuOpen && <FolderMenuList items={items} />}
+        {menuOpen && (
+          <FolderMenuList startHidden={startHidden || false}>
+            {items}
+          </FolderMenuList>
+        )}
       </Container>
     </>
   );
 };
 
-export default NavHeader;
+export default FolderMenu;

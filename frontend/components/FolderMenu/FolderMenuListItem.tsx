@@ -5,25 +5,20 @@ import styled from "styled-components";
 
 interface FolderListItemProps {
   className?: string;
-  href?: string;
+  href: string;
   children: ReactNode;
 }
 
-const FolderListItem = ({ className, href, children }: FolderListItemProps) =>
-  href ? (
-    <Link href={href}>
-      <li className={className}>
-        <a href={href}>{children}</a>
-      </li>
-    </Link>
-  ) : (
-    <li className={className}>{children}</li>
-  );
+const FolderListItem = ({ className, href, children }: FolderListItemProps) => (
+  <Link href={href}>
+    <li className={className}>
+      <a href={href}>{children}</a>
+    </li>
+  </Link>
+);
 
 const StyledListItem = styled(FolderListItem)`
   list-style: none;
-  display: flex;
-  align-items: center;
   margin: 0;
   box-shadow: inset 0px -1px 0px #e8edee;
 
@@ -33,6 +28,7 @@ const StyledListItem = styled(FolderListItem)`
     justify-content: space-between;
     width: 100%;
     padding: 12px 16px;
+    border: none;
   }
 
   .icon-wrapper {
@@ -50,10 +46,6 @@ const StyledListItem = styled(FolderListItem)`
         color: ${theme.colorNhsukWhite};
         background-color: ${theme.colorShadeNhsukBlue35};
       }
-
-      &:focus {
-        outline: none;
-      }
     }
   `}
 `;
@@ -65,9 +57,9 @@ const StyledTitle = styled.div`
 
 interface FolderMenuListItemProps {
   className?: string;
-  title?: string;
+  title: string;
   icon: ReactNode;
-  href?: string;
+  href: string;
 }
 
 const FolderMenuListItem = ({
