@@ -7,6 +7,7 @@ const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
 const dotenv = require("dotenv");
+const Noop = require("./noop-passport-strategy");
 
 const url = require("url");
 const { promises: fs } = require("fs");
@@ -114,27 +115,29 @@ async function main() {
   });
   passport.use(
     aadb2cStrategy,
-    new OIDCStrategy(
-      {
-        identityMetadata:
-          "https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/v2.0/.well-known/openid-configuration",
-        clientID: requireEnv("AAD_B2C_CLIENT_ID"),
-        clientSecret: requireEnv("AAD_B2C_CLIENT_SECRET"),
-        responseType: "code",
-        responseMode: "query",
-        redirectUrl: `${requireEnv("ORIGIN")}/auth/callback`,
-        passReqToCallback: false,
-        allowHttpForRedirectUrl: dev,
-        isB2C: true,
-      },
-      (profile, done) => {
-        done(null, {
-          id: profile.sub,
-          name: profile.displayName,
-          emails: profile.emails,
-        });
-      }
-    )
+    dev
+      ? new Noop()
+      : new OIDCStrategy(
+          {
+            identityMetadata:
+              "https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/v2.0/.well-known/openid-configuration",
+            clientID: requireEnv("AAD_B2C_CLIENT_ID"),
+            clientSecret: requireEnv("AAD_B2C_CLIENT_SECRET"),
+            responseType: "code",
+            responseMode: "query",
+            redirectUrl: `${requireEnv("ORIGIN")}/auth/callback`,
+            passReqToCallback: false,
+            allowHttpForRedirectUrl: dev,
+            isB2C: true,
+          },
+          (profile, done) => {
+            done(null, {
+              id: profile.sub,
+              name: profile.displayName,
+              emails: profile.emails,
+            });
+          }
+        )
   );
   if (!dev) {
     // In production our frontend runs behind a Kubernetes ingress. We need to
@@ -159,7 +162,8 @@ async function main() {
   server.get(
     "/auth/login",
     configureUserFlow("b2c_1_signin"),
-    authenticateWithAADB2C
+    authenticateWithAADB2C,
+    redirectAuthSuccess
   );
   server.get(
     "/auth/resetpassword",

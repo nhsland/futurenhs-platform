@@ -26,3 +26,15 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+## Testing
+
+### Cypress
+
+Cypress tests run as part of our CI pipeline. It's also possible to run in a local browser before pushing code.
+
+To run tests, execute the following command:
+
+- for a local server, stub graphql server and test runner: `yarn cypress:local`.
+
+This will open the test runner. You can then select a test you want to run and which browser (Chrome/Firefox/Chromium Edge) you would like to run it in.
