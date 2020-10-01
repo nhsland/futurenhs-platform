@@ -14,7 +14,10 @@ COPY frontend .
 
 # Building app
 RUN yarn test
-RUN ORIGIN=__FNHS_ORIGIN__ NEXT_PUBLIC_INSTRUMENTATION_KEY=__FNHS_INSTRUMENTATION_KEY__ yarn build
+RUN ORIGIN=__FNHS_ORIGIN__ \
+    NEXT_PUBLIC_INSTRUMENTATION_KEY=__FNHS_INSTRUMENTATION_KEY__ \
+    WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://workspace-service.workspace-service/graphql \
+    yarn build
 
 # Running the app
 COPY frontend/docker-entrypoint.sh /usr/local/bin/

@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: config_map
 data:
-  workspace_server_api_root: http://workspace-service.workspace-service/graphql
+  workspace_service_graphql_endpoint: http://workspace-service.workspace-service/graphql

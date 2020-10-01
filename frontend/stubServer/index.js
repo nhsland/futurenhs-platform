@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 
 const { ApolloServer, gql } = require("apollo-server-express");
-const bodyParser = require("body-parser");
 const app = require("express")();
 
 const resolvers = require("./resolver");
@@ -12,14 +11,9 @@ const schemaCode = fs.readFileSync(
   path.join(__dirname, "schema", "../../schema.graphql"),
   "utf8"
 );
-const typeDefs = gql`
-  ${schemaCode}
-`;
+const typeDefs = gql(schemaCode);
 
 const stubServer = () => {
-  app.use(bodyParser.json({ limit: "10mb" }));
-  app.use(bodyParser.urlencoded({ extended: true }));
-
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -33,6 +27,4 @@ const stubServer = () => {
   });
 };
 
-(() => {
-  stubServer();
-})();
+stubServer();

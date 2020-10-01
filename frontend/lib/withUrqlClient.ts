@@ -14,7 +14,7 @@ import { requireEnv } from "./requireEnv";
 
 const isServerSide = typeof window === "undefined";
 const workspaceAPIServerUrl = isServerSide
-  ? requireEnv("WORKSPACE_SERVER_API_ROOT")
+  ? requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT")
   : "/api/graphql";
 
 export default function withUrqlClient(

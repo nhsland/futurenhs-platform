@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../lib/auth";
 import { requireEnv } from "../../lib/requireEnv";
 
-const workspaceAPIServerUrl = requireEnv("WORKSPACE_SERVER_API_ROOT");
+const workspaceAPIServerUrl = requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT");
 
 const gateway = new ApolloGateway({
   serviceList: [

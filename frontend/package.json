@@ -16,8 +16,7 @@
     "clean": "rm -rf .next",
     "generate": "graphql-codegen --config codegen.yaml",
     "cypress:local": "concurrently \"yarn start:stubs\" \"NODE_ENV=development node server.js\" \"cypress open --config-file ./cypress.json\"",
-    "start:stubs": "node stubServer",
-    "cypress:ci": "yarn start:stubs & yarn dev"
+    "start:stubs": "node stubServer"
   },
   "dependencies": {
     "@apollo/federation": "^0.20.0",
@@ -88,7 +87,6 @@
     "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-react": "^7.20.6",
-    "express-graphql": "^0.11.0",
     "http-proxy-middleware": "^1.0.5",
     "husky": "^4.3.0",
     "ignore-loader": "^0.1.2",
