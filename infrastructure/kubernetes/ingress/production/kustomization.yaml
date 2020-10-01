@@ -5,5 +5,4 @@ resources:
   - controller.yaml
   - ingress-frontend.yaml
 patchesStrategicMerge:
-  - patch-replicas.yaml
   - patch-dns.yaml

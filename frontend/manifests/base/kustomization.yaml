@@ -5,3 +5,4 @@ resources:
   - service.yaml
   - deployment.yaml
   - config-map.yaml
+  - poddisruptionbudget.yaml
