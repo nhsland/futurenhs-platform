@@ -2,22 +2,57 @@ import React, { FC, useState } from "react";
 
 import styled from "styled-components";
 
-import { FolderMenuButton, FolderMenuListItem } from ".";
-import { MeatballIcon } from "../Icon";
+import { FolderMenuButton } from ".";
+import {
+  DeleteIcon,
+  EditIcon,
+  LockIcon,
+  MeatballIcon,
+  MoveIcon,
+  UploadIcon,
+} from "../Icon";
+import FolderMenuList from "./FolderMenuList";
 
 interface Props {
   startHidden?: boolean;
 }
 
-const StyledMenuContainer = styled.div`
+const items = [
+  {
+    title: "Upload file to this folder",
+    icon: <UploadIcon />,
+    href: "upload",
+  },
+  {
+    title: "Edit folder details",
+    icon: <EditIcon />,
+    href: "#",
+  },
+  {
+    title: "Move folder",
+    icon: <MoveIcon />,
+    href: "#",
+  },
+  {
+    title: "View folder permissions",
+    icon: <LockIcon />,
+    href: "#",
+  },
+  {
+    title: "Delete folder",
+    icon: <DeleteIcon />,
+    href: "#",
+  },
+];
+
+const Container = styled.div`
   align-items: center;
-  padding: 0;
   display: none;
+  position: relative;
 
   ${({ theme }) => `
     .folder-menu-item {
       display: none;
-      border-top: none;
 
       a {
         color: ${theme.colorNhsukWhite};
@@ -28,7 +63,6 @@ const StyledMenuContainer = styled.div`
     }
 
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-      border-top: none;
       justify-content: space-between;
       display: flex;
 
@@ -43,18 +77,18 @@ const NavHeader: FC<Props> = ({ startHidden }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <StyledMenuContainer>
-      <FolderMenuButton
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        startHidden={startHidden || false}
-      >
-        <FolderMenuListItem
-          className="folder-menu-item"
-          icon={<MeatballIcon />}
-        />
-      </FolderMenuButton>
-    </StyledMenuContainer>
+    <>
+      <Container>
+        <FolderMenuButton
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+          startHidden={startHidden || false}
+        >
+          <MeatballIcon />
+        </FolderMenuButton>
+        {menuOpen && <FolderMenuList items={items} />}
+      </Container>
+    </>
   );
 };
 

@@ -25,6 +25,7 @@ const StyledListItem = styled(FolderListItem)`
   display: flex;
   align-items: center;
   margin: 0;
+  box-shadow: inset 0px -1px 0px #e8edee;
 
   a {
     display: flex;
@@ -32,8 +33,6 @@ const StyledListItem = styled(FolderListItem)`
     justify-content: space-between;
     width: 100%;
     padding: 12px 16px;
-    border-bottom: 4px solid transparent;
-    border-top: 4px solid transparent;
   }
 
   .icon-wrapper {
@@ -43,8 +42,6 @@ const StyledListItem = styled(FolderListItem)`
   }
 
   ${({ theme }) => `
-    border-top: 1px solid ${theme.colorNhsukGrey5};
-
     a {
       color: ${theme.colorNhsukBlue};
       text-decoration: none;
@@ -52,16 +49,10 @@ const StyledListItem = styled(FolderListItem)`
       &:hover:not(:active) {
         color: ${theme.colorNhsukWhite};
         background-color: ${theme.colorShadeNhsukBlue35};
-
-        .nhsuk-icon__chevron-right {
-          fill: ${theme.colorNhsukWhite};
-        }
       }
 
       &:focus {
-        box-shadow: none;
         outline: none;
-        border-bottom: 4px solid ${theme.colorNhsukBlack};
       }
     }
   `}

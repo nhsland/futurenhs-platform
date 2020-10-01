@@ -55,6 +55,12 @@ const FolderMenuButton = styled(MenuButton)`
     line-height: 24px;
     cursor: pointer;
     border:none;
+
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   `}
 `;
 
