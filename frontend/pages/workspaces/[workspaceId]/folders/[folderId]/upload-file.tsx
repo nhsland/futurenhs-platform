@@ -11,8 +11,10 @@ import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
-import { Textarea } from "../../../../../components/Textarea";
-import { useGetWorkspaceByIdQuery } from "../../../../../lib/generated/graphql";
+import {
+  useGetFolderByIdQuery,
+  useGetWorkspaceByIdQuery,
+} from "../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
 
 const ContentWrapper = styled.div`
@@ -44,7 +46,7 @@ const StyledButton = styled(Button)`
 `;
 
 const MAX_CHARS: { [key: string]: number } = {
-  title: 100,
+  title: 50,
   description: 250,
 };
 
@@ -62,6 +64,9 @@ const UploadFile: NextPage = () => {
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
+  });
+  const [folder] = useGetFolderByIdQuery({
+    variables: { id: folderId },
   });
 
   // if (error) return <p> Oh no... {error?.message} </p>;
@@ -96,8 +101,9 @@ const UploadFile: NextPage = () => {
           activeFolder={folderId}
         />
         <PageContent>
-          <MainHeading withBorder>Upload a file</MainHeading>
-          <h2>File details</h2>
+          <MainHeading withBorder>
+            {folder.data?.folder.title || "unknown"}
+          </MainHeading>
           <p> Fields marked with * are mandatory.</p>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormField>
@@ -105,44 +111,37 @@ const UploadFile: NextPage = () => {
                 name="title"
                 onChange={handleCharNumber}
                 id="title"
-                label="Enter folder title*"
-                hint="The title of your folder should accurately reflect its content or audience"
+                label="Enter file title*"
+                hint="This is the file title as seen by users. Try to be as descriptive as possible. "
                 inputRef={register({
                   required: true,
                   maxLength: MAX_CHARS.title,
                 })}
+                aria-invalid={errors.name ? "true" : "false"}
                 error={
                   errors.title &&
-                  `Folder name is required and cannot be longer than ${MAX_CHARS.title} characters`
+                  `File title is required and cannot be longer than ${MAX_CHARS.title} characters`
                 }
               />
               {`${
                 remainingChars.title || MAX_CHARS.title
               } characters remaining`}
+              {errors.name && errors.name.type === "required" && (
+                <span role="alert">This is required</span>
+              )}
             </FormField>
-
-            <FormField>
-              <Textarea
-                name="description"
-                onChange={handleCharNumber}
-                id="description"
-                label="Description"
-                error={
-                  errors.description &&
-                  `Description must be a maximum of ${MAX_CHARS.description} characters`
-                }
-                hint="This is the description as seen by users"
-                inputRef={register({
-                  required: false,
-                  maxLength: MAX_CHARS.description,
-                })}
-              />
-              {`${
-                remainingChars.description || MAX_CHARS.description
-              } characters remaining`}
-            </FormField>
+            <p>
+              <label htmlFor="file">Upload a file</label>
+            </p>
+            <Button id="file" name="chooseFileButton" label="Upload a file">
+              Choose file
+            </Button>
+            <p>
+              All uploaded content must conform to to the platform&apos;s{" "}
+              <a href="#">Terms and Conditions</a>.
+            </p>
             <Button type="submit" name="submitButton">
-              Save and complete
+              Save and continue
             </Button>
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
               Discard
