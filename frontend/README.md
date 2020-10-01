@@ -31,10 +31,10 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 ### Cypress
 
-Cypress tests for chrome and firefox currently run as part of our pipeline. It's also possible to run in a local browser before pushing code.
+Cypress tests run as part of our CI pipeline. It's also possible to run in a local browser before pushing code.
 
-To run tests, execute the desired commandy:
+To run tests, execute the following command:
 
-- a local server, stub graphql server and test runner: `yarn cypress:local`.
+- for a local server, stub graphql server and test runner: `yarn cypress:local`.
 
 This will open the test runner. You can then select a test you want to run and which browser (Chrome/Firefox/Chromium Edge) you would like to run it in.

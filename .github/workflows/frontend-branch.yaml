@@ -32,8 +32,6 @@ jobs:
           working-directory: futurenhs-platform/frontend
           start: yarn run cypress:ci
           wait-on: http://localhost:3000
-        env:
-          WORKSPACE_SERVER_API_ROOT: http://localhost:3001/graphql
 
       - name: Upload cypress screenshots
         uses: actions/upload-artifact@v1

@@ -4,6 +4,5 @@ bases:
   - ../base
 resources:
   - secret-sessions.yaml
-  - config-map.yaml
 patchesStrategicMerge:
   - deployment.yaml

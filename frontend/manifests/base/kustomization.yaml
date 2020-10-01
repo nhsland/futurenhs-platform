@@ -4,3 +4,4 @@ resources:
   # There is no namespace.yaml because this is managed by terraform.
   - service.yaml
   - deployment.yaml
+  - config-map.yaml

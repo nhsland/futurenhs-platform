@@ -51,6 +51,11 @@ spec:
                 secretKeyRef:
                   name: frontend
                   key: postgres_url
+            - name: WORKSPACE_SERVER_API_ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: config_map
+                  key: workspace_server_api_root
           ports:
             - containerPort: 3000
           resources:
