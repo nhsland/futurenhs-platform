@@ -15,7 +15,11 @@ WORKSPACE_TITLE=${2:?"${USAGE}Please give workspace title as second parameter."}
 WORKSPACE_DESCRIPTION=${3:-"Test workspace with title $WORKSPACE_TITLE"}
 
 CURRENT_CONTEXT=$(kubectl config current-context)
-if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
+if [ "$ENVIRONMENT" = "local" ]; then
+	WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://localhost:3030/graphql
+elif [ "$ENVIRONMENT" = "$CURRENT_CONTEXT" ]; then
+	WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://workspace-service.workspace-service/graphql
+else
 	echo "You want to populate:    $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
 	echo "Please change your current context using:"
@@ -33,7 +37,7 @@ existing_workspaces=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		http://workspace-service.workspace-service/graphql \
+		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
 		-H 'Content-Type: application/json' \
 		-d '{"query": "{workspaces { title, id }}"}'
 )
@@ -67,7 +71,7 @@ response=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		http://workspace-service.workspace-service/graphql \
+		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
 		-H 'Content-Type: application/json' \
 		-d "$body"
 )
