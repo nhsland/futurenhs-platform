@@ -96,7 +96,7 @@ type Workspace {
 # The `_Any` scalar is used to pass representations of entities from external services into the root `_entities` field for execution.
 scalar _Any
 
-union _Entity = Workspace | Folder
+union _Entity = Folder | Workspace
 
 type _Service {
   sdl: String

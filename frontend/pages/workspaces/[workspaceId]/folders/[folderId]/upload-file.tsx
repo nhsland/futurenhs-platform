@@ -6,12 +6,14 @@ import { useRouter } from "next/dist/client/router";
 import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { Client, OperationResult } from "urql";
 
 import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
 import {
+  FileUploadUrlDocument,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
 } from "../../../../../lib/generated/graphql";
@@ -49,7 +51,7 @@ const MAX_CHARS: { [key: string]: number } = {
   title: 50,
 };
 
-const UploadFile: NextPage = () => {
+const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
   const router = useRouter();
   const workspaceId = (router.query.workspaceId || "unknown").toString();
   const folderId = (router.query.folderId || "unknown").toString();
@@ -70,16 +72,33 @@ const UploadFile: NextPage = () => {
     variables: { id: folderId },
   });
 
-  // if (error) return <p> Oh no... {error?.message} </p>;
-  // if (fetching || !data) return <p>Loading...</p>;
+  if (workspace.error || folder.error)
+    return (
+      <p>
+        {" "}
+        Oh no... {workspace.error?.message} {folder.error?.message}{" "}
+      </p>
+    );
+  if (workspace.fetching || folder.fetching || !workspace.data || !folder.data)
+    return <p>Loading...</p>;
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async () => {
-    setError("form", {
-      type: "server",
-      message: "Not yet implemented!",
-    });
+  const onSubmit = async (data: any) => {
+    urqlClient
+      .query(FileUploadUrlDocument)
+      .toPromise()
+      .then((result: OperationResult) => {
+        if (result.error) {
+          setError("form", {
+            type: "server",
+            message: result.error.toString(),
+          });
+        }
+        if (result.data) {
+          console.log({ data, url: result.data?.fileUploadUrl });
+        }
+      });
   };
 
   const handleCharNumber = (
