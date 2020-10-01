@@ -1,14 +1,10 @@
-import React, {
-  FC,
-  ComponentPropsWithoutRef,
-  ReactNodeArray,
-  ReactNode,
-} from "react";
+import React, { FC, ComponentPropsWithoutRef, ReactNodeArray } from "react";
 
 import classNames from "classnames";
 import styled from "styled-components";
 
 import { FolderMenuListItem } from ".";
+import { MenuItem } from "./FolderMenuListItem";
 
 const Container = styled.div`
   width: 320px;
@@ -48,8 +44,6 @@ const Container = styled.div`
   }
 `;
 
-export type MenuItem = { title: string; icon: ReactNode; href: string };
-
 interface Props extends ComponentPropsWithoutRef<"div"> {
   startHidden: boolean;
 }
@@ -60,14 +54,11 @@ const FolderMenuList: FC<Props> = ({ children, startHidden, className }) => {
     <Container className={classNames({ hidden: startHidden }, className)}>
       <ul>
         {items.map((item) => {
-          const i = item as MenuItem;
+          const { icon, ...props } = item as MenuItem;
           return (
-            <FolderMenuListItem
-              title={i.title}
-              icon={i.icon}
-              href={i.href}
-              key={i.title}
-            />
+            <FolderMenuListItem key={props.title} {...props}>
+              {icon}
+            </FolderMenuListItem>
           );
         })}
       </ul>

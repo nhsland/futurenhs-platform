@@ -4,17 +4,17 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { FolderMenu } from "../../../../components/FolderMenu";
-import { Head } from "../../../../components/Head";
-import { MainHeading } from "../../../../components/MainHeading";
-import { NavHeader } from "../../../../components/NavHeader";
-import { Navigation } from "../../../../components/Navigation";
-import { PageLayout } from "../../../../components/PageLayout";
+import { FolderMenu } from "../../../../../components/FolderMenu";
+import { Head } from "../../../../../components/Head";
+import { MainHeading } from "../../../../../components/MainHeading";
+import { NavHeader } from "../../../../../components/NavHeader";
+import { Navigation } from "../../../../../components/Navigation";
+import { PageLayout } from "../../../../../components/PageLayout";
 import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
-} from "../../../../lib/generated/graphql";
-import withUrqlClient from "../../../../lib/withUrqlClient";
+} from "../../../../../lib/generated/graphql";
+import withUrqlClient from "../../../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   flex-grow: 3;

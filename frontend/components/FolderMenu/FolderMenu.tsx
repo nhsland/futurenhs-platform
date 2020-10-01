@@ -11,7 +11,8 @@ import {
   MoveIcon,
   UploadIcon,
 } from "../Icon";
-import FolderMenuList, { MenuItem } from "./FolderMenuList";
+import FolderMenuList from "./FolderMenuList";
+import { MenuItem } from "./FolderMenuListItem";
 
 interface Props {
   startHidden?: boolean;
@@ -21,7 +22,8 @@ const items: MenuItem[] = [
   {
     title: "Upload file to this folder",
     icon: <UploadIcon />,
-    href: "upload",
+    href: "upload-file",
+    assumeTrailingSlash: true,
   },
   {
     title: "Edit folder details",

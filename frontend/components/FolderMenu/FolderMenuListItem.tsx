@@ -1,21 +1,36 @@
-import React, { ReactNode } from "react";
+import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 interface FolderListItemProps {
   className?: string;
   href: string;
   children: ReactNode;
+  assumeTrailingSlash?: boolean;
 }
 
-const FolderListItem = ({ className, href, children }: FolderListItemProps) => (
-  <Link href={href}>
+const FolderListItem = ({
+  className,
+  href,
+  children,
+  assumeTrailingSlash,
+}: FolderListItemProps) => {
+  let url = href;
+  const router = useRouter();
+  if (assumeTrailingSlash) {
+    url = `${router.asPath}/${href}`;
+  }
+
+  return (
     <li className={className}>
-      <a href={href}>{children}</a>
+      <Link href={url} passHref>
+        <a>{children}</a>
+      </Link>
     </li>
-  </Link>
-);
+  );
+};
 
 const StyledListItem = styled(FolderListItem)`
   list-style: none;
@@ -55,22 +70,27 @@ const StyledTitle = styled.div`
   flex-grow: 1;
 `;
 
-interface FolderMenuListItemProps {
-  className?: string;
+export type MenuItem = {
   title: string;
   icon: ReactNode;
   href: string;
+  assumeTrailingSlash?: boolean;
+};
+
+interface FolderMenuListItemProps extends ComponentPropsWithoutRef<"li"> {
+  title: string;
+  href: string;
+  assumeTrailingSlash?: boolean;
 }
 
-const FolderMenuListItem = ({
-  className,
+const FolderMenuListItem: FC<FolderMenuListItemProps> = ({
   title,
-  icon,
-  href,
-}: FolderMenuListItemProps) => {
+  children,
+  ...props
+}) => {
   return (
-    <StyledListItem className={className} href={href}>
-      {icon}
+    <StyledListItem {...props}>
+      {children}
       {title && <StyledTitle>{title}</StyledTitle>}
     </StyledListItem>
   );
