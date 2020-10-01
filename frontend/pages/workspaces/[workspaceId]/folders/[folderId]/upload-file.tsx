@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { BlockBlobClient } from "@azure/storage-blob";
 import { ErrorMessage as HookFormErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
@@ -96,7 +97,20 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
           });
         }
         if (result.data) {
-          console.log({ data, url: result.data?.fileUploadUrl });
+          console.log({ data, url: result.data.fileUploadUrl });
+          const blobClient = new BlockBlobClient(result.data.fileUploadUrl);
+          blobClient
+            .uploadBrowserData(data.file[0], {
+              maxSingleShotSize: 4 * 1024 * 1024,
+            })
+            .then((x) => {
+              console.log({ x });
+              blobClient
+                .setMetadata({ title: data.title, filename: data.file[0].name })
+                .then((x) => {
+                  console.log({ x });
+                });
+            });
         }
       });
   };
