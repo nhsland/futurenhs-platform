@@ -1,5 +1,16 @@
 # Maintenance
 
+## Upgrade Kubernetes
+
+Every few months we need to upgrade Kubernetes to stay in the supported version range by Azure. See [Supported Kubernetes Versions](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions) for a list of supported versions and dates.
+
+To upgrade to a new version, follow these steps:
+
+1. Update `kubernetes_version` [`infrastructure/modules/platform/variables.tf`](../infrastructure/modules/platform/variables.tf) in Terraform.
+1. Apply terraform changes.
+
+This should update the Kubernetes control plane and the default node pool.
+
 ## Upgrade Linkerd
 
 Our installation scripts always install the latest version of Linkerd. This means our dev clusters are going to stay up-to-date anyway. But since production is a long-lived environment, we need to update Linkerd manually.
