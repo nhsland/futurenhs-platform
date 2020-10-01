@@ -47,7 +47,6 @@ const StyledButton = styled(Button)`
 
 const MAX_CHARS: { [key: string]: number } = {
   title: 50,
-  description: 250,
 };
 
 const UploadFile: NextPage = () => {
@@ -60,7 +59,9 @@ const UploadFile: NextPage = () => {
     description: null,
   });
 
-  const { errors, handleSubmit, register, setError } = useForm();
+  const { errors, handleSubmit, register, setError, formState } = useForm({
+    mode: "onChange",
+  });
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -135,7 +136,7 @@ const UploadFile: NextPage = () => {
                 type="file"
                 name="file"
                 id="file"
-                label="Upload a file"
+                label="Upload a file*"
                 hint="max size 10GB"
                 inputRef={register({
                   required: true,
@@ -151,7 +152,11 @@ const UploadFile: NextPage = () => {
               All uploaded content must conform to to the platform&apos;s{" "}
               <a href="#">Terms and Conditions</a>.
             </p>
-            <Button type="submit" name="submitButton">
+            <Button
+              type="submit"
+              name="submitButton"
+              disabled={!formState.isValid}
+            >
               Save and continue
             </Button>
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
