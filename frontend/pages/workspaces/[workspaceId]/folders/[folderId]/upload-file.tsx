@@ -130,12 +130,23 @@ const UploadFile: NextPage = () => {
                 <span role="alert">This is required</span>
               )}
             </FormField>
-            <p>
-              <label htmlFor="file">Upload a file</label>
-            </p>
-            <Button id="file" name="chooseFileButton" label="Upload a file">
-              Choose file
-            </Button>
+            <FormField>
+              <Input
+                type="file"
+                name="file"
+                id="file"
+                label="Upload a file"
+                hint="max size 10GB"
+                inputRef={register({
+                  required: true,
+                })}
+                aria-invalid={errors.name ? "true" : "false"}
+                error={errors.name && `Problem browsing for file`}
+              />
+              {errors.file && errors.file.type === "required" && (
+                <span role="alert">This is required</span>
+              )}
+            </FormField>
             <p>
               All uploaded content must conform to to the platform&apos;s{" "}
               <a href="#">Terms and Conditions</a>.
