@@ -17,8 +17,6 @@ Install the BrowserStack Local executable `brew cask install browserstacklocal`.
 
 If you wish to test locally, before running the Cypress or Internet Explorer tests you will need to have the frontend server running (the API server is only necessary for the hello_world_rust.js Cypress test at this point).
 
-[Local API server instructions](../hello-world/README.md)
-
 [Local frontend instructions](../frontend)
 
 Currently, only Cypress tests will run in a local browser.

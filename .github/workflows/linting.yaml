@@ -25,10 +25,6 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           components: rustfmt
-      - name: Run rustfmt in hello-world
-        run: |
-          cd hello-world
-          cargo fmt -- --check
       - name: Run rustfmt in workspace-service
         run: |
           cd workspace-service

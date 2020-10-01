@@ -5,6 +5,5 @@ bases:
 patchesStrategicMerge:
   - cert-manager.yaml
   - ingress.yaml
-  - hello-world.yaml
   - frontend.yaml
   - workspace-service.yaml

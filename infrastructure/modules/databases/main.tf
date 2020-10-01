@@ -118,15 +118,6 @@ resource "kubernetes_secret" "frontend" {
   }
 }
 
-resource "kubernetes_namespace" "hello_world" {
-  metadata {
-    name = "hello-world"
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-  }
-}
-
 resource "kubernetes_config_map" "frontend_telemetry" {
   metadata {
     name      = "telemetry"

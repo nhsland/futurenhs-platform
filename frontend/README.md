@@ -2,7 +2,7 @@
 
 ## How to use
 
-The frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the hello-world service when doing server-side rendering, and also proxies `/hello/*` to `http://hello-world.hello-world/hello/*` like how our nginx ingress does in production.
+The frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the workspace service when doing server-side rendering, and also runs a graphql federation proxy at `/hapi/graphql` that proxies to `$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT`.
 
 It is possible to either run your frontend;
 
@@ -25,7 +25,7 @@ In order to set up a development cluster, see [infrastructure docs](../infrastru
 
 ```bash
 brew install txn2/tap/kubefwd
-sudo kubefwd services -n hello-world -n workspace-service
+sudo kubefwd services -n workspace-service
 ```
 
 Set the environment variable for the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` to the following value in your `.env.local` file;
