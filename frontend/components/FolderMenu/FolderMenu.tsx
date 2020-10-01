@@ -6,7 +6,7 @@ import { FolderMenuButton, FolderMenuListItem } from ".";
 import { MeatballIcon } from "../Icon";
 
 interface Props {
-  visible?: boolean;
+  startHidden?: boolean;
 }
 
 const StyledMenuContainer = styled.div`
@@ -39,7 +39,7 @@ const StyledMenuContainer = styled.div`
   `}
 `;
 
-const NavHeader: FC<Props> = ({ visible }) => {
+const NavHeader: FC<Props> = ({ startHidden }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -47,7 +47,7 @@ const NavHeader: FC<Props> = ({ visible }) => {
       <FolderMenuButton
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
-        isVisible={visible || false}
+        startHidden={startHidden || false}
       >
         <FolderMenuListItem
           className="folder-menu-item"

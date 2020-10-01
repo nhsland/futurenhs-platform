@@ -2,52 +2,7 @@
 
 exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 <DocumentFragment>
-  .c4 {
-  display: inline-block;
-  position: relative;
-}
-
-.c6 {
-  opacity: 0;
-  position: absolute;
-  middle: 50%;
-  left: 100%;
-  margin-left: 13px;
-  z-index: 1000;
-  border-radius: 4px;
-  background-color: rgb(76,98,114);
-  padding: 5px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 18px;
-  color: rgb(255,255,255);
-}
-
-.c3:hover .c5 {
-  opacity: 1;
-  -webkit-transition: opacity 0s linear 0.5s;
-  transition: opacity 0s linear 0.5s;
-}
-
-.c6::after {
-  position: absolute;
-  bottom: 33%;
-  left: -10%;
-  margin-left: -2px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent rgb(76,98,114) transparent transparent;
-  content: " ";
-}
-
-.c2 {
-  border: 0;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-}
-
-.c0 {
+  .c0 {
   list-style-type: none;
   margin-bottom: 12px;
   display: -webkit-box;
@@ -57,6 +12,10 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 }
 
 .c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   background: rgb(255,235,59);
   border-radius: 4px;
   width: 227px;
@@ -68,7 +27,21 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   background-color: rgb(216,221,224);
 }
 
+.c1:hover + div {
+  border-radius: 4px;
+  background-color: rgb(216,221,224);
+}
+
+.c1:hover + div button {
+  opacity: 1;
+  color: rgb(255,255,255);
+}
+
 .c1 a {
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -119,71 +92,13 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
         </div>
       </a>
     </div>
-    <button
-      class="c2"
-    >
-      <div
-        class="c3 c4"
-      >
-        <span
-          class="c5 c6"
-        >
-          Options
-        </span>
-      </div>
-    </button>
   </li>
 </DocumentFragment>
 `;
 
 exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
 <DocumentFragment>
-  .c4 {
-  display: inline-block;
-  position: relative;
-}
-
-.c6 {
-  opacity: 0;
-  position: absolute;
-  middle: 50%;
-  left: 100%;
-  margin-left: 13px;
-  z-index: 1000;
-  border-radius: 4px;
-  background-color: rgb(76,98,114);
-  padding: 5px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 18px;
-  color: rgb(255,255,255);
-}
-
-.c3:hover .c5 {
-  opacity: 1;
-  -webkit-transition: opacity 0s linear 0.5s;
-  transition: opacity 0s linear 0.5s;
-}
-
-.c6::after {
-  position: absolute;
-  bottom: 33%;
-  left: -10%;
-  margin-left: -2px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent rgb(76,98,114) transparent transparent;
-  content: " ";
-}
-
-.c2 {
-  border: 0;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-}
-
-.c0 {
+  .c0 {
   list-style-type: none;
   margin-bottom: 12px;
   display: -webkit-box;
@@ -193,6 +108,10 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
 }
 
 .c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   background: inherit;
   border-radius: 4px;
   width: 227px;
@@ -204,7 +123,21 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   background-color: rgb(216,221,224);
 }
 
+.c1:hover + div {
+  border-radius: 4px;
+  background-color: rgb(216,221,224);
+}
+
+.c1:hover + div button {
+  opacity: 1;
+  color: rgb(255,255,255);
+}
+
 .c1 a {
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -255,19 +188,6 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
         </div>
       </a>
     </div>
-    <button
-      class="c2"
-    >
-      <div
-        class="c3 c4"
-      >
-        <span
-          class="c5 c6"
-        >
-          Options
-        </span>
-      </div>
-    </button>
   </li>
 </DocumentFragment>
 `;
