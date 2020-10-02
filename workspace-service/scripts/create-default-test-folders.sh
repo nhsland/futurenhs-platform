@@ -14,7 +14,7 @@ ENVIRONMENT="${1:?"${USAGE}Please specify your environment name as the first par
 WORKSPACE_TITLE="Selenium Testing"
 
 CURRENT_CONTEXT=$(kubectl config current-context)
-if [ "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]; then
+if [[ "$ENVIRONMENT" != "local" && "$ENVIRONMENT" != "$CURRENT_CONTEXT" ]]; then
 	echo "You want to populate:    $ENVIRONMENT"
 	echo "Your current content is: $CURRENT_CONTEXT"
 	echo "Please change your current context using:"

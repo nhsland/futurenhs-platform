@@ -54,7 +54,7 @@ spec:
             - name: WORKSPACE_SERVICE_GRAPHQL_ENDPOINT
               valueFrom:
                 configMapKeyRef:
-                  name: config_map
+                  name: frontend-cm
                   key: workspace_service_graphql_endpoint
           ports:
             - containerPort: 3000
