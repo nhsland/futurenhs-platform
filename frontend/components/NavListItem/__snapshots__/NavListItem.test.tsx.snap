@@ -9,6 +9,19 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0:hover > div {
+  background-color: rgb(216,221,224);
+}
+
+.c0:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
 }
 
 .c1 {
@@ -19,25 +32,13 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   background: rgb(255,235,59);
   border-radius: 4px;
   width: 227px;
+  height: 32px;
   margin-right: 4px;
   font-weight: 700;
 }
 
-.c1:hover {
-  background-color: rgb(216,221,224);
-}
-
-.c1:hover + div {
-  border-radius: 4px;
-  background-color: rgb(216,221,224);
-}
-
-.c1:hover + div button {
-  opacity: 1;
-  color: rgb(255,255,255);
-}
-
 .c1 a {
+  height: 100%;
   -webkit-box-flex: 2;
   -webkit-flex-grow: 2;
   -ms-flex-positive: 2;
@@ -105,6 +106,19 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0:hover > div {
+  background-color: rgb(216,221,224);
+}
+
+.c0:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
 }
 
 .c1 {
@@ -115,25 +129,13 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   background: inherit;
   border-radius: 4px;
   width: 227px;
+  height: 32px;
   margin-right: 4px;
   font-weight: inherit;
 }
 
-.c1:hover {
-  background-color: rgb(216,221,224);
-}
-
-.c1:hover + div {
-  border-radius: 4px;
-  background-color: rgb(216,221,224);
-}
-
-.c1:hover + div button {
-  opacity: 1;
-  color: rgb(255,255,255);
-}
-
 .c1 a {
+  height: 100%;
   -webkit-box-flex: 2;
   -webkit-flex-grow: 2;
   -ms-flex-positive: 2;

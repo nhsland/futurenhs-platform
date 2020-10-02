@@ -16,36 +16,9 @@ import { MenuItem } from "./FolderMenuListItem";
 
 interface Props {
   startHidden?: boolean;
+  workspaceId: string;
+  folderId: string;
 }
-
-const items: MenuItem[] = [
-  {
-    title: "Upload file to this folder",
-    icon: <UploadIcon />,
-    href: "upload-file",
-    relativeUrl: true,
-  },
-  {
-    title: "Edit folder details",
-    icon: <EditIcon />,
-    href: "#",
-  },
-  {
-    title: "Move folder",
-    icon: <MoveIcon />,
-    href: "#",
-  },
-  {
-    title: "View folder permissions",
-    icon: <LockIcon />,
-    href: "#",
-  },
-  {
-    title: "Delete folder",
-    icon: <DeleteIcon />,
-    href: "#",
-  },
-];
 
 const Container = styled.div`
   align-items: center;
@@ -54,7 +27,7 @@ const Container = styled.div`
   border-radius: 4px;
   margin-left: 7px;
 
-  .tooltip-inner {
+  .tooltip {
     left: 36px;
     top: -7px;
   }
@@ -82,8 +55,36 @@ const Container = styled.div`
   `}
 `;
 
-const FolderMenu: FC<Props> = ({ startHidden }) => {
+const FolderMenu: FC<Props> = ({ startHidden, workspaceId, folderId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const items: MenuItem[] = [
+    {
+      title: "Upload file to this folder",
+      icon: <UploadIcon />,
+      href: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
+    },
+    {
+      title: "Edit folder details",
+      icon: <EditIcon />,
+      href: "#",
+    },
+    {
+      title: "Move folder",
+      icon: <MoveIcon />,
+      href: "#",
+    },
+    {
+      title: "View folder permissions",
+      icon: <LockIcon />,
+      href: "#",
+    },
+    {
+      title: "Delete folder",
+      icon: <DeleteIcon />,
+      href: "#",
+    },
+  ];
 
   return (
     <>

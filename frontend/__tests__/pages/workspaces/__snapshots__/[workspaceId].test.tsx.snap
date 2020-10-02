@@ -219,8 +219,15 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  display: none;
   position: relative;
+  height: 100%;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+
+.c17 .tooltip {
+  left: 36px;
+  top: -7px;
 }
 
 .c17 .folder-menu-item {
@@ -243,14 +250,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 .c22 {
   opacity: 0;
   position: absolute;
-  middle: 50%;
-  left: 100%;
-  margin-left: 13px;
   z-index: 1000;
   border-radius: 4px;
   background-color: rgb(76,98,114);
   padding: 5px;
-  text-align: center;
   font-weight: 400;
   font-size: 18px;
   color: rgb(255,255,255);
@@ -275,7 +278,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 .c20 {
   opacity: 1;
-  color: rgb(33,43,50);
+  color: rgb(76,98,114);
   background-color: rgb(216,221,224);
   padding: 0;
   height: 100%;
@@ -288,8 +291,6 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 .c20.hidden {
   opacity: 0;
-  color: transparent;
-  background-color: transparent;
 }
 
 .c20:hover {
@@ -298,12 +299,22 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   background-color: rgb(0,61,120);
 }
 
+.c20:hover.hidden {
+  color: rgb(255,255,255);
+}
+
 .c20.open,
 .c20:active,
 .c20:focus {
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
+}
+
+.c20.open.hidden,
+.c20:active.hidden,
+.c20:focus.hidden {
+  color: rgb(33,43,50);
 }
 
 .c20 .icon-wrapper {
@@ -328,6 +339,19 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c15:hover > div {
+  background-color: rgb(216,221,224);
+}
+
+.c15:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
 }
 
 .c16 {
@@ -338,25 +362,13 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   background: inherit;
   border-radius: 4px;
   width: 227px;
+  height: 32px;
   margin-right: 4px;
   font-weight: inherit;
 }
 
-.c16:hover {
-  background-color: rgb(216,221,224);
-}
-
-.c16:hover + div {
-  border-radius: 4px;
-  background-color: rgb(216,221,224);
-}
-
-.c16:hover + div button {
-  opacity: 1;
-  color: rgb(255,255,255);
-}
-
 .c16 a {
+  height: 100%;
   -webkit-box-flex: 2;
   -webkit-flex-grow: 2;
   -ms-flex-positive: 2;
@@ -901,7 +913,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
                     </div>
                   </button>
                   <span
-                    class="c21 c22"
+                    class="c21 c22 tooltip"
                   >
                     Options
                   </span>

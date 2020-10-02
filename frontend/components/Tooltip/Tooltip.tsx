@@ -47,7 +47,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   return (
     <Outer>
       {children}
-      <Inner className="tooltip-inner">{tooltip}</Inner>
+      <Inner className="tooltip">{tooltip}</Inner>
     </Outer>
   );
 };

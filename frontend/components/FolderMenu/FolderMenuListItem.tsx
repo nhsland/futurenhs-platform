@@ -1,33 +1,18 @@
 import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 
 interface FolderListItemProps {
   className?: string;
   href: string;
   children: ReactNode;
-  relativeUrl?: boolean;
 }
 
-const FolderListItem = ({
-  className,
-  href,
-  relativeUrl,
-  children,
-}: FolderListItemProps) => {
-  let url = href;
-  const router = useRouter();
-  if (relativeUrl) {
-    let base = router.asPath;
-    base = base.replace(`/${url}`, ""); // if we're already on this route, remove it first
-    url = `${base}/${url}`;
-  }
-
+const FolderListItem = ({ className, href, children }: FolderListItemProps) => {
   return (
     <li className={className}>
-      <Link href={url} passHref>
+      <Link href={href} passHref>
         <a>{children}</a>
       </Link>
     </li>
@@ -76,13 +61,11 @@ export type MenuItem = {
   title: string;
   icon: ReactNode;
   href: string;
-  relativeUrl?: boolean;
 };
 
 interface FolderMenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
   href: string;
-  relativeUrl?: boolean;
 }
 
 const FolderMenuListItem: FC<FolderMenuListItemProps> = ({
