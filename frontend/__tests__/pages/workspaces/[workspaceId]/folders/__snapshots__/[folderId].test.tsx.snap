@@ -949,7 +949,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                     class="hidden c21"
                   >
                     <div
-                      class="icon-wrapper logout-icon-wrapper "
+                      class="icon-wrapper "
                     >
                       <svg
                         height="24"
@@ -999,7 +999,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                 class="c21"
               >
                 <div
-                  class="icon-wrapper logout-icon-wrapper "
+                  class="icon-wrapper "
                 >
                   <svg
                     height="24"

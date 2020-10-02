@@ -152,7 +152,7 @@ exports[`<FolderMenu/> takes a snapshot, as used in a page 1`] = `
         class="c3"
       >
         <div
-          class="icon-wrapper logout-icon-wrapper "
+          class="icon-wrapper "
         >
           <svg
             height="24"
@@ -331,7 +331,7 @@ exports[`<FolderMenu/> takes a snapshot, as used in the nav 1`] = `
         class="hidden c3"
       >
         <div
-          class="icon-wrapper logout-icon-wrapper "
+          class="icon-wrapper "
         >
           <svg
             height="24"

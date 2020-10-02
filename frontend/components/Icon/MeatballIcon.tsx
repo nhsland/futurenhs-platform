@@ -5,7 +5,7 @@ interface Props {
 }
 
 const MeatballIcon = ({ className }: Props) => (
-  <div className={`icon-wrapper logout-icon-wrapper ${className || ""}`}>
+  <div className={`icon-wrapper ${className || ""}`}>
     <svg
       width="24"
       height="24"

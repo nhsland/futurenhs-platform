@@ -386,7 +386,7 @@ exports[`<Navigation/> renders correctly 1`] = `
                 class="hidden c10"
               >
                 <div
-                  class="icon-wrapper logout-icon-wrapper "
+                  class="icon-wrapper "
                 >
                   <svg
                     height="24"
@@ -439,7 +439,7 @@ exports[`<Navigation/> renders correctly 1`] = `
                 class="hidden c10"
               >
                 <div
-                  class="icon-wrapper logout-icon-wrapper "
+                  class="icon-wrapper "
                 >
                   <svg
                     height="24"

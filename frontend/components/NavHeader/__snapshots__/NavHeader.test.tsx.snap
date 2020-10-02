@@ -1256,7 +1256,7 @@ exports[`<NavHeader/> shows menu when open 1`] = `
             href="#"
           >
             <div
-              class="icon-wrapper logout-icon-wrapper "
+              class="icon-wrapper "
             >
               <svg
                 fill="currentColor"
