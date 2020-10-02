@@ -3,6 +3,8 @@ import React, { FC, ComponentPropsWithoutRef } from "react";
 import classNames from "classnames";
 import styled from "styled-components";
 
+import { Tooltip } from "../Tooltip";
+
 interface MenuProps extends ComponentPropsWithoutRef<"button"> {
   startHidden: boolean;
   menuOpen: boolean;
@@ -16,15 +18,17 @@ const MenuButton: FC<MenuProps> = ({
   setMenuOpen,
   ...rest
 }) => (
-  <button
-    className={classNames(
-      { open: menuOpen },
-      { hidden: startHidden },
-      className
-    )}
-    onClick={() => setMenuOpen(!menuOpen)}
-    {...rest}
-  />
+  <Tooltip tooltip="Options">
+    <button
+      className={classNames(
+        { open: menuOpen },
+        { hidden: startHidden },
+        className
+      )}
+      onClick={() => setMenuOpen(!menuOpen)}
+      {...rest}
+    />
+  </Tooltip>
 );
 
 const FolderMenuButton = styled(MenuButton)`
