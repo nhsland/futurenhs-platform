@@ -67,7 +67,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
     description: null,
   });
 
-  const { errors, handleSubmit, register, setError, formState } = useForm({
+  const { errors, handleSubmit, register, setError } = useForm({
     mode: "onChange",
   });
 
@@ -179,7 +179,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
                   required: true,
                 })}
                 aria-invalid={errors.name ? "true" : "false"}
-                error={errors.name && `Problem browsing for file`}
+                error={errors.name && `Please select a file`}
               />
               {errors.file && errors.file.type === "required" && (
                 <span role="alert">This is required</span>
@@ -189,11 +189,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
               All uploaded content must conform to to the platform&apos;s{" "}
               <a href="#">Terms and Conditions</a>.
             </p>
-            <Button
-              type="submit"
-              name="submitButton"
-              disabled={!formState.isValid}
-            >
+            <Button type="submit" name="submitButton">
               Save and continue
             </Button>
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
