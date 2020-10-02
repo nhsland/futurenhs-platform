@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Run Cypress tests
+      - name: Run cypress tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: futurenhs-platform/frontend
