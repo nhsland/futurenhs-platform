@@ -67,9 +67,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
     description: null,
   });
 
-  const { errors, handleSubmit, register, setError } = useForm({
-    mode: "onChange",
-  });
+  const { errors, handleSubmit, register, setError } = useForm();
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -155,7 +153,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
                   required: true,
                   maxLength: MAX_CHARS.title,
                 })}
-                aria-invalid={errors.name ? "true" : "false"}
+                aria-invalid={errors.title ? "true" : "false"}
                 error={
                   errors.title &&
                   `File title is required and cannot be longer than ${MAX_CHARS.title} characters`
@@ -164,8 +162,8 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
               {`${
                 remainingChars.title || MAX_CHARS.title
               } characters remaining`}
-              {errors.name && errors.name.type === "required" && (
-                <span role="alert">This is required</span>
+              {errors.title?.type === "required" && (
+                <p role="alert">This is required</p>
               )}
             </FormField>
             <FormField>
@@ -174,15 +172,15 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
                 name="files"
                 id="files"
                 label="Upload a file*"
-                hint="max size 10GB"
+                hint="Maximum size 10GB"
                 inputRef={register({
                   required: true,
                 })}
-                aria-invalid={errors.name ? "true" : "false"}
-                error={errors.name && `Please select a file`}
+                aria-invalid={errors.files ? "true" : "false"}
+                error={errors.files && `Please select a file`}
               />
-              {errors.file && errors.file.type === "required" && (
-                <span role="alert">This is required</span>
+              {errors.files?.type === "required" && (
+                <p role="alert">This is required</p>
               )}
             </FormField>
             <p>
