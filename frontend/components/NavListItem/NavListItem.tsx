@@ -21,6 +21,18 @@ const ListItem = styled.li`
   list-style-type: none;
   margin-bottom: 12px;
   display: flex;
+  align-items: center;
+  &:hover {
+    ${({ theme }) => `
+    > div {
+      background-color: ${theme.colorNhsukGrey4};
+      button {
+        opacity: 1;
+        color: ${theme.colorNhsukGrey1};
+      }
+    }
+  `}
+  }
 `;
 
 const LinkWrapper = styled.div<{ active: boolean }>`
@@ -29,22 +41,11 @@ const LinkWrapper = styled.div<{ active: boolean }>`
     active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
   width: 227px;
+  height: 32px;
   margin-right: 4px;
   font-weight: ${({ active }) => (active ? 700 : "inherit")};
-  &:hover {
-    ${({ theme }) => `
-    background-color: ${theme.colorNhsukGrey4};
-    + div {
-      border-radius: 4px;
-      background-color: ${theme.colorNhsukGrey4};
-      button {
-        opacity: 1;
-        color: ${theme.colorNhsukWhite};
-      }
-    }
-  `}
-  }
   a {
+    height: 100%;
     flex-grow: 2;
     display: flex;
     padding-left: 8px;

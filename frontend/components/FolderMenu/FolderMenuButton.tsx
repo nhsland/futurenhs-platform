@@ -34,21 +34,25 @@ const MenuButton: FC<MenuProps> = ({
 const FolderMenuButton = styled(MenuButton)`
   ${({ theme }) => `
     opacity: 1;
-    color: ${theme.colorNhsukBlack};
+    color: ${theme.colorNhsukGrey1};
     background-color: ${theme.colorNhsukGrey4};
     &.hidden {
       opacity: 0;
-      color: transparent;
-      background-color: transparent;
     }
     :hover {
       opacity: 1;
       color: ${theme.colorNhsukWhite};
+      &.hidden {
+        color: ${theme.colorNhsukWhite};
+      }
       background-color: ${theme.colorShadeNhsukBlue35};
     }
     &.open, :active, :focus {
       opacity: 1;
       color: ${theme.colorNhsukBlack};
+      &.hidden {
+        color: ${theme.colorNhsukBlack};
+      }
       background-color: ${theme.colorNhsukYellow};
     }
     

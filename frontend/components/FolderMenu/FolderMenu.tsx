@@ -49,8 +49,10 @@ const items: MenuItem[] = [
 
 const Container = styled.div`
   align-items: center;
-  display: none;
   position: relative;
+  height: 100%;
+  border-radius: 4px;
+  margin-left: 7px;
 
   ${({ theme }) => `
     .folder-menu-item {
