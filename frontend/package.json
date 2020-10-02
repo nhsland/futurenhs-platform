@@ -23,7 +23,6 @@
     "@apollo/gateway": "^0.20.1",
     "@azure/monitor-opentelemetry-exporter": "^1.0.0-preview.5",
     "@fnhs/event-models": "file:../event-models/typescript/",
-    "@hookform/error-message": "^0.0.4",
     "@microsoft/applicationinsights-web": "^2.5.8",
     "@opentelemetry/node": "^0.11.0",
     "@opentelemetry/plugin-https": "^0.11.0",
