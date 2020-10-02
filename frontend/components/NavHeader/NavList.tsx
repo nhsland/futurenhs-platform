@@ -86,7 +86,12 @@ const StyledNavMenuContainer = styled.nav`
   }
 `;
 
-type NavItems = { title: string; icon: ReactNode; href: string };
+type NavItems = {
+  title: string;
+  icon: ReactNode;
+  href: string;
+  className?: string;
+};
 
 interface NavListProps {
   navItems: NavItems[];
@@ -113,6 +118,7 @@ const NavList = ({ navItems, setMenuOpen }: NavListProps) => {
               icon={item.icon}
               href={item.href}
               key={item.title}
+              className={item.className}
             />
           );
         })}
