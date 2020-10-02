@@ -7,7 +7,7 @@ import { useRouter } from "next/dist/client/router";
 import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { Client, OperationResult } from "urql";
+import { Client } from "urql";
 
 import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
@@ -52,6 +52,11 @@ const MAX_CHARS: { [key: string]: number } = {
   title: 50,
 };
 
+interface FormData {
+  title: string;
+  files: FileList;
+}
+
 const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
   const router = useRouter();
   const workspaceId = (router.query.workspaceId || "unknown").toString();
@@ -85,30 +90,29 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (formData: FormData) => {
     urqlClient
       .query(FileUploadUrlDocument)
       .toPromise()
-      .then((result: OperationResult) => {
-        if (result.error) {
+      .then(({ error, data }) => {
+        const { title, files } = formData;
+        if (error) {
           setError("form", {
             type: "server",
-            message: result.error.toString(),
+            message: error.toString(),
           });
         }
-        if (result.data) {
-          console.log({ data, url: result.data.fileUploadUrl });
-          const blobClient = new BlockBlobClient(result.data.fileUploadUrl);
+        if (data) {
+          const blobClient = new BlockBlobClient(data.fileUploadUrl);
           blobClient
-            .uploadBrowserData(data.file[0], {
+            .uploadBrowserData(files[0], {
               maxSingleShotSize: 4 * 1024 * 1024,
             })
-            .then((x) => {
-              console.log({ x });
+            .then(() => {
               blobClient
-                .setMetadata({ title: data.title, filename: data.file[0].name })
-                .then((x) => {
-                  console.log({ x });
+                .setMetadata({ title, filename: files[0].name })
+                .then(() => {
+                  router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
                 });
             });
         }
@@ -167,8 +171,8 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             <FormField>
               <Input
                 type="file"
-                name="file"
-                id="file"
+                name="files"
+                id="files"
                 label="Upload a file*"
                 hint="max size 10GB"
                 inputRef={register({
