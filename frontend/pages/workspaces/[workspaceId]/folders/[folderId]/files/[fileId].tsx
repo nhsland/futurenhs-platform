@@ -3,6 +3,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { FileListItem, File } from "../../../../../../components/FileListItem";
 import { Head } from "../../../../../../components/Head";
 import { MainHeading } from "../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../components/NavHeader";
@@ -25,6 +26,19 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
+const file: File = {
+  id: "123-34erg",
+  title: "file title",
+  description: "A description of the file",
+  fileName: "file-title.pdf",
+  url: "path/to/file",
+  modified: "Sep 20, 2020",
+};
+
+const data = {
+  file,
+};
+
 const FileHomepage = () => {
   const router = useRouter();
   let { workspaceId, folderId } = router.query;
@@ -34,19 +48,6 @@ const FileHomepage = () => {
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
   });
-
-  const data = {
-    file: {
-      id: "123-34erg",
-      // title: 'Something PDF - Single File Homepage',
-      filename: "something.pdf",
-      type: "something.pdf",
-      path: "path/to/file",
-      description: "This is the document that says the things",
-    },
-  };
-  // const fetching = false;
-  // const error = ;
 
   return (
     <>
@@ -60,13 +61,12 @@ const FileHomepage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder>{data.file.filename}</MainHeading>
+            <MainHeading withBorder>{data.file.title}</MainHeading>
             <h2>Description</h2>
             <p>{data.file.description}</p>
-            <h3>Files</h3>
+            <h3>File</h3>
             <div>
-              <div id="icon"></div>
-              {data.file.filename}
+              <FileListItem file={file} />
             </div>
           </PageContent>
         </ContentWrapper>

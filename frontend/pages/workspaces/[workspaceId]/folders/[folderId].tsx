@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { FileListItem, File } from "../../../../components/FileListItem";
 import { Head } from "../../../../components/Head";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
@@ -43,6 +44,26 @@ const FolderHomepage: NextPage = () => {
     variables: { id: folderId },
   });
 
+  const file: File = {
+    id: "id-for-file-1",
+    title: "file title",
+    description: "A description of the file",
+    fileName: "file-title.pdf",
+    url: "path/to/file",
+    modified: "Sep 20, 2020",
+  };
+
+  const fileTwo: File = {
+    id: "id-for-file-2",
+    title: "file 2 title",
+    description: "A description of the file",
+    fileName: "file-title-2.pdf",
+    url: "path/to/file",
+    modified: "Sep 20, 2020",
+  };
+
+  const files = [file, fileTwo];
+
   return (
     <>
       <Head
@@ -66,6 +87,12 @@ const FolderHomepage: NextPage = () => {
             </MainHeading>
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
+            <h3>Files</h3>
+            <ul>
+              {files.map((file) => (
+                <FileListItem key={file.id} file={file} />
+              ))}
+            </ul>
           </PageContent>
         </ContentWrapper>
       </PageLayout>
