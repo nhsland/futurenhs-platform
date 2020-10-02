@@ -7,6 +7,7 @@ import { FolderMenuListItem } from ".";
 import { MenuItem } from "./FolderMenuListItem";
 
 const Container = styled.div`
+  z-index: 1000;
   width: 320px;
   border-radius: 4px;
 
