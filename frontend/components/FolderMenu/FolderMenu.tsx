@@ -23,7 +23,7 @@ const items: MenuItem[] = [
     title: "Upload file to this folder",
     icon: <UploadIcon />,
     href: "upload-file",
-    assumeTrailingSlash: true,
+    relativeUrl: true,
   },
   {
     title: "Edit folder details",

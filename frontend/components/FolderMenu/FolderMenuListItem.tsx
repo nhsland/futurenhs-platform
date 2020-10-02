@@ -8,19 +8,21 @@ interface FolderListItemProps {
   className?: string;
   href: string;
   children: ReactNode;
-  assumeTrailingSlash?: boolean;
+  relativeUrl?: boolean;
 }
 
 const FolderListItem = ({
   className,
   href,
+  relativeUrl,
   children,
-  assumeTrailingSlash,
 }: FolderListItemProps) => {
   let url = href;
   const router = useRouter();
-  if (assumeTrailingSlash) {
-    url = `${router.asPath}/${href}`;
+  if (relativeUrl) {
+    let base = router.asPath;
+    base = base.replace(`/${url}`, ""); // if we're already on this route, remove it first
+    url = `${base}/${url}`;
   }
 
   return (
@@ -74,13 +76,13 @@ export type MenuItem = {
   title: string;
   icon: ReactNode;
   href: string;
-  assumeTrailingSlash?: boolean;
+  relativeUrl?: boolean;
 };
 
 interface FolderMenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
   href: string;
-  assumeTrailingSlash?: boolean;
+  relativeUrl?: boolean;
 }
 
 const FolderMenuListItem: FC<FolderMenuListItemProps> = ({
