@@ -19,14 +19,10 @@ const Inner = styled.span`
   }
   opacity: 0;
   position: absolute;
-  middle: 50%;
-  left: 100%;
-  margin-left: 13px;
   z-index: 1000;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colorNhsukGrey1};
   padding: 5px;
-  text-align: center;
   font-weight: 400;
   font-size: 18px;
   color: ${({ theme }) => theme.colorNhsukWhite};
@@ -51,7 +47,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   return (
     <Outer>
       {children}
-      <Inner>{tooltip}</Inner>
+      <Inner className="tooltip-inner">{tooltip}</Inner>
     </Outer>
   );
 };

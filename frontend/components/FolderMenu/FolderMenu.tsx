@@ -54,6 +54,11 @@ const Container = styled.div`
   border-radius: 4px;
   margin-left: 7px;
 
+  .tooltip-inner {
+    left: 36px;
+    top: -7px;
+  }
+
   ${({ theme }) => `
     .folder-menu-item {
       display: none;
