@@ -17,19 +17,21 @@ const MenuButton: FC<MenuProps> = ({
   menuOpen,
   setMenuOpen,
   ...rest
-}) => (
-  <Tooltip tooltip="Options">
-    <button
-      className={classNames(
-        { open: menuOpen },
-        { hidden: startHidden },
-        className
-      )}
-      onClick={() => setMenuOpen(!menuOpen)}
-      {...rest}
-    />
-  </Tooltip>
-);
+}) => {
+  return (
+    <Tooltip tooltip="Options">
+      <button
+        className={classNames(
+          { open: menuOpen },
+          { hidden: startHidden },
+          className
+        )}
+        onClick={() => setMenuOpen(!menuOpen)}
+        {...rest}
+      />
+    </Tooltip>
+  );
+};
 
 const FolderMenuButton = styled(MenuButton)`
   ${({ theme }) => `
@@ -56,13 +58,15 @@ const FolderMenuButton = styled(MenuButton)`
       background-color: ${theme.colorNhsukYellow};
     }
     
-    padding: 0;
-    height: 100%;
     border-radius: 4px;
-    font-size: 16px;
-    line-height: 24px;
-    cursor: pointer;
     border:none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    height: 100%;
+    line-height: 24px;
+    padding: 0;
+    position: relative;
 
     .icon-wrapper {
       display: flex;

@@ -1,10 +1,9 @@
-import React from "react";
+import React, { ComponentProps } from "react";
 
 import styled from "styled-components";
 
-interface TooltipProps {
+interface TooltipProps extends ComponentProps<"div"> {
   tooltip: string;
-  children: React.ReactNode;
 }
 
 const Outer = styled.div`
@@ -19,7 +18,7 @@ const Inner = styled.span`
   }
   opacity: 0;
   position: absolute;
-  z-index: 1000;
+  z-index: 2000;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colorNhsukGrey1};
   padding: 5px;
@@ -40,10 +39,7 @@ const Inner = styled.span`
   }
 `;
 
-const Tooltip: React.FC<TooltipProps> = ({
-  tooltip,
-  children,
-}: TooltipProps) => {
+const Tooltip: React.FC<TooltipProps> = ({ tooltip, children }) => {
   return (
     <Outer>
       {children}

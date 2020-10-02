@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import styled from "styled-components";
 
@@ -57,6 +57,21 @@ const Container = styled.div`
 
 const FolderMenu: FC<Props> = ({ startHidden, workspaceId, folderId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const container = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const pageClickEvent = ({ target }: MouseEvent) => {
+      if (!container.current?.contains(target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      window.addEventListener("click", pageClickEvent);
+    }
+
+    return () => window.removeEventListener("click", pageClickEvent);
+  }, [menuOpen]);
 
   const items: MenuItem[] = [
     {
@@ -88,7 +103,7 @@ const FolderMenu: FC<Props> = ({ startHidden, workspaceId, folderId }) => {
 
   return (
     <>
-      <Container>
+      <Container ref={container}>
         <FolderMenuButton
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
