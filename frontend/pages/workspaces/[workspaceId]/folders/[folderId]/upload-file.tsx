@@ -183,7 +183,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
               )}
             </FormField>
             <p>
-              All uploaded content must conform to to the platform&apos;s{" "}
+              All uploaded content must conform to the platform&apos;s{" "}
               <a href="#">Terms and Conditions</a>.
             </p>
             <Button type="submit" name="submitButton">
