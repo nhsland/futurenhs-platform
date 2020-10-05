@@ -61,8 +61,8 @@ migrate: ## Run migrations on current cluster
 	DATABASE_URL=$(db) cargo sqlx migrate run
 
 .PHONY: prepare
-prepare: ## Prepares new version of sqlx-data.json
-	cargo clean --package workspace_service && DATABASE_URL=$(db) cargo sqlx prepare -- --bin workspace_service
+prepare: migrate-local ## Prepares new version of sqlx-data.json
+	cargo clean --package workspace_service && DATABASE_URL=$(localdb) cargo sqlx prepare -- --bin workspace_service
 
 .PHONY: help
 help: ## Display this help screen
