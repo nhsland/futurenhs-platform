@@ -14,14 +14,14 @@ run: ## Fetch DB URL and run locally
 	UPLOAD_CONTAINER_URL=$$(kubectl get configmap -n workspace-service files-storage-account -o jsonpath='{.data.upload_container_id}') \
 	FILES_CONTAINER_URL=$$(kubectl get configmap -n workspace-service files-storage-account -o jsonpath='{.data.files_container_id}') \
 	FILE_STORAGE_ACCESS_KEY=$$(kubectl get secret -n workspace-service files-storage-account -o jsonpath='{.data.primary_access_key}' | base64 -D) \
-	$(MAKE)
+		$(MAKE)
 
 .PHONY: run-local
-run-local: migrate-local ## Fetch DB URL and run locally. Does not have file support yet.
-	UPLOAD_CONTAINER_URL=https://obviously.fake \
-	FILES_CONTAINER_URL=https://obviously.fake \
-	FILE_STORAGE_ACCESS_KEY=also-fake \
+run-local: migrate-local ## Run locally against Postgres and Azure running in Docker
 	DATABASE_URL=$(localdb) \
+	UPLOAD_CONTAINER_URL=http://localhost:10000/devstoreaccount1 \
+	FILES_CONTAINER_URL=http://localhost:10000/devstoreaccount1 \
+	FILE_STORAGE_ACCESS_KEY='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==' \
 		$(MAKE)
 
 .PHONY: test
@@ -58,7 +58,7 @@ reset-local: ## Resets local database
 	docker-compose down --volumes
 
 .PHONY: migrate-local
-migrate-local: ## Bring up local postgres and migrate it.
+migrate-local: ## Bring up local dependencies and migrate run DB migrations
 	docker-compose up -d \
 	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
 
