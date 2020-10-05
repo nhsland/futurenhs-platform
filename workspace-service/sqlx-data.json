@@ -1,5 +1,79 @@
 {
   "db": "PostgreSQL",
+  "1214f379052a9d2b50d24c0f3d095233c352d690452f181164e189f746b7ee44": {
+    "query": "SELECT id,\n    title,\n    description,\n    folder,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    modified_at,\n    deleted_at\n\nFROM files\nWHERE folder = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 8,
+          "name": "modified_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "deleted_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "1428409bb70e6a2ff2c1210b46400ab6ad05fdd8fa7a50c72c7f1c04214167a9": {
     "query": "SELECT id, \n    title,\n    description,\n    workspace\nFROM folders\nWHERE id = $1\n",
     "describe": {
@@ -145,6 +219,80 @@
         false,
         false,
         false
+      ]
+    }
+  },
+  "64fd48f407eebf0fad20aaec329c72abb00bb539c9fda910bd0280279948a618": {
+    "query": "SELECT id,\n    title,\n    description,\n    folder,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    modified_at,\n    deleted_at\nFROM files\nWHERE id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 8,
+          "name": "modified_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "deleted_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
       ]
     }
   },

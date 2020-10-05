@@ -45,6 +45,10 @@ watch-local: migrate-local ## Create a local, migrated DB for dev using a local 
 watch: ## Run cargo watch in the way that David likes it.
 	DATABASE_URL=$(db) cargo watch -x help -x check
 
+.PHONY: reset-local
+reset-local: ## Resets local database
+	docker-compose down --volumes
+
 .PHONY: migrate-local
 migrate-local: ## Bring up local postgres and migrate it.
 	docker-compose up -d \
@@ -57,8 +61,8 @@ migrate: ## Run migrations on current cluster
 	DATABASE_URL=$(db) cargo sqlx migrate run
 
 .PHONY: prepare
-prepare: ## Prepares new version of sqlx-data.json
-	cargo clean --package workspace_service && DATABASE_URL=$(db) cargo sqlx prepare -- --bin workspace_service
+prepare: migrate-local ## Prepares new version of sqlx-data.json
+	cargo clean --package workspace_service && DATABASE_URL=$(localdb) cargo sqlx prepare -- --bin workspace_service
 
 .PHONY: help
 help: ## Display this help screen
