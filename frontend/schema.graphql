@@ -21,7 +21,7 @@ type File {
   description: String!
 
   # The id of the parent folder
-  folderId: ID!
+  folder: ID!
 
   # The name of the file
   fileName: String!
@@ -104,8 +104,8 @@ type Query {
   # Get folder by ID
   folder(id: ID!): Folder!
 
-  # Get all Files in a workspace
-  filesByFolder(folderId: ID!): [File!]!
+  # Get all Files in a Folder
+  filesByFolder(folder: ID!): [File!]!
 
   # Get file by ID
   file(id: ID!): File!

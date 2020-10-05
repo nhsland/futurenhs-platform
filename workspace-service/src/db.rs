@@ -241,7 +241,7 @@ pub struct File {
     pub id: Uuid,
     pub title: String,
     pub description: String,
-    pub folder_id: Uuid,
+    pub folder: Uuid,
     pub file_name: String,
     pub file_type: String,
     pub blob_storage_path: String,
@@ -251,8 +251,8 @@ pub struct File {
 }
 
 impl File {
-    pub async fn find_by_folder(folder_id: Uuid, pool: &PgPool) -> Result<Vec<File>> {
-        let files = sqlx::query_file_as!(File, "sql/files/find_by_folder.sql", folder_id)
+    pub async fn find_by_folder(folder: Uuid, pool: &PgPool) -> Result<Vec<File>> {
+        let files = sqlx::query_file_as!(File, "sql/files/find_by_folder.sql", folder)
             .fetch_all(pool)
             .await?;
 

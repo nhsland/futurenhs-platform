@@ -12,7 +12,7 @@ pub struct File {
     #[field(desc = "The description of the file")]
     pub description: String,
     #[field(desc = "The id of the parent folder")]
-    pub folder_id: ID,
+    pub folder: ID,
     #[field(desc = "The name of the file")]
     pub file_name: String,
     #[field(desc = "The type of the file")]
@@ -33,7 +33,7 @@ impl From<db::File> for File {
             id: d.id.into(),
             title: d.title,
             description: d.description,
-            folder_id: d.folder_id.into(),
+            folder: d.folder.into(),
             file_name: d.file_name,
             file_type: d.file_type,
             blob_storage_path: d.blob_storage_path,
@@ -50,14 +50,10 @@ pub struct FilesQuery;
 #[Object]
 impl FilesQuery {
     #[field(desc = "Get all Files in a Folder")]
-    async fn files_by_folder(
-        &self,
-        context: &Context<'_>,
-        folder_id: ID,
-    ) -> FieldResult<Vec<File>> {
+    async fn files_by_folder(&self, context: &Context<'_>, folder: ID) -> FieldResult<Vec<File>> {
         let pool = context.data()?;
-        let folder_id = Uuid::parse_str(&folder_id)?;
-        let files = db::File::find_by_folder(folder_id, pool).await?;
+        let folder = Uuid::parse_str(&folder)?;
+        let files = db::File::find_by_folder(folder, pool).await?;
         Ok(files.into_iter().map(Into::into).collect())
     }
 

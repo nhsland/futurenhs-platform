@@ -1,7 +1,7 @@
 SELECT id,
     title,
     description,
-    folder_id,
+    folder,
     file_name,
     file_type,
     blob_storage_path,
@@ -10,4 +10,4 @@ SELECT id,
     deleted_at
 
 FROM files
-WHERE folder_id = $1
+WHERE folder = $1

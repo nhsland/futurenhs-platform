@@ -1,5 +1,79 @@
 {
   "db": "PostgreSQL",
+  "1214f379052a9d2b50d24c0f3d095233c352d690452f181164e189f746b7ee44": {
+    "query": "SELECT id,\n    title,\n    description,\n    folder,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    modified_at,\n    deleted_at\n\nFROM files\nWHERE folder = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 8,
+          "name": "modified_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "deleted_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "1428409bb70e6a2ff2c1210b46400ab6ad05fdd8fa7a50c72c7f1c04214167a9": {
     "query": "SELECT id, \n    title,\n    description,\n    workspace\nFROM folders\nWHERE id = $1\n",
     "describe": {
@@ -134,6 +208,84 @@
         {
           "ordinal": 3,
           "name": "workspace",
+          "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "2bab99ce822441a293754eb185d2d889cf4885ed2ba16dc777de184eacd97d28": {
+    "query": "UPDATE folders\nSET title = COALESCE($2, title),\n    description = COALESCE($3, description)\nWHERE id = $1\nRETURNING id, title, description, workspace_id\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace_id",
+          "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "2c343c232e2637e1f35ea59511dc7ba298a41518960d9cd1e1c76a71bda2a5cc": {
+    "query": "DELETE FROM folders\nWHERE id = $1\nRETURNING id, title, description, workspace_id\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace_id",
           "type_info": "Uuid"
         }
       ],
@@ -296,6 +448,80 @@
       ]
     }
   },
+  "64fd48f407eebf0fad20aaec329c72abb00bb539c9fda910bd0280279948a618": {
+    "query": "SELECT id,\n    title,\n    description,\n    folder,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    modified_at,\n    deleted_at\nFROM files\nWHERE id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 8,
+          "name": "modified_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "deleted_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "7e36b4f75277160f17428493ede8939d337eed375864a238af996d4957649f4d": {
     "query": "DELETE FROM workspaces\nWHERE id = $1\nRETURNING id, title, description\n",
     "describe": {
@@ -322,6 +548,84 @@
         ]
       },
       "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "8025b5b46c1a32da1b4cda92d12d13b8cff2321cee671a1ab9be34e78c1e47f4": {
+    "query": "SELECT id,\n    title,\n    description,\n    workspace_id\nFROM folders\nWHERE workspace_id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace_id",
+          "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "86b2b6b8546b18b4c77f0610b2bea734ab6aff0e8de1b6b3e15cf7e03460a17f": {
+    "query": "INSERT INTO folders\n    (title, description, workspace_id)\nVALUES\n    ($1, $2, $3)\nRETURNING id, title, description, workspace_id\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace_id",
+          "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
         false,
         false,
         false
@@ -421,6 +725,44 @@
           "Uuid",
           "Text",
           "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "d494d9b611569a0e1d29bdc9dcbd3f5e390c6c6a437048e5cb7c8c71d8d5eabd": {
+    "query": "SELECT id,\n    title,\n    description,\n    workspace_id\nFROM folders\nWHERE id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace_id",
+          "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
         ]
       },
       "nullable": [
