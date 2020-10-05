@@ -1,64 +1,59 @@
 import React from "react";
 
 import { ThemeProvider } from "styled-components";
-import { fromValue, never } from "wonka";
 
 import theme from "../../../../../lib/fixtures/theme.json";
+import {
+  FoldersByWorkspaceDocument,
+  GetFolderByIdDocument,
+  GetWorkspaceByIdDocument,
+} from "../../../../../lib/generated/graphql";
 import { render } from "../../../../../lib/test-helpers/render";
+import { mockUrqlClient } from "../../../../../lib/test-helpers/urql";
 import FolderHomepage from "../../../../../pages/workspaces/[workspaceId]/folders/[folderId]";
 
 describe(FolderHomepage, () => {
-  const responseState = {
-    executeQuery: jest.fn(({ query }) => {
-      if (
-        query.definitions.find((d: any) => d.name.value == "GetWorkspaceByID")
-      ) {
-        return fromValue({
-          data: {
-            workspace: {
-              id: "1",
-              title: "hospital",
-            },
+  const client = mockUrqlClient([
+    [
+      GetWorkspaceByIdDocument,
+      {
+        workspace: {
+          id: "1",
+          title: "hospital",
+          description: "hospital",
+        },
+      },
+    ],
+    [
+      GetFolderByIdDocument,
+      {
+        folder: {
+          id: "f1",
+          title: "folder 1",
+          description: "first folder",
+          workspace: "1",
+        },
+      },
+    ],
+    [
+      FoldersByWorkspaceDocument,
+      {
+        foldersByWorkspace: [
+          {
+            id: "f1",
+            title: "folder 1",
+            description: "first folder",
+            workspace: "1",
           },
-        });
-      }
-      if (query.definitions.find((d: any) => d.name.value == "GetFolderById")) {
-        return fromValue({
-          data: {
-            folder: {
-              id: "f1",
-              title: "folder 1",
-              description: "first folder",
-              workspace: "1",
-            },
-          },
-        });
-      }
-      if (
-        query.definitions.find((d: any) => d.name.value == "FoldersByWorkspace")
-      ) {
-        return fromValue({
-          data: {
-            foldersByWorkspace: [
-              {
-                id: "f1",
-                title: "folder 1",
-                description: "first folder",
-                workspace: "1",
-              },
-            ],
-          },
-        });
-      }
-    }),
-    executeMutation: jest.fn(() => never),
-    executeSubscription: jest.fn(() => never),
-  };
+        ],
+      },
+    ],
+  ]);
 
   test("renders matching snapshot", () => {
     const container = render(
       <ThemeProvider theme={theme}>
-        <FolderHomepage urqlClient={responseState} />
+        <FolderHomepage urqlClient={client} />
       </ThemeProvider>,
       {
         router: {
