@@ -48,3 +48,6 @@ fi
 ./create-folder-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Workspace Insights"
 ./create-folder-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Good News"
 ./create-folder-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "NHS COVID-19 Data Store"
+
+./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "data-file.xlsx"
+./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "data-file2.xlsx"
