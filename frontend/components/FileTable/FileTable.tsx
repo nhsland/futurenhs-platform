@@ -42,13 +42,6 @@ const RHContainer = styled.div`
     text-decoration: underline;
     font-size: 16px;
   }
-  ${({ theme }) => `
-  @media (min-width: ${theme.mqBreakpoints.tablet}) {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-  }
-  `}
 `;
 
 const Title = styled.a`
@@ -67,8 +60,8 @@ export const FileTable = ({ files }: FileTableProps) => (
   <Table>
     <Table.Head>
       <Table.Row>
+        <Table.Cell>Title</Table.Cell>
         <Table.Cell></Table.Cell>
-        <Table.Cell>File</Table.Cell>
         <Table.Cell>Last modified</Table.Cell>
         <Table.Cell>Actions</Table.Cell>
       </Table.Row>
@@ -104,13 +97,22 @@ const FileListItem = ({ file }: Props) => (
   </ListItem>
 );
 
-export const FileList = styled.ul`
+const List = styled.ul`
   padding-left: 0;
   padding-right: 16px;
   ${({ theme }) => `
     border-top: 1px solid ${theme.colorNhsukGrey4};
     border-bottom: 1px solid ${theme.colorNhsukGrey4};
+    @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      display: none;
+    }
   `}
 `;
 
-export default FileListItem;
+export const MobileFileList = ({ files }: FileTableProps) => (
+  <List>
+    {files.map((file) => (
+      <FileListItem key={file.id} file={file} />
+    ))}
+  </List>
+);

@@ -4,11 +4,10 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
-  // FileListItem,
   File,
-  // FileList,
+  MobileFileList,
   FileTable,
-} from "../../../../../../components/FileListItem";
+} from "../../../../../../components/FileTable";
 import { Head } from "../../../../../../components/Head";
 import { MainHeading } from "../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../components/NavHeader";
@@ -49,6 +48,16 @@ const data = {
   file,
 };
 
+const TableContainer = styled.div`
+  display: none;
+  ${({ theme }) => `
+  @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      display: block;
+      width: 360px;
+    }
+  `}
+`;
+
 const FileHomepage = () => {
   const router = useRouter();
   let { workspaceId, folderId } = router.query;
@@ -75,9 +84,9 @@ const FileHomepage = () => {
             <h2>Description</h2>
             <Description>{data.file.description}</Description>
             <h3>File</h3>
-            {/* <FileList>
-              <FileListItem file={file} />
-            </FileList> */}
+            <TableContainer>
+              <MobileFileList files={[file]} />
+            </TableContainer>
             <FileTable files={[file]} />
           </PageContent>
         </ContentWrapper>

@@ -5,11 +5,10 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
-  // FileListItem,
   File,
-  // FileList,
+  MobileFileList,
   FileTable,
-} from "../../../../components/FileListItem";
+} from "../../../../components/FileTable";
 import { Head } from "../../../../components/Head";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
@@ -34,6 +33,16 @@ const PageContent = styled.section`
 
 const ContentWrapper = styled.div`
   display: flex;
+`;
+
+const TableContainer = styled.div`
+  display: none;
+  ${({ theme }) => `
+  @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      display: block;
+      width: 360px;
+    }
+  `}
 `;
 
 const FolderHomepage: NextPage = () => {
@@ -95,13 +104,10 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
-            {/* <FileList>
-              {files.map((file) => (
-                <FileListItem key={file.id} file={file} />
-              ))} */}
-
-            {/* </FileList> */}
-            <FileTable files={files} />
+            <MobileFileList files={files}></MobileFileList>
+            <TableContainer>
+              <FileTable files={files} />
+            </TableContainer>
           </PageContent>
         </ContentWrapper>
       </PageLayout>
