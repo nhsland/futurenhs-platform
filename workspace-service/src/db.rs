@@ -2,6 +2,7 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use anyhow::Result;
+use chrono::{DateTime, Utc};
 use sqlx::{types::Uuid, PgPool};
 
 #[derive(Clone)]
@@ -244,9 +245,9 @@ pub struct File {
     pub file_name: String,
     pub file_type: String,
     pub blob_storage_path: String,
-    pub created_at: sqlx::types::time::PrimitiveDateTime,
-    pub modified_at: sqlx::types::time::PrimitiveDateTime,
-    pub deleted_at: Option<sqlx::types::time::PrimitiveDateTime>,
+    pub created_at: DateTime<Utc>,
+    pub modified_at: DateTime<Utc>,
+    pub deleted_at: Option<DateTime<Utc>>,
 }
 
 impl File {

@@ -28,6 +28,7 @@ git = "https://github.com/frigus02/sqlx"
 rev = "106a6a83952bfc0e3316d54f99d865e469dcc15a"
 default-features = false
 features = [
+    "chrono",
     "macros",
     "migrate",
     "offline",
