@@ -1,6 +1,7 @@
 use super::db;
-use async_graphql::{Context, FieldResult, Object, SimpleObject, ID};
+use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
+use sqlx::PgPool;
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A file")]
@@ -25,6 +26,16 @@ pub struct File {
     pub modified_at: DateTime<Utc>,
     #[field(desc = "The time the file was deleted")]
     pub deleted_at: Option<DateTime<Utc>>,
+}
+
+#[InputObject]
+pub struct NewFile {
+    pub title: String,
+    pub description: String,
+    pub folder: ID,
+    pub file_name: String,
+    pub file_type: String,
+    pub blob_storage_path: String,
 }
 
 impl From<db::File> for File {
@@ -64,4 +75,50 @@ impl FilesQuery {
         let file = db::File::find_by_id(id, pool).await?;
         Ok(file.into())
     }
+}
+
+#[derive(Default)]
+pub struct FilesMutation;
+
+#[Object]
+impl FilesMutation {
+    #[field(desc = "Create a new file (returns the created file)")]
+    async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
+        let pool = context.data()?;
+        let folder = Uuid::parse_str(&new_file.folder)?;
+
+        create_file(
+            &new_file.title,
+            &new_file.description,
+            &folder,
+            &new_file.file_name,
+            &new_file.file_type,
+            &new_file.blob_storage_path,
+            pool,
+        )
+        .await
+    }
+}
+
+async fn create_file(
+    title: &str,
+    description: &str,
+    folder: &Uuid,
+    file_name: &str,
+    file_type: &str,
+    blob_storage_path: &str,
+    pool: &PgPool,
+) -> FieldResult<File> {
+    let file: File = db::File::create(
+        title,
+        description,
+        folder,
+        file_name,
+        file_type,
+        blob_storage_path,
+        pool,
+    )
+    .await?
+    .into();
+    Ok(file)
 }
