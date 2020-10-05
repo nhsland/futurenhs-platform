@@ -31,5 +31,10 @@ variable "ad_object_id" {
 
 variable "kubernetes_version" {
   description = "Kubernetes Version"
-  default     = "1.17.9"
+  default     = "1.18.8"
+}
+
+variable "kubernetes_min_node_count" {
+  description = "Minimum number of Kubernetes nodes. Maximum will be this times 2"
+  default     = 1
 }

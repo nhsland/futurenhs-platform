@@ -7,16 +7,10 @@ const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
 const dotenv = require("dotenv");
+const Noop = require("./noop-passport-strategy");
 
 const url = require("url");
 const { promises: fs } = require("fs");
-
-const devProxy = {
-  "/hello": {
-    target: "http://hello-world.hello-world/",
-    changeOrigin: true,
-  },
-};
 
 const requireEnv = (name) => {
   const value = process.env[name];
@@ -65,8 +59,12 @@ const runSessionDbMigration = async (pool) => {
 async function main() {
   const dev = process.env.NODE_ENV !== "production";
   const dotEnvFileSegment = dev ? "development" : "production";
-  dotenv.config({ path: `.env.${dotEnvFileSegment}` });
+  // dotenv will never modify any environment variables that have already been set,
+  // so if values are defined in multiple places, we prefer the .local one.
+  // This is done to emulate how next.js does things.
+  dotenv.config({ path: `.env.local` });
   dotenv.config({ path: `.env.${dotEnvFileSegment}.local` });
+  dotenv.config({ path: `.env.${dotEnvFileSegment}` });
 
   const port = parseInt(process.env.PORT, 10) || 3000;
   const sessionStore = await setupSessionStore();
@@ -80,14 +78,6 @@ async function main() {
   await app.prepare();
 
   const server = express();
-
-  // Dev proxy
-  if (dev) {
-    const { createProxyMiddleware } = require("http-proxy-middleware");
-    Object.keys(devProxy).forEach(function (context) {
-      server.use(context, createProxyMiddleware(devProxy[context]));
-    });
-  }
 
   // Login session
   const aadb2cStrategy = "aadb2c";
@@ -114,27 +104,29 @@ async function main() {
   });
   passport.use(
     aadb2cStrategy,
-    new OIDCStrategy(
-      {
-        identityMetadata:
-          "https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/v2.0/.well-known/openid-configuration",
-        clientID: requireEnv("AAD_B2C_CLIENT_ID"),
-        clientSecret: requireEnv("AAD_B2C_CLIENT_SECRET"),
-        responseType: "code",
-        responseMode: "query",
-        redirectUrl: `${requireEnv("ORIGIN")}/auth/callback`,
-        passReqToCallback: false,
-        allowHttpForRedirectUrl: dev,
-        isB2C: true,
-      },
-      (profile, done) => {
-        done(null, {
-          id: profile.sub,
-          name: profile.displayName,
-          emails: profile.emails,
-        });
-      }
-    )
+    dev
+      ? new Noop()
+      : new OIDCStrategy(
+          {
+            identityMetadata:
+              "https://futurenhsplatform.b2clogin.com/futurenhsplatform.onmicrosoft.com/v2.0/.well-known/openid-configuration",
+            clientID: requireEnv("AAD_B2C_CLIENT_ID"),
+            clientSecret: requireEnv("AAD_B2C_CLIENT_SECRET"),
+            responseType: "code",
+            responseMode: "query",
+            redirectUrl: `${requireEnv("ORIGIN")}/auth/callback`,
+            passReqToCallback: false,
+            allowHttpForRedirectUrl: dev,
+            isB2C: true,
+          },
+          (profile, done) => {
+            done(null, {
+              id: profile.sub,
+              name: profile.displayName,
+              emails: profile.emails,
+            });
+          }
+        )
   );
   if (!dev) {
     // In production our frontend runs behind a Kubernetes ingress. We need to
@@ -159,7 +151,8 @@ async function main() {
   server.get(
     "/auth/login",
     configureUserFlow("b2c_1_signin"),
-    authenticateWithAADB2C
+    authenticateWithAADB2C,
+    redirectAuthSuccess
   );
   server.get(
     "/auth/resetpassword",

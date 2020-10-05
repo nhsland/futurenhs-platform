@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend
@@ -51,6 +51,11 @@ spec:
                 secretKeyRef:
                   name: frontend
                   key: postgres_url
+            - name: WORKSPACE_SERVICE_GRAPHQL_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-cm
+                  key: workspace_service_graphql_endpoint
           ports:
             - containerPort: 3000
           resources:

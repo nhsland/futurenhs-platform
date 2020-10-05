@@ -1,0 +1,126 @@
+{
+  "data": {
+    "foldersByWorkspace": [
+      {
+        "id": "b382ae4b-4dd2-489b-8afb-9ba8c37491af",
+        "title": "FutureNHS Case Study Library",
+        "description": "Test folder with title FutureNHS Case Study Library",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "d1275f92-bf97-428f-a4ce-b2cac0cc3513",
+        "title": "Getting started",
+        "description": "Test folder with title Getting started",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "45d27bdd-f882-4512-85dd-27c6b9a139dc",
+        "title": "Platform FAQs",
+        "description": "Test folder with title Platform FAQs",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "8503f359-a5b9-4899-a550-7ab7ab4f4f0b",
+        "title": "Support",
+        "description": "Test folder with title Support",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "deedc281-9d3b-4a29-9cbc-f73d22124c8c",
+        "title": "Get involved",
+        "description": "Test folder with title Get involved",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "3651ecc8-4f68-4aae-ad46-14b58a0e414c",
+        "title": "Enhance your workspace",
+        "description": "Test folder with title Enhance your workspace",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "f329f410-bff4-4cc8-ac8b-05f6b333a71f",
+        "title": "Member stories",
+        "description": "Test folder with title Member stories",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "00b3f614-0ccc-4de8-9157-bddebd703521",
+        "title": "Coronavirus (COVID-19)",
+        "description": "Test folder with title Coronavirus (COVID-19)",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "708f1a60-f635-4169-a9c8-97162fe7603d",
+        "title": "Communications resources",
+        "description": "Test folder with title Communications resources",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "993cd60d-d375-4c39-95e4-0ec8308b4d55",
+        "title": "Administration",
+        "description": "Test folder with title Administration",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "dc77604f-db55-4f36-9352-90c870bb8ca8",
+        "title": "Strategic Partners",
+        "description": "Test folder with title Strategic Partners",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "e6a06cb3-5875-431b-98cb-384a359d6fa1",
+        "title": "Uploads",
+        "description": "Test folder with title Uploads",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "879d9184-cae7-4a61-b827-019463791216",
+        "title": "Workspace Navigation",
+        "description": "Test folder with title Workspace Navigation",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "b337907b-439d-4d05-9937-4975fa00bed7",
+        "title": "Data",
+        "description": "Test folder with title Data",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "8263109c-e920-40b3-bb2b-86e50599744b",
+        "title": "Information and Analysis",
+        "description": "Test folder with title Information and Analysis",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "c50c4a78-6ffa-4a3e-99d8-2ee959923f37",
+        "title": "Evidence",
+        "description": "Test folder with title Evidence",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "a45e61f2-3d8e-4292-8adf-d4c7d7e18768",
+        "title": "Community, Networks and Learning",
+        "description": "Test folder with title Community, Networks and Learning",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "a8d7108b-a92d-4bff-a54e-cdaf04d1850e",
+        "title": "Workspace Insights",
+        "description": "Test folder with title Workspace Insights",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "88b9dbc3-f0b6-4644-9955-1e6a0131e273",
+        "title": "Good News",
+        "description": "Test folder with title Good News",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      },
+      {
+        "id": "6bf96452-1f6f-45d2-83c5-13dc3d8c69d7",
+        "title": "NHS COVID-19 Data Store",
+        "description": "Test folder with title NHS COVID-19 Data Store",
+        "workspace": "01bb9a4d-2977-4c43-b28c-2a72b4eda453"
+      }
+    ]
+  }
+}

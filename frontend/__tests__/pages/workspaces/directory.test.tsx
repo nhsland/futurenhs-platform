@@ -2,31 +2,29 @@ import React from "react";
 
 import { render } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
-import { fromValue, never } from "wonka";
 
 import theme from "../../../lib/fixtures/theme.json";
+import { GetWorkspacesDocument } from "../../../lib/generated/graphql";
+import { mockUrqlClient } from "../../../lib/test-helpers/urql";
 import WorkspaceDirectory from "../../../pages/workspaces/directory";
 
 test("takes a snapshot of the component", () => {
-  const responseState = {
-    executeQuery: jest.fn(() =>
-      fromValue({
-        data: {
-          workspaces: [
-            { title: "hospital", id: "1" },
-            { title: "pharmacy", id: "2" },
-            { title: "ambulance", id: "3" },
-          ],
-        },
-      })
-    ),
-    executeMutation: jest.fn(() => never),
-    executeSubscription: jest.fn(() => never),
-  };
+  const client = mockUrqlClient([
+    [
+      GetWorkspacesDocument,
+      {
+        workspaces: [
+          { title: "hospital", id: "1", description: "hospital" },
+          { title: "pharmacy", id: "2", description: "pharmacy" },
+          { title: "ambulance", id: "3", description: "ambulance" },
+        ],
+      },
+    ],
+  ]);
 
   const { asFragment } = render(
     <ThemeProvider theme={theme}>
-      <WorkspaceDirectory urqlClient={responseState} />
+      <WorkspaceDirectory urqlClient={client} />
     </ThemeProvider>
   );
   expect(asFragment()).toMatchSnapshot();

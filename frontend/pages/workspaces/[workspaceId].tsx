@@ -36,10 +36,11 @@ const WorkspaceHomepage: NextPage = () => {
     variables: { id },
   });
 
-  const workspaceTitle = data?.workspace.title || "No title!";
+  const workspaceTitle = (!fetching && data?.workspace.title) || "Loading...";
+
   return (
     <>
-      <Head title={fetching ? "Loading..." : workspaceTitle} />
+      <Head title={workspaceTitle} />
       <PageLayout>
         <NavHeader />
         <ContentWrapper>

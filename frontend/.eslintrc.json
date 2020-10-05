@@ -7,7 +7,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/eslint-recommended"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:cypress/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -44,7 +45,18 @@
         }
       }
     ],
-    "@typescript-eslint/no-unused-vars": ["error"]
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react-hook-form",
+            "message": "In order to support IE11, please import react-hook-form/dist/index.ie11 instead."
+          }
+        ]
+      }
+    ]
   },
   "settings": {
     "react": {
