@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { NextPage } from "next";
 import { Input, Form, Button } from "nhsuk-react-components";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
 import { Head } from "../../components/Head";

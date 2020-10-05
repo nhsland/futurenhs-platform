@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
-import { ErrorMessage as HookFormErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
 import { MainHeading } from "../../../../components/MainHeading";
@@ -160,11 +159,7 @@ const CreateFolder: NextPage = () => {
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
               Discard
             </StyledButton>
-            <HookFormErrorMessage
-              errors={errors}
-              name="server"
-              as={<ErrorMessage />}
-            />
+            {errors.server && <ErrorMessage>{errors.server}</ErrorMessage>}
           </Form>
         </PageContent>
       </ContentWrapper>
