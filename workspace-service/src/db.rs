@@ -234,3 +234,35 @@ impl Folder {
         Ok(folder)
     }
 }
+
+#[derive(Clone)]
+pub struct File {
+    pub id: Uuid,
+    pub title: String,
+    pub description: String,
+    pub folder_id: Uuid,
+    pub file_name: String,
+    pub file_type: String,
+    pub blob_storage_path: String,
+    pub created_at: sqlx::types::time::PrimitiveDateTime,
+    pub modified_at: sqlx::types::time::PrimitiveDateTime,
+    pub deleted_at: Option<sqlx::types::time::PrimitiveDateTime>,
+}
+
+impl File {
+    pub async fn find_by_folder(folder_id: Uuid, pool: &PgPool) -> Result<Vec<File>> {
+        let files = sqlx::query_file_as!(File, "sql/files/find_by_folder.sql", folder_id)
+            .fetch_all(pool)
+            .await?;
+
+        Ok(files)
+    }
+
+    pub async fn find_by_id(id: Uuid, pool: &PgPool) -> Result<File> {
+        let file = sqlx::query_file_as!(File, "sql/files/find_by_id.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(file)
+    }
+}

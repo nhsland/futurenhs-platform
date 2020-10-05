@@ -1,4 +1,4 @@
-mod files;
+mod file_uploads;
 mod folders;
 #[cfg(test)]
 mod test_mocks;
@@ -37,7 +37,7 @@ impl State {
 struct Query(
     folders::FoldersQuery,
     workspaces::WorkspacesQuery,
-    files::FileUploadQuery,
+    file_uploads::FileUploadQuery,
 );
 
 #[derive(GQLMergedObject, Default)]

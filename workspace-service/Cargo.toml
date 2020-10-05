@@ -14,7 +14,7 @@ fnhs-event-models = {path = "../event-models/rust"}
 http-types = "2.5.0"
 opentelemetry = "0.8.0"
 opentelemetry-application-insights = "0.4.0"
-sqlx = {git = "https://github.com/frigus02/sqlx", rev = "106a6a83952bfc0e3316d54f99d865e469dcc15a", default-features = false, features = ["runtime-async-std", "macros", "migrate", "offline", "postgres", "tls", "uuid"]}
+sqlx = {git = "https://github.com/frigus02/sqlx", rev = "106a6a83952bfc0e3316d54f99d865e469dcc15a", default-features = false, features = ["runtime-async-std", "macros", "migrate", "offline", "postgres", "tls", "uuid", "time"]}
 structopt = "0.3.17"
 tide = "0.13.0"
 tracing = {version = "0.1.21", features = ["attributes"]}
