@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-const webdriver = require("selenium-webdriver");
+const { Builder, By } = require("selenium-webdriver");
 const assert = require("assert");
 
-const { env, loginIfNeeded } = require("./test-helpers");
+const { capabilities, delay, env, loginIfNeeded } = require("./test-helpers");
 
 const userName = env("BROWSERSTACK_USERNAME");
 const accessKey = env("BROWSERSTACK_ACCESS_KEY");
@@ -16,19 +16,9 @@ const TEST_WORKSPACE_NAME = env("TEST_WORKSPACE_NAME");
 describe("Creating a workspace and navigating to it", function () {
   this.timeout(15000);
 
-  const capabilities = {
-    os: "Windows",
-    os_version: "10",
-    browserName: "IE",
-    browser_version: "11",
-    "browserstack.local": "true",
-    "browserstack.console": "errors",
-
-    name: "Workspaces",
-  };
-  const driverPromise = new webdriver.Builder()
+  const driverPromise = new Builder()
     .usingServer(browserstackURL)
-    .withCapabilities(capabilities)
+    .withCapabilities(capabilities("Workspaces"))
     .build();
 
   it("should render workspace creation page", async () => {
@@ -38,7 +28,7 @@ describe("Creating a workspace and navigating to it", function () {
 
     await loginIfNeeded(driver, targetUrl);
     await driver.get(targetUrl);
-    const h1 = await driver.findElement(webdriver.By.css("h1"));
+    const h1 = await driver.findElement(By.css("h1"));
     const result = await h1.getText();
     assert.equal(result, expected);
   });
@@ -50,7 +40,7 @@ describe("Creating a workspace and navigating to it", function () {
 
     await loginIfNeeded(driver, targetUrl);
     await driver.get(targetUrl);
-    const h1 = await driver.findElement(webdriver.By.css("h1"));
+    const h1 = await driver.findElement(By.css("h1"));
     const result = await h1.getText();
     assert.equal(result, expected);
   });
@@ -63,13 +53,14 @@ describe("Creating a workspace and navigating to it", function () {
     await loginIfNeeded(driver, targetUrl);
     await driver.get(targetUrl);
 
-    await driver.findElement(webdriver.By.linkText(expected)).click();
+    await driver.findElement(By.linkText(expected)).click();
+    await delay(1000);
 
-    const h1 = await driver.findElement(webdriver.By.css("h1"));
+    const h1 = await driver.findElement(By.css("h1"));
     const h1Result = await h1.getText();
     assert.equal(h1Result, expected);
 
-    const h2 = await driver.findElement(webdriver.By.css("h2"));
+    const h2 = await driver.findElement(By.css("h2"));
     const h2Result = await h2.getText();
     assert.equal(h2Result, "Most recent items");
   });

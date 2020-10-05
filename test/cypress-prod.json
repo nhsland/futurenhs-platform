@@ -1,4 +1,0 @@
-{
-  "baseUrl": "https://beta.future.nhs.uk/",
-  "integrationFolder": "./cypress/integration/"
-}

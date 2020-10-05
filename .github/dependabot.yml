@@ -29,15 +29,6 @@ updates:
     directory: /frontend/
     schedule:
       interval: weekly
-  # Hello World
-  - package-ecosystem: cargo
-    directory: /hello-world/
-    schedule:
-      interval: weekly
-  - package-ecosystem: docker
-    directory: /hello-world/
-    schedule:
-      interval: weekly
   # Test
   - package-ecosystem: npm
     directory: /test/

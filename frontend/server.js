@@ -12,13 +12,6 @@ const Noop = require("./noop-passport-strategy");
 const url = require("url");
 const { promises: fs } = require("fs");
 
-const devProxy = {
-  "/hello": {
-    target: "http://hello-world.hello-world/",
-    changeOrigin: true,
-  },
-};
-
 const requireEnv = (name) => {
   const value = process.env[name];
   if (!value) {
@@ -85,14 +78,6 @@ async function main() {
   await app.prepare();
 
   const server = express();
-
-  // Dev proxy
-  if (dev) {
-    const { createProxyMiddleware } = require("http-proxy-middleware");
-    Object.keys(devProxy).forEach(function (context) {
-      server.use(context, createProxyMiddleware(devProxy[context]));
-    });
-  }
 
   // Login session
   const aadb2cStrategy = "aadb2c";
