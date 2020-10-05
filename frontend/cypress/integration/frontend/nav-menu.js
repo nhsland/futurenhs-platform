@@ -1,11 +1,5 @@
 describe("Nav Menu", () => {
   before(() => {
-    cy.login(
-      Cypress.env("TEST_LOGIN_EMAIL_ADDRESS"),
-      Cypress.env("TEST_LOGIN_PASSWORD")
-    );
-    cy.server({ force404: true });
-    cy.route("POST", "https://dc.services.visualstudio.com/v2/track", {});
     cy.visit(`/workspaces/directory`);
   });
 
