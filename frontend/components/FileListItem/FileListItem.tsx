@@ -3,7 +3,7 @@ import React from "react";
 import { Table } from "nhsuk-react-components";
 import styled from "styled-components";
 
-const fileImage = require("../../public/file.svg");
+import { FileIcon } from "../Icon";
 
 export interface File {
   id: string;
@@ -77,7 +77,7 @@ export const FileTable = ({ files }: FileTableProps) => (
       {files.map((file) => (
         <Table.Row key={file.id}>
           <Table.Cell>
-            <img src={fileImage} alt="" />
+            <FileIcon fileType={file.type} />
           </Table.Cell>
           <Table.Cell>{file.title}</Table.Cell>
           <Table.Cell>{file.modified}</Table.Cell>
@@ -92,7 +92,7 @@ export const FileTable = ({ files }: FileTableProps) => (
 
 const FileListItem = ({ file }: Props) => (
   <ListItem>
-    <img src={fileImage} alt="File icon" />
+    <FileIcon fileType={file.type} />
     <RHContainer>
       <Title>{file.title}</Title>
       <div>

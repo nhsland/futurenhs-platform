@@ -1,4 +1,5 @@
 import DashboardIcon from "./DashboardIcon";
+import FileIcon from "./FileIcon";
 import FnhsLogoIcon from "./FnhsLogoIcon";
 import HelpIcon from "./HelpIcon";
 import LogOutIcon from "./LogOutIcon";
@@ -9,6 +10,7 @@ import WorkspacesIcon from "./WorkspacesIcon";
 
 export {
   DashboardIcon,
+  FileIcon,
   FnhsLogoIcon,
   HelpIcon,
   LogOutIcon,
