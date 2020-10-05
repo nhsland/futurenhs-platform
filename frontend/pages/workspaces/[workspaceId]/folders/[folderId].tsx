@@ -4,7 +4,11 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { FileListItem, File } from "../../../../components/FileListItem";
+import {
+  FileListItem,
+  File,
+  FileList,
+} from "../../../../components/FileListItem";
 import { Head } from "../../../../components/Head";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
@@ -88,11 +92,11 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
-            <ul>
+            <FileList>
               {files.map((file) => (
                 <FileListItem key={file.id} file={file} />
               ))}
-            </ul>
+            </FileList>
           </PageContent>
         </ContentWrapper>
       </PageLayout>

@@ -17,25 +17,40 @@ interface Props {
   file: File;
 }
 
-const FlexContainer = styled.div`
-  ${({ theme }) => `
-    border-top: 1px solid ${theme.colorNhsukGrey5};
-  `}
+const ListItem = styled.li`
+  align-items: flex-start;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
+
+const RHContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 12px;
   > div {
     padding-bottom: 20px;
-    outline: 1px solid red;
   }
+  p,
+  h4 {
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+  a {
+    text-decoration: underline;
+    font-size: 16px;
+  }
+  ${({ theme }) => `
+  @media (min-width: ${theme.mqBreakpoints.tablet}) {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  `}
 `;
 
-const TitleContainer = styled.div`
-  display: flex;
-  flex: row;
-`;
-
-const FileTitle = styled.p`
-  text-decoration: underline;
+const Title = styled.a`
+  padding-bottom: 20px;
   font-weight: 700;
   ${({ theme }) => `
     color: ${theme.colorNhsukBlack};
@@ -43,21 +58,26 @@ const FileTitle = styled.p`
 `;
 
 const FileListItem = ({ file }: Props) => (
-  <FlexContainer>
-    <TitleContainer>
-      <img src={fileImage} alt="File icon" />
-      <a>
-        <FileTitle>{file.title}</FileTitle>
-      </a>
-    </TitleContainer>
-    <div>
-      <h3>Last modified</h3>
-      <p>{file.modified}</p>
-    </div>
-    <div>
+  <ListItem>
+    <img src={fileImage} alt="File icon" />
+    <RHContainer>
+      <Title>{file.title}</Title>
+      <div>
+        <h4>Last modified</h4>
+        <p>{file.modified}</p>
+      </div>
       <a>Download file</a>
-    </div>
-  </FlexContainer>
+    </RHContainer>
+  </ListItem>
 );
+
+export const FileList = styled.ul`
+  padding-left: 0;
+  padding-right: 16px;
+  ${({ theme }) => `
+    border-top: 1px solid ${theme.colorNhsukGrey4};
+    border-bottom: 1px solid ${theme.colorNhsukGrey4};
+  `}
+`;
 
 export default FileListItem;

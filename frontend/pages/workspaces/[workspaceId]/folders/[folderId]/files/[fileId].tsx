@@ -3,7 +3,11 @@ import React from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { FileListItem, File } from "../../../../../../components/FileListItem";
+import {
+  FileListItem,
+  File,
+  FileList,
+} from "../../../../../../components/FileListItem";
 import { Head } from "../../../../../../components/Head";
 import { MainHeading } from "../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../components/NavHeader";
@@ -24,6 +28,10 @@ const PageContent = styled.section`
 `;
 const ContentWrapper = styled.div`
   display: flex;
+`;
+
+const Description = styled.p`
+  padding-bottom: 40px;
 `;
 
 const file: File = {
@@ -51,7 +59,7 @@ const FileHomepage = () => {
 
   return (
     <>
-      <Head title="file title" />
+      <Head title={file.title} />
       <PageLayout>
         <NavHeader />
         <ContentWrapper>
@@ -63,11 +71,11 @@ const FileHomepage = () => {
           <PageContent>
             <MainHeading withBorder>{data.file.title}</MainHeading>
             <h2>Description</h2>
-            <p>{data.file.description}</p>
+            <Description>{data.file.description}</Description>
             <h3>File</h3>
-            <div>
+            <FileList>
               <FileListItem file={file} />
-            </div>
+            </FileList>
           </PageContent>
         </ContentWrapper>
       </PageLayout>
