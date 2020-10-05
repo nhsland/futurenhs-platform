@@ -100,7 +100,7 @@ interface NavListProps {
 
 const NavList = ({ navItems, setMenuOpen }: NavListProps) => {
   return (
-    <StyledNavMenuContainer>
+    <StyledNavMenuContainer className="nav-list">
       <p>
         <span>Menu</span>
         <StyledCloseIconWrapper

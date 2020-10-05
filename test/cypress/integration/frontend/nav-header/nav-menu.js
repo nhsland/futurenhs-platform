@@ -11,7 +11,7 @@ describe("Nav Menu", () => {
 
   context("Desktop - 990px+", () => {
     beforeEach(() => {
-      cy.viewport(1200, 1200);
+      cy.viewport(1200, 1080);
     });
 
     it("displays header correctly", () => {
@@ -26,7 +26,7 @@ describe("Nav Menu", () => {
     it("menu can be opened/closed", () => {
       cy.get(".desktop-nav-menu")
         .click()
-        .then(($menu) => {
+        .then(() => {
           cy.get("nav").should("be.visible");
           cy.get(".mobileOnly").should("not.be.visible");
         });

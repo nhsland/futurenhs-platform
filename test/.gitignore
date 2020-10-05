@@ -2,6 +2,7 @@
 .DS_Store
 browserstack.json
 cypress.json
+yarn-error.log
 
 /node_modules
 /log
