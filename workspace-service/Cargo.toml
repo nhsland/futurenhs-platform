@@ -34,7 +34,6 @@ features = [
     "offline",
     "postgres",
     "runtime-async-std",
-    "time",
     "tls",
     "uuid",
 ]
