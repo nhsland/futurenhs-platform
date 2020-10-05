@@ -83,7 +83,7 @@ const NavListItem: FC<Props> = ({
   return (
     <ListItem className={className}>
       <LinkWrapper active={active}>
-        <Link href={href}>
+        <Link href={href} passHref>
           <a>
             <img src={imgSrc} alt={altText} />
             <div>{item.title}</div>

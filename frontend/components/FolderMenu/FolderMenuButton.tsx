@@ -27,6 +27,7 @@ const MenuButton: FC<MenuProps> = ({
           className
         )}
         onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Options"
         {...rest}
       />
     </Tooltip>
