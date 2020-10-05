@@ -1,4 +1,4 @@
-import FileListItem, { File, FileList } from "./FileListItem";
+import FileListItem, { File, FileList, FileTable } from "./FileListItem";
 
-export { FileListItem, FileList };
+export { FileListItem, FileList, FileTable };
 export type { File };

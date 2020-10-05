@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Table } from "nhsuk-react-components";
 import styled from "styled-components";
 
 const fileImage = require("../../public/file.svg");
@@ -11,6 +12,7 @@ export interface File {
   fileName: string;
   url: string;
   modified: string;
+  type: string;
 }
 
 interface Props {
@@ -56,6 +58,37 @@ const Title = styled.a`
     color: ${theme.colorNhsukBlack};
   `}
 `;
+
+interface FileTableProps {
+  files: File[];
+}
+
+export const FileTable = ({ files }: FileTableProps) => (
+  <Table>
+    <Table.Head>
+      <Table.Row>
+        <Table.Cell></Table.Cell>
+        <Table.Cell>File</Table.Cell>
+        <Table.Cell>Last modified</Table.Cell>
+        <Table.Cell>Actions</Table.Cell>
+      </Table.Row>
+    </Table.Head>
+    <Table.Body>
+      {files.map((file) => (
+        <Table.Row key={file.id}>
+          <Table.Cell>
+            <img src={fileImage} alt="" />
+          </Table.Cell>
+          <Table.Cell>{file.title}</Table.Cell>
+          <Table.Cell>{file.modified}</Table.Cell>
+          <Table.Cell>
+            <a>Download file</a>
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
 
 const FileListItem = ({ file }: Props) => (
   <ListItem>

@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
-  FileListItem,
+  // FileListItem,
   File,
-  FileList,
+  // FileList,
+  FileTable,
 } from "../../../../components/FileListItem";
 import { Head } from "../../../../components/Head";
 import { MainHeading } from "../../../../components/MainHeading";
@@ -55,6 +56,7 @@ const FolderHomepage: NextPage = () => {
     fileName: "file-title.pdf",
     url: "path/to/file",
     modified: "Sep 20, 2020",
+    type: "pdf",
   };
 
   const fileTwo: File = {
@@ -64,6 +66,7 @@ const FolderHomepage: NextPage = () => {
     fileName: "file-title-2.pdf",
     url: "path/to/file",
     modified: "Sep 20, 2020",
+    type: "pdf",
   };
 
   const files = [file, fileTwo];
@@ -92,11 +95,13 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
-            <FileList>
+            {/* <FileList>
               {files.map((file) => (
                 <FileListItem key={file.id} file={file} />
-              ))}
-            </FileList>
+              ))} */}
+
+            {/* </FileList> */}
+            <FileTable files={files} />
           </PageContent>
         </ContentWrapper>
       </PageLayout>

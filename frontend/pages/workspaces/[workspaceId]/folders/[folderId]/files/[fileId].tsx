@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
-  FileListItem,
+  // FileListItem,
   File,
-  FileList,
+  // FileList,
+  FileTable,
 } from "../../../../../../components/FileListItem";
 import { Head } from "../../../../../../components/Head";
 import { MainHeading } from "../../../../../../components/MainHeading";
@@ -41,6 +42,7 @@ const file: File = {
   fileName: "file-title.pdf",
   url: "path/to/file",
   modified: "Sep 20, 2020",
+  type: "pdf",
 };
 
 const data = {
@@ -73,9 +75,10 @@ const FileHomepage = () => {
             <h2>Description</h2>
             <Description>{data.file.description}</Description>
             <h3>File</h3>
-            <FileList>
+            {/* <FileList>
               <FileListItem file={file} />
-            </FileList>
+            </FileList> */}
+            <FileTable files={[file]} />
           </PageContent>
         </ContentWrapper>
       </PageLayout>
