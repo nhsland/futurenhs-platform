@@ -45,6 +45,10 @@ watch-local: migrate-local ## Create a local, migrated DB for dev using a local 
 watch: ## Run cargo watch in the way that David likes it.
 	DATABASE_URL=$(db) cargo watch -x help -x check
 
+.PHONY: reset-local
+reset-local: ## Resets local database
+	docker-compose down --volumes
+
 .PHONY: migrate-local
 migrate-local: ## Bring up local postgres and migrate it.
 	docker-compose up -d \
