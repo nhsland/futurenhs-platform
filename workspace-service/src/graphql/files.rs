@@ -3,18 +3,27 @@ use async_graphql::{Context, FieldResult, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
-#[SimpleObject(desc = "A a file")]
+#[SimpleObject(desc = "A file")]
 pub struct File {
-    // todo - Descriptions
+    #[field(desc = "The id of the file")]
     pub id: ID,
+    #[field(desc = "The title of the file")]
     pub title: String,
+    #[field(desc = "The description of the file")]
     pub description: String,
+    #[field(desc = "The id of the parent folder")]
     pub folder_id: ID,
+    #[field(desc = "The name of the file")]
     pub file_name: String,
+    #[field(desc = "The type of the file")]
     pub file_type: String,
+    #[field(desc = "The blob storage path for the file")]
     pub blob_storage_path: String,
+    #[field(desc = "The time the file was created")]
     pub created_at: DateTime<Utc>,
+    #[field(desc = "The time the file was modified")]
     pub modified_at: DateTime<Utc>,
+    #[field(desc = "The time the file was deleted")]
     pub deleted_at: Option<DateTime<Utc>>,
 }
 
@@ -40,7 +49,7 @@ pub struct FilesQuery;
 
 #[Object]
 impl FilesQuery {
-    #[field(desc = "Get all Files in a workspace")]
+    #[field(desc = "Get all Files in a Folder")]
     async fn files_by_folder(
         &self,
         context: &Context<'_>,
