@@ -3,20 +3,14 @@ import React from "react";
 import { Table } from "nhsuk-react-components";
 import styled from "styled-components";
 
+import { File } from "../../lib/generated/graphql";
 import { FileIcon } from "../Icon";
 
-export interface File {
-  id: string;
-  title: string;
-  description: string;
-  fileName: string;
-  url: string;
-  modified: string;
-  type: string;
-}
-
 interface Props {
-  file: File;
+  file: Pick<
+    File,
+    "title" | "id" | "description" | "fileType" | "fileName" | "modifiedAt"
+  >;
 }
 
 const ListItem = styled.li`
@@ -57,12 +51,12 @@ const MobileTitle = styled.a`
 
 const FileListItem = ({ file }: Props) => (
   <ListItem>
-    <FileIcon fileType={file.type} />
+    <FileIcon fileType={file.fileType} />
     <RHContainer>
       <MobileTitle>{file.title}</MobileTitle>
       <div>
         <h4>Last modified</h4>
-        <p>{file.modified}</p>
+        <p>{file.modifiedAt}</p>
       </div>
       <a>Download file</a>
     </RHContainer>
@@ -90,7 +84,10 @@ export const MobileFileList = ({ files }: FileTableProps) => (
 
 // Tablet and Desktop
 interface FileTableProps {
-  files: File[];
+  files: Pick<
+    File,
+    "title" | "id" | "description" | "fileType" | "fileName" | "modifiedAt"
+  >[];
 }
 
 const TableContainer = styled.div`
@@ -127,12 +124,12 @@ export const FileTable = ({ files }: FileTableProps) => (
       {files.map((file) => (
         <Table.Row key={file.id}>
           <Table.Cell>
-            <FileIcon fileType={file.type} />
+            <FileIcon fileType={file.fileType} />
           </Table.Cell>
           <Table.Cell>
             <Title>{file.title}</Title>
           </Table.Cell>
-          <Table.Cell>{file.modified}</Table.Cell>
+          <Table.Cell>{file.modifiedAt}</Table.Cell>
           <Table.Cell>
             <a>Download file</a>
           </Table.Cell>

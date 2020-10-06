@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
-  File,
   MobileFileList,
   FileTable,
 } from "../../../../../../components/FileTable";
@@ -13,7 +12,10 @@ import { MainHeading } from "../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../components/PageLayout";
-import { useGetWorkspaceByIdQuery } from "../../../../../../lib/generated/graphql";
+import {
+  useGetWorkspaceByIdQuery,
+  useGetFileByIdQuery,
+} from "../../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
@@ -34,33 +36,27 @@ const Description = styled.p`
   padding-bottom: 40px;
 `;
 
-const file: File = {
-  id: "123-34erg",
-  title: "file title",
-  description: "A description of the file",
-  fileName: "file-title.pdf",
-  url: "path/to/file",
-  modified: "Sep 20, 2020",
-  type: "pdf",
-};
-
-const data = {
-  file,
-};
-
 const FileHomepage = () => {
   const router = useRouter();
-  let { workspaceId, folderId } = router.query;
+  let { workspaceId, folderId, fileId } = router.query;
   workspaceId = (workspaceId || "unknown").toString();
   folderId = (folderId || "unknown").toString();
+  fileId = (fileId || "unknown").toString();
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
   });
 
+  const [{ data, fetching, error }] = useGetFileByIdQuery({
+    variables: { id: fileId },
+  });
+
+  if (error) return <p> Oh no... {error?.message} </p>;
+  if (fetching || !data) return <p>Loading...</p>;
+
   return (
     <>
-      <Head title={file.title} />
+      <Head title={data.file.title} />
       <PageLayout>
         <NavHeader />
         <ContentWrapper>
@@ -74,8 +70,8 @@ const FileHomepage = () => {
             <h2>Description</h2>
             <Description>{data.file.description}</Description>
             <h3>File</h3>
-            <MobileFileList files={[file]} />
-            <FileTable files={[file]} />
+            <MobileFileList files={[data.file]} />
+            <FileTable files={[data.file]} />
           </PageContent>
         </ContentWrapper>
       </PageLayout>
