@@ -72,15 +72,18 @@ if [ "$found" != "null" ]; then
 	exit 0
 fi
 
+FILE_TYPE=$(echo $FILE_NAME | sed -e 's/^.*[.]//' -e s/png/img/)
+FILE_TITLE=$(echo $FILE_NAME | sed -e 's/[.][^.]*$//')
+
 body=$(
 	jq \
 		--null-input \
 		--arg folder "$folder" \
-		--arg title "$FILE_NAME" \
+		--arg title "$FILE_TITLE" \
 		--arg description "$FILE_NAME" \
 		--arg folder "$FILE_NAME" \
 		--arg fileName "$FILE_NAME" \
-		--arg fileType "$FILE_NAME" \
+		--arg fileType "$FILE_TYPE" \
 		--arg blobStoragePath "$FILE_NAME" \
 		'{
 			"query": "mutation CreateFile($title: String!, $description: String!, $folder: String!, $fileName: String!, $fileType: String!, $blobStoragePath: String!) { createFile(newFile: { title: $title,  description: $description, folder: $folder, fileName: $fileName, fileType: $fileType, blobStoragePath: $blobStoragePath }) { id } }",
