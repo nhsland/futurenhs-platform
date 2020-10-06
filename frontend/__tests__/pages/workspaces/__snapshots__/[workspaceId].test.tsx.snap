@@ -58,6 +58,21 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 .c4 {
   display: none;
+  border: 4px solid transparent;
+}
+
+.c4:hover:not(:active) {
+  border: 4px solid rgb(0,61,120);
+}
+
+.c4:active {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
+}
+
+.c4:focus {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
 }
 
 .c6 {
@@ -369,12 +384,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 @media (min-width:990px) {
   .c4 {
-    display: block;
-  }
-
-  .c4 .nhsuk-link:hover {
-    border: 4px solid rgb(255,235,59);
-    background-color: red;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
@@ -421,7 +434,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
         class="c2"
       >
         <div
-          class="icon-wrapper fnhs-logo-icon-wrapper c3"
+          class="icon-wrapper fnhs-logo-icon-wrapper c3 fnhs-logo"
         >
           <svg
             fill="none"
@@ -532,11 +545,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </svg>
         </div>
         <a
-          class="nhsuk-header__link"
           href="https://www.nhs.uk/"
         >
           <div
-            class="icon-wrapper nhsuk-logo-icon-wrapper nhsuk-header__logo c4"
+            class="icon-wrapper nhsuk-logo-icon-wrapper c4"
           >
             <svg
               class="nhsuk-logo"
@@ -547,7 +559,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <rect
-                fill="transparent"
+                fill="white"
                 height="40"
                 width="99"
               />
@@ -561,7 +573,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </div>
         </a>
         <button
-          class="c5"
+          class="c5 mobile-nav-menu"
         >
           Menu
         </button>
@@ -613,7 +625,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </a>
         </li>
         <button
-          class="c5"
+          class="c5 desktop-nav-menu"
         >
           Menu
         </button>

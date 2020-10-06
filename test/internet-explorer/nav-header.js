@@ -1,9 +1,11 @@
 require("dotenv").config();
 
-const { Builder, By } = require("selenium-webdriver");
+const { until, Builder, By } = require("selenium-webdriver");
 const assert = require("assert");
 
-const { capabilities, delay, env, loginIfNeeded } = require("./test-helpers");
+const { capabilities, env, loginIfNeeded } = require("./test-helpers");
+
+const defaultTimeout = 10000;
 
 const userName = env("BROWSERSTACK_USERNAME");
 const accessKey = env("BROWSERSTACK_ACCESS_KEY");
@@ -12,7 +14,7 @@ const baseUrl = env("IE_BASE_URL");
 const browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack.com/wd/hub`;
 
 describe("Header with Nav bar/dropdown menu appears correctly", function () {
-  this.timeout(15000);
+  this.timeout(30000);
 
   const driverPromise = new Builder()
     .usingServer(browserstackURL)
@@ -26,12 +28,22 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
     await loginIfNeeded(driver, targetUrl);
     await driver.get(targetUrl);
 
-    const desktopMenuButton = await driver.findElement(
-      By.css(".desktop-nav-menu")
+    const desktopMenuButton = await driver.wait(
+      until.elementLocated(By.css(".desktop-nav-menu")),
+      defaultTimeout
     );
-    const nhsLogo = await driver.findElement(By.css(".nhsuk-logo"));
-    const navBarItem = await driver.findElement(By.css(".nav-bar-item"));
-    const mobileMenu = await driver.findElement(By.css(".mobile-nav-menu"));
+    const nhsLogo = await driver.wait(
+      until.elementLocated(By.css(".nhsuk-logo")),
+      defaultTimeout
+    );
+    const navBarItem = await driver.wait(
+      until.elementLocated(By.css(".nav-bar-item")),
+      defaultTimeout
+    );
+    const mobileMenu = await driver.wait(
+      until.elementLocated(By.css(".mobile-nav-menu")),
+      defaultTimeout
+    );
 
     const desktopMenuButtonVisible = await desktopMenuButton.isDisplayed();
     const nhsLogoVisible = await nhsLogo.isDisplayed();
@@ -51,13 +63,20 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
     await loginIfNeeded(driver, targetUrl);
     await driver.get(targetUrl);
 
-    const desktopMenuButton = await driver.findElement(
-      By.css(".desktop-nav-menu")
+    const desktopMenuButton = await driver.wait(
+      until.elementLocated(By.css(".desktop-nav-menu")),
+      defaultTimeout
     );
     desktopMenuButton.click();
 
-    const nav = await driver.findElement(By.css("nav-list"));
-    const mobileOnly = await driver.findElement(By.css(".mobileOnly"));
+    const nav = await driver.wait(
+      until.elementLocated(By.css("nav-list")),
+      defaultTimeout
+    );
+    const mobileOnly = await driver.wait(
+      until.elementLocated(By.css(".mobileOnly")),
+      defaultTimeout
+    );
 
     const navVisible = await nav.isDisplayed();
     const mobileOnlyVisible = await mobileOnly.isDisplayed();
@@ -78,11 +97,17 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
 
     const expected = `${baseUrl}/workspaces/directory`;
 
-    const navBarItem = await driver.findElement(By.css(".nav-bar-item"));
+    const navBarItem = await driver.wait(
+      until.elementLocated(By.css(".nav-bar-item")),
+      defaultTimeout
+    );
     navBarItem.click();
-    await delay(10000);
+    // await delay(10000);
 
-    const h1 = await driver.findElement(By.css("h1"));
+    const h1 = await driver.wait(
+      until.elementLocated(By.css("h1")),
+      defaultTimeout
+    );
     const h1Result = await h1.getText();
     assert.equal(h1Result, "My workspaces");
 
