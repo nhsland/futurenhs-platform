@@ -3,7 +3,7 @@ require("dotenv").config();
 const { until, Builder, By } = require("selenium-webdriver");
 const assert = require("assert");
 
-const { capabilities, env, loginIfNeeded, delay } = require("./test-helpers");
+const { capabilities, env, loginIfNeeded } = require("./test-helpers");
 
 const defaultTimeout = 10000;
 
