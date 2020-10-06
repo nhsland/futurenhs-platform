@@ -149,6 +149,7 @@ exports[`<FolderMenu/> takes a snapshot, as used in a page 1`] = `
       class="c1 c2"
     >
       <button
+        aria-label="Options"
         class="c3"
       >
         <div
@@ -328,6 +329,7 @@ exports[`<FolderMenu/> takes a snapshot, as used in the nav 1`] = `
       class="c1 c2"
     >
       <button
+        aria-label="Options"
         class="hidden c3"
       >
         <div

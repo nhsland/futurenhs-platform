@@ -383,6 +383,7 @@ exports[`<Navigation/> renders correctly 1`] = `
               class="c8 c9"
             >
               <button
+                aria-label="Options"
                 class="hidden c10"
               >
                 <div
@@ -436,6 +437,7 @@ exports[`<Navigation/> renders correctly 1`] = `
               class="c8 c9"
             >
               <button
+                aria-label="Options"
                 class="hidden c10"
               >
                 <div

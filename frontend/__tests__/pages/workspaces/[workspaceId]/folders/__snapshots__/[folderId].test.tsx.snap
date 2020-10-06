@@ -946,6 +946,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                   class="c19 c20"
                 >
                   <button
+                    aria-label="Options"
                     class="hidden c21"
                   >
                     <div
@@ -996,6 +997,7 @@ exports[`withUrql renders matching snapshot 1`] = `
               class="c19 c20"
             >
               <button
+                aria-label="Options"
                 class="c21"
               >
                 <div

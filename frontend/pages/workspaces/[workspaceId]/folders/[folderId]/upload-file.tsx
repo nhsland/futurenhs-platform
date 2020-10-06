@@ -51,10 +51,10 @@ const MAX_CHARS: { [key: string]: number } = {
   title: 50,
 };
 
-interface FormData {
+type FormData = {
   title: string;
   files: FileList;
-}
+};
 
 const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
   const router = useRouter();
@@ -66,7 +66,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
     description: null,
   });
 
-  const { errors, handleSubmit, register, setError } = useForm();
+  const { register, handleSubmit, errors, setError } = useForm<FormData>();
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -87,33 +87,39 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async (formData: FormData) => {
-    urqlClient
-      .query(FileUploadUrlDocument)
-      .toPromise()
-      .then(({ error, data }) => {
-        const { title, files } = formData;
-        if (error) {
-          setError("form", {
-            type: "server",
-            message: error.toString(),
-          });
+  const onSubmit = async ({ title, files }: FormData) => {
+    try {
+      const { error, data } = await urqlClient
+        .query(FileUploadUrlDocument)
+        .toPromise();
+      if (error) {
+        throw new Error(`Failed to get upload URL: ${error.toString()}`);
+      }
+      if (data) {
+        const blobClient = new BlockBlobClient(data.fileUploadUrl);
+        const uploadResponse = await blobClient.uploadBrowserData(files[0], {
+          maxSingleShotSize: 4 * 1024 * 1024,
+        });
+        if (uploadResponse.errorCode) {
+          throw new Error(`Failed to upload file: ${uploadResponse.errorCode}`);
         }
-        if (data) {
-          const blobClient = new BlockBlobClient(data.fileUploadUrl);
-          blobClient
-            .uploadBrowserData(files[0], {
-              maxSingleShotSize: 4 * 1024 * 1024,
-            })
-            .then(() => {
-              blobClient
-                .setMetadata({ title, filename: files[0].name })
-                .then(() => {
-                  router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
-                });
-            });
+        const setMetaResponse = await blobClient.setMetadata({
+          title,
+          filename: files[0].name,
+        });
+        if (setMetaResponse.errorCode) {
+          throw new Error(
+            `Failed to set file metadata: ${setMetaResponse.errorCode}`
+          );
         }
+        router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+      }
+    } catch (error) {
+      setError("files", {
+        type: "server",
+        message: error.toString(),
       });
+    }
   };
 
   const handleCharNumber = (
@@ -149,14 +155,14 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
                 label="Enter file title*"
                 hint="This is the file title as seen by users. Try to be as descriptive as possible. "
                 inputRef={register({
-                  required: true,
-                  maxLength: MAX_CHARS.title,
+                  required: { value: true, message: "File title is required" },
+                  maxLength: {
+                    value: MAX_CHARS.title,
+                    message: `File title cannot be longer than ${MAX_CHARS.title} characters`,
+                  },
                 })}
                 aria-invalid={errors.title ? "true" : "false"}
-                error={
-                  errors.title &&
-                  `File title is required and cannot be longer than ${MAX_CHARS.title} characters`
-                }
+                error={errors.title?.message}
               />
               {`${
                 remainingChars.title || MAX_CHARS.title
@@ -173,10 +179,10 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
                 label="Upload a file*"
                 hint="Maximum size 10GB"
                 inputRef={register({
-                  required: true,
+                  required: { value: true, message: "Please select a file" },
                 })}
                 aria-invalid={errors.files ? "true" : "false"}
-                error={errors.files && `Please select a file`}
+                error={errors.files?.message}
               />
               {errors.files?.type === "required" && (
                 <p role="alert">This is required</p>
@@ -192,7 +198,12 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
               Discard
             </StyledButton>
-            {errors.server && <ErrorMessage>{errors.server}</ErrorMessage>}
+            {errors.title && (
+              <ErrorMessage>{errors.title.message}</ErrorMessage>
+            )}
+            {errors.files && (
+              <ErrorMessage>{errors.files.message}</ErrorMessage>
+            )}
           </Form>
         </PageContent>
       </ContentWrapper>
