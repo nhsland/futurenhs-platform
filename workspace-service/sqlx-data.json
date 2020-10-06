@@ -431,48 +431,8 @@
       ]
     }
   },
-  "d5d3145051893e2cf7ceb9bffbc9934d37d7c3ecc2c0c4addcf4f970cfd0c209": {
-    "query": "INSERT INTO folders (title, description, workspace)\nVALUES ($1, $2, $3)\nRETURNING id, title, description, workspace\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 2,
-          "name": "description",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "workspace",
-          "type_info": "Uuid"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text",
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
-  "e05fb8164a0021d3865d67132fc7db31e9fdb1dd04dd18e3c7844bcddce65956": {
-    "query": "INSERT INTO files (title, description, folder, file_name, file_type, blob_storage_path, created_at, modified_at, deleted_at)\nVALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW(), NULL) \nRETURNING *",
+  "d47447a56505c02b03dab9bc16d3dd9bff16dc2110c43c49d5f78770c1661872": {
+    "query": "INSERT INTO files (title, description, folder, file_name, file_type, blob_storage_path, created_at, modified_at, deleted_at)\nVALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW(), NULL) \nRETURNING *\n",
     "describe": {
       "columns": [
         {
@@ -547,6 +507,46 @@
         false,
         false,
         true
+      ]
+    }
+  },
+  "d5d3145051893e2cf7ceb9bffbc9934d37d7c3ecc2c0c4addcf4f970cfd0c209": {
+    "query": "INSERT INTO folders (title, description, workspace)\nVALUES ($1, $2, $3)\nRETURNING id, title, description, workspace\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace",
+          "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
       ]
     }
   },
