@@ -43,7 +43,11 @@ struct Query(
 );
 
 #[derive(GQLMergedObject, Default)]
-struct Mutation(folders::FoldersMutation, workspaces::WorkspacesMutation);
+struct Mutation(
+    folders::FoldersMutation,
+    workspaces::WorkspacesMutation,
+    files::FilesMutation,
+);
 
 pub async fn handle_healthz(req: Request<State>) -> tide::Result {
     let response = if !req.state().event_client.is_configured() {

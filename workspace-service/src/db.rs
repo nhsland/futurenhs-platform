@@ -251,6 +251,31 @@ pub struct File {
 }
 
 impl File {
+    pub async fn create(
+        title: &str,
+        description: &str,
+        folder: &Uuid,
+        file_name: &str,
+        file_type: &str,
+        blob_storage_path: &str,
+        pool: &PgPool,
+    ) -> Result<File> {
+        let file = sqlx::query_file_as!(
+            File,
+            "sql/files/create.sql",
+            title,
+            description,
+            folder,
+            file_name,
+            file_type,
+            blob_storage_path,
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(file)
+    }
+
     pub async fn find_by_folder(folder: Uuid, pool: &PgPool) -> Result<Vec<File>> {
         let files = sqlx::query_file_as!(File, "sql/files/find_by_folder.sql", folder)
             .fetch_all(pool)
