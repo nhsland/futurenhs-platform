@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 set -euo pipefail
 
 cd $(dirname $0)
@@ -79,10 +78,10 @@ body=$(
 		--arg folder "$folder" \
 		--arg title "$FILE_NAME" \
 		--arg description "$FILE_NAME" \
-        --arg folder "$FILE_NAME" \
-        --arg fileName "$FILE_NAME" \
-        --arg fileType "$FILE_NAME" \
-        --arg blobStoragePath "$FILE_NAME" \
+		--arg folder "$FILE_NAME" \
+		--arg fileName "$FILE_NAME" \
+		--arg fileType "$FILE_NAME" \
+		--arg blobStoragePath "$FILE_NAME" \
 		'{
 			"query": "mutation CreateFile($title: String!, $description: String!, $folder: String!, $fileName: String!, $fileType: String!, $blobStoragePath: String!) { createFile(newFile: { title: $title,  description: $description, folder: $folder, fileName: $fileName, fileType: $fileType, blobStoragePath: $blobStoragePath }) { id } }",
 			"variables": {
