@@ -1,4 +1,5 @@
-import { File, MobileFileList, FileTable } from "./FileTable";
+import { File } from "../../lib/generated/graphql";
+import { MobileFileList, FileTable } from "./FileTable";
 
 export { MobileFileList, FileTable };
 export type { File };
