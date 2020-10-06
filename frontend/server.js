@@ -57,14 +57,14 @@ const runSessionDbMigration = async (pool) => {
 };
 
 async function main() {
-  const dev = process.env.NODE_ENV !== "production";
-  const dotEnvFileSegment = dev ? "development" : "production";
+  const env = process.env.NODE_ENV || "development";
+  const dev = env !== "production";
   // dotenv will never modify any environment variables that have already been set,
   // so if values are defined in multiple places, we prefer the .local one.
   // This is done to emulate how next.js does things.
   dotenv.config({ path: `.env.local` });
-  dotenv.config({ path: `.env.${dotEnvFileSegment}.local` });
-  dotenv.config({ path: `.env.${dotEnvFileSegment}` });
+  dotenv.config({ path: `.env.${env}.local` });
+  dotenv.config({ path: `.env.${env}` });
 
   const port = parseInt(process.env.PORT, 10) || 3000;
   const sessionStore = await setupSessionStore();
