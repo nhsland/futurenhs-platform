@@ -18,11 +18,8 @@ const Nav = styled.nav`
   box-sizing: border-box;
   width: 270px;
   ${({ theme }) => `
-    @media (min-width: ${theme.mqBreakpoints.tablet}) {
-      display: block;
-      width: 300px;
-    }
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      display: block;
       width: 360px;
     }
   `}
