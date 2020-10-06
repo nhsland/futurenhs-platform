@@ -58,6 +58,9 @@ type Folder {
 }
 
 type Mutation {
+  # Create a new file (returns the created file)
+  createFile(newFile: NewFile!): File!
+
   # Create a new workspace (returns the created workspace)
   createWorkspace(newWorkspace: NewWorkspace!): Workspace!
 
@@ -75,6 +78,15 @@ type Mutation {
 
   # Delete folder (returns deleted folder
   deleteFolder(id: ID!): Folder!
+}
+
+input NewFile {
+  title: String!
+  description: String!
+  folder: ID!
+  fileName: String!
+  fileType: String!
+  blobStoragePath: String!
 }
 
 input NewFolder {
@@ -140,7 +152,7 @@ type Workspace {
 # The `_Any` scalar is used to pass representations of entities from external services into the root `_entities` field for execution.
 scalar _Any
 
-union _Entity = Workspace | Folder
+union _Entity = Folder | Workspace
 
 type _Service {
   sdl: String
