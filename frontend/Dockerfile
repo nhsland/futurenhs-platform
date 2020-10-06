@@ -3,6 +3,7 @@ FROM node:14
 # Setting working directory. All the path will be relative to WORKDIR
 WORKDIR /usr/src/
 COPY event-models ./event-models
+COPY workspace-service ./workspace-service
 WORKDIR /usr/src/frontend
 
 # Installing dependencies
