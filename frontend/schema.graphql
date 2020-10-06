@@ -86,7 +86,7 @@ input NewFile {
   folder: ID!
   fileName: String!
   fileType: String!
-  blobStoragePath: String!
+  temporaryBlobStoragePath: String!
 }
 
 input NewFolder {

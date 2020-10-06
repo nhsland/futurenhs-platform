@@ -35,7 +35,7 @@ pub struct NewFile {
     pub folder: ID,
     pub file_name: String,
     pub file_type: String,
-    pub blob_storage_path: String,
+    pub temporary_blob_storage_path: String,
 }
 
 impl From<db::File> for File {
@@ -93,7 +93,7 @@ impl FilesMutation {
             &folder,
             &new_file.file_name,
             &new_file.file_type,
-            &new_file.blob_storage_path,
+            &new_file.temporary_blob_storage_path,
             pool,
         )
         .await
@@ -106,16 +106,19 @@ async fn create_file(
     folder: &Uuid,
     file_name: &str,
     file_type: &str,
-    blob_storage_path: &str,
+    temporary_blob_storage_path: &str,
     pool: &PgPool,
 ) -> FieldResult<File> {
+    // TODO: AB#1794 - move temporary_blob_storage_path into final location and
+    // pass new location into db::File::create
+    // TODO: add event.
     let file: File = db::File::create(
         title,
         description,
         folder,
         file_name,
         file_type,
-        blob_storage_path,
+        temporary_blob_storage_path,
         pool,
     )
     .await?
