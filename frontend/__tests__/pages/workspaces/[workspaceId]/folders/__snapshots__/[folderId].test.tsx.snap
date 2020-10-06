@@ -3,6 +3,146 @@
 exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
   .c18 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+
+.c18 .tooltip {
+  left: 36px;
+  top: -7px;
+}
+
+.c18 .folder-menu-item {
+  display: none;
+}
+
+.c18 .folder-menu-item a {
+  color: rgb(255,255,255);
+}
+
+.c18 .folder-menu-item a:focus {
+  color: rgb(33,43,50);
+}
+
+.c20 {
+  display: inline-block;
+  position: relative;
+}
+
+.c23 {
+  opacity: 0;
+  position: absolute;
+  z-index: 2000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c19:hover .c22 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c23::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c21 {
+  opacity: 1;
+  color: rgb(76,98,114);
+  background-color: rgb(216,221,224);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+}
+
+.c21.hidden {
+  opacity: 0;
+}
+
+.c21:hover {
+  opacity: 1;
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c21:hover.hidden {
+  color: rgb(255,255,255);
+}
+
+.c21.open,
+.c21:active,
+.c21:focus {
+  opacity: 1;
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+}
+
+.c21.open.hidden,
+.c21:active.hidden,
+.c21:focus.hidden {
+  color: rgb(33,43,50);
+}
+
+.c21 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c26 {
+  margin-bottom: 23px;
+}
+
+.c27 {
+  margin-top: 0px;
   margin-bottom: 25px;
   color: rgb(76,98,114);
   border-bottom: 1px solid rgb(76,98,114);
@@ -210,61 +350,45 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c15 {
-  background: inherit;
-  border-radius: 4px;
-  font-weight: inherit;
   list-style-type: none;
   margin-bottom: 12px;
-}
-
-.c15:hover {
-  background-color: rgb(216,221,224);
-}
-
-.c15 a {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-left: 8px;
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.c15 a:focus {
-  box-shadow: none;
+.c15:hover > div {
+  background-color: rgb(216,221,224);
 }
 
-.c15 img {
-  padding-top: 2px;
-  -webkit-align-self: baseline;
-  -ms-flex-item-align: baseline;
-  align-self: baseline;
-  width: 24px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c15 div {
-  padding-left: 4px;
-  padding-right: 4px;
-  color: rgb(33,43,50);
+.c15:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
 }
 
 .c16 {
-  background: rgb(255,235,59);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: inherit;
   border-radius: 4px;
-  font-weight: 700;
-  list-style-type: none;
-  margin-bottom: 12px;
-}
-
-.c16:hover {
-  background-color: rgb(216,221,224);
+  width: 227px;
+  margin-right: 4px;
+  font-weight: inherit;
 }
 
 .c16 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -272,6 +396,9 @@ exports[`withUrql renders matching snapshot 1`] = `
   padding-left: 8px;
   -webkit-text-decoration: none;
   text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
 }
 
 .c16 a:focus {
@@ -290,6 +417,57 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c16 div {
+  padding-left: 4px;
+  padding-right: 4px;
+  color: rgb(33,43,50);
+}
+
+.c17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: rgb(255,235,59);
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: 700;
+}
+
+.c17 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+
+.c17 a:focus {
+  box-shadow: none;
+}
+
+.c17 img {
+  padding-top: 2px;
+  -webkit-align-self: baseline;
+  -ms-flex-item-align: baseline;
+  align-self: baseline;
+  width: 24px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c17 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
@@ -374,7 +552,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c17 {
+.c24 {
   -webkit-box-flex: 3;
   -webkit-flex-grow: 3;
   -ms-flex-positive: 3;
@@ -391,6 +569,26 @@ exports[`withUrql renders matching snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+@media (min-width:990px) {
+  .c18 {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .c18 .folder-menu-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
 }
 
 @media (min-width:990px) {
@@ -717,46 +915,129 @@ exports[`withUrql renders matching snapshot 1`] = `
             <li
               class="c15 nav-list-item"
             >
-              <a
-                href="/workspaces/1/folders/create-folder"
+              <div
+                class="c16"
               >
-                <img
-                  alt=""
-                  src="/public/createFolder.svg"
-                />
-                <div>
-                  Create new folder
-                </div>
-              </a>
+                <a
+                  href="/workspaces/1/folders/create-folder"
+                >
+                  <img
+                    alt=""
+                    src="/public/createFolder.svg"
+                  />
+                  <div>
+                    Create new folder
+                  </div>
+                </a>
+              </div>
             </li>
             <li
-              class="c16"
+              class="c15"
             >
-              <a
-                href="/workspaces/1/folders/f1"
+              <div
+                class="c17"
               >
-                <img
-                  alt="folder current page"
-                  src="/public/folderOpen.svg"
-                />
-                <div>
-                  folder 1
+                <a
+                  href="/workspaces/1/folders/f1"
+                >
+                  <img
+                    alt="folder current page"
+                    src="/public/folderOpen.svg"
+                  />
+                  <div>
+                    folder 1
+                  </div>
+                </a>
+              </div>
+              <div
+                class="c18"
+              >
+                <div
+                  class="c19 c20"
+                >
+                  <button
+                    aria-label="Options"
+                    class="hidden c21"
+                  >
+                    <div
+                      class="icon-wrapper "
+                    >
+                      <svg
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  <span
+                    class="c22 c23 tooltip"
+                  >
+                    Options
+                  </span>
                 </div>
-              </a>
+              </div>
             </li>
           </ul>
         </section>
       </nav>
       <section
-        class="c17"
+        class="c24"
       >
-        <h1
-          aria-live="polite"
+        <div
+          class="c25"
         >
-          folder 1
-        </h1>
+          <h1
+            aria-live="polite"
+            class="c26"
+          >
+            folder 1
+          </h1>
+          <div
+            class="c18"
+          >
+            <div
+              class="c19 c20"
+            >
+              <button
+                aria-label="Options"
+                class="c21"
+              >
+                <div
+                  class="icon-wrapper "
+                >
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </button>
+              <span
+                class="c22 c23 tooltip"
+              >
+                Options
+              </span>
+            </div>
+          </div>
+        </div>
         <hr
-          class="c18"
+          class="c27"
         />
         <p>
           first folder

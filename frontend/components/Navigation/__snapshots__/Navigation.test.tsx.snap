@@ -2,19 +2,166 @@
 
 exports[`<Navigation/> renders correctly 1`] = `
 <DocumentFragment>
-  .c5 {
-  background: inherit;
+  .c7 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
   border-radius: 4px;
-  font-weight: inherit;
-  list-style-type: none;
-  margin-bottom: 12px;
+  margin-left: 7px;
 }
 
-.c5:hover {
+.c7 .tooltip {
+  left: 36px;
+  top: -7px;
+}
+
+.c7 .folder-menu-item {
+  display: none;
+}
+
+.c7 .folder-menu-item a {
+  color: rgb(255,255,255);
+}
+
+.c7 .folder-menu-item a:focus {
+  color: rgb(33,43,50);
+}
+
+.c9 {
+  display: inline-block;
+  position: relative;
+}
+
+.c12 {
+  opacity: 0;
+  position: absolute;
+  z-index: 2000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c8:hover .c11 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c12::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c10 {
+  opacity: 1;
+  color: rgb(76,98,114);
+  background-color: rgb(216,221,224);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+}
+
+.c10.hidden {
+  opacity: 0;
+}
+
+.c10:hover {
+  opacity: 1;
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c10:hover.hidden {
+  color: rgb(255,255,255);
+}
+
+.c10.open,
+.c10:active,
+.c10:focus {
+  opacity: 1;
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+}
+
+.c10.open.hidden,
+.c10:active.hidden,
+.c10:focus.hidden {
+  color: rgb(33,43,50);
+}
+
+.c10 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c5 {
+  list-style-type: none;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c5:hover > div {
   background-color: rgb(216,221,224);
 }
 
-.c5 a {
+.c5:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: inherit;
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: inherit;
+}
+
+.c6 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,13 +169,16 @@ exports[`<Navigation/> renders correctly 1`] = `
   padding-left: 8px;
   -webkit-text-decoration: none;
   text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
 }
 
-.c5 a:focus {
+.c6 a:focus {
   box-shadow: none;
 }
 
-.c5 img {
+.c6 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -39,7 +189,7 @@ exports[`<Navigation/> renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c5 div {
+.c6 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
@@ -119,6 +269,26 @@ exports[`<Navigation/> renders correctly 1`] = `
   color: rgb(0,94,184);
 }
 
+@media (min-width:990px) {
+  .c7 {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .c7 .folder-menu-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
 @media (min-width:641px) {
   .c0 {
     width: 300px;
@@ -171,47 +341,129 @@ exports[`<Navigation/> renders correctly 1`] = `
         <li
           class="c5 nav-list-item"
         >
-          <a
-            href="/workspaces/1111/folders/create-folder"
+          <div
+            class="c6"
           >
-            <img
-              alt=""
-              src="/public/createFolder.svg"
-            />
-            <div>
-              Create new folder
-            </div>
-          </a>
+            <a
+              href="/workspaces/1111/folders/create-folder"
+            >
+              <img
+                alt=""
+                src="/public/createFolder.svg"
+              />
+              <div>
+                Create new folder
+              </div>
+            </a>
+          </div>
         </li>
         <li
           class="c5"
         >
-          <a
-            href="/workspaces/1111/folders/1234"
+          <div
+            class="c6"
           >
-            <img
-              alt="folder"
-              src="/public/folderClosed.svg"
-            />
-            <div>
-              Folder 1
+            <a
+              href="/workspaces/1111/folders/1234"
+            >
+              <img
+                alt="folder"
+                src="/public/folderClosed.svg"
+              />
+              <div>
+                Folder 1
+              </div>
+            </a>
+          </div>
+          <div
+            class="c7"
+          >
+            <div
+              class="c8 c9"
+            >
+              <button
+                aria-label="Options"
+                class="hidden c10"
+              >
+                <div
+                  class="icon-wrapper "
+                >
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </button>
+              <span
+                class="c11 c12 tooltip"
+              >
+                Options
+              </span>
             </div>
-          </a>
+          </div>
         </li>
         <li
           class="c5"
         >
-          <a
-            href="/workspaces/1111/folders/5678"
+          <div
+            class="c6"
           >
-            <img
-              alt="folder"
-              src="/public/folderClosed.svg"
-            />
-            <div>
-              Folder 2
+            <a
+              href="/workspaces/1111/folders/5678"
+            >
+              <img
+                alt="folder"
+                src="/public/folderClosed.svg"
+              />
+              <div>
+                Folder 2
+              </div>
+            </a>
+          </div>
+          <div
+            class="c7"
+          >
+            <div
+              class="c8 c9"
+            >
+              <button
+                aria-label="Options"
+                class="hidden c10"
+              >
+                <div
+                  class="icon-wrapper "
+                >
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </button>
+              <span
+                class="c11 c12 tooltip"
+              >
+                Options
+              </span>
             </div>
-          </a>
+          </div>
         </li>
       </ul>
     </section>
