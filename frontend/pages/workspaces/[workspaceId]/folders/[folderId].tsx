@@ -35,16 +35,6 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
-const TableContainer = styled.div`
-  display: none;
-  ${({ theme }) => `
-  @media (min-width: ${theme.mqBreakpoints.tablet}) {
-      display: block;
-      width: 360px;
-    }
-  `}
-`;
-
 const FolderHomepage: NextPage = () => {
   const router = useRouter();
   let { workspaceId, folderId } = router.query;
@@ -105,9 +95,7 @@ const FolderHomepage: NextPage = () => {
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
             <MobileFileList files={files}></MobileFileList>
-            <TableContainer>
-              <FileTable files={files} />
-            </TableContainer>
+            <FileTable files={files} />
           </PageContent>
         </ContentWrapper>
       </PageLayout>
