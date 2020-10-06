@@ -57,3 +57,7 @@ fi
 ./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Motivational Speech.ppt"
 ./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Encryption Keys.txt"
 ./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Backup.zip"
+
+./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "London Region NHS England Safeguarding Annual Review.ppt"
+./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "Midlands & East Region Safeguarding Annual Report.pdf"
+./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "South East Region Safeguarding Annual Report.doc"
