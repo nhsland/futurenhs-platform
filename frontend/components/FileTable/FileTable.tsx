@@ -13,6 +13,7 @@ interface Props {
   >;
 }
 
+// Mobile
 const ListItem = styled.li`
   align-items: flex-start;
   display: flex;
