@@ -1,5 +1,6 @@
 import React from "react";
 
+import Link from "next/link";
 import { Table } from "nhsuk-react-components";
 import styled from "styled-components";
 
@@ -63,14 +64,18 @@ const FileListItem = ({ file, workspaceId, titleLink }: Props) => (
     <FileIcon fileType={file.fileType} />
     <RHContainer>
       {titleLink ? (
-        <a
-          href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-        >
-          <MobileTitle>{file.title}</MobileTitle>
-        </a>
+        <MobileTitle>
+          <Link
+            href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+            passHref
+          >
+            <a>{file.title}</a>
+          </Link>
+        </MobileTitle>
       ) : (
         <MobileTitle>{file.title}</MobileTitle>
       )}
+
       <div>
         <h4>Last modified</h4>
         <p>{file.modifiedAt}</p>
@@ -137,7 +142,7 @@ const TableContainer = styled.div`
   }
 `;
 
-const Title = styled.p`
+const Title = styled.span`
   font-weight: 700;
   ${({ theme }) => `
     color: ${theme.colorNhsukBlack};
@@ -166,18 +171,23 @@ export const FileTable = ({
           </Table.Cell>
           <Table.Cell>
             {titleLink ? (
-              <a
+              <Link
                 href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+                passHref
               >
-                <Title>{file.title}</Title>
-              </a>
+                <a>
+                  <Title>{file.title}</Title>
+                </a>
+              </Link>
             ) : (
               <Title>{file.title}</Title>
             )}
           </Table.Cell>
           <Table.Cell>{file.modifiedAt}</Table.Cell>
           <Table.Cell>
-            <a>Download file</a>
+            <a style={{ display: "inline-block", paddingRight: "8px" }}>
+              Download file
+            </a>
           </Table.Cell>
         </Table.Row>
       ))}
