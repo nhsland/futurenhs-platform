@@ -57,7 +57,7 @@ const runSessionDbMigration = async (pool) => {
 };
 
 async function main() {
-  let env = process.env.NODE_ENV || "development";
+  const env = process.env.NODE_ENV || "development";
   const dev = env !== "production";
   // dotenv will never modify any environment variables that have already been set,
   // so if values are defined in multiple places, we prefer the .local one.
