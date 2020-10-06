@@ -62,7 +62,6 @@ const FileIcon = ({ fileType }: Props) => {
   if (fileType === "doc") {
     return <DocIcon />;
   }
-  console.log("helllllloooooo");
   return <DefaultFileIcon />;
 };
 
