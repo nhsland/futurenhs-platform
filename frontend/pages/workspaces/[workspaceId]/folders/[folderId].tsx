@@ -4,11 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import {
-  File,
-  MobileFileList,
-  FileTable,
-} from "../../../../components/FileTable";
+import { MobileFileList, FileTable } from "../../../../components/FileTable";
 import { Head } from "../../../../components/Head";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
@@ -17,6 +13,7 @@ import { PageLayout } from "../../../../components/PageLayout";
 import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
+  useFilesByFolderQuery,
 } from "../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../lib/withUrqlClient";
 
@@ -48,27 +45,12 @@ const FolderHomepage: NextPage = () => {
     variables: { id: folderId },
   });
 
-  const file: File = {
-    id: "id-for-file-1",
-    title: "file title",
-    description: "A description of the file",
-    fileName: "file-title.pdf",
-    url: "path/to/file",
-    modified: "Sep 20, 2020",
-    type: "pdf",
-  };
+  const [{ data, fetching, error }] = useFilesByFolderQuery({
+    variables: { folder: folderId },
+  });
 
-  const fileTwo: File = {
-    id: "id-for-file-2",
-    title: "file 2 title",
-    description: "A description of the file",
-    fileName: "file-title-2.pdf",
-    url: "path/to/file",
-    modified: "Sep 20, 2020",
-    type: "pdf",
-  };
-
-  const files = [file, fileTwo];
+  if (error) return <p> Oh no... {error?.message} </p>;
+  if (fetching || !data) return <p>Loading...</p>;
 
   return (
     <>
@@ -94,8 +76,8 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
-            <MobileFileList files={files}></MobileFileList>
-            <FileTable files={files} />
+            <MobileFileList files={data.filesByFolder}></MobileFileList>
+            <FileTable files={data.filesByFolder} />
           </PageContent>
         </ContentWrapper>
       </PageLayout>
