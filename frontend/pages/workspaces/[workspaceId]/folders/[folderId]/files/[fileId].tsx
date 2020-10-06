@@ -56,7 +56,7 @@ const FileHomepage = () => {
 
   return (
     <>
-      <Head title={data.file.title} />
+      <Head title={`File - ${data.file.title}`} />
       <PageLayout>
         <NavHeader />
         <ContentWrapper>
@@ -70,8 +70,16 @@ const FileHomepage = () => {
             <h2>Description</h2>
             <Description>{data.file.description}</Description>
             <h3>File</h3>
-            <MobileFileList files={[data.file]} />
-            <FileTable files={[data.file]} />
+            <MobileFileList
+              files={[data.file]}
+              workspaceId={workspaceId}
+              titleLink={false}
+            />
+            <FileTable
+              files={[data.file]}
+              workspaceId={workspaceId}
+              titleLink={false}
+            />
           </PageContent>
         </ContentWrapper>
       </PageLayout>

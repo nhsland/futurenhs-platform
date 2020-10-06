@@ -9,8 +9,16 @@ import { FileIcon } from "../Icon";
 interface Props {
   file: Pick<
     File,
-    "title" | "id" | "description" | "fileType" | "fileName" | "modifiedAt"
+    | "title"
+    | "id"
+    | "description"
+    | "fileType"
+    | "fileName"
+    | "folder"
+    | "modifiedAt"
   >;
+  workspaceId: string;
+  titleLink: boolean;
 }
 
 // Mobile
@@ -42,7 +50,7 @@ const RHContainer = styled.div`
   }
 `;
 
-const MobileTitle = styled.a`
+const MobileTitle = styled.p`
   padding-bottom: 20px;
   font-weight: 700;
   ${({ theme }) => `
@@ -50,11 +58,19 @@ const MobileTitle = styled.a`
   `}
 `;
 
-const FileListItem = ({ file }: Props) => (
+const FileListItem = ({ file, workspaceId, titleLink }: Props) => (
   <ListItem>
     <FileIcon fileType={file.fileType} />
     <RHContainer>
-      <MobileTitle>{file.title}</MobileTitle>
+      {titleLink ? (
+        <a
+          href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+        >
+          <MobileTitle>{file.title}</MobileTitle>
+        </a>
+      ) : (
+        <MobileTitle>{file.title}</MobileTitle>
+      )}
       <div>
         <h4>Last modified</h4>
         <p>{file.modifiedAt}</p>
@@ -75,10 +91,19 @@ const List = styled.ul`
   `}
 `;
 
-export const MobileFileList = ({ files }: FileTableProps) => (
+export const MobileFileList = ({
+  files,
+  workspaceId,
+  titleLink,
+}: FileTableProps) => (
   <List>
     {files.map((file) => (
-      <FileListItem key={file.id} file={file} />
+      <FileListItem
+        key={file.id}
+        file={file}
+        workspaceId={workspaceId}
+        titleLink={titleLink}
+      />
     ))}
   </List>
 );
@@ -87,8 +112,16 @@ export const MobileFileList = ({ files }: FileTableProps) => (
 interface FileTableProps {
   files: Pick<
     File,
-    "title" | "id" | "description" | "fileType" | "fileName" | "modifiedAt"
+    | "title"
+    | "id"
+    | "description"
+    | "folder"
+    | "fileType"
+    | "fileName"
+    | "modifiedAt"
   >[];
+  workspaceId: string;
+  titleLink: boolean;
 }
 
 const TableContainer = styled.div`
@@ -104,14 +137,18 @@ const TableContainer = styled.div`
   }
 `;
 
-const Title = styled.a`
+const Title = styled.p`
   font-weight: 700;
   ${({ theme }) => `
     color: ${theme.colorNhsukBlack};
   `}
 `;
 
-export const FileTable = ({ files }: FileTableProps) => (
+export const FileTable = ({
+  files,
+  workspaceId,
+  titleLink,
+}: FileTableProps) => (
   <TableContainer>
     <Table.Head>
       <Table.Row>
@@ -128,7 +165,15 @@ export const FileTable = ({ files }: FileTableProps) => (
             <FileIcon fileType={file.fileType} />
           </Table.Cell>
           <Table.Cell>
-            <Title>{file.title}</Title>
+            {titleLink ? (
+              <a
+                href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+              >
+                <Title>{file.title}</Title>
+              </a>
+            ) : (
+              <Title>{file.title}</Title>
+            )}
           </Table.Cell>
           <Table.Cell>{file.modifiedAt}</Table.Cell>
           <Table.Cell>

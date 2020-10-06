@@ -3,6 +3,7 @@ query FilesByFolder($folder: ID!) {
     id
     title
     description
+    folder
     fileType
     fileName
     modifiedAt
@@ -14,6 +15,7 @@ query GetFileById($id: ID!) {
     id
     title
     description
+    folder
     fileType
     fileName
     modifiedAt

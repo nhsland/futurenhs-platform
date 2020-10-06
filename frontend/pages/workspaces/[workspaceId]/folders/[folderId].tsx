@@ -58,7 +58,7 @@ const FolderHomepage: NextPage = () => {
         title={
           folder.fetching
             ? "Loading..."
-            : folder.data?.folder.title || "No title!"
+            : `Folder - ${folder.data?.folder.title}` || "No title!"
         }
       />
       <PageLayout>
@@ -76,8 +76,16 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
-            <MobileFileList files={data.filesByFolder}></MobileFileList>
-            <FileTable files={data.filesByFolder} />
+            <MobileFileList
+              files={data.filesByFolder}
+              workspaceId={workspaceId}
+              titleLink={true}
+            ></MobileFileList>
+            <FileTable
+              files={data.filesByFolder}
+              workspaceId={workspaceId}
+              titleLink={true}
+            />
           </PageContent>
         </ContentWrapper>
       </PageLayout>
