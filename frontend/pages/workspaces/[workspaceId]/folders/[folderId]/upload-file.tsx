@@ -167,7 +167,6 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
               {`${
                 remainingChars.title || MAX_CHARS.title
               } characters remaining`}
-              {errors.title?.type === "required" && <p>This is required</p>}
             </FormField>
             <FormField>
               <Input
@@ -182,7 +181,6 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
                 aria-invalid={errors.files ? "true" : "false"}
                 error={errors.files?.message}
               />
-              {errors.files?.type === "required" && <p>This is required</p>}
             </FormField>
             <p>
               All uploaded content must conform to the platform&apos;s{" "}
