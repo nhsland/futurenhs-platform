@@ -15,7 +15,7 @@ import FolderMenuList from "./FolderMenuList";
 import { MenuItem } from "./FolderMenuListItem";
 
 interface Props {
-  startHidden?: boolean;
+  hiddenUntilHover?: boolean;
   workspaceId: string;
   folderId: string;
 }
@@ -55,7 +55,7 @@ const Container = styled.div`
   `}
 `;
 
-const FolderMenu: FC<Props> = ({ startHidden, workspaceId, folderId }) => {
+const FolderMenu: FC<Props> = ({ hiddenUntilHover, workspaceId, folderId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const container = React.useRef<HTMLDivElement>(null);
 
@@ -107,12 +107,12 @@ const FolderMenu: FC<Props> = ({ startHidden, workspaceId, folderId }) => {
         <FolderMenuButton
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
-          startHidden={startHidden || false}
+          hiddenUntilHover={hiddenUntilHover || false}
         >
           <MeatballIcon />
         </FolderMenuButton>
         {menuOpen && (
-          <FolderMenuList startHidden={startHidden || false}>
+          <FolderMenuList hiddenUntilHover={hiddenUntilHover || false}>
             {items}
           </FolderMenuList>
         )}

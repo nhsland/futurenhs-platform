@@ -47,12 +47,16 @@ const Container = styled.div`
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
   children?: MenuItem[];
-  startHidden: boolean;
+  hiddenUntilHover: boolean;
 }
 
-const FolderMenuList: FC<Props> = ({ children, startHidden, className }) => {
+const FolderMenuList: FC<Props> = ({
+  children,
+  hiddenUntilHover,
+  className,
+}) => {
   return (
-    <Container className={classNames({ hidden: startHidden }, className)}>
+    <Container className={classNames({ hidden: hiddenUntilHover }, className)}>
       <ul>
         {children?.map((item) => {
           const { icon, ...props } = item;

@@ -6,14 +6,14 @@ import styled from "styled-components";
 import { Tooltip } from "../Tooltip";
 
 interface MenuProps extends ComponentPropsWithoutRef<"button"> {
-  startHidden: boolean;
+  hiddenUntilHover: boolean;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
 }
 
 const MenuButton: FC<MenuProps> = ({
   className,
-  startHidden,
+  hiddenUntilHover,
   menuOpen,
   setMenuOpen,
   ...rest
@@ -23,7 +23,7 @@ const MenuButton: FC<MenuProps> = ({
       <button
         className={classNames(
           { open: menuOpen },
-          { hidden: startHidden },
+          { hidden: hiddenUntilHover },
           className
         )}
         onClick={() => setMenuOpen(!menuOpen)}

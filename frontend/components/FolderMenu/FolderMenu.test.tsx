@@ -10,7 +10,7 @@ describe("<FolderMenu/>", () => {
   test("takes a snapshot, as used in the nav", () => {
     const { asFragment } = render(
       <ThemeProvider theme={theme}>
-        <FolderMenu startHidden={true} />
+        <FolderMenu hiddenUntilHover={true} workspaceId="w1" folderId="f1" />
       </ThemeProvider>
     );
 
@@ -20,7 +20,7 @@ describe("<FolderMenu/>", () => {
   test("takes a snapshot, as used in a page", () => {
     const { asFragment } = render(
       <ThemeProvider theme={theme}>
-        <FolderMenu />
+        <FolderMenu workspaceId="w1" folderId="f1" />
       </ThemeProvider>
     );
 
