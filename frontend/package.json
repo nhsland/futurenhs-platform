@@ -15,7 +15,7 @@
     "lint": "yarn eslint . --ext .js,.ts,.tsx",
     "clean": "rm -rf .next",
     "generate": "graphql-codegen --config codegen.yaml",
-    "cypress:local": "concurrently \"yarn start:stubs\" \"NODE_ENV=development node server.js\" \"cypress open --config-file ./cypress.json\"",
+    "cypress:local": "concurrently \"yarn start:stubs\" \"NODE_ENV=test node server.js\" \"cypress open --config-file ./cypress.json\"",
     "start:stubs": "node stubServer"
   },
   "dependencies": {
