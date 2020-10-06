@@ -2,8 +2,8 @@
   "baseUrl": "http://localhost:3000",
   "integrationFolder": "./cypress/integration/",
   "pluginsFile": false,
-  "supportFile": false,
-  "fixturesFolder": false,
+  "supportFile": "./cypress/support",
+  "fixturesFolder": "./cypress/fixtures/",
   "env": {
     "TEST_WORKSPACE_ID": "750a5fb7-47da-4a8c-8d2e-399ae8d24cde",
     "TEST_WORKSPACE_NAME": "Selenium Testing"

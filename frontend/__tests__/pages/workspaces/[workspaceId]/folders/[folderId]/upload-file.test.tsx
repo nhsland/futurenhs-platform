@@ -2,23 +2,23 @@ import React from "react";
 
 import { ThemeProvider } from "styled-components";
 
-import theme from "../../../../../lib/fixtures/theme.json";
+import theme from "../../../../../../lib/fixtures/theme.json";
 import {
   FoldersByWorkspaceDocument,
   GetFolderByIdDocument,
   GetWorkspaceByIdDocument,
-} from "../../../../../lib/generated/graphql";
-import { render } from "../../../../../lib/test-helpers/render";
-import { mockUrqlClient } from "../../../../../lib/test-helpers/urql";
-import FolderHomepage from "../../../../../pages/workspaces/[workspaceId]/folders/[folderId]";
+} from "../../../../../../lib/generated/graphql";
+import { render } from "../../../../../../lib/test-helpers/render";
+import { mockUrqlClient } from "../../../../../../lib/test-helpers/urql";
+import UploadFile from "../../../../../../pages/workspaces/[workspaceId]/folders/[folderId]/upload-file";
 
-describe(FolderHomepage, () => {
+describe(UploadFile, () => {
   const client = mockUrqlClient([
     [
       GetWorkspaceByIdDocument,
       {
         workspace: {
-          id: "1",
+          id: "w1",
           title: "hospital",
           description: "hospital",
         },
@@ -31,7 +31,7 @@ describe(FolderHomepage, () => {
           id: "f1",
           title: "folder 1",
           description: "first folder",
-          workspace: "1",
+          workspace: "w1",
         },
       },
     ],
@@ -43,7 +43,7 @@ describe(FolderHomepage, () => {
             id: "f1",
             title: "folder 1",
             description: "first folder",
-            workspace: "1",
+            workspace: "w1",
           },
         ],
       },
@@ -53,11 +53,11 @@ describe(FolderHomepage, () => {
   test("renders matching snapshot", () => {
     const container = render(
       <ThemeProvider theme={theme}>
-        <FolderHomepage urqlClient={client} />
+        <UploadFile urqlClient={client} />
       </ThemeProvider>,
       {
         router: {
-          query: { workspaceId: "1", folderId: "f1" },
+          query: { workspaceId: "w1", folderId: "f1" },
         },
       }
     );

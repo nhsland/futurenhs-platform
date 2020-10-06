@@ -82,8 +82,6 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
         Oh no... {workspace.error?.message} {folder.error?.message}{" "}
       </p>
     );
-  if (workspace.fetching || folder.fetching || !workspace.data || !folder.data)
-    return <p>Loading...</p>;
 
   const backToPreviousPage = () => router.back();
 
@@ -138,12 +136,18 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
       <ContentWrapper>
         <Navigation
           workspaceId={workspaceId}
-          workspaceTitle={workspace.data?.workspace.title || "unknown"}
+          workspaceTitle={
+            workspace.fetching
+              ? "Loading..."
+              : workspace.data?.workspace.title || "No title!"
+          }
           activeFolder={folderId}
         />
         <PageContent>
           <MainHeading withBorder>
-            {folder.data?.folder.title || "unknown"}
+            {folder.fetching
+              ? "Loading..."
+              : folder.data?.folder.title || "No title!"}
           </MainHeading>
           <p> Fields marked with * are mandatory.</p>
           <Form onSubmit={handleSubmit(onSubmit)}>
