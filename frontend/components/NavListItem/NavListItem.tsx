@@ -41,7 +41,7 @@ const LinkWrapper = styled.div<{ active: boolean }>`
     active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
   width: 227px;
-  height: 32px;
+  // height: 32px;
   margin-right: 4px;
   font-weight: ${({ active }) => (active ? 700 : "inherit")};
   a {

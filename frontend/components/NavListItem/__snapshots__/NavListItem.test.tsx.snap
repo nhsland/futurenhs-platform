@@ -32,7 +32,6 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   background: rgb(255,235,59);
   border-radius: 4px;
   width: 227px;
-  height: 32px;
   margin-right: 4px;
   font-weight: 700;
 }
@@ -129,7 +128,6 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   background: inherit;
   border-radius: 4px;
   width: 227px;
-  height: 32px;
   margin-right: 4px;
   font-weight: inherit;
 }
