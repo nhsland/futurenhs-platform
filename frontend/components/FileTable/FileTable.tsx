@@ -1,5 +1,6 @@
 import React from "react";
 
+import { parseISO, format } from "date-fns";
 import Link from "next/link";
 import { Table } from "nhsuk-react-components";
 import styled from "styled-components";
@@ -59,31 +60,34 @@ const MobileTitle = styled.p`
   `}
 `;
 
-const FileListItem = ({ file, workspaceId, titleLink }: Props) => (
-  <ListItem>
-    <FileIcon fileType={file.fileType} />
-    <RHContainer>
-      {titleLink ? (
-        <MobileTitle>
-          <Link
-            href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-            passHref
-          >
-            <a>{file.title}</a>
-          </Link>
-        </MobileTitle>
-      ) : (
-        <MobileTitle>{file.title}</MobileTitle>
-      )}
+const FileListItem = ({ file, workspaceId, titleLink }: Props) => {
+  const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
+  return (
+    <ListItem>
+      <FileIcon fileType={file.fileType} />
+      <RHContainer>
+        {titleLink ? (
+          <MobileTitle>
+            <Link
+              href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+              passHref
+            >
+              <a>{file.title}</a>
+            </Link>
+          </MobileTitle>
+        ) : (
+          <MobileTitle>{file.title}</MobileTitle>
+        )}
 
-      <div>
-        <h4>Last modified</h4>
-        <p>{file.modifiedAt}</p>
-      </div>
-      <a>Download file</a>
-    </RHContainer>
-  </ListItem>
-);
+        <div>
+          <h4>Last modified</h4>
+          <p>{modifiedAt}</p>
+        </div>
+        <a>Download file</a>
+      </RHContainer>
+    </ListItem>
+  );
+};
 
 const List = styled.ul`
   padding-left: 0;
@@ -164,33 +168,36 @@ export const FileTable = ({
       </Table.Row>
     </Table.Head>
     <Table.Body>
-      {files.map((file) => (
-        <Table.Row key={file.id}>
-          <Table.Cell>
-            <FileIcon fileType={file.fileType} />
-          </Table.Cell>
-          <Table.Cell>
-            {titleLink ? (
-              <Link
-                href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-                passHref
-              >
-                <a>
-                  <Title>{file.title}</Title>
-                </a>
-              </Link>
-            ) : (
-              <Title>{file.title}</Title>
-            )}
-          </Table.Cell>
-          <Table.Cell>{file.modifiedAt}</Table.Cell>
-          <Table.Cell>
-            <a style={{ display: "inline-block", paddingRight: "8px" }}>
-              Download file
-            </a>
-          </Table.Cell>
-        </Table.Row>
-      ))}
+      {files.map((file) => {
+        const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
+        return (
+          <Table.Row key={file.id}>
+            <Table.Cell>
+              <FileIcon fileType={file.fileType} />
+            </Table.Cell>
+            <Table.Cell>
+              {titleLink ? (
+                <Link
+                  href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+                  passHref
+                >
+                  <a>
+                    <Title>{file.title}</Title>
+                  </a>
+                </Link>
+              ) : (
+                <Title>{file.title}</Title>
+              )}
+            </Table.Cell>
+            <Table.Cell>{modifiedAt}</Table.Cell>
+            <Table.Cell>
+              <a style={{ display: "inline-block", paddingRight: "8px" }}>
+                Download file
+              </a>
+            </Table.Cell>
+          </Table.Row>
+        );
+      })}
     </Table.Body>
   </TableContainer>
 );
