@@ -9,7 +9,7 @@ use super::db;
 use super::sas;
 use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
-    EmptySubscription, GQLMergedObject, Schema,
+    EmptySubscription, GQLMergedObject, QueryBuilder, Schema,
 };
 use fnhs_event_models::EventClient;
 use sqlx::PgPool;
@@ -71,4 +71,14 @@ pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
         .build();
 
     Ok(response)
+}
+
+pub async fn generate_graphql_schema() -> anyhow::Result<String> {
+    let schema = Schema::build(Query::default(), Mutation::default(), EmptySubscription).finish();
+    let query = include_str!("./introspection_query.graphql");
+    let result = QueryBuilder::new(query)
+        .operation_name("IntrospectionQuery")
+        .execute(&schema)
+        .await?;
+    Ok(format!("{:#}", result.data))
 }

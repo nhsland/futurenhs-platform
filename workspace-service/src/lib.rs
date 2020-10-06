@@ -1,15 +1,16 @@
+pub mod config;
+mod db;
+mod graphql;
+pub mod sas;
+
 use fnhs_event_models::EventClient;
+pub use graphql::generate_graphql_schema;
 use sqlx::PgPool;
 use std::future::Future;
 use std::pin::Pin;
 use tide::{Next, Redirect, Request, Server};
 use tracing::info_span;
 use tracing_futures::Instrument;
-
-pub mod config;
-mod db;
-mod graphql;
-pub mod sas;
 
 pub fn log<'a>(
     req: Request<graphql::State>,
