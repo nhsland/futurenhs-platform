@@ -1,4 +1,0 @@
-{
-  "baseUrl": "https://fnhs-dev-matt.westeurope.cloudapp.azure.com/",
-  "integrationFolder": "./cypress/integration/"
-}
