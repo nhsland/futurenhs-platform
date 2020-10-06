@@ -6,6 +6,17 @@ resource "azurerm_storage_account" "files" {
   account_tier             = "Standard"
   account_replication_type = "RAGRS"
 
+
+  blob_properties {
+    cors_rule {
+      allowed_headers    = ["*"]
+      allowed_methods    = ["DELETE", "GET", "HEAD", "MERGE", "POST", "OPTIONS", "PUT", "PATCH"]
+      allowed_origins    = ["*"]
+      exposed_headers    = ["*"]
+      max_age_in_seconds = 60 * 60 * 24
+    }
+  }
+
   tags = {
     environment = var.environment
   }

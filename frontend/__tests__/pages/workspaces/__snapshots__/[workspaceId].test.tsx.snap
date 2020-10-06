@@ -2,7 +2,27 @@
 
 exports[`withUrql renders with folders matching snapshot 1`] = `
 <DocumentFragment>
-  .c17 {
+  .c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c25 {
+  margin-bottom: 23px;
+}
+
+.c26 {
+  margin-top: 0px;
   margin-bottom: 25px;
   color: rgb(76,98,114);
   border-bottom: 1px solid rgb(76,98,114);
@@ -58,6 +78,21 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 .c4 {
   display: none;
+  border: 4px solid transparent;
+}
+
+.c4:hover:not(:active) {
+  border: 4px solid rgb(0,61,120);
+}
+
+.c4:active {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
+}
+
+.c4:focus {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
 }
 
 .c6 {
@@ -194,19 +229,166 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   flex-grow: 1;
 }
 
-.c15 {
-  background: inherit;
+.c17 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
   border-radius: 4px;
-  font-weight: inherit;
-  list-style-type: none;
-  margin-bottom: 12px;
+  margin-left: 7px;
 }
 
-.c15:hover {
+.c17 .tooltip {
+  left: 36px;
+  top: -7px;
+}
+
+.c17 .folder-menu-item {
+  display: none;
+}
+
+.c17 .folder-menu-item a {
+  color: rgb(255,255,255);
+}
+
+.c17 .folder-menu-item a:focus {
+  color: rgb(33,43,50);
+}
+
+.c19 {
+  display: inline-block;
+  position: relative;
+}
+
+.c22 {
+  opacity: 0;
+  position: absolute;
+  z-index: 2000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c18:hover .c21 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c22::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c20 {
+  opacity: 1;
+  color: rgb(76,98,114);
+  background-color: rgb(216,221,224);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+}
+
+.c20.hidden {
+  opacity: 0;
+}
+
+.c20:hover {
+  opacity: 1;
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c20:hover.hidden {
+  color: rgb(255,255,255);
+}
+
+.c20.open,
+.c20:active,
+.c20:focus {
+  opacity: 1;
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+}
+
+.c20.open.hidden,
+.c20:active.hidden,
+.c20:focus.hidden {
+  color: rgb(33,43,50);
+}
+
+.c20 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c15 {
+  list-style-type: none;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c15:hover > div {
   background-color: rgb(216,221,224);
 }
 
-.c15 a {
+.c15:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
+}
+
+.c16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: inherit;
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: inherit;
+}
+
+.c16 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -214,13 +396,16 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   padding-left: 8px;
   -webkit-text-decoration: none;
   text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
 }
 
-.c15 a:focus {
+.c16 a:focus {
   box-shadow: none;
 }
 
-.c15 img {
+.c16 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -231,7 +416,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   flex-shrink: 0;
 }
 
-.c15 div {
+.c16 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
@@ -317,7 +502,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c16 {
+.c23 {
   -webkit-box-flex: 3;
   -webkit-flex-grow: 3;
   -ms-flex-positive: 3;
@@ -370,12 +555,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 @media (min-width:990px) {
   .c4 {
-    display: block;
-  }
-
-  .c4 .nhsuk-link:hover {
-    border: 4px solid rgb(255,235,59);
-    background-color: red;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
@@ -401,8 +584,34 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 }
 
 @media (min-width:990px) {
+  .c17 {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .c17 .folder-menu-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width:641px) {
   .c10 {
     display: block;
+    width: 300px;
+  }
+}
+
+@media (min-width:990px) {
+  .c10 {
     width: 360px;
   }
 }
@@ -417,7 +626,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
         class="c2"
       >
         <div
-          class="icon-wrapper fnhs-logo-icon-wrapper c3"
+          class="icon-wrapper fnhs-logo-icon-wrapper c3 fnhs-logo"
         >
           <svg
             fill="none"
@@ -528,11 +737,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </svg>
         </div>
         <a
-          class="nhsuk-header__link"
           href="https://www.nhs.uk/"
         >
           <div
-            class="icon-wrapper nhsuk-logo-icon-wrapper nhsuk-header__logo c4"
+            class="icon-wrapper nhsuk-logo-icon-wrapper c4"
           >
             <svg
               class="nhsuk-logo"
@@ -543,7 +751,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <rect
-                fill="transparent"
+                fill="white"
                 height="40"
                 width="99"
               />
@@ -557,7 +765,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </div>
         </a>
         <button
-          class="c5"
+          class="c5 mobile-nav-menu"
         >
           Menu
         </button>
@@ -609,7 +817,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </a>
         </li>
         <button
-          class="c5"
+          class="c5 desktop-nav-menu"
         >
           Menu
         </button>
@@ -658,46 +866,94 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
             <li
               class="c15 nav-list-item"
             >
-              <a
-                href="/workspaces/1/folders/create-folder"
+              <div
+                class="c16"
               >
-                <img
-                  alt=""
-                  src="/public/createFolder.svg"
-                />
-                <div>
-                  Create new folder
-                </div>
-              </a>
+                <a
+                  href="/workspaces/1/folders/create-folder"
+                >
+                  <img
+                    alt=""
+                    src="/public/createFolder.svg"
+                  />
+                  <div>
+                    Create new folder
+                  </div>
+                </a>
+              </div>
             </li>
             <li
               class="c15"
             >
-              <a
-                href="/workspaces/1/folders/f1"
+              <div
+                class="c16"
               >
-                <img
-                  alt="folder"
-                  src="/public/folderClosed.svg"
-                />
-                <div>
-                  folder 1
+                <a
+                  href="/workspaces/1/folders/f1"
+                >
+                  <img
+                    alt="folder"
+                    src="/public/folderClosed.svg"
+                  />
+                  <div>
+                    folder 1
+                  </div>
+                </a>
+              </div>
+              <div
+                class="c17"
+              >
+                <div
+                  class="c18 c19"
+                >
+                  <button
+                    aria-label="Options"
+                    class="hidden c20"
+                  >
+                    <div
+                      class="icon-wrapper "
+                    >
+                      <svg
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  <span
+                    class="c21 c22 tooltip"
+                  >
+                    Options
+                  </span>
                 </div>
-              </a>
+              </div>
             </li>
           </ul>
         </section>
       </nav>
       <section
-        class="c16"
+        class="c23"
       >
-        <h1
-          aria-live="polite"
+        <div
+          class="c24"
         >
-          hospital
-        </h1>
+          <h1
+            aria-live="polite"
+            class="c25"
+          >
+            hospital
+          </h1>
+        </div>
         <hr
-          class="c17"
+          class="c26"
         />
         <h2>
           Most recent items

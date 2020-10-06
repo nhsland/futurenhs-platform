@@ -3,18 +3,45 @@
 exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 <DocumentFragment>
   .c0 {
-  background: rgb(255,235,59);
-  border-radius: 4px;
-  font-weight: 700;
   list-style-type: none;
   margin-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.c0:hover {
+.c0:hover > div {
   background-color: rgb(216,221,224);
 }
 
-.c0 a {
+.c0:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: rgb(255,235,59);
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: 700;
+}
+
+.c1 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,13 +49,16 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   padding-left: 8px;
   -webkit-text-decoration: none;
   text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
 }
 
-.c0 a:focus {
+.c1 a:focus {
   box-shadow: none;
 }
 
-.c0 img {
+.c1 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -39,7 +69,7 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
   flex-shrink: 0;
 }
 
-.c0 div {
+.c1 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
@@ -48,16 +78,20 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 <li
     class="c0"
   >
-    <a
-      href="/test-link"
+    <div
+      class="c1"
     >
-      <img
-        src="test-svg"
-      />
-      <div>
-        folder title
-      </div>
-    </a>
+      <a
+        href="/test-link"
+      >
+        <img
+          src="test-svg"
+        />
+        <div>
+          folder title
+        </div>
+      </a>
+    </div>
   </li>
 </DocumentFragment>
 `;
@@ -65,18 +99,45 @@ exports[`<NavListItem/> renders matching snapshot when active 1`] = `
 exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
 <DocumentFragment>
   .c0 {
-  background: inherit;
-  border-radius: 4px;
-  font-weight: inherit;
   list-style-type: none;
   margin-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.c0:hover {
+.c0:hover > div {
   background-color: rgb(216,221,224);
 }
 
-.c0 a {
+.c0:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: inherit;
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: inherit;
+}
+
+.c1 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -84,13 +145,16 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   padding-left: 8px;
   -webkit-text-decoration: none;
   text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
 }
 
-.c0 a:focus {
+.c1 a:focus {
   box-shadow: none;
 }
 
-.c0 img {
+.c1 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -101,7 +165,7 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
   flex-shrink: 0;
 }
 
-.c0 div {
+.c1 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
@@ -110,16 +174,20 @@ exports[`<NavListItem/> renders matching snapshot when not active 1`] = `
 <li
     class="c0"
   >
-    <a
-      href="/test-link"
+    <div
+      class="c1"
     >
-      <img
-        src="test-svg"
-      />
-      <div>
-        folder title
-      </div>
-    </a>
+      <a
+        href="/test-link"
+      >
+        <img
+          src="test-svg"
+        />
+        <div>
+          folder title
+        </div>
+      </a>
+    </div>
   </li>
 </DocumentFragment>
 `;

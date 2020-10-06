@@ -77,17 +77,22 @@ const StyledFnhsLogo = styled(FnhsLogoIcon)`
 
 const StyledHeaderLogo = styled(NhsukLogoIcon)`
   display: none;
+  border: 4px solid transparent;
+
   ${({ theme }) => `
-
-
+    :hover:not(:active) {
+      border: 4px solid ${theme.colorShadeNhsukBlue35};
+    }
+    :active {
+      background-color: white;
+      border: 4px solid ${theme.colorNhsukYellow};
+    }
+    :focus {
+      background-color: white;
+      border: 4px solid ${theme.colorNhsukYellow};
+    }
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-      display: block;
-
-      .nhsuk-link:hover {
-        border: 4px solid ${theme.colorNhsukYellow};
-        background-color: red;
-      }
-
+      display: flex;
     }
   `}
 `;
@@ -134,6 +139,7 @@ const navItems = [
     title: "My workspaces",
     icon: <WorkspacesIcon />,
     href: "/workspaces/directory",
+    className: "mobileOnly",
   },
   {
     title: "My dashboard",
@@ -171,9 +177,13 @@ const NavHeader = ({ initiallyOpen = false }: NavHeaderProps) => {
   return (
     <StyledHeader>
       <StyledHeaderContainer>
-        <StyledFnhsLogo />
+        <StyledFnhsLogo className="fnhs-logo" />
         <StyledHeaderLogo />
-        <NavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <NavMenuButton
+          className="mobile-nav-menu"
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+        />
       </StyledHeaderContainer>
       <StyledNavContainer>
         <NavMenuListItem
@@ -182,7 +192,11 @@ const NavHeader = ({ initiallyOpen = false }: NavHeaderProps) => {
           icon={<WorkspacesIcon />}
           href="/workspaces/directory"
         />
-        <NavMenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <NavMenuButton
+          className="desktop-nav-menu"
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+        />
       </StyledNavContainer>
       {menuOpen && <NavList navItems={navItems} setMenuOpen={setMenuOpen} />}
     </StyledHeader>

@@ -4,18 +4,19 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { MobileFileList, FileTable } from "../../../../components/FileTable";
-import { Head } from "../../../../components/Head";
-import { MainHeading } from "../../../../components/MainHeading";
-import { NavHeader } from "../../../../components/NavHeader";
-import { Navigation } from "../../../../components/Navigation";
-import { PageLayout } from "../../../../components/PageLayout";
+import { MobileFileList, FileTable } from "../../../../../components/FileTable";
+import { FolderMenu } from "../../../../../components/FolderMenu";
+import { Head } from "../../../../../components/Head";
+import { MainHeading } from "../../../../../components/MainHeading";
+import { NavHeader } from "../../../../../components/NavHeader";
+import { Navigation } from "../../../../../components/Navigation";
+import { PageLayout } from "../../../../../components/PageLayout";
 import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
   useFilesByFolderQuery,
-} from "../../../../lib/generated/graphql";
-import withUrqlClient from "../../../../lib/withUrqlClient";
+} from "../../../../../lib/generated/graphql";
+import withUrqlClient from "../../../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   flex-grow: 3;
@@ -70,7 +71,12 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder>
+            <MainHeading
+              withBorder
+              menu={
+                <FolderMenu workspaceId={workspaceId} folderId={folderId} />
+              }
+            >
               {folder.data?.folder.title || ""}
             </MainHeading>
             <p>{folder.data?.folder.description}</p>

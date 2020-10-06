@@ -133,7 +133,6 @@ async fn create_folder(
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
-    // TODO: Add event
     let folder: Folder = db::Folder::create(&title, &description, workspace, pool)
         .await?
         .into();

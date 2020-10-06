@@ -431,6 +431,85 @@
       ]
     }
   },
+  "d47447a56505c02b03dab9bc16d3dd9bff16dc2110c43c49d5f78770c1661872": {
+    "query": "INSERT INTO files (title, description, folder, file_name, file_type, blob_storage_path, created_at, modified_at, deleted_at)\nVALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW(), NULL) \nRETURNING *\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 8,
+          "name": "modified_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "deleted_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Uuid",
+          "Text",
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "d5d3145051893e2cf7ceb9bffbc9934d37d7c3ecc2c0c4addcf4f970cfd0c209": {
     "query": "INSERT INTO folders (title, description, workspace)\nVALUES ($1, $2, $3)\nRETURNING id, title, description, workspace\n",
     "describe": {

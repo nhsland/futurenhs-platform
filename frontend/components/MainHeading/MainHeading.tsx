@@ -1,8 +1,19 @@
-import React from "react";
+import React, { FC, ReactNode } from "react";
 
 import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+`;
+
+const H1 = styled.h1`
+  margin-bottom: 23px;
+`;
+
 const StyledHorizontalRule = styled.hr`
+  margin-top: 0px;
   margin-bottom: 25px;
   ${({ theme }) => `
     color: ${theme.colorNhsukGrey1};
@@ -13,6 +24,7 @@ const StyledHorizontalRule = styled.hr`
 interface Props {
   children: string;
   withBorder?: boolean;
+  menu?: ReactNode;
 }
 
 /**
@@ -20,10 +32,13 @@ interface Props {
  * It's a workaround for a known next.js accessibility issue that doesn't read out
  * headlines on navigation
  */
-const MainHeading = ({ children, withBorder }: Props) => {
+const MainHeading: FC<Props> = ({ children, withBorder, menu }) => {
   return (
     <>
-      <h1 aria-live="polite">{children}</h1>
+      <Container>
+        <H1 aria-live="polite">{children}</H1>
+        {menu}
+      </Container>
       {withBorder && <StyledHorizontalRule />}
     </>
   );

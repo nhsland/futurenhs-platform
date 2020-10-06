@@ -8,11 +8,9 @@ interface Props {
 
 const NhsukLogoIcon = ({ className }: Props) => (
   <Link href="https://www.nhs.uk" passHref>
-    <a href="https://www.nhs.uk" className="nhsuk-header__link">
+    <a href="https://www.nhs.uk">
       <div
-        className={`icon-wrapper nhsuk-logo-icon-wrapper nhsuk-header__logo ${
-          className || ""
-        }`}
+        className={`icon-wrapper nhsuk-logo-icon-wrapper ${className || ""}`}
       >
         <svg
           className="nhsuk-logo"
@@ -22,7 +20,7 @@ const NhsukLogoIcon = ({ className }: Props) => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect width="99" height="40" fill="transparent" />
+          <rect width="99" height="40" fill="white" />
           <path
             fillRule="evenodd"
             clipRule="evenodd"

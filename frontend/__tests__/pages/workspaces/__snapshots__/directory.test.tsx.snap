@@ -3,6 +3,26 @@
 exports[`takes a snapshot of the component 1`] = `
 <DocumentFragment>
   .c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c11 {
+  margin-bottom: 23px;
+}
+
+.c12 {
+  margin-top: 0px;
   margin-bottom: 25px;
   color: rgb(76,98,114);
   border-bottom: 1px solid rgb(76,98,114);
@@ -58,6 +78,21 @@ exports[`takes a snapshot of the component 1`] = `
 
 .c4 {
   display: none;
+  border: 4px solid transparent;
+}
+
+.c4:hover:not(:active) {
+  border: 4px solid rgb(0,61,120);
+}
+
+.c4:active {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
+}
+
+.c4:focus {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
 }
 
 .c6 {
@@ -199,7 +234,7 @@ exports[`takes a snapshot of the component 1`] = `
   margin: 0px auto;
 }
 
-.c11 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -207,14 +242,14 @@ exports[`takes a snapshot of the component 1`] = `
   margin-bottom: 40px;
 }
 
-.c12 {
+.c14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c12 img {
+.c14 img {
   display: block;
   height: 44px;
   width: 44px;
@@ -222,25 +257,25 @@ exports[`takes a snapshot of the component 1`] = `
   cursor: pointer;
 }
 
-.c12 img:hover + h3 {
+.c14 img:hover + h3 {
   color: rgb(0,94,184);
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.c12 h3 {
+.c14 h3 {
   margin-left: 25px;
   color: rgb(33,43,50);
 }
 
-.c12 h3:hover {
+.c14 h3:hover {
   color: rgb(0,94,184);
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c12 h3:active {
+.c14 h3:active {
   color: rgb(33,43,50);
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -290,12 +325,10 @@ exports[`takes a snapshot of the component 1`] = `
 
 @media (min-width:990px) {
   .c4 {
-    display: block;
-  }
-
-  .c4 .nhsuk-link:hover {
-    border: 4px solid rgb(255,235,59);
-    background-color: red;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
@@ -330,7 +363,7 @@ exports[`takes a snapshot of the component 1`] = `
         class="c2"
       >
         <div
-          class="icon-wrapper fnhs-logo-icon-wrapper c3"
+          class="icon-wrapper fnhs-logo-icon-wrapper c3 fnhs-logo"
         >
           <svg
             fill="none"
@@ -441,11 +474,10 @@ exports[`takes a snapshot of the component 1`] = `
           </svg>
         </div>
         <a
-          class="nhsuk-header__link"
           href="https://www.nhs.uk/"
         >
           <div
-            class="icon-wrapper nhsuk-logo-icon-wrapper nhsuk-header__logo c4"
+            class="icon-wrapper nhsuk-logo-icon-wrapper c4"
           >
             <svg
               class="nhsuk-logo"
@@ -456,7 +488,7 @@ exports[`takes a snapshot of the component 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <rect
-                fill="transparent"
+                fill="white"
                 height="40"
                 width="99"
               />
@@ -470,7 +502,7 @@ exports[`takes a snapshot of the component 1`] = `
           </div>
         </a>
         <button
-          class="c5"
+          class="c5 mobile-nav-menu"
         >
           Menu
         </button>
@@ -522,7 +554,7 @@ exports[`takes a snapshot of the component 1`] = `
           </a>
         </li>
         <button
-          class="c5"
+          class="c5 desktop-nav-menu"
         >
           Menu
         </button>
@@ -531,19 +563,24 @@ exports[`takes a snapshot of the component 1`] = `
     <section
       class="c9"
     >
-      <h1
-        aria-live="polite"
-      >
-        My workspaces
-      </h1>
-      <hr
+      <div
         class="c10"
+      >
+        <h1
+          aria-live="polite"
+          class="c11"
+        >
+          My workspaces
+        </h1>
+      </div>
+      <hr
+        class="c12"
       />
       <div
-        class="c11"
+        class="c13"
       >
         <a
-          class="c12"
+          class="c14"
           href="/workspaces/1"
         >
           <img
@@ -556,10 +593,10 @@ exports[`takes a snapshot of the component 1`] = `
         </a>
       </div>
       <div
-        class="c11"
+        class="c13"
       >
         <a
-          class="c12"
+          class="c14"
           href="/workspaces/2"
         >
           <img
@@ -572,10 +609,10 @@ exports[`takes a snapshot of the component 1`] = `
         </a>
       </div>
       <div
-        class="c11"
+        class="c13"
       >
         <a
-          class="c12"
+          class="c14"
           href="/workspaces/3"
         >
           <img

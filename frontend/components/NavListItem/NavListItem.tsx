@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 
 import Link from "next/link";
 import styled from "styled-components";
@@ -14,24 +14,43 @@ interface Props {
   imgSrc: string;
   className?: string;
   href: string;
+  menu?: ReactNode;
 }
 
-const ListItem = styled.li<{ active: boolean }>`
+const ListItem = styled.li`
+  list-style-type: none;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    ${({ theme }) => `
+    > div {
+      background-color: ${theme.colorNhsukGrey4};
+      button {
+        opacity: 1;
+        color: ${theme.colorNhsukGrey1};
+      }
+    }
+  `}
+  }
+`;
+
+const LinkWrapper = styled.div<{ active: boolean }>`
+  display: flex;
   background: ${({ active, theme }) =>
     active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
+  width: 227px;
+  // height: 32px;
+  margin-right: 4px;
   font-weight: ${({ active }) => (active ? 700 : "inherit")};
-  list-style-type: none;
-  margin-bottom: 12px;
-  &:hover {
-    ${({ theme }) => `
-    background-color: ${theme.colorNhsukGrey4}
-  `}
-  }
   a {
+    height: 100%;
+    flex-grow: 2;
     display: flex;
     padding-left: 8px;
     text-decoration: none;
+    align-self: flex-start;
     &:focus {
       box-shadow: none;
     }
@@ -59,15 +78,21 @@ const NavListItem: FC<Props> = ({
   imgSrc,
   className,
   href,
-}: Props) => (
-  <ListItem active={active} className={className}>
-    <Link href={href}>
-      <a>
-        <img src={imgSrc} alt={altText} />
-        <div>{item.title}</div>
-      </a>
-    </Link>
-  </ListItem>
-);
+  menu,
+}: Props) => {
+  return (
+    <ListItem className={className}>
+      <LinkWrapper active={active}>
+        <Link href={href} passHref>
+          <a>
+            <img src={imgSrc} alt={altText} />
+            <div>{item.title}</div>
+          </a>
+        </Link>
+      </LinkWrapper>
+      {menu}
+    </ListItem>
+  );
+};
 
 export default NavListItem;

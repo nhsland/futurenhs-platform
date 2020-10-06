@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FolderMenu/> takes a snapshot, as used in a page 1`] = `
+<DocumentFragment>
+  .c2 {
+  display: inline-block;
+  position: relative;
+}
+
+.c5 {
+  opacity: 0;
+  position: absolute;
+  z-index: 2000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c1:hover .c4 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c5::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c3 {
+  opacity: 1;
+  color: rgb(76,98,114);
+  background-color: rgb(216,221,224);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+}
+
+.c3.hidden {
+  opacity: 0;
+}
+
+.c3:hover {
+  opacity: 1;
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c3:hover.hidden {
+  color: rgb(255,255,255);
+}
+
+.c3.open,
+.c3:active,
+.c3:focus {
+  opacity: 1;
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+}
+
+.c3.open.hidden,
+.c3:active.hidden,
+.c3:focus.hidden {
+  color: rgb(33,43,50);
+}
+
+.c3 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c0 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+
+.c0 .tooltip {
+  left: 36px;
+  top: -7px;
+}
+
+.c0 .folder-menu-item {
+  display: none;
+}
+
+.c0 .folder-menu-item a {
+  color: rgb(255,255,255);
+}
+
+.c0 .folder-menu-item a:focus {
+  color: rgb(33,43,50);
+}
+
+@media (min-width:990px) {
+  .c0 {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .c0 .folder-menu-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+<div
+    class="c0"
+  >
+    <div
+      class="c1 c2"
+    >
+      <button
+        aria-label="Options"
+        class="c3"
+      >
+        <div
+          class="icon-wrapper "
+        >
+          <svg
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+              fill="currentColor"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </button>
+      <span
+        class="c4 c5 tooltip"
+      >
+        Options
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<FolderMenu/> takes a snapshot, as used in the nav 1`] = `
+<DocumentFragment>
+  .c2 {
+  display: inline-block;
+  position: relative;
+}
+
+.c5 {
+  opacity: 0;
+  position: absolute;
+  z-index: 2000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c1:hover .c4 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c5::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c3 {
+  opacity: 1;
+  color: rgb(76,98,114);
+  background-color: rgb(216,221,224);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+}
+
+.c3.hidden {
+  opacity: 0;
+}
+
+.c3:hover {
+  opacity: 1;
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c3:hover.hidden {
+  color: rgb(255,255,255);
+}
+
+.c3.open,
+.c3:active,
+.c3:focus {
+  opacity: 1;
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+}
+
+.c3.open.hidden,
+.c3:active.hidden,
+.c3:focus.hidden {
+  color: rgb(33,43,50);
+}
+
+.c3 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c0 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+
+.c0 .tooltip {
+  left: 36px;
+  top: -7px;
+}
+
+.c0 .folder-menu-item {
+  display: none;
+}
+
+.c0 .folder-menu-item a {
+  color: rgb(255,255,255);
+}
+
+.c0 .folder-menu-item a:focus {
+  color: rgb(33,43,50);
+}
+
+@media (min-width:990px) {
+  .c0 {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .c0 .folder-menu-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+<div
+    class="c0"
+  >
+    <div
+      class="c1 c2"
+    >
+      <button
+        aria-label="Options"
+        class="hidden c3"
+      >
+        <div
+          class="icon-wrapper "
+        >
+          <svg
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+              fill="currentColor"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </button>
+      <span
+        class="c4 c5 tooltip"
+      >
+        Options
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
