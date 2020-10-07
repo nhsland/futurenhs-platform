@@ -186,6 +186,14 @@ resource "azurerm_sql_database" "analytics_data_warehouse" {
   }
 }
 
+resource "azurerm_sql_firewall_rule" "allow_azure_services" {
+  name                = "allow-azure-services"
+  resource_group_name = azurerm_resource_group.platform.name
+  server_name         = azurerm_mssql_server.analytics[0].name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
 resource "azurerm_sql_firewall_rule" "allow_ip" {
   for_each            = var.enable_analytics ? var.ip_whitelist_analytics : {}
   name                = "allow-ip-${each.key}"
