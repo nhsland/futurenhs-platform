@@ -28,6 +28,12 @@ resource "azurerm_storage_container" "upload" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "files" {
+  name                  = "files"
+  storage_account_name  = azurerm_storage_account.files.name
+  container_access_type = "private"
+}
+
 resource "kubernetes_secret" "workspace_svc_files_storage_account" {
   metadata {
     name      = "files-storage-account"
@@ -45,5 +51,6 @@ resource "kubernetes_config_map" "workspace_svc_files_storage_account" {
   }
   data = {
     upload_container_id = azurerm_storage_container.upload.id
+    files_container_id  = azurerm_storage_container.files.id
   }
 }
