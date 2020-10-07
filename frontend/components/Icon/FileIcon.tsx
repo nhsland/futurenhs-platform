@@ -159,29 +159,85 @@ const DefaultFileIcon = () => (
   </svg>
 );
 
+// Mappings adapted from https://github.com/ningappa/react-mime-icons/blob/master/src/index.js
+// which is ISC licensed.
+const mappings = {
+  img: [/^image\//],
+  mov: [/^video\//],
+  pdf: ["application/pdf"],
+  doc: [
+    /ms-?word/,
+    "application/vnd.oasis.opendocument.text",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml",
+  ],
+  csv: [
+    /ms-?excel/,
+    "text/csv",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml",
+    "application/vnd.oasis.opendocument.spreadsheet",
+  ],
+  ppt: [
+    /ms-?powerpoint/,
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.openxmlformats-officedocument.presentationml",
+    "application/vnd.oasis.opendocument.presentation",
+  ],
+  txt: ["text/plain"],
+  zip: [
+    /^application\/x-(g?tar|xz|compress|bzip2|g?zip)$/,
+    /^application\/x-(7z|rar|zip)-compressed$/,
+    /^application\/(zip|gzip|tar)$/,
+  ],
+};
+
+export const matches = (
+  mimeType: string,
+  typeName: keyof typeof mappings
+): boolean => {
+  if (mimeType === typeName) {
+    // delete this branch once create-default-test-folders.sh understands mime types.
+    return true;
+  }
+  for (const option of mappings[typeName]) {
+    if (typeof option === "string") {
+      if (option == mimeType) {
+        return true;
+      }
+    } else {
+      if (option.test(mimeType)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
 const FileIcon = ({ fileType }: Props) => {
-  if (fileType === "csv") {
+  if (matches(fileType, "csv")) {
     return <CsvIcon />;
   }
-  if (fileType === "doc") {
+  if (matches(fileType, "doc")) {
     return <DocIcon />;
   }
-  if (fileType === "img") {
+  if (matches(fileType, "img")) {
     return <ImgIcon />;
   }
-  if (fileType === "mov") {
+  if (matches(fileType, "mov")) {
     return <MovIcon />;
   }
-  if (fileType === "pdf") {
+  if (matches(fileType, "pdf")) {
     return <PdfIcon />;
   }
-  if (fileType === "ppt") {
+  if (matches(fileType, "ppt")) {
     return <PptIcon />;
   }
-  if (fileType === "txt") {
+  if (matches(fileType, "txt")) {
     return <TxtIcon />;
   }
-  if (fileType === "zip") {
+  if (matches(fileType, "zip")) {
     return <ZipIcon />;
   }
   return <DefaultFileIcon />;
