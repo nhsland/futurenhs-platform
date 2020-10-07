@@ -505,6 +505,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c10 {
+  display: none;
   padding-top: 24px;
   padding-right: 52px;
   padding-left: 20px;
@@ -653,14 +654,9 @@ exports[`withUrql renders matching snapshot 1`] = `
   }
 }
 
-@media (min-width:641px) {
-  .c10 {
-    width: 300px;
-  }
-}
-
 @media (min-width:990px) {
   .c10 {
+    display: block;
     width: 360px;
   }
 }
@@ -1042,6 +1038,10 @@ exports[`withUrql renders matching snapshot 1`] = `
         <p>
           first folder
         </p>
+        <h3>
+          Files
+        </h3>
+        Loading...
       </section>
     </div>
   </div>

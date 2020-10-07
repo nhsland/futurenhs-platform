@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { MobileFileList, FileTable } from "../../../../../components/FileTable";
 import { FolderMenu } from "../../../../../components/FolderMenu";
 import { Head } from "../../../../../components/Head";
 import { MainHeading } from "../../../../../components/MainHeading";
@@ -13,6 +14,7 @@ import { PageLayout } from "../../../../../components/PageLayout";
 import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
+  useFilesByFolderQuery,
 } from "../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
 
@@ -44,13 +46,17 @@ const FolderHomepage: NextPage = () => {
     variables: { id: folderId },
   });
 
+  const [files] = useFilesByFolderQuery({
+    variables: { folder: folderId },
+  });
+
   return (
     <>
       <Head
         title={
           folder.fetching
             ? "Loading..."
-            : folder.data?.folder.title || "No title!"
+            : `Folder - ${folder.data?.folder.title}` || "No title!"
         }
       />
       <PageLayout>
@@ -72,6 +78,24 @@ const FolderHomepage: NextPage = () => {
             </MainHeading>
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
+            <h3>Files</h3>
+            {files.error && <p> Oh no... {files.error?.message} </p>}
+            {files.fetching || !files.data ? (
+              "Loading..."
+            ) : (
+              <>
+                <MobileFileList
+                  files={files.data.filesByFolder}
+                  workspaceId={workspaceId}
+                  titleLink={true}
+                ></MobileFileList>
+                <FileTable
+                  files={files.data.filesByFolder}
+                  workspaceId={workspaceId}
+                  titleLink={true}
+                />
+              </>
+            )}
           </PageContent>
         </ContentWrapper>
       </PageLayout>

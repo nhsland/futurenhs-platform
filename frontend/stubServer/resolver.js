@@ -2,9 +2,11 @@ const fs = require("fs");
 const path = require("path");
 
 const createFolderResponse = require("../cypress/fixtures/create-folder-graphql-response.json");
+const fileResponse = require("../cypress/fixtures/file-graphql-response.json");
 const fileUploadUrlResponse = require("../cypress/fixtures/file-upload-url-graphql-response.json");
-const folderByWorkspaceResponse = require("../cypress/fixtures/folder-by-workspace-graphql-response.json");
+const filesByFolderResponse = require("../cypress/fixtures/files-by-folder-graphql-response.json");
 const folderResponse = require("../cypress/fixtures/folder-graphql-response.json");
+const foldersByWorkspaceResponse = require("../cypress/fixtures/folders-by-workspace-graphql-response.json");
 const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
 
 const workspacesResolver = {
@@ -12,9 +14,14 @@ const workspacesResolver = {
   workspace: async () => workspaceResponse.data.workspaces[0],
 };
 
+const fileResolver = {
+  filesByFolder: async () => filesByFolderResponse.data.filesByFolder,
+  file: async () => fileResponse.data.file,
+};
+
 const folderResolver = {
   foldersByWorkspace: async () =>
-    folderByWorkspaceResponse.data.foldersByWorkspace,
+    foldersByWorkspaceResponse.data.foldersByWorkspace,
   folder: async () => folderResponse.data.folder,
 };
 
@@ -41,6 +48,7 @@ module.exports = {
   Query: {
     ...workspacesResolver,
     ...folderResolver,
+    ...fileResolver,
     ...fileUploadUrlResolver,
     ...federationResolver,
   },
