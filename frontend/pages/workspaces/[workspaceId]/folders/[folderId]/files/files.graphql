@@ -19,6 +19,8 @@ query GetFileById($id: ID!) {
     fileType
     fileName
     modifiedAt
+  }
+}
 
 mutation CreateFile($newFile: NewFile!) {
   createFile(newFile: $newFile) {
