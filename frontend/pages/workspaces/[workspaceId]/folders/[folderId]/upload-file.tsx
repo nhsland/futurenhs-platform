@@ -103,7 +103,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
         if (uploadResponse.errorCode) {
           throw new Error(`Failed to upload file: ${uploadResponse.errorCode}`);
         }
-        const fileName = files[0].name;
+        const { name: fileName, type: fileType } = files[0];
         const setMetaResponse = await blobClient.setMetadata({
           title,
           fileName,
@@ -113,11 +113,12 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             `Failed to set file metadata: ${setMetaResponse.errorCode}`
           );
         }
+
         const file = await createFile({
           newFile: {
             description: "TBD", // TODO
             fileName,
-            fileType: "png", // TODO
+            fileType,
             folder: folderId,
             temporaryBlobStoragePath: data.fileUploadUrl,
             title,
