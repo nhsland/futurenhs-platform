@@ -51,13 +51,9 @@ const FileHomepage = () => {
     variables: { id: fileId },
   });
 
-  const fileTitle = (!file.fetching && file.data?.file.title) || "Loading...";
-  const fileDescription =
-    (!file.fetching && file.data?.file.description) || "Loading...";
-
   return (
     <>
-      <Head title={`File - ${fileTitle}`} />
+      <Head title={`File - ${file.data?.file.title || "Loading..."}`} />
       <PageLayout>
         <NavHeader />
         <ContentWrapper>
@@ -67,9 +63,13 @@ const FileHomepage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder>{fileTitle}</MainHeading>
+            <MainHeading withBorder>
+              {file.data?.file.title || "Loading..."}
+            </MainHeading>
             <h2>Description</h2>
-            <Description>{fileDescription}</Description>
+            <Description>
+              {file.data?.file.description || "Loading..."}
+            </Description>
             <h3>File</h3>
             {file.error && <p> Oh no... {file.error?.message} </p>}
             {file.fetching || !file.data ? (
