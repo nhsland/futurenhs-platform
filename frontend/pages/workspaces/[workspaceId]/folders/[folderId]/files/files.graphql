@@ -1,3 +1,27 @@
+query FilesByFolder($folder: ID!) {
+  filesByFolder(folder: $folder) {
+    id
+    title
+    description
+    folder
+    fileType
+    fileName
+    modifiedAt
+  }
+}
+
+query GetFileById($id: ID!) {
+  file(id: $id) {
+    id
+    title
+    description
+    folder
+    fileType
+    fileName
+    modifiedAt
+  }
+}
+
 mutation CreateFile($newFile: NewFile!) {
   createFile(newFile: $newFile) {
     id

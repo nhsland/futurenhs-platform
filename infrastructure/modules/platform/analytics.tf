@@ -188,6 +188,7 @@ resource "azurerm_sql_database" "analytics_data_warehouse" {
 
 resource "azurerm_sql_firewall_rule" "allow_azure_services" {
   name                = "allow-azure-services"
+  count               = var.enable_analytics ? 1 : 0
   resource_group_name = azurerm_resource_group.platform.name
   server_name         = azurerm_mssql_server.analytics[0].name
   start_ip_address    = "0.0.0.0"

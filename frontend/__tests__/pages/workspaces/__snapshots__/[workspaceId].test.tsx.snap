@@ -454,6 +454,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 }
 
 .c10 {
+  display: none;
   padding-top: 24px;
   padding-right: 52px;
   padding-left: 20px;
@@ -602,14 +603,9 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   }
 }
 
-@media (min-width:641px) {
-  .c10 {
-    width: 300px;
-  }
-}
-
 @media (min-width:990px) {
   .c10 {
+    display: block;
     width: 360px;
   }
 }

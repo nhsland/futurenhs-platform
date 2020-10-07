@@ -42,7 +42,7 @@ jobs:
         run: |
           set -euxo pipefail
           git fetch origin HEAD --deepen=2
-          echo ::set-env name=COMMIT_MESSAGE::$(git log --format=%B -n 1 ${{ github.event.after }})
+          echo "COMMIT_MESSAGE=$(git log --format=%B -n 1 ${{ github.event.after }})" >>$GITHUB_ENV
       - name: Clone Deployments repo
         uses: actions/checkout@v2
         with:
