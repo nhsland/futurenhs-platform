@@ -93,7 +93,7 @@ mod tests {
             ]
         });
         let mut b = json!({
-            "arr": [
+            "possibleTypes": [
                 {
                     "kind": "OBJECT",
                     "name": "Workspace",
