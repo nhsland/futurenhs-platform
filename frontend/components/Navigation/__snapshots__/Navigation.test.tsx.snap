@@ -227,6 +227,7 @@ exports[`<Navigation/> renders correctly 1`] = `
 }
 
 .c0 {
+  display: none;
   padding-top: 24px;
   padding-right: 52px;
   padding-left: 20px;
@@ -289,14 +290,9 @@ exports[`<Navigation/> renders correctly 1`] = `
   }
 }
 
-@media (min-width:641px) {
-  .c0 {
-    width: 300px;
-  }
-}
-
 @media (min-width:990px) {
   .c0 {
+    display: block;
     width: 360px;
   }
 }

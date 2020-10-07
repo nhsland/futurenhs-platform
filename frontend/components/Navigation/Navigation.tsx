@@ -9,6 +9,7 @@ import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
 
 const Nav = styled.nav`
+  display: none;
   padding-top: 24px;
   padding-right: 52px;
   padding-left: 20px;
@@ -17,11 +18,8 @@ const Nav = styled.nav`
   box-sizing: border-box;
   width: 270px;
   ${({ theme }) => `
-  @media (min-width: ${theme.mqBreakpoints.tablet}) {
-      width: 300px;
-    }
-
-  @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      display: block;
       width: 360px;
     }
   `}

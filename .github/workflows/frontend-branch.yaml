@@ -57,8 +57,8 @@ jobs:
           make docker-build tag=${TAG}
           make docker-push tag=${TAG}
           DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' ${{ secrets.REGISTRY_LOGIN_SERVER }}/frontend:${TAG})"
-          echo ::set-env name=TAG::$TAG
-          echo ::set-env name=DIGEST::$DIGEST
+          echo "TAG=$TAG" >>$GITHUB_ENV
+          echo "DIGEST=$DIGEST" >>$GITHUB_ENV
 
       - name: Clone Deployments repo
         uses: actions/checkout@v2

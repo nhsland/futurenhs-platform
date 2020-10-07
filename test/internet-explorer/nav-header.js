@@ -14,7 +14,7 @@ const baseUrl = env("IE_BASE_URL");
 const browserstackURL = `https://${userName}:${accessKey}@hub-cloud.browserstack.com/wd/hub`;
 
 describe("Header with Nav bar/dropdown menu appears correctly", function () {
-  this.timeout(30000);
+  this.timeout(15000);
 
   const driverPromise = new Builder()
     .usingServer(browserstackURL)
@@ -26,7 +26,6 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
     const driver = await driverPromise;
 
     await loginIfNeeded(driver, targetUrl);
-    await driver.get(targetUrl);
 
     const desktopMenuButton = await driver.wait(
       until.elementLocated(By.css(".desktop-nav-menu")),
@@ -61,16 +60,15 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
     const driver = await driverPromise;
 
     await loginIfNeeded(driver, targetUrl);
-    await driver.get(targetUrl);
 
     const desktopMenuButton = await driver.wait(
       until.elementLocated(By.css(".desktop-nav-menu")),
       defaultTimeout
     );
-    desktopMenuButton.click();
+    await desktopMenuButton.click();
 
     const nav = await driver.wait(
-      until.elementLocated(By.css("nav-list")),
+      until.elementLocated(By.css(".nav-list")),
       defaultTimeout
     );
     const mobileOnly = await driver.wait(
@@ -84,8 +82,8 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
     assert.strictEqual(navVisible, true);
     assert.strictEqual(mobileOnlyVisible, false);
 
-    desktopMenuButton.click();
-    assert.strictEqual(navVisible, false);
+    await desktopMenuButton.click();
+    await driver.wait(until.stalenessOf(nav), defaultTimeout);
   });
 
   it("'My workspaces' link navigates to workspaces directory", async () => {
@@ -93,7 +91,6 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
     const driver = await driverPromise;
 
     await loginIfNeeded(driver, targetUrl);
-    await driver.get(targetUrl);
 
     const expected = `${baseUrl}/workspaces/directory`;
 
@@ -101,21 +98,9 @@ describe("Header with Nav bar/dropdown menu appears correctly", function () {
       until.elementLocated(By.css(".nav-bar-item")),
       defaultTimeout
     );
-    navBarItem.click();
-    // await delay(10000);
+    await navBarItem.click();
 
-    const h1 = await driver.wait(
-      until.elementLocated(By.css("h1")),
-      defaultTimeout
-    );
-    const h1Result = await h1.getText();
-    assert.equal(h1Result, "My workspaces");
-
-    const result = await driver.getCurrentUrl().then((currentUrl) => {
-      return currentUrl;
-    });
-
-    assert.strictEqual(result, expected);
+    await driver.wait(until.urlContains(expected), defaultTimeout);
   });
 
   after(function () {

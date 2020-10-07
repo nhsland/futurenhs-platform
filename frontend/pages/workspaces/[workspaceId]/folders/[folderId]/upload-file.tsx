@@ -14,6 +14,7 @@ import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
 import {
   FileUploadUrlDocument,
+  useCreateFileMutation,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
 } from "../../../../../lib/generated/graphql";
@@ -74,6 +75,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
   const [folder] = useGetFolderByIdQuery({
     variables: { id: folderId },
   });
+  const [, createFile] = useCreateFileMutation();
 
   if (workspace.error || folder.error)
     return (
@@ -82,8 +84,6 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
         Oh no... {workspace.error?.message} {folder.error?.message}{" "}
       </p>
     );
-  if (workspace.fetching || folder.fetching || !workspace.data || !folder.data)
-    return <p>Loading...</p>;
 
   const backToPreviousPage = () => router.back();
 
@@ -103,16 +103,35 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
         if (uploadResponse.errorCode) {
           throw new Error(`Failed to upload file: ${uploadResponse.errorCode}`);
         }
+        const { name: fileName, type: fileType } = files[0];
         const setMetaResponse = await blobClient.setMetadata({
           title,
-          filename: files[0].name,
+          fileName,
         });
         if (setMetaResponse.errorCode) {
           throw new Error(
             `Failed to set file metadata: ${setMetaResponse.errorCode}`
           );
         }
-        router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+
+        const file = await createFile({
+          newFile: {
+            description: "TBD", // TODO
+            fileName,
+            fileType,
+            folder: folderId,
+            temporaryBlobStoragePath: data.fileUploadUrl,
+            title,
+          },
+        });
+        if (file.error) {
+          throw new Error(`Failed to save file: ${file.error?.message}`);
+        }
+        if (file.data) {
+          router.push(
+            `/workspaces/${workspaceId}/folders/${folderId}/files/${file.data.createFile.id}`
+          );
+        }
       }
     } catch (error) {
       setError("files", {
@@ -138,12 +157,18 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
       <ContentWrapper>
         <Navigation
           workspaceId={workspaceId}
-          workspaceTitle={workspace.data?.workspace.title || "unknown"}
+          workspaceTitle={
+            workspace.fetching
+              ? "Loading..."
+              : workspace.data?.workspace.title || "No title!"
+          }
           activeFolder={folderId}
         />
         <PageContent>
           <MainHeading withBorder>
-            {folder.data?.folder.title || "unknown"}
+            {folder.fetching
+              ? "Loading..."
+              : folder.data?.folder.title || "No title!"}
           </MainHeading>
           <p> Fields marked with * are mandatory.</p>
           <Form onSubmit={handleSubmit(onSubmit)}>
