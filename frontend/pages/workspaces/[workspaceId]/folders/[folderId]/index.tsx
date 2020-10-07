@@ -46,12 +46,9 @@ const FolderHomepage: NextPage = () => {
     variables: { id: folderId },
   });
 
-  const [{ data, fetching, error }] = useFilesByFolderQuery({
+  const [files] = useFilesByFolderQuery({
     variables: { folder: folderId },
   });
-
-  if (error) return <p> Oh no... {error?.message} </p>;
-  if (fetching || !data) return <p>Loading...</p>;
 
   return (
     <>
@@ -82,16 +79,23 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             <h3>Files</h3>
-            <MobileFileList
-              files={data.filesByFolder}
-              workspaceId={workspaceId}
-              titleLink={true}
-            ></MobileFileList>
-            <FileTable
-              files={data.filesByFolder}
-              workspaceId={workspaceId}
-              titleLink={true}
-            />
+            {files.error && <p> Oh no... {files.error?.message} </p>}
+            {files.fetching || !files.data ? (
+              "Loading..."
+            ) : (
+              <>
+                <MobileFileList
+                  files={files.data.filesByFolder}
+                  workspaceId={workspaceId}
+                  titleLink={true}
+                ></MobileFileList>
+                <FileTable
+                  files={files.data.filesByFolder}
+                  workspaceId={workspaceId}
+                  titleLink={true}
+                />
+              </>
+            )}
           </PageContent>
         </ContentWrapper>
       </PageLayout>

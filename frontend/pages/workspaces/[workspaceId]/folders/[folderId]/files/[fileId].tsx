@@ -47,16 +47,17 @@ const FileHomepage = () => {
     variables: { id: workspaceId },
   });
 
-  const [{ data, fetching, error }] = useGetFileByIdQuery({
+  const [file] = useGetFileByIdQuery({
     variables: { id: fileId },
   });
 
-  if (error) return <p> Oh no... {error?.message} </p>;
-  if (fetching || !data) return <p>Loading...</p>;
+  const fileTitle = (!file.fetching && file.data?.file.title) || "Loading...";
+  const fileDescription =
+    (!file.fetching && file.data?.file.description) || "Loading...";
 
   return (
     <>
-      <Head title={`File - ${data.file.title}`} />
+      <Head title={`File - ${fileTitle}`} />
       <PageLayout>
         <NavHeader />
         <ContentWrapper>
@@ -66,20 +67,27 @@ const FileHomepage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder>{data.file.title}</MainHeading>
+            <MainHeading withBorder>{fileTitle}</MainHeading>
             <h2>Description</h2>
-            <Description>{data.file.description}</Description>
+            <Description>{fileDescription}</Description>
             <h3>File</h3>
-            <MobileFileList
-              files={[data.file]}
-              workspaceId={workspaceId}
-              titleLink={false}
-            />
-            <FileTable
-              files={[data.file]}
-              workspaceId={workspaceId}
-              titleLink={false}
-            />
+            {file.error && <p> Oh no... {file.error?.message} </p>}
+            {file.fetching || !file.data ? (
+              "Loading..."
+            ) : (
+              <>
+                <MobileFileList
+                  files={[file.data.file]}
+                  workspaceId={workspaceId}
+                  titleLink={false}
+                />
+                <FileTable
+                  files={[file.data.file]}
+                  workspaceId={workspaceId}
+                  titleLink={false}
+                />
+              </>
+            )}
           </PageContent>
         </ContentWrapper>
       </PageLayout>
