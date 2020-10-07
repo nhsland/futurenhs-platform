@@ -14,9 +14,9 @@ This represents the current plan. Some parts are not implemented, yet (transpare
 - Traffic inside the cluster uses mutual TLS provided by Linkerd
 - A public load balancer connects to an NGINX ingress controller in the cluster and is the only entry point to the cluster
 - Authentication is handled by Azure Active Directory B2C and enforced by the frontend
-- All applications send metrics and traces to Application Insights (TODO)
-- Applications access CosmosDB, Blob Storage, Search and EventHub (TODO)
-- Analytics data is sent through Data Factory to Synapse Analytics (TODO)
+- All applications send metrics and traces to Application Insights
+- Applications access CosmosDB, Blob Storage, Search and EventHub
+- Analytics data is sent through Data Factory to Synapse Analytics
 
 ## Change process and approvals
 
