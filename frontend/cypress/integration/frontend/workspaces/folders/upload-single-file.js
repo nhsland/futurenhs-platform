@@ -1,5 +1,5 @@
 describe("Upload single file", () => {
-  it.skip("Shows title, renders form and submits", () => {
+  it("Shows title, renders form and submits", () => {
     cy.visit(
       `/workspaces/01bb9a4d-2977-4c43-b28c-2a72b4eda453/folders/d1275f92-bf97-428f-a4ce-b2cac0cc3513/upload-file`
     );
@@ -18,7 +18,7 @@ describe("Upload single file", () => {
     );
   });
 
-  it.skip("Shows title, form and press discard to go back to previous page ", () => {
+  it("Shows title, form and press discard to go back to previous page ", () => {
     const start = `/workspaces/01bb9a4d-2977-4c43-b28c-2a72b4eda453/folders/d1275f92-bf97-428f-a4ce-b2cac0cc3513`;
     cy.visit(start);
 
