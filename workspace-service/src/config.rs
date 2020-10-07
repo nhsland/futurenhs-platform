@@ -49,5 +49,14 @@ pub struct Config {
         parse(try_from_str = str::parse),
         required_unless("selfcheck-only")
     )]
-    pub container_url: Option<Url>,
+    pub upload_container_url: Option<Url>,
+
+    /// The Azure Blob Storage Container URL for files
+    #[structopt(
+        long,
+        env = "FILES_CONTAINER_URL",
+        parse(try_from_str = str::parse),
+        required_unless("selfcheck-only")
+    )]
+    pub files_container_url: Option<Url>,
 }

@@ -13,7 +13,7 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let container_url = Url::parse(&format!("{}/", config.container_url))?;
+    let container_url = Url::parse(&format!("{}/", config.upload_container_url))?;
     let path = container_url.join(&name.to_string())?;
 
     let sas = BlobSASBuilder::new(&path)
@@ -39,7 +39,8 @@ mod tests {
         // the key below has been revoked ...
         let actual = create_upload_sas_impl(&Config::new(
             "LS6VHq43aBFjcwpAEK2hn3jUKraeFcR6OrtOM3VpBO81SgbSZ8ebu0CznxrrYF59dHVaUypuPdZy26SRc/CJJQ==".to_string(),
-            Url::parse("https://fnhsnonproduploadstu.blob.core.windows.net/waiting").unwrap(),
+            Url::parse("https://fnhsnonproduploadstu.blob.core.windows.net/upload").unwrap(),
+            Url::parse("https://fnhsnonproduploadstu.blob.core.windows.net/files").unwrap(),
         ),&uuid, now).unwrap();
 
         let sig = actual
@@ -60,7 +61,7 @@ mod tests {
 
         let expected =
             format!(
-                "https://fnhsnonproduploadstu.blob.core.windows.net/waiting/{}?st={}&se={}&sp=w&sr=b&spr=https&sv=2019-02-02&sig={}",
+                "https://fnhsnonproduploadstu.blob.core.windows.net/upload/{}?st={}&se={}&sp=w&sr=b&spr=https&sv=2019-02-02&sig={}",
                 uuid,
                 start,
                 end,

@@ -62,7 +62,8 @@ async fn main() -> Result<()> {
         event_client,
         sas::Config::new(
             config.file_storage_access_key.expect("required"),
-            config.container_url.expect("required"),
+            config.upload_container_url.expect("required"),
+            config.files_container_url.expect("required"),
         ),
     )
     .await?;
