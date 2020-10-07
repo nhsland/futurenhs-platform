@@ -116,7 +116,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
 
         const file = await createFile({
           newFile: {
-            description: "TBD", // TODO
+            description: "", // TODO
             fileName,
             fileType,
             folder: folderId,
