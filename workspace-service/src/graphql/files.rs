@@ -156,8 +156,9 @@ impl<'a> FileData<'a> {
             .ok_or_else(|| {
                 anyhow::anyhow!("cannot get blob name from temporary_blob_storage_path")
             })?;
-        let blob_uuid = Uuid::parse_str(blob_name)?;
-        let source_url = azure::create_download_sas(azure_config, &blob_uuid)?;
+        let mut source_url = self.blob_storage_url.clone();
+        source_url.set_query(None);
+        let source_url = azure::create_download_sas(azure_config, &source_url)?;
         let response = Compat::new(
             client
                 .copy_blob_from_url()
