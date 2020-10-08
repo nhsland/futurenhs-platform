@@ -11,3 +11,4 @@ SELECT id,
 
 FROM files
 WHERE folder = $1
+ORDER BY title

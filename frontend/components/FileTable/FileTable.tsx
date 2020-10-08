@@ -159,45 +159,47 @@ export const FileTable = ({
   titleLink,
 }: FileTableProps) => (
   <TableContainer>
-    <Table.Head>
-      <Table.Row>
-        <Table.Cell>Title</Table.Cell>
-        <Table.Cell></Table.Cell>
-        <Table.Cell>Last modified</Table.Cell>
-        <Table.Cell>Actions</Table.Cell>
-      </Table.Row>
-    </Table.Head>
-    <Table.Body>
-      {files.map((file) => {
-        const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
-        return (
-          <Table.Row key={file.id}>
-            <Table.Cell>
-              <FileIcon fileType={file.fileType} />
-            </Table.Cell>
-            <Table.Cell>
-              {titleLink ? (
-                <Link
-                  href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-                  passHref
-                >
-                  <a>
-                    <Title>{file.title}</Title>
-                  </a>
-                </Link>
-              ) : (
-                <Title>{file.title}</Title>
-              )}
-            </Table.Cell>
-            <Table.Cell>{modifiedAt}</Table.Cell>
-            <Table.Cell>
-              <a style={{ display: "inline-block", paddingRight: "8px" }}>
-                Download file
-              </a>
-            </Table.Cell>
-          </Table.Row>
-        );
-      })}
-    </Table.Body>
+    <Table>
+      <Table.Head>
+        <Table.Row>
+          <Table.Cell>Title</Table.Cell>
+          <Table.Cell></Table.Cell>
+          <Table.Cell>Last modified</Table.Cell>
+          <Table.Cell>Actions</Table.Cell>
+        </Table.Row>
+      </Table.Head>
+      <Table.Body>
+        {files.map((file) => {
+          const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
+          return (
+            <Table.Row key={file.id}>
+              <Table.Cell>
+                <FileIcon fileType={file.fileType} />
+              </Table.Cell>
+              <Table.Cell>
+                {titleLink ? (
+                  <Link
+                    href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+                    passHref
+                  >
+                    <a>
+                      <Title>{file.title}</Title>
+                    </a>
+                  </Link>
+                ) : (
+                  <Title>{file.title}</Title>
+                )}
+              </Table.Cell>
+              <Table.Cell>{modifiedAt}</Table.Cell>
+              <Table.Cell>
+                <a style={{ display: "inline-block", paddingRight: "8px" }}>
+                  Download file
+                </a>
+              </Table.Cell>
+            </Table.Row>
+          );
+        })}
+      </Table.Body>
+    </Table>
   </TableContainer>
 );

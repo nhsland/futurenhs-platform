@@ -1,6 +1,7 @@
 mod file_uploads;
 mod files;
 mod folders;
+mod schema;
 #[cfg(test)]
 mod test_mocks;
 mod workspaces;
@@ -71,4 +72,9 @@ pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
         .build();
 
     Ok(response)
+}
+
+pub async fn generate_graphql_schema() -> anyhow::Result<String> {
+    let schema = Schema::build(Query::default(), Mutation::default(), EmptySubscription).finish();
+    schema::generate_introspection_schema(&schema).await
 }

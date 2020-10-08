@@ -16,6 +16,11 @@ async fn main() -> Result<()> {
         return Ok(());
     }
 
+    if config.generate_schema_only {
+        println!("{}", workspace_service::generate_graphql_schema().await?);
+        return Ok(());
+    }
+
     let provider = if let Some(instrumentation_key) = config.instrumentation_key {
         let exporter = opentelemetry_application_insights::Exporter::new(instrumentation_key);
         let batch_exporter = BatchSpanProcessor::builder(

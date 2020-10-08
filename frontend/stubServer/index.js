@@ -3,20 +3,21 @@ const path = require("path");
 
 const { ApolloServer, gql } = require("apollo-server-express");
 const app = require("express")();
+const { buildClientSchema, printSchema } = require("graphql/utilities");
 
-const resolvers = require("./resolver");
+const createResolvers = require("./resolver");
 
 const port = 3001;
-const schemaCode = fs.readFileSync(
-  path.join(__dirname, "schema", "../../schema.graphql"),
+const introspectionSchema = fs.readFileSync(
+  path.join(__dirname, "../../workspace-service/graphql-schema.json"),
   "utf8"
 );
-const typeDefs = gql(schemaCode);
+const schema = printSchema(buildClientSchema(JSON.parse(introspectionSchema)));
 
 const stubServer = () => {
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    typeDefs: gql(schema),
+    resolvers: createResolvers(schema),
   });
   server.applyMiddleware({ app });
   app.listen(port, (err) => {
