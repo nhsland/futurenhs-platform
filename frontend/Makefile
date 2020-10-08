@@ -11,8 +11,10 @@ docker-build: ## Build and tag Docker image
 	tar cv \
 		--exclude node_modules \
 		--exclude manifests \
+		--exclude target \
+		--exclude .next \
 		Dockerfile \
-		-C .. event-models frontend | \
+		-C .. event-models frontend workspace-service/graphql-schema.json | \
 		DOCKER_BUILDKIT=1 docker build - \
 			--progress plain \
 			--tag $(app) \

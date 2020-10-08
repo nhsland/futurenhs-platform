@@ -7,6 +7,10 @@ pub struct Config {
     #[structopt(long)]
     pub selfcheck_only: bool,
 
+    /// Generates a GraphQL schema JSON files using the introspection query, then exits
+    #[structopt(long)]
+    pub generate_schema_only: bool,
+
     /// Key for OpenTelemetry exporter
     #[structopt(long, env = "INSTRUMENTATION_KEY", hide_env_values = true)]
     pub instrumentation_key: Option<String>,
@@ -17,7 +21,7 @@ pub struct Config {
         env = "DATABASE_URL",
         parse(try_from_str = str::parse),
         hide_env_values = true,
-        required_unless("selfcheck-only"),
+        required_unless_one(&["selfcheck-only", "generate-schema-only"]),
     )]
     pub database_url: Option<Url>,
 
@@ -38,7 +42,7 @@ pub struct Config {
         long,
         env = "FILE_STORAGE_ACCESS_KEY",
         hide_env_values = true,
-        required_unless("selfcheck-only")
+        required_unless_one(&["selfcheck-only", "generate-schema-only"])
     )]
     pub file_storage_access_key: Option<String>,
 
@@ -47,7 +51,7 @@ pub struct Config {
         long,
         env = "UPLOAD_CONTAINER_URL",
         parse(try_from_str = str::parse),
-        required_unless("selfcheck-only")
+        required_unless_one(&["selfcheck-only", "generate-schema-only"])
     )]
     pub container_url: Option<Url>,
 }
