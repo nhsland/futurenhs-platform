@@ -19,8 +19,8 @@ run: ## Fetch DB URL and run locally
 .PHONY: run-local
 run-local: migrate-local ## Run locally against Postgres and Azure running in Docker
 	DATABASE_URL=$(localdb) \
-	UPLOAD_CONTAINER_URL=http://localhost:10000/devstoreaccount1 \
-	FILES_CONTAINER_URL=http://localhost:10000/devstoreaccount1 \
+	UPLOAD_CONTAINER_URL=http://kubernetes.docker.internal:10000/devstoreaccount1/uploads \
+	FILES_CONTAINER_URL=http://kubernetes.docker.internal:10000/devstoreaccount1/files \
 	FILE_STORAGE_ACCESS_KEY='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==' \
 		$(MAKE)
 
@@ -61,6 +61,10 @@ reset-local: ## Resets local database
 migrate-local: ## Bring up local dependencies and migrate run DB migrations
 	docker-compose up -d \
 	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
+	az storage cors clear --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' --services b
+	az storage cors add --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' --services b --methods DELETE GET HEAD MERGE OPTIONS POST PUT --origins '*' --allowed-headers '*'
+	az storage container create  --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' -n files
+	az storage container create  --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' -n uploads
 
 # You must have a version of sqlx that includes this patch
 # cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
