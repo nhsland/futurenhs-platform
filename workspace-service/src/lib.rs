@@ -6,10 +6,10 @@ use tide::{Next, Redirect, Request, Server};
 use tracing::info_span;
 use tracing_futures::Instrument;
 
+pub mod azure;
 pub mod config;
 mod db;
 mod graphql;
-pub mod sas;
 
 pub fn log<'a>(
     req: Request<graphql::State>,
@@ -34,12 +34,12 @@ pub fn log<'a>(
 pub async fn create_app(
     connection_pool: PgPool,
     event_client: EventClient,
-    sas_config: sas::Config,
+    azure_config: azure::Config,
 ) -> anyhow::Result<Server<graphql::State>> {
     let mut app = tide::with_state(graphql::State::new(
         connection_pool,
         event_client,
-        sas_config,
+        azure_config,
     ));
 
     app.with(log);

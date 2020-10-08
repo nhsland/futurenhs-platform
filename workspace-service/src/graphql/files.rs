@@ -1,7 +1,14 @@
+use super::azure;
 use super::db;
+use anyhow::Result;
+use async_compat::Compat;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use azure_sdk_core::prelude::*;
+use azure_sdk_storage_blob::{blob::CopyStatus, Blob};
+use azure_sdk_storage_core::prelude::*;
 use chrono::{DateTime, Utc};
 use sqlx::PgPool;
+use url::Url;
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A file")]
@@ -85,43 +92,101 @@ impl FilesMutation {
     #[field(desc = "Create a new file (returns the created file)")]
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
         let pool = context.data()?;
-        let folder = Uuid::parse_str(&new_file.folder)?;
+        let azure_config = context.data()?;
 
-        create_file(
+        let file = FileData::new(
             &new_file.title,
             &new_file.description,
-            &folder,
+            &Uuid::parse_str(&new_file.folder)?,
             &new_file.file_name,
             &new_file.file_type,
-            &new_file.temporary_blob_storage_path,
-            pool,
+            &Url::parse(&new_file.temporary_blob_storage_path)?,
         )
-        .await
+        .create(pool, azure_config)
+        .await?;
+
+        Ok(file)
     }
 }
 
-async fn create_file(
-    title: &str,
-    description: &str,
-    folder: &Uuid,
-    file_name: &str,
-    file_type: &str,
-    temporary_blob_storage_path: &str,
-    pool: &PgPool,
-) -> FieldResult<File> {
-    // TODO: AB#1794 - move temporary_blob_storage_path into final location and
-    // pass new location into db::File::create
-    // TODO: add event.
-    let file: File = db::File::create(
-        title,
-        description,
-        folder,
-        file_name,
-        file_type,
-        temporary_blob_storage_path,
-        pool,
-    )
-    .await?
-    .into();
-    Ok(file)
+struct FileData<'a> {
+    title: &'a str,
+    description: &'a str,
+    folder: &'a Uuid,
+    file_name: &'a str,
+    file_type: &'a str,
+    blob_storage_url: &'a Url,
+}
+
+impl<'a> FileData<'a> {
+    fn new(
+        title: &'a str,
+        description: &'a str,
+        folder: &'a Uuid,
+        file_name: &'a str,
+        file_type: &'a str,
+        blob_storage_url: &'a Url,
+    ) -> Self {
+        Self {
+            title,
+            description,
+            folder,
+            file_name,
+            file_type,
+            blob_storage_url,
+        }
+    }
+
+    /// TODO: needs refactor
+    async fn create(&self, pool: &PgPool, azure_config: &azure::Config) -> Result<File> {
+        let storage_account_name = "fnhsfilesdevstu"; // TODO
+        let client = client::with_access_key(storage_account_name, &azure_config.access_key);
+        println!("client.blob_uri() {}", client.blob_uri());
+        let container_name = azure_config
+            .files_container_url
+            .path_segments()
+            .expect("invalid files_container_url")
+            .next()
+            .expect("cannot get container name from url");
+        let blob_name = self
+            .blob_storage_url
+            .path_segments()
+            .ok_or_else(|| anyhow::anyhow!("invalid temporary_blob_storage_path"))?
+            .nth(1)
+            .ok_or_else(|| {
+                anyhow::anyhow!("cannot get blob name from temporary_blob_storage_path")
+            })?;
+        let blob_uuid = Uuid::parse_str(blob_name)?;
+        let source_url = azure::create_download_sas(azure_config, &blob_uuid)?;
+        let response = Compat::new(
+            client
+                .copy_blob_from_url()
+                .with_container_name(&container_name)
+                .with_blob_name(blob_name)
+                .with_source_url(source_url.as_str())
+                .with_is_synchronous(true)
+                .finalize(),
+        )
+        .await?;
+        // TODO: add event.
+        if let CopyStatus::Success = response.copy_status {
+            let file: File = db::File::create(
+                self.title,
+                self.description,
+                self.folder,
+                self.file_name,
+                self.file_type,
+                blob_name,
+                pool,
+            )
+            .await?
+            .into();
+            Ok(file)
+        } else {
+            Err(anyhow::anyhow!(
+                "Sync copy did not complete: {}",
+                response.copy_status
+            ))
+        }
+    }
 }

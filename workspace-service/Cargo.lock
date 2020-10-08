@@ -158,6 +158,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-compat"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f0bb3019d8e5ffe88594b122ba9ba37280a3bc8d94a742b56c8417457215ae4"
+dependencies = [
+ "futures-core",
+ "futures-io",
+ "once_cell",
+ "pin-project-lite",
+ "tokio",
+]
+
+[[package]]
 name = "async-executor"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -473,6 +486,29 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "url",
+ "uuid",
+]
+
+[[package]]
+name = "azure_sdk_storage_blob"
+version = "0.45.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eaf0e2fa1a14ea8c99f081aa2fd9098b663b5faaa5377d63aab380c5a62afeca"
+dependencies = [
+ "RustyXML",
+ "azure_sdk_core",
+ "azure_sdk_storage_core",
+ "base64 0.12.3",
+ "chrono",
+ "futures 0.3.6",
+ "http 0.2.1",
+ "hyper",
+ "log",
+ "md5",
+ "percent-encoding",
+ "serde",
+ "serde-xml-rs",
+ "serde_derive",
  "uuid",
 ]
 
@@ -1809,6 +1845,12 @@ dependencies = [
  "digest 0.9.0",
  "opaque-debug 0.3.0",
 ]
+
+[[package]]
+name = "md5"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "490cc448043f947bae3cbee9c203358d62dbee0db12107a74be5c30ccfd09771"
 
 [[package]]
 name = "memchr"
@@ -3699,9 +3741,12 @@ name = "workspace_service"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "async-compat",
  "async-graphql",
  "async-graphql-tide",
  "async-std",
+ "azure_sdk_core",
+ "azure_sdk_storage_blob",
  "azure_sdk_storage_core",
  "chrono",
  "fnhs-event-models",

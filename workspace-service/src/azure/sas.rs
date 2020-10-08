@@ -9,6 +9,11 @@ pub fn create_upload_sas(config: &Config, name: &Uuid) -> Result<Url> {
     create_upload_sas_impl(config, name, Utc::now())
 }
 
+/// TODO: needs tests
+pub fn create_download_sas(config: &Config, name: &Uuid) -> Result<Url> {
+    create_download_sas_impl(config, name, Utc::now())
+}
+
 fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> Result<Url> {
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
@@ -21,6 +26,23 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
         .with_validity_start(&start)
         .with_validity_end(&end)
         .allow_write()
+        .finalize();
+
+    Ok(sas)
+}
+
+fn create_download_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> Result<Url> {
+    let start = now - Duration::minutes(15);
+    let end = now + Duration::minutes(15);
+
+    let container_url = Url::parse(&format!("{}/", config.upload_container_url))?;
+    let path = container_url.join(&name.to_string())?;
+
+    let sas = BlobSASBuilder::new(&path)
+        .with_key(&config.access_key)
+        .with_validity_start(&start)
+        .with_validity_end(&end)
+        .allow_read()
         .finalize();
 
     Ok(sas)

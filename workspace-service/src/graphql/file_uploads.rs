@@ -1,4 +1,4 @@
-use super::sas;
+use super::azure;
 use async_graphql::{Context, FieldResult, Object};
 use url::Url;
 use uuid::Uuid;
@@ -13,7 +13,7 @@ impl FileUploadQuery {
         let config = context.data()?;
         let name = Uuid::new_v4();
 
-        let sas = sas::create_upload_sas(config, &name)?;
+        let sas = azure::create_upload_sas(config, &name)?;
 
         Ok(sas)
     }
