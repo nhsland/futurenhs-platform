@@ -1,7 +1,7 @@
 {
   "db": "PostgreSQL",
-  "1214f379052a9d2b50d24c0f3d095233c352d690452f181164e189f746b7ee44": {
-    "query": "SELECT id,\n    title,\n    description,\n    folder,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    modified_at,\n    deleted_at\n\nFROM files\nWHERE folder = $1\n",
+  "050f20653237d5c06b7dd37038b0d7d7b43630ae7dbdb390411e63b6250563eb": {
+    "query": "SELECT id,\n    title,\n    description,\n    folder,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    modified_at,\n    deleted_at\n\nFROM files\nWHERE folder = $1\nORDER BY title\n",
     "describe": {
       "columns": [
         {
