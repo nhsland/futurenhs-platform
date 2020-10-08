@@ -1,6 +1,6 @@
 use super::azure;
 use super::db;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use async_compat::Compat;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use azure_sdk_core::prelude::*;
@@ -139,31 +139,38 @@ impl<'a> FileData<'a> {
 
     /// TODO: needs refactor
     async fn create(&self, pool: &PgPool, azure_config: &azure::Config) -> Result<File> {
-        let storage_account_name = "fnhsfilesdevstu"; // TODO
-        let client = client::with_access_key(storage_account_name, &azure_config.access_key);
-        println!("client.blob_uri() {}", client.blob_uri());
-        let container_name = azure_config
+        let target_storage_account = azure_config
+            .files_container_url
+            .host()
+            .expect("invalid files_container_url")
+            .to_string();
+        let target_storage_account = target_storage_account
+            .split('.')
+            .next()
+            .expect("invalid files_container_url");
+        let target_container = azure_config
             .files_container_url
             .path_segments()
             .expect("invalid files_container_url")
             .next()
             .expect("cannot get container name from url");
-        let blob_name = self
+        let target_blob = self
             .blob_storage_url
             .path_segments()
-            .ok_or_else(|| anyhow::anyhow!("invalid temporary_blob_storage_path"))?
+            .ok_or_else(|| anyhow!("invalid temporary_blob_storage_path"))?
             .nth(1)
-            .ok_or_else(|| {
-                anyhow::anyhow!("cannot get blob name from temporary_blob_storage_path")
-            })?;
+            .ok_or_else(|| anyhow!("cannot get blob name from temporary_blob_storage_path"))?;
+
         let mut source_url = self.blob_storage_url.clone();
         source_url.set_query(None);
         let source_url = azure::create_download_sas(azure_config, &source_url)?;
+
+        let client = client::with_access_key(target_storage_account, &azure_config.access_key);
         let response = Compat::new(
             client
                 .copy_blob_from_url()
-                .with_container_name(&container_name)
-                .with_blob_name(blob_name)
+                .with_container_name(&target_container)
+                .with_blob_name(target_blob)
                 .with_source_url(source_url.as_str())
                 .with_is_synchronous(true)
                 .finalize(),
@@ -177,14 +184,14 @@ impl<'a> FileData<'a> {
                 self.folder,
                 self.file_name,
                 self.file_type,
-                blob_name,
+                &format!("{}/{}", azure_config.files_container_url, target_blob),
                 pool,
             )
             .await?
             .into();
             Ok(file)
         } else {
-            Err(anyhow::anyhow!(
+            Err(anyhow!(
                 "Sync copy did not complete: {}",
                 response.copy_status
             ))
