@@ -67,7 +67,14 @@ where
         .execute(schema)
         .await?;
     let mut data = result.data;
+
+    // Version 1.18.2 of async-graphql seems to order items in the possibleTypes array randomly. In
+    // order to create a deterministic schema, where we can easily verify if it's up-to-date, we
+    // need to sort arrays in the schema manually.
+    // In the latest alpha (2.0.0-alpha.23) this problem doesn't exist anymore. Please remove this
+    // code when you update the async-graphql library.
     sort_value(&mut data);
+
     Ok(format!("{:#}", data))
 }
 
