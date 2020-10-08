@@ -1,12 +1,14 @@
 import React from "react";
 
 import { ThemeProvider } from "styled-components";
+import { Client } from "urql";
 
 import theme from "../../../../../../lib/fixtures/theme.json";
 import {
   FoldersByWorkspaceDocument,
   GetFolderByIdDocument,
   GetWorkspaceByIdDocument,
+  FilesByFolderDocument,
 } from "../../../../../../lib/generated/graphql";
 import { render } from "../../../../../../lib/test-helpers/render";
 import { mockUrqlClient } from "../../../../../../lib/test-helpers/urql";
@@ -48,9 +50,29 @@ describe(FolderHomepage, () => {
         ],
       },
     ],
+    [
+      FilesByFolderDocument,
+      {
+        filesByFolder: [
+          {
+            id: "c12c2d6f-2669-4f82-8351-620ded995abb",
+            title: "London Region NHS England Safeguarding Annual Review",
+            description:
+              "London Region NHS England Safeguarding Annual Review.ppt",
+            folder: "f7f24c43-d3f0-4720-8995-b087316f6b44",
+            fileType: "ppt",
+            fileName:
+              "London Region NHS England Safeguarding Annual Review.ppt",
+            createdAt: "2020-10-06T17:53:45.089829+00:00",
+            modifiedAt: "2020-10-06T17:53:45.089829+00:00",
+            blobStoragePath: "/files/c12c2d6f-2669-4f82-8351-620ded995abb",
+          },
+        ],
+      },
+    ],
   ]);
 
-  test("renders matching snapshot", () => {
+  const renderAndMatchSnapshot = (client: Client) => {
     const container = render(
       <ThemeProvider theme={theme}>
         <FolderHomepage urqlClient={client} />
@@ -62,5 +84,14 @@ describe(FolderHomepage, () => {
       }
     );
     expect(container.asFragment()).toMatchSnapshot();
+  };
+
+  test("renders loading state matching snapshot", () => {
+    const emptyClient = mockUrqlClient([]);
+    renderAndMatchSnapshot(emptyClient);
+  });
+
+  test("renders matching snapshot", () => {
+    renderAndMatchSnapshot(client);
   });
 });
