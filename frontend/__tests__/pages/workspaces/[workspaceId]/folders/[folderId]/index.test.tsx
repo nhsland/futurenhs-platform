@@ -1,9 +1,7 @@
 import React from "react";
 
-import { ThemeProvider } from "styled-components";
 import { Client } from "urql";
 
-import theme from "../../../../../../lib/fixtures/theme.json";
 import {
   FoldersByWorkspaceDocument,
   GetFolderByIdDocument,
@@ -73,16 +71,11 @@ describe(FolderHomepage, () => {
   ]);
 
   const renderAndMatchSnapshot = (client: Client) => {
-    const container = render(
-      <ThemeProvider theme={theme}>
-        <FolderHomepage urqlClient={client} />
-      </ThemeProvider>,
-      {
-        router: {
-          query: { workspaceId: "1", folderId: "f1" },
-        },
-      }
-    );
+    const container = render(<FolderHomepage urqlClient={client} />, {
+      router: {
+        query: { workspaceId: "1", folderId: "f1" },
+      },
+    });
     expect(container.asFragment()).toMatchSnapshot();
   };
 
