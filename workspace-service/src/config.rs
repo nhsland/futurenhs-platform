@@ -60,7 +60,7 @@ pub struct Config {
         long,
         env = "FILES_CONTAINER_URL",
         parse(try_from_str = str::parse),
-        required_unless("selfcheck-only", "generate-schema-only")
+        required_unless_one(&["selfcheck-only", "generate-schema-only"])
     )]
     pub files_container_url: Option<Url>,
 }
