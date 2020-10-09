@@ -3,42 +3,79 @@ use async_compat::Compat;
 use azure_sdk_core::prelude::*;
 use azure_sdk_storage_blob::{blob::CopyStatus, Blob};
 use azure_sdk_storage_core::prelude::*;
+use std::convert::{TryFrom, TryInto};
 use url::Url;
 
+#[derive(PartialEq, Debug)]
+struct FileParts {
+    account: String,
+    container: String,
+    blob: Option<String>,
+}
+
+impl TryFrom<Url> for FileParts {
+    type Error = anyhow::Error;
+
+    fn try_from(value: Url) -> Result<Self, Self::Error> {
+        let account = value
+            .host()
+            .ok_or_else(|| anyhow!("cannot get host from url"))?
+            .to_string();
+        let account = account
+            .split('.')
+            .next()
+            .ok_or_else(|| anyhow!("cannot get storage account from url"))?
+            .to_string();
+
+        let path_segments = value
+            .path_segments()
+            .ok_or_else(|| anyhow!("url has no path"))?
+            .collect::<Vec<&str>>();
+
+        let container = path_segments
+            .get(0)
+            .ok_or_else(|| anyhow!("cannot get container name from url"))?
+            .to_string();
+
+        let blob = path_segments.get(1).cloned().map(|s| s.to_string());
+
+        Ok(Self {
+            account,
+            container,
+            blob,
+        })
+    }
+}
+
 pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Result<String> {
-    let target_storage_account = azure_config
-        .files_container_url
-        .host()
-        .expect("invalid files_container_url")
-        .to_string();
-    let target_storage_account = target_storage_account
-        .split('.')
-        .next()
-        .expect("invalid files_container_url");
+    let input: FileParts = url.clone().try_into()?;
+    let target: FileParts = azure_config.files_container_url.clone().try_into()?;
+    let source: FileParts = azure_config.upload_container_url.clone().try_into()?;
 
-    let target_container = azure_config
-        .files_container_url
-        .path_segments()
-        .expect("invalid files_container_url")
-        .next()
-        .expect("cannot get container name from url");
+    if input.account != source.account {
+        return Err(anyhow!(
+            "source file is from an unsupported storage account"
+        ));
+    }
 
-    let target_blob = url
-        .path_segments()
-        .ok_or_else(|| anyhow!("invalid temporary_blob_storage_path"))?
-        .nth(1)
-        .ok_or_else(|| anyhow!("cannot get blob name from temporary_blob_storage_path"))?;
+    if input.container != source.container {
+        return Err(anyhow!("source file is from an unsupported container"));
+    }
 
     let mut source_url = url.clone();
     source_url.set_query(None);
     let source_url = super::create_download_sas(azure_config, &source_url)?;
 
-    let client = client::with_access_key(target_storage_account, &azure_config.access_key);
+    let target_blob = input
+        .blob
+        .ok_or_else(|| anyhow!("cannot get blob name from url"))?;
+
+    let client = client::with_access_key(&target.account, &azure_config.access_key);
     let response = Compat::new(
         client
             .copy_blob_from_url()
-            .with_container_name(&target_container)
-            .with_blob_name(target_blob)
+            .with_container_name(&target.container)
+            .with_blob_name(&target_blob)
             .with_source_url(source_url.as_str())
             .with_is_synchronous(true)
             .finalize(),
@@ -54,5 +91,35 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
             "Sync copy did not complete: {}",
             response.copy_status
         )),
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn extract_from_url() {
+        let url =
+            Url::parse("https://fnhsfilesdevstu.blob.core.windows.net/upload/my_blob").unwrap();
+        let actual: FileParts = url.try_into().unwrap();
+        let expected = FileParts {
+            account: "fnhsfilesdevstu".to_string(),
+            container: "upload".to_string(),
+            blob: Some("my_blob".to_string()),
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn extract_from_url_without_blob() {
+        let url = Url::parse("https://fnhsfilesdevstu.blob.core.windows.net/upload").unwrap();
+        let actual: FileParts = url.try_into().unwrap();
+        let expected = FileParts {
+            account: "fnhsfilesdevstu".to_string(),
+            container: "upload".to_string(),
+            blob: None,
+        };
+        assert_eq!(actual, expected);
     }
 }
