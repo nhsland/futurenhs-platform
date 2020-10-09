@@ -1,8 +1,10 @@
-pub use sas::create_upload_sas;
-pub use sas::create_download_sas;
-use url::Url;
-
+mod blob;
 mod sas;
+
+pub use blob::copy_blob_from_url;
+pub use sas::create_download_sas;
+pub use sas::create_upload_sas;
+use url::Url;
 
 #[derive(Debug, Clone)]
 pub struct Config {

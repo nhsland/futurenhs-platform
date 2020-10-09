@@ -1,13 +1,7 @@
 use super::azure;
 use super::db;
-use anyhow::{anyhow, Result};
-use async_compat::Compat;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
-use azure_sdk_core::prelude::*;
-use azure_sdk_storage_blob::{blob::CopyStatus, Blob};
-use azure_sdk_storage_core::prelude::*;
 use chrono::{DateTime, Utc};
-use sqlx::PgPool;
 use url::Url;
 use uuid::Uuid;
 
@@ -94,107 +88,28 @@ impl FilesMutation {
         let pool = context.data()?;
         let azure_config = context.data()?;
 
-        let file = FileData::new(
+        let folder = Uuid::parse_str(&new_file.folder)?;
+
+        let destination = azure::copy_blob_from_url(
+            &Url::parse(&new_file.temporary_blob_storage_path)?,
+            azure_config,
+        )
+        .await?;
+
+        // TODO: add event.
+
+        let file: File = db::File::create(
             &new_file.title,
             &new_file.description,
-            &Uuid::parse_str(&new_file.folder)?,
+            &folder,
             &new_file.file_name,
             &new_file.file_type,
-            &Url::parse(&new_file.temporary_blob_storage_path)?,
+            &destination,
+            pool,
         )
-        .create(pool, azure_config)
-        .await?;
+        .await?
+        .into();
 
         Ok(file)
-    }
-}
-
-struct FileData<'a> {
-    title: &'a str,
-    description: &'a str,
-    folder: &'a Uuid,
-    file_name: &'a str,
-    file_type: &'a str,
-    blob_storage_url: &'a Url,
-}
-
-impl<'a> FileData<'a> {
-    fn new(
-        title: &'a str,
-        description: &'a str,
-        folder: &'a Uuid,
-        file_name: &'a str,
-        file_type: &'a str,
-        blob_storage_url: &'a Url,
-    ) -> Self {
-        Self {
-            title,
-            description,
-            folder,
-            file_name,
-            file_type,
-            blob_storage_url,
-        }
-    }
-
-    /// TODO: needs refactor
-    async fn create(&self, pool: &PgPool, azure_config: &azure::Config) -> Result<File> {
-        let target_storage_account = azure_config
-            .files_container_url
-            .host()
-            .expect("invalid files_container_url")
-            .to_string();
-        let target_storage_account = target_storage_account
-            .split('.')
-            .next()
-            .expect("invalid files_container_url");
-        let target_container = azure_config
-            .files_container_url
-            .path_segments()
-            .expect("invalid files_container_url")
-            .next()
-            .expect("cannot get container name from url");
-        let target_blob = self
-            .blob_storage_url
-            .path_segments()
-            .ok_or_else(|| anyhow!("invalid temporary_blob_storage_path"))?
-            .nth(1)
-            .ok_or_else(|| anyhow!("cannot get blob name from temporary_blob_storage_path"))?;
-
-        let mut source_url = self.blob_storage_url.clone();
-        source_url.set_query(None);
-        let source_url = azure::create_download_sas(azure_config, &source_url)?;
-
-        let client = client::with_access_key(target_storage_account, &azure_config.access_key);
-        let response = Compat::new(
-            client
-                .copy_blob_from_url()
-                .with_container_name(&target_container)
-                .with_blob_name(target_blob)
-                .with_source_url(source_url.as_str())
-                .with_is_synchronous(true)
-                .finalize(),
-        )
-        .await?;
-        // TODO: add event.
-        if let CopyStatus::Success = response.copy_status {
-            let file: File = db::File::create(
-                self.title,
-                self.description,
-                self.folder,
-                self.file_name,
-                self.file_type,
-                &format!("{}/{}", azure_config.files_container_url, target_blob),
-                pool,
-            )
-            .await?
-            .into();
-            Ok(file)
-        } else {
-            Err(anyhow!(
-                "Sync copy did not complete: {}",
-                response.copy_status
-            ))
-        }
     }
 }
