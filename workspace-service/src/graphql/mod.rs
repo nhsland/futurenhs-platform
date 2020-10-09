@@ -4,6 +4,7 @@ mod folders;
 mod schema;
 #[cfg(test)]
 mod test_mocks;
+mod users;
 mod workspaces;
 
 use super::db;
@@ -48,6 +49,7 @@ struct Mutation(
     folders::FoldersMutation,
     workspaces::WorkspacesMutation,
     files::FilesMutation,
+    users::UsersMutation,
 );
 
 pub async fn handle_healthz(req: Request<State>) -> tide::Result {

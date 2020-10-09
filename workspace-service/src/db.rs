@@ -292,3 +292,29 @@ impl File {
         Ok(file)
     }
 }
+
+#[derive(Clone)]
+pub struct User {
+    pub id: Uuid,
+    pub auth_id: Uuid,
+    pub name: String,
+    pub is_platform_admin: bool,
+}
+
+impl User {
+    pub async fn get_or_create(auth_id: &Uuid, name: &str, pool: &PgPool) -> Result<User> {
+        let user = sqlx::query_file_as!(User, "sql/users/get_or_create.sql", auth_id, name)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(user)
+    }
+
+    pub async fn update(auth_id: &Uuid, is_platform_admin: &bool, pool: &PgPool) -> Result<User> {
+        let user = sqlx::query_file_as!(User, "sql/users/update.sql", auth_id, is_platform_admin)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(user)
+    }
+}
