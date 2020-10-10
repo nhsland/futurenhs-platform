@@ -9,16 +9,7 @@ import { File } from "../../lib/generated/graphql";
 import { FileIcon } from "../Icon";
 
 interface Props {
-  file: Pick<
-    File,
-    | "title"
-    | "id"
-    | "description"
-    | "fileType"
-    | "fileName"
-    | "folder"
-    | "modifiedAt"
-  >;
+  file: Pick<File, "title" | "id" | "fileType" | "folder" | "modifiedAt">;
   workspaceId: string;
   titleLink: boolean;
 }
@@ -29,9 +20,7 @@ const ListItem = styled.li`
   display: flex;
   padding-top: 16px;
   padding-bottom: 16px;
-  ${({ theme }) => `
-    border-bottom: 1px solid ${theme.colorNhsukGrey4};
-  `}
+  border-bottom: 1px solid ${({ theme }) => theme.colorNhsukGrey4};
 `;
 
 const RHContainer = styled.div`
@@ -55,9 +44,7 @@ const RHContainer = styled.div`
 const MobileTitle = styled.p`
   padding-bottom: 20px;
   font-weight: 700;
-  ${({ theme }) => `
-    color: ${theme.colorNhsukBlack};
-  `}
+  color: ${({ theme }) => theme.colorNhsukBlack};
 `;
 
 const FileListItem = ({ file, workspaceId, titleLink }: Props) => {
@@ -119,16 +106,7 @@ export const MobileFileList = ({
 
 // Tablet and Desktop
 interface FileTableProps {
-  files: Pick<
-    File,
-    | "title"
-    | "id"
-    | "description"
-    | "folder"
-    | "fileType"
-    | "fileName"
-    | "modifiedAt"
-  >[];
+  files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
   workspaceId: string;
   titleLink: boolean;
 }

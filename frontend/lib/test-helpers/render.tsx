@@ -3,11 +3,15 @@ import React from "react";
 import { render as defaultRender, RenderResult } from "@testing-library/react";
 import { RouterContext } from "next/dist/next-server/lib/router-context";
 import { NextRouter } from "next/router";
+import { ThemeProvider } from "styled-components";
+
+import theme from "../../lib/fixtures/theme.json";
 
 export * from "@testing-library/react";
 
 // --------------------------------------------------
-// Override the default test render with our own
+// Override the default test render with our own, which inclues a router and
+// theme mock.
 //
 // You can override the router mock like this:
 //
@@ -26,7 +30,7 @@ export function render(
   if (!wrapper) {
     const Wrapper = ({ children }: { children?: React.ReactNode }) => (
       <RouterContext.Provider value={{ ...mockRouter, ...router }}>
-        {children}
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </RouterContext.Provider>
     );
     Wrapper.displayName = "Wrapper";
