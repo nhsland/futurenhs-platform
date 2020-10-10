@@ -5,8 +5,7 @@ use sqlx::PgPool;
 use structopt::StructOpt;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
-use workspace_service::config::Config;
-use workspace_service::sas;
+use workspace_service::{azure, config::Config};
 
 #[async_std::main]
 async fn main() -> Result<()> {
@@ -65,9 +64,10 @@ async fn main() -> Result<()> {
     let app = workspace_service::create_app(
         connection_pool,
         event_client,
-        sas::Config::new(
+        azure::Config::new(
             config.file_storage_access_key.expect("required"),
-            config.container_url.expect("required"),
+            config.upload_container_url.expect("required"),
+            config.files_container_url.expect("required"),
         ),
     )
     .await?;

@@ -14,7 +14,11 @@ run: ## Fetch DB URL and run locally
 
 .PHONY: run-local
 run-local: migrate-local ## Fetch DB URL and run locally. Does not have file support yet.
-	UPLOAD_CONTAINER_URL=https://obviously.fake FILE_STORAGE_ACCESS_KEY=also-fake DATABASE_URL=$(localdb) $(MAKE)
+	UPLOAD_CONTAINER_URL=https://obviously.fake \
+	FILES_CONTAINER_URL=https://obviously.fake \
+	FILE_STORAGE_ACCESS_KEY=also-fake \
+	DATABASE_URL=$(localdb) \
+		$(MAKE)
 
 .PHONY: test
 test: ## Run tests [TEST=test_name (optional)]
@@ -64,7 +68,8 @@ migrate: ## Run migrations on current cluster
 prepare: migrate-local ## Prepares new version of sqlx-data.json
 	cargo clean --package workspace_service && DATABASE_URL=$(localdb) cargo sqlx prepare -- --bin workspace_service
 
-graphql-schema.json: src/graphql/
+.PHONY: graphql-schema.json
+graphql-schema.json: 
 	cargo run -- --generate-schema-only >$@
 
 .PHONY: help

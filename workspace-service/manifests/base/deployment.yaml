@@ -48,6 +48,11 @@ spec:
                 configMapKeyRef:
                   name: files-storage-account
                   key: upload_container_id
+            - name: FILES_CONTAINER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: files-storage-account
+                  key: files_container_id
           resources:
             limits:
               cpu: 100m

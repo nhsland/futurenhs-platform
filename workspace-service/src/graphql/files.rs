@@ -1,7 +1,8 @@
+use super::azure;
 use super::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
-use sqlx::PgPool;
+use url::Url;
 use uuid::Uuid;
 
 #[SimpleObject(desc = "A file")]
@@ -85,43 +86,30 @@ impl FilesMutation {
     #[field(desc = "Create a new file (returns the created file)")]
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
         let pool = context.data()?;
+        let azure_config = context.data()?;
+
         let folder = Uuid::parse_str(&new_file.folder)?;
 
-        create_file(
+        let destination = azure::copy_blob_from_url(
+            &Url::parse(&new_file.temporary_blob_storage_path)?,
+            azure_config,
+        )
+        .await?;
+
+        // TODO: add event.
+
+        let file: File = db::File::create(
             &new_file.title,
             &new_file.description,
             &folder,
             &new_file.file_name,
             &new_file.file_type,
-            &new_file.temporary_blob_storage_path,
+            &destination,
             pool,
         )
-        .await
-    }
-}
+        .await?
+        .into();
 
-async fn create_file(
-    title: &str,
-    description: &str,
-    folder: &Uuid,
-    file_name: &str,
-    file_type: &str,
-    temporary_blob_storage_path: &str,
-    pool: &PgPool,
-) -> FieldResult<File> {
-    // TODO: AB#1794 - move temporary_blob_storage_path into final location and
-    // pass new location into db::File::create
-    // TODO: add event.
-    let file: File = db::File::create(
-        title,
-        description,
-        folder,
-        file_name,
-        file_type,
-        temporary_blob_storage_path,
-        pool,
-    )
-    .await?
-    .into();
-    Ok(file)
+        Ok(file)
+    }
 }
