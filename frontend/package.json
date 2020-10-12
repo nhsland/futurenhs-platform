@@ -24,7 +24,7 @@
     "@azure/monitor-opentelemetry-exporter": "^1.0.0-preview.5",
     "@azure/storage-blob": "^12.2.1",
     "@fnhs/event-models": "file:../event-models/typescript/",
-    "@microsoft/applicationinsights-web": "^2.5.8",
+    "@microsoft/applicationinsights-web": "^2.5.9",
     "@opentelemetry/node": "^0.11.0",
     "@opentelemetry/plugin-https": "^0.11.0",
     "@opentelemetry/tracing": "^0.11.0",
