@@ -94,7 +94,6 @@ describe("Browse files", () => {
       "p",
       "London Region NHS England Safeguarding Annual Review.ppt"
     );
-    cy.contains("h3", "File");
 
     cy.get("tr")
       .eq(1)

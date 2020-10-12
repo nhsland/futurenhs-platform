@@ -737,11 +737,16 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c34 tbody tr:hover {
-  background: white;
+  background: rgb(255,255,255);
 }
 
 .c35 {
   color: rgb(76,98,114);
+}
+
+.c36 {
+  display: inline-block;
+  padding-right: 8px;
 }
 
 .c30 {
@@ -799,11 +804,11 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c28 {
+  background-color: #005eb8;
+  color: rgb(255,255,255);
+  display: inline-block;
   font-size: 1.5rem;
   line-height: 1.33333;
-  background-color: #005eb8;
-  color: #ffffff;
-  display: inline-block;
   padding: 8px 32px;
   position: relative;
   top: 34px;
@@ -2007,8 +2012,8 @@ exports[`withUrql renders matching snapshot 1`] = `
                       class="nhsuk-table__cell"
                     >
                       <a
+                        class="c36"
                         href="/"
-                        style="display: inline-block; padding-right: 8px;"
                       >
                         Download file
                       </a>
