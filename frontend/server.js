@@ -12,15 +12,7 @@ const Noop = require("./lib/server/noop-passport-strategy");
 const url = require("url");
 const { promises: fs } = require("fs");
 const { getOrCreateUser } = require("./lib/server/graphql");
-
-const requireEnv = (name) => {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`Environment variable ${name} is required`);
-  }
-
-  return value;
-};
+const { requireEnv } = require("./lib/server/requireEnv");
 
 const setupSessionStore = async () => {
   const pgUrl = process.env.PG_URL;

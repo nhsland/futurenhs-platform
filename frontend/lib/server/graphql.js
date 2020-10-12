@@ -1,11 +1,12 @@
 const gql = require("graphql-tag");
 const { createClient } = require("urql");
 
-const client = createClient({
-  url: "http://localhost:3030/graphql",
-});
+const { requireEnv } = require("./requireEnv");
 
 const getOrCreateUser = async ({ authId, name }) => {
+  const client = createClient({
+    url: requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT"),
+  });
   const query = gql`
     mutation($authId: ID!, $name: String!) {
       getOrCreateUser(newUser: { authId: $authId, name: $name }) {

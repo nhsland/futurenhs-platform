@@ -10,7 +10,7 @@ import {
   FoldersByWorkspaceDocument,
   FoldersByWorkspaceQuery,
 } from "./generated/graphql";
-import { requireEnv } from "./requireEnv";
+import { requireEnv } from "./server/requireEnv";
 
 const isServerSide = typeof window === "undefined";
 const workspaceAPIServerUrl = isServerSide

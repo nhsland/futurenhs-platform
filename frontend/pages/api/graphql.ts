@@ -3,7 +3,7 @@ import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { User } from "../../lib/auth";
-import { requireEnv } from "../../lib/requireEnv";
+import { requireEnv } from "../../lib/server/requireEnv";
 
 const workspaceAPIServerUrl = requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT");
 
