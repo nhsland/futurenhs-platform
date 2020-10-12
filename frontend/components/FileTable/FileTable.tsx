@@ -8,14 +8,6 @@ import styled from "styled-components";
 import { File } from "../../lib/generated/graphql";
 import { FileIcon } from "../Icon";
 
-// Tablet and Desktop
-interface FileTableProps {
-  files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
-  workspaceId: string;
-  tableHeading?: string;
-  titleLink: boolean;
-}
-
 const TableContainer = styled.div`
   display: none;
   width: 100%;
@@ -24,9 +16,6 @@ const TableContainer = styled.div`
       display: block;
     }
   `}
-  a {
-    /* text-decoration: underline; */
-  }
   > div {
     ${({ theme }) => `
       background: ${theme.colorNhsukGrey5};
@@ -36,7 +25,7 @@ const TableContainer = styled.div`
 
 const NHSTable = styled(Table)`
   tbody tr:hover {
-    background: white;
+    background: ${({ theme }) => theme.colorNhsukWhite};
   }
 `;
 
@@ -44,12 +33,24 @@ const ModifiedDate = styled(Table.Cell)`
   color: ${({ theme }) => theme.colorNhsukGrey1};
 `;
 
+const DownloadFile = styled.a`
+  display: inline-block;
+  padding-right: 8px;
+`;
+
+interface Props {
+  files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
+  workspaceId: string;
+  tableHeading?: string;
+  titleLink: boolean;
+}
+
 export const FileTable = ({
   files,
   workspaceId,
   titleLink,
   tableHeading,
-}: FileTableProps) => (
+}: Props) => (
   <TableContainer>
     <Table.Panel heading={tableHeading}>
       <NHSTable>
@@ -73,7 +74,6 @@ export const FileTable = ({
                   {titleLink ? (
                     <Link
                       href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-                      passHref
                     >
                       <a>
                         <span>{file.title}</span>
@@ -86,9 +86,7 @@ export const FileTable = ({
                 <ModifiedDate>{modifiedAt}</ModifiedDate>
                 <Table.Cell>
                   <Link href="" passHref>
-                    <a style={{ display: "inline-block", paddingRight: "8px" }}>
-                      Download file
-                    </a>
+                    <DownloadFile>Download file</DownloadFile>
                   </Link>
                 </Table.Cell>
               </Table.Row>

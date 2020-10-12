@@ -7,20 +7,6 @@ import styled from "styled-components";
 import { File } from "../../lib/generated/graphql";
 import { FileIcon } from "../Icon";
 
-interface Props {
-  file: Pick<File, "title" | "id" | "fileType" | "folder" | "modifiedAt">;
-  workspaceId: string;
-  titleLink: boolean;
-}
-
-interface FileTableProps {
-  files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
-  workspaceId: string;
-  tableHeading?: string;
-  titleLink: boolean;
-}
-
-// Mobile
 const ListItem = styled.li`
   align-items: flex-start;
   display: flex;
@@ -53,7 +39,13 @@ const MobileTitle = styled.p`
   padding-bottom: 20px;
 `;
 
-const FileListItem = ({ file, workspaceId, titleLink }: Props) => {
+interface ListItemProps {
+  file: Pick<File, "title" | "id" | "fileType" | "folder" | "modifiedAt">;
+  workspaceId: string;
+  titleLink: boolean;
+}
+
+const FileListItem = ({ file, workspaceId, titleLink }: ListItemProps) => {
   const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
   return (
     <ListItem>
@@ -76,7 +68,7 @@ const FileListItem = ({ file, workspaceId, titleLink }: Props) => {
           <h4>Last modified</h4>
           <p>{modifiedAt}</p>
         </div>
-        <Link href="" passHref>
+        <Link href="">
           <a>Download file</a>
         </Link>
       </RHContainer>
@@ -97,18 +89,14 @@ const List = styled.ul`
 `;
 
 const Heading = styled.h3`
+  background-color: #005eb8;
+  color: ${({ theme }) => theme.colorNhsukWhite};
+  display: inline-block;
   font-size: 1.5rem;
   line-height: 1.33333;
-  background-color: #005eb8;
-  color: #ffffff;
-  display: inline-block;
-  /* margin-top: 0px; */
-  /* margin-bottom: -40px; */
   padding: 8px 32px;
   position: relative;
   top: 34px;
-  /* position: relative; */
-  /* top: -16px; */
   ${({ theme }) => `
     @media (min-width: ${theme.mqBreakpoints.tablet}) {
       display: none;
@@ -116,12 +104,19 @@ const Heading = styled.h3`
   `}
 `;
 
+interface ListProps {
+  files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
+  workspaceId: string;
+  tableHeading?: string;
+  titleLink: boolean;
+}
+
 export const MobileFileList = ({
   files,
   workspaceId,
   titleLink,
   tableHeading,
-}: FileTableProps) => (
+}: ListProps) => (
   <>
     <Heading>{tableHeading}</Heading>
     <List>
