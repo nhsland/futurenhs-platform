@@ -93,6 +93,7 @@ const FolderHomepage: NextPage = () => {
                   files={files.data.filesByFolder}
                   workspaceId={workspaceId}
                   titleLink={true}
+                  tableHeading="Files"
                 />
               </>
             )}

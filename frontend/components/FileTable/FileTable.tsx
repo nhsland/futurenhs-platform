@@ -77,37 +77,55 @@ const FileListItem = ({ file, workspaceId, titleLink }: Props) => {
 };
 
 const List = styled.ul`
-  padding-left: 0;
+  padding-left: 12px;
   padding-right: 16px;
   ${({ theme }) => `
-    border-top: 1px solid ${theme.colorNhsukGrey4};
+    background: ${theme.colorNhsukGrey5};
     @media (min-width: ${theme.mqBreakpoints.tablet}) {
       display: none;
     }
   `}
 `;
 
+const Heading = styled.h3`
+  font-size: 1.5rem;
+  line-height: 1.33333;
+  background-color: #005eb8;
+  color: #ffffff;
+  display: inline-block;
+  margin: 0 0 8px -32px;
+  margin-top: 0px;
+  padding: 8px 32px;
+  position: relative;
+  top: -16px;
+`;
+
 export const MobileFileList = ({
   files,
   workspaceId,
   titleLink,
+  tableHeading,
 }: FileTableProps) => (
-  <List>
-    {files.map((file) => (
-      <FileListItem
-        key={file.id}
-        file={file}
-        workspaceId={workspaceId}
-        titleLink={titleLink}
-      />
-    ))}
-  </List>
+  <>
+    <Heading>{tableHeading}</Heading>
+    <List>
+      {files.map((file) => (
+        <FileListItem
+          key={file.id}
+          file={file}
+          workspaceId={workspaceId}
+          titleLink={titleLink}
+        />
+      ))}
+    </List>
+  </>
 );
 
 // Tablet and Desktop
 interface FileTableProps {
   files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
   workspaceId: string;
+  tableHeading?: string;
   titleLink: boolean;
 }
 
@@ -122,62 +140,73 @@ const TableContainer = styled.div`
   a {
     text-decoration: underline;
   }
+  > div {
+    ${({ theme }) => `
+      background: ${theme.colorNhsukGrey5};
+  `}
+  }
 `;
 
 const Title = styled.span`
   font-weight: 700;
-  ${({ theme }) => `
-    color: ${theme.colorNhsukBlack};
-  `}
+`;
+
+const NHSTable = styled(Table)`
+  tbody tr:hover {
+    background: white;
+  }
 `;
 
 export const FileTable = ({
   files,
   workspaceId,
   titleLink,
+  tableHeading,
 }: FileTableProps) => (
   <TableContainer>
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Cell>Title</Table.Cell>
-          <Table.Cell></Table.Cell>
-          <Table.Cell>Last modified</Table.Cell>
-          <Table.Cell>Actions</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        {files.map((file) => {
-          const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
-          return (
-            <Table.Row key={file.id}>
-              <Table.Cell>
-                <FileIcon fileType={file.fileType} />
-              </Table.Cell>
-              <Table.Cell>
-                {titleLink ? (
-                  <Link
-                    href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-                    passHref
-                  >
-                    <a>
-                      <Title>{file.title}</Title>
-                    </a>
-                  </Link>
-                ) : (
-                  <Title>{file.title}</Title>
-                )}
-              </Table.Cell>
-              <Table.Cell>{modifiedAt}</Table.Cell>
-              <Table.Cell>
-                <a style={{ display: "inline-block", paddingRight: "8px" }}>
-                  Download file
-                </a>
-              </Table.Cell>
-            </Table.Row>
-          );
-        })}
-      </Table.Body>
-    </Table>
+    <Table.Panel heading={tableHeading}>
+      <NHSTable>
+        <Table.Head>
+          <Table.Row>
+            <Table.Cell>Title</Table.Cell>
+            <Table.Cell></Table.Cell>
+            <Table.Cell>Last modified</Table.Cell>
+            <Table.Cell>Actions</Table.Cell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {files.map((file) => {
+            const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
+            return (
+              <Table.Row key={file.id}>
+                <Table.Cell>
+                  <FileIcon fileType={file.fileType} />
+                </Table.Cell>
+                <Table.Cell>
+                  {titleLink ? (
+                    <Link
+                      href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
+                      passHref
+                    >
+                      <a>
+                        <Title>{file.title}</Title>
+                      </a>
+                    </Link>
+                  ) : (
+                    <Title>{file.title}</Title>
+                  )}
+                </Table.Cell>
+                <Table.Cell>{modifiedAt}</Table.Cell>
+                <Table.Cell>
+                  <a style={{ display: "inline-block", paddingRight: "8px" }}>
+                    Download file
+                  </a>
+                </Table.Cell>
+              </Table.Row>
+            );
+          })}
+        </Table.Body>
+      </NHSTable>
+    </Table.Panel>
   </TableContainer>
 );
