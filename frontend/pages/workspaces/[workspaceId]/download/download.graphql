@@ -1,0 +1,11 @@
+query GetFileById($id: ID!) {
+  file(id: $id) {
+    id
+    title
+    description
+    folder
+    fileType
+    fileName
+    modifiedAt
+  }
+}
