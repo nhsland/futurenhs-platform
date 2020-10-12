@@ -121,7 +121,7 @@ async function main() {
           },
           (profile, done) => {
             done(null, {
-              id: profile.sub,
+              authId: profile.sub,
               name: profile.displayName,
               emails: profile.emails,
             });

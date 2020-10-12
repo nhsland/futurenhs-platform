@@ -17,12 +17,11 @@ const gateway = new ApolloGateway({
   buildService: ({ url }) =>
     new RemoteGraphQLDataSource({
       url,
-      willSendRequest({ request, context }) {
+      willSendRequest: ({ context, request }): void => {
         // context will be empty for schema requests
-        console.log("xxx", context);
-        const userId = context.user?.id;
-        if (userId) {
-          request.http?.headers.set("x-user-id", userId);
+        const authId = context.user?.authId;
+        if (authId) {
+          request.http?.headers.set("x-user-auth-id", authId);
         }
       },
     }),
