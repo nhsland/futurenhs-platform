@@ -1,9 +1,9 @@
-import { ApolloGateway } from "@apollo/gateway";
+import { ApolloGateway, RemoteGraphQLDataSource } from "@apollo/gateway";
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { User } from "../../lib/auth";
-import { requireEnv } from "../../lib/requireEnv";
+import { requireEnv } from "../../lib/server/requireEnv";
 
 const workspaceAPIServerUrl = requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT");
 
@@ -14,6 +14,17 @@ const gateway = new ApolloGateway({
       url: workspaceAPIServerUrl,
     },
   ],
+  buildService: ({ url }) =>
+    new RemoteGraphQLDataSource({
+      url,
+      willSendRequest: ({ context, request }): void => {
+        // context will be empty for schema requests
+        const authId = context.user?.authId;
+        if (authId) {
+          request.http?.headers.set("x-user-auth-id", authId);
+        }
+      },
+    }),
 });
 
 const server = new ApolloServer({
@@ -24,6 +35,7 @@ const server = new ApolloServer({
       "request.credentials": "include",
     },
   },
+  context: ({ req }) => ({ user: req.user }),
 });
 
 export const config = {

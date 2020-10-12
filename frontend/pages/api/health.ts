@@ -4,6 +4,7 @@ const requiredEnvVars = [
   "EVENTGRID_TOPIC_ENDPOINT",
   "EVENTGRID_TOPIC_KEY",
   "PG_URL",
+  "WORKSPACE_SERVICE_GRAPHQL_ENDPOINT",
 ];
 
 export default (_: NextApiRequest, res: NextApiResponse) => {

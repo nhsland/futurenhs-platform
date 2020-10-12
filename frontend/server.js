@@ -7,19 +7,12 @@ const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
 const dotenv = require("dotenv");
-const Noop = require("./noop-passport-strategy");
+const Noop = require("./lib/server/noop-passport-strategy");
 
 const url = require("url");
 const { promises: fs } = require("fs");
-
-const requireEnv = (name) => {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`Environment variable ${name} is required`);
-  }
-
-  return value;
-};
+const { getOrCreateUser } = require("./lib/server/graphql");
+const { requireEnv } = require("./lib/server/requireEnv");
 
 const setupSessionStore = async () => {
   const pgUrl = process.env.PG_URL;
@@ -119,12 +112,28 @@ async function main() {
             allowHttpForRedirectUrl: dev,
             isB2C: true,
           },
-          (profile, done) => {
-            done(null, {
-              id: profile.sub,
-              name: profile.displayName,
-              emails: profile.emails,
-            });
+          async (profile, done) => {
+            try {
+              const response = await getOrCreateUser({
+                authId: profile.sub,
+                name: profile.displayName,
+              });
+              const {
+                id,
+                name,
+                authId,
+                isPlatformAdmin,
+              } = response.getOrCreateUser;
+              done(null, {
+                id,
+                authId,
+                name,
+                isPlatformAdmin,
+                emails: profile.emails,
+              });
+            } catch (err) {
+              done(err);
+            }
           }
         )
   );
