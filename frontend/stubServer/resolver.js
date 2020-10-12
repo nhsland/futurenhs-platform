@@ -4,6 +4,7 @@ const fileUploadUrlResponse = require("../cypress/fixtures/file-upload-url-graph
 const filesByFolderResponse = require("../cypress/fixtures/files-by-folder-graphql-response.json");
 const folderResponse = require("../cypress/fixtures/folder-graphql-response.json");
 const foldersByWorkspaceResponse = require("../cypress/fixtures/folders-by-workspace-graphql-response.json");
+const getOrCreateUserResponse = require("../cypress/fixtures/get-or-create-user-graphql-response.json");
 const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
 
 const workspacesResolver = {
@@ -30,6 +31,10 @@ const folderMutation = {
   createFolder: async () => createFolderResponse.data.createFolder,
 };
 
+const userMutation = {
+  getOrCreateUser: async () => getOrCreateUserResponse.data.getOrCreateUser,
+};
+
 module.exports = (schema) => {
   const federationResolver = {
     _service: async () => ({
@@ -45,6 +50,6 @@ module.exports = (schema) => {
       ...fileUploadUrlResolver,
       ...federationResolver,
     },
-    Mutation: { ...folderMutation },
+    Mutation: { ...folderMutation, ...userMutation },
   };
 };
