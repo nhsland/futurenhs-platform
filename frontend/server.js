@@ -11,6 +11,7 @@ const Noop = require("./noop-passport-strategy");
 
 const url = require("url");
 const { promises: fs } = require("fs");
+const { getOrCreateUser } = require("./lib/server/graphql");
 
 const requireEnv = (name) => {
   const value = process.env[name];
@@ -119,10 +120,22 @@ async function main() {
             allowHttpForRedirectUrl: dev,
             isB2C: true,
           },
-          (profile, done) => {
-            done(null, {
+          async (profile, done) => {
+            const response = await getOrCreateUser({
               authId: profile.sub,
               name: profile.displayName,
+            });
+            const {
+              getOrCreateUser: {
+                name,
+                authId,
+                is_platform_admin: isPlatformAdmin,
+              },
+            } = response;
+            done(null, {
+              authId,
+              name,
+              isPlatformAdmin,
               emails: profile.emails,
             });
           }
