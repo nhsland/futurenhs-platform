@@ -78,7 +78,6 @@ const FolderHomepage: NextPage = () => {
             </MainHeading>
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
-            <h3>Files</h3>
             {files.error && <p> Oh no... {files.error?.message} </p>}
             {files.fetching || !files.data ? (
               "Loading..."
@@ -88,6 +87,7 @@ const FolderHomepage: NextPage = () => {
                   files={files.data.filesByFolder}
                   workspaceId={workspaceId}
                   titleLink={true}
+                  tableHeading="Files"
                 ></MobileFileList>
                 <FileTable
                   files={files.data.filesByFolder}

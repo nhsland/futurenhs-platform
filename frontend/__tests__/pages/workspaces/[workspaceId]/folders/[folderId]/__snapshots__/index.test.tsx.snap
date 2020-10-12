@@ -718,9 +718,6 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
           class="c19"
         />
         <p />
-        <h3>
-          Files
-        </h3>
         Loading...
       </section>
     </div>
@@ -730,7 +727,24 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
 
 exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
-  .c30 {
+  .c33 {
+  display: none;
+  width: 100%;
+}
+
+.c33 > div {
+  background: rgb(240,244,245);
+}
+
+.c34 tbody tr:hover {
+  background: white;
+}
+
+.c35 {
+  color: rgb(76,98,114);
+}
+
+.c30 {
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
@@ -740,7 +754,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 26px;
   border-bottom: 1px solid rgb(216,221,224);
 }
 
@@ -765,19 +779,20 @@ exports[`withUrql renders matching snapshot 1`] = `
   font-size: 18px;
 }
 
+.c31 p {
+  color: rgb(76,98,114);
+}
+
 .c31 a {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
   font-size: 16px;
 }
 
 .c32 {
   padding-bottom: 20px;
-  font-weight: 700;
-  color: rgb(33,43,50);
 }
 
 .c29 {
+  padding-top: 20px;
   padding-left: 12px;
   padding-right: 16px;
   background: rgb(240,244,245);
@@ -789,33 +804,9 @@ exports[`withUrql renders matching snapshot 1`] = `
   background-color: #005eb8;
   color: #ffffff;
   display: inline-block;
-  margin: 0 0 8px -32px;
-  margin-top: 0px;
   padding: 8px 32px;
   position: relative;
-  top: -16px;
-}
-
-.c33 {
-  display: none;
-  width: 100%;
-}
-
-.c33 a {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c33 > div {
-  background: rgb(240,244,245);
-}
-
-.c35 {
-  font-weight: 700;
-}
-
-.c34 tbody tr:hover {
-  background: white;
+  top: 34px;
 }
 
 .c18 {
@@ -1389,14 +1380,20 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 @media (min-width:641px) {
+  .c33 {
+    display: block;
+  }
+}
+
+@media (min-width:641px) {
   .c29 {
     display: none;
   }
 }
 
 @media (min-width:641px) {
-  .c33 {
-    display: block;
+  .c28 {
+    display: none;
   }
 }
 
@@ -1866,12 +1863,11 @@ exports[`withUrql renders matching snapshot 1`] = `
         <p>
           first folder
         </p>
-        <h3>
-          Files
-        </h3>
         <h3
           class="c28"
-        />
+        >
+          Files
+        </h3>
         <ul
           class="c29"
         >
@@ -1912,7 +1908,9 @@ exports[`withUrql renders matching snapshot 1`] = `
                   Oct 6, 2020
                 </p>
               </div>
-              <a>
+              <a
+                href="/"
+              >
                 Download file
               </a>
             </div>
@@ -1995,15 +1993,13 @@ exports[`withUrql renders matching snapshot 1`] = `
                       <a
                         href="/workspaces/1/folders/f7f24c43-d3f0-4720-8995-b087316f6b44/files/c12c2d6f-2669-4f82-8351-620ded995abb"
                       >
-                        <span
-                          class="c35"
-                        >
+                        <span>
                           London Region NHS England Safeguarding Annual Review
                         </span>
                       </a>
                     </td>
                     <td
-                      class="nhsuk-table__cell"
+                      class="nhsuk-table__cell c35"
                     >
                       Oct 6, 2020
                     </td>
@@ -2011,6 +2007,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                       class="nhsuk-table__cell"
                     >
                       <a
+                        href="/"
                         style="display: inline-block; padding-right: 8px;"
                       >
                         Download file
