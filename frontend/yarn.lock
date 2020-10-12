@@ -63,10 +63,10 @@
     core-js "^3.4.0"
     lodash.xorby "^4.7.0"
 
-"@apollo/gateway@^0.20.1":
-  version "0.20.4"
-  resolved "https://registry.yarnpkg.com/@apollo/gateway/-/gateway-0.20.4.tgz#d86676dd7dfc8ba4caa32397b156028203864e39"
-  integrity sha512-MxOxWPtOVrsClN+Yn8TKoQAIJCPvekM1GisVQIbRWwWeLyQz95YEf3/uDYd/L2+c6CdNYKRoOiDVgCLJWNW5Ew==
+"@apollo/gateway@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@apollo/gateway/-/gateway-0.21.0.tgz#ca64693cc929523173b9da0961f1881ff8ab3a15"
+  integrity sha512-dcKhSWyqPHmzIGWAcmLWAinSzCtSmVFhlYjmKiUJsy7YgRX3LdqP/mxS3FlobyAmgErb8fvet2d+CPptc00sOg==
   dependencies:
     "@apollo/federation" "^0.20.4"
     "@apollo/query-planner-wasm" "^0.0.6"
