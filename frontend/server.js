@@ -113,23 +113,27 @@ async function main() {
             isB2C: true,
           },
           async (profile, done) => {
-            const response = await getOrCreateUser({
-              authId: profile.sub,
-              name: profile.displayName,
-            });
-            const {
-              id,
-              name,
-              authId,
-              isPlatformAdmin,
-            } = response.getOrCreateUser;
-            done(null, {
-              id,
-              authId,
-              name,
-              isPlatformAdmin,
-              emails: profile.emails,
-            });
+            try {
+              const response = await getOrCreateUser({
+                authId: profile.sub,
+                name: profile.displayName,
+              });
+              const {
+                id,
+                name,
+                authId,
+                isPlatformAdmin,
+              } = response.getOrCreateUser;
+              done(null, {
+                id,
+                authId,
+                name,
+                isPlatformAdmin,
+                emails: profile.emails,
+              });
+            } catch (err) {
+              done(err);
+            }
           }
         )
   );
