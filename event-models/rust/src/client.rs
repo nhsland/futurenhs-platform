@@ -1,6 +1,6 @@
 use crate::Event;
 use async_trait::async_trait;
-use std::sync::{Arc, mpsc::SyncSender};
+use std::sync::{mpsc::SyncSender, Arc};
 use tracing::info_span;
 use tracing_futures::Instrument as _;
 
@@ -90,20 +90,17 @@ impl EventPublisher for EventGridPublisher {
         );
 
         let res = surf::post(&self.url)
-            .set_header("aeg-sas-key", &self.key)
-            .body_json(&events)?
+            .header("aeg-sas-key", self.key.as_str())
+            .body(surf::Body::from_json(&events)?)
             .instrument(span.clone())
             .await?;
 
-        span.record("http.status_code", &res.status().as_u16());
-        if let Some(status_text) = res.status().canonical_reason() {
-            span.record("http.status_text", &status_text);
-        }
+        span.record("http.status_code", &u16::from(res.status()));
 
         if res.status() == 200 {
             Ok(())
         } else {
-            Err(PublishEventsError::Server(res.status().as_u16()))
+            Err(PublishEventsError::Server(u16::from(res.status())))
         }
     }
 }
@@ -130,8 +127,8 @@ impl From<serde_json::Error> for PublishEventsError {
     }
 }
 
-impl From<surf::Exception> for PublishEventsError {
-    fn from(err: surf::Exception) -> Self {
+impl From<surf::Error> for PublishEventsError {
+    fn from(err: surf::Error) -> Self {
         Self::Internal(format!("{}", err))
     }
 }
