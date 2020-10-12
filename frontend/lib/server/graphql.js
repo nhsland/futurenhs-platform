@@ -26,6 +26,27 @@ const getOrCreateUser = async ({ authId, name }) => {
   }
 };
 
+const getFileDownloadUrl = async ({ fileId }) => {
+  const client = createClient({
+    url: requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT"),
+  });
+  const query = gql`
+    query GetFileToDownload($id: ID!) {
+      file(id: $id) {
+        temporaryBlobStoragePath
+      }
+    }
+  `;
+
+  const result = await client.query(query, { id: fileId }).toPromise();
+  if (result.error) {
+    throw result.error;
+  } else {
+    return result.data;
+  }
+};
+
 module.exports = {
   getOrCreateUser,
+  getFileDownloadUrl,
 };

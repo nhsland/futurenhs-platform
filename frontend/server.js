@@ -11,7 +11,7 @@ const Noop = require("./lib/server/noop-passport-strategy");
 
 const url = require("url");
 const { promises: fs } = require("fs");
-const { getOrCreateUser } = require("./lib/server/graphql");
+const { getOrCreateUser, getFileDownloadUrl } = require("./lib/server/graphql");
 const { reportError } = require("./lib/server/reportError");
 const { requireEnv } = require("./lib/server/requireEnv");
 
@@ -177,6 +177,19 @@ async function main() {
       }
       res.redirect("/");
     });
+  });
+
+  server.get("/workspaces/:workspaceId/download/:fileId", async (req, res) => {
+    try {
+      const response = await getFileDownloadUrl({
+        fileId: req.params.fileId,
+      });
+      const { temporaryBlobStoragePath } = response.file;
+      res.redirect(307, temporaryBlobStoragePath);
+    } catch (err) {
+      console.log(err);
+      res.status(500).end();
+    }
   });
 
   // Default catch-all handler to allow Next.js to handle all other routes
