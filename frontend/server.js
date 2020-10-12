@@ -7,7 +7,7 @@ const passport = require("passport");
 const OIDCStrategy = require("passport-azure-ad").OIDCStrategy;
 const next = require("next");
 const dotenv = require("dotenv");
-const Noop = require("./noop-passport-strategy");
+const Noop = require("./lib/server/noop-passport-strategy");
 
 const url = require("url");
 const { promises: fs } = require("fs");
@@ -126,13 +126,13 @@ async function main() {
               name: profile.displayName,
             });
             const {
-              getOrCreateUser: {
-                name,
-                authId,
-                is_platform_admin: isPlatformAdmin,
-              },
-            } = response;
+              id,
+              name,
+              authId,
+              isPlatformAdmin,
+            } = response.getOrCreateUser;
             done(null, {
+              id,
               authId,
               name,
               isPlatformAdmin,

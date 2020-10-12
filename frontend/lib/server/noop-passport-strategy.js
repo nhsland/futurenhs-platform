@@ -2,7 +2,7 @@ const util = require("util");
 
 const passport = require("passport-strategy");
 
-const { getOrCreateUser } = require("./lib/server/graphql");
+const { getOrCreateUser } = require("./graphql");
 
 function Strategy() {
   passport.Strategy.call(this);
@@ -10,17 +10,19 @@ function Strategy() {
 
 util.inherits(Strategy, passport.Strategy);
 Strategy.prototype.authenticate = async function () {
-  const testAuthId = "0c8109ef-c247-4c41-b679-b609866487b9";
+  // Test value that's an auto generated V4 UUID
+  const testAuthId = "0c8109ef-c247-4c41-b679-000000000000";
   const testName = "Local User";
+
   const response = await getOrCreateUser({
     authId: testAuthId,
     name: testName,
   });
-  const {
-    getOrCreateUser: { name, authId, is_platform_admin: isPlatformAdmin },
-  } = response;
-  var self = this;
-  self.success({
+
+  const { id, name, authId, isPlatformAdmin } = response.getOrCreateUser;
+
+  this.success({
+    id,
     authId,
     name,
     isPlatformAdmin,
