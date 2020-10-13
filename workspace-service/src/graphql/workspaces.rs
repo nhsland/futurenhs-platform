@@ -75,13 +75,18 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
-        let headers = dbg!(context.data::<super::IncomingHeaders>());
+        let auth_id = context
+            .data::<super::IncomingHeaders>()?
+            .auth_id
+            .clone()
+            .ok_or_else(|| anyhow::anyhow!("no x-user-auth-id header"))?;
 
         create_workspace(
             &new_workspace.title,
             &new_workspace.description,
             pool,
             event_client,
+            &auth_id,
         )
         .await
     }
@@ -121,7 +126,17 @@ async fn create_workspace(
     description: &str,
     pool: &PgPool,
     event_client: &EventClient,
+    auth_id: &Uuid,
 ) -> FieldResult<Workspace> {
+    let user = db::User::find_by_auth_id(auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("Could not find user with auth_id {}.", auth_id))?;
+    if !user.is_platform_admin {
+        Err(anyhow::anyhow!(
+            "User with auth_id is not a platform admin. No workspace for you."
+        ))?;
+    }
+
     let workspace: Workspace = db::Workspace::create(title, description, pool)
         .await?
         .into();
