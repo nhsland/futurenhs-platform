@@ -30,12 +30,13 @@ const PageContent = styled.section`
       padding-left: 20px;
       padding-right: 20px;
     }
-    @media (min-width: ${theme.mqBreakpoints.desktop}) {
-      padding-left: 40px;
-      padding-right: 40px;
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      padding-left: 32px;
+      padding-right: 32px;
     }
   `}
 `;
+
 const ContentWrapper = styled.div`
   display: flex;
 `;
