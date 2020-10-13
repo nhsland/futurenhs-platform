@@ -52,6 +52,11 @@ struct Mutation(
     users::UsersMutation,
 );
 
+#[derive(Debug)]
+struct IncomingHeaders {
+    auth_id: Option<String>,
+}
+
 pub async fn handle_healthz(req: Request<State>) -> tide::Result {
     let response = if !req.state().event_client.is_configured() {
         Response::builder(500).body("invalid event client").build()
@@ -64,7 +69,16 @@ pub async fn handle_healthz(req: Request<State>) -> tide::Result {
 
 pub async fn handle_graphql(req: Request<State>) -> tide::Result {
     let schema = req.state().schema.clone();
-    async_graphql_tide::graphql(req, schema, |query_builder| query_builder).await
+    let auth_id = req
+        .header("x-user-auth-id")
+        .and_then(|values| values.get(0))
+        .map(|value| value.as_str().to_string());
+
+    async_graphql_tide::graphql(req, schema, |mut query_builder| {
+        query_builder = query_builder.data(IncomingHeaders { auth_id });
+        query_builder
+    })
+    .await
 }
 
 pub async fn handle_graphiql(_: Request<State>) -> tide::Result {

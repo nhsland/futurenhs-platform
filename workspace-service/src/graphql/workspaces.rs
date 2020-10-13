@@ -75,6 +75,8 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
+        let headers = dbg!(context.data::<super::IncomingHeaders>());
+
         create_workspace(
             &new_workspace.title,
             &new_workspace.description,
