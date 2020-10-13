@@ -170,8 +170,13 @@ async function main() {
   );
   server.get("/auth/callback", authenticateWithAADB2C, redirectAuthSuccess);
   server.get("/auth/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
+    req.session.destroy((err) => {
+      if (err) {
+        console.log("logout error", err);
+        throw err;
+      }
+      res.redirect("/");
+    });
   });
 
   // Default catch-all handler to allow Next.js to handle all other routes
