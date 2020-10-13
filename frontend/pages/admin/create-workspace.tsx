@@ -148,7 +148,6 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
               <H2>You do not have permission to do this.</H2>
               <br />
               <p>
-                {" "}
                 Please contact your Platform Administrator to request a
                 workspace.
               </p>

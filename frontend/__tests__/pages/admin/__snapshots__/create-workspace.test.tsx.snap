@@ -535,7 +535,7 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
       </h2>
       <br />
       <p>
-         Please contact your Platform Administrator to request a workspace.
+        Please contact your Platform Administrator to request a workspace.
       </p>
     </div>
   </div>
