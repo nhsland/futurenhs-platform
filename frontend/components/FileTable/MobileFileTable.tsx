@@ -117,7 +117,7 @@ export const MobileFileList = ({
   tableHeading,
 }: ListProps) => (
   <>
-    <Heading>{tableHeading}</Heading>
+    {tableHeading && <Heading>{tableHeading}</Heading>}
     <List>
       {files.map((file) => (
         <FileListItem

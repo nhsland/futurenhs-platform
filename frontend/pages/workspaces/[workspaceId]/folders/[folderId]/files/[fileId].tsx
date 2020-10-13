@@ -27,8 +27,12 @@ const PageContent = styled.section`
   ${({ theme }) => `
     background-color: ${theme.colorNhsukWhite};
     @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    @media (min-width: ${theme.mqBreakpoints.desktop}) {
       padding-left: 40px;
-      padding-right: 66px;
+      padding-right: 40px;
     }
   `}
 `;

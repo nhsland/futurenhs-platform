@@ -457,8 +457,15 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
 
 @media (min-width:641px) {
   .c10 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width:769px) {
+  .c10 {
     padding-left: 40px;
-    padding-right: 66px;
+    padding-right: 40px;
   }
 }
 
@@ -1502,8 +1509,15 @@ exports[`withUrql renders matching snapshot 1`] = `
 
 @media (min-width:641px) {
   .c24 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width:769px) {
+  .c24 {
     padding-left: 40px;
-    padding-right: 66px;
+    padding-right: 40px;
   }
 }
 
