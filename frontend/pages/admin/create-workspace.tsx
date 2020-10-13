@@ -55,7 +55,9 @@ interface InitialProps {
   isPlatformAdmin: boolean;
 }
 
-const CreateWorkspace: NextPage<InitialProps> = ({ isPlatformAdmin }) => {
+export const CreateWorkspace: NextPage<InitialProps> = ({
+  isPlatformAdmin,
+}) => {
   const [remainingChars, setRemainingChars] = useState({
     title: null,
     description: null,
