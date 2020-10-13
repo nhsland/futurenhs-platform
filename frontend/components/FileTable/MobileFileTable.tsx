@@ -55,7 +55,6 @@ const FileListItem = ({ file, workspaceId, titleLink }: ListItemProps) => {
           <MobileTitle>
             <Link
               href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-              passHref
             >
               <a>{file.title}</a>
             </Link>
