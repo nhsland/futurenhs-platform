@@ -44,6 +44,6 @@ describe(MobileFileList, () => {
       />
     );
 
-    expect(getByText("I am a table"));
+    getByText("I am a table");
   });
 });
