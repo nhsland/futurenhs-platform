@@ -718,7 +718,9 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
           class="c19"
         />
         <p />
-        Loading...
+        <p>
+          Loading...
+        </p>
       </section>
     </div>
   </div>

@@ -79,9 +79,8 @@ const FolderHomepage: NextPage = () => {
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
             {files.error && <p> Oh no... {files.error?.message} </p>}
-            {files.fetching || !files.data ? (
-              "Loading..."
-            ) : (
+            {files.fetching || (!files.data && <p>Loading...</p>)}
+            {files.data && files.data.filesByFolder.length > 0 && (
               <>
                 <MobileFileList
                   files={files.data.filesByFolder}
