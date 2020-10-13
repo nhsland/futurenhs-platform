@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FileTable } from ".";
+import { MobileFileList } from ".";
 import { render } from "../../lib/test-helpers/render";
 
 const fakeFile = {
@@ -11,17 +11,21 @@ const fakeFile = {
   modifiedAt: "2020-10-08T07:10:09Z",
 };
 
-describe(FileTable, () => {
+describe(MobileFileList, () => {
   it("renders title with a surrounding <a> if titleLink=true", () => {
     const { getByText } = render(
-      <FileTable files={[fakeFile]} workspaceId="face-workspace" titleLink />
+      <MobileFileList
+        files={[fakeFile]}
+        workspaceId="face-workspace"
+        titleLink
+      />
     );
     expect(getByText("My Fake File").closest("a")).not.toBeNull();
   });
 
   it("renders title without a surrounding <a> if titleLink=false", () => {
     const { getByText } = render(
-      <FileTable
+      <MobileFileList
         files={[fakeFile]}
         workspaceId="face-workspace"
         titleLink={false}
@@ -32,13 +36,14 @@ describe(FileTable, () => {
 
   it("displays the table heading if given", () => {
     const { getByText } = render(
-      <FileTable
+      <MobileFileList
         files={[fakeFile]}
         workspaceId="face-workspace"
         titleLink={false}
         tableHeading="I am a table"
       />
     );
+
     expect(getByText("I am a table"));
   });
 });
