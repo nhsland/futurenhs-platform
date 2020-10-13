@@ -22,12 +22,21 @@ const PageContent = styled.section`
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   ${({ theme }) => `
-  background-color: ${theme.colorNhsukWhite};
+    background-color: ${theme.colorNhsukWhite};
+    @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
   `}
 `;
+
 const ContentWrapper = styled.div`
   display: flex;
 `;
@@ -70,7 +79,6 @@ const FileHomepage = () => {
             <Description>
               {file.data?.file.description || "Loading..."}
             </Description>
-            <h3>File</h3>
             {file.error && <p> Oh no... {file.error?.message} </p>}
             {file.fetching || !file.data ? (
               "Loading..."

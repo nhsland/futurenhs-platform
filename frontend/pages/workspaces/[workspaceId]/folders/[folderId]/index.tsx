@@ -22,10 +22,18 @@ const PageContent = styled.section`
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   ${({ theme }) => `
-  background-color: ${theme.colorNhsukWhite};
+    background-color: ${theme.colorNhsukWhite};
+    @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
   `}
 `;
 
@@ -78,21 +86,21 @@ const FolderHomepage: NextPage = () => {
             </MainHeading>
             <p>{folder.data?.folder.description}</p>
             {folder.error && <p> Oh no... {folder.error?.message} </p>}
-            <h3>Files</h3>
             {files.error && <p> Oh no... {files.error?.message} </p>}
-            {files.fetching || !files.data ? (
-              "Loading..."
-            ) : (
+            {files.fetching || (!files.data && <p>Loading...</p>)}
+            {files.data && files.data.filesByFolder.length > 0 && (
               <>
                 <MobileFileList
                   files={files.data.filesByFolder}
                   workspaceId={workspaceId}
                   titleLink={true}
+                  tableHeading="Files"
                 ></MobileFileList>
                 <FileTable
                   files={files.data.filesByFolder}
                   workspaceId={workspaceId}
                   titleLink={true}
+                  tableHeading="Files"
                 />
               </>
             )}

@@ -361,8 +361,8 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   background-color: rgb(255,255,255);
 }
 
@@ -452,6 +452,20 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+  }
+}
+
+@media (min-width:641px) {
+  .c10 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width:990px) {
+  .c10 {
+    padding-left: 32px;
+    padding-right: 32px;
   }
 }
 
@@ -718,10 +732,9 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
           class="c19"
         />
         <p />
-        <h3>
-          Files
-        </h3>
-        Loading...
+        <p>
+          Loading...
+        </p>
       </section>
     </div>
   </div>
@@ -730,7 +743,29 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
 
 exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
-  .c29 {
+  .c33 {
+  display: none;
+  width: 100%;
+}
+
+.c33 > div {
+  background: rgb(240,244,245);
+}
+
+.c34 tbody tr:hover {
+  background: rgb(255,255,255);
+}
+
+.c35 {
+  color: rgb(76,98,114);
+}
+
+.c36 {
+  display: inline-block;
+  padding-right: 8px;
+}
+
+.c30 {
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
@@ -740,11 +775,11 @@ exports[`withUrql renders matching snapshot 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 26px;
   border-bottom: 1px solid rgb(216,221,224);
 }
 
-.c30 {
+.c31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -755,47 +790,44 @@ exports[`withUrql renders matching snapshot 1`] = `
   padding-left: 12px;
 }
 
-.c30 > div {
+.c31 > div {
   padding-bottom: 20px;
 }
 
-.c30 p,
-.c30 h4 {
+.c31 p,
+.c31 h4 {
   margin-bottom: 0;
   font-size: 18px;
 }
 
-.c30 a {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.c31 p {
+  color: rgb(76,98,114);
+}
+
+.c31 a {
   font-size: 16px;
 }
 
-.c31 {
+.c32 {
   padding-bottom: 20px;
-  font-weight: 700;
-  color: rgb(33,43,50);
+}
+
+.c29 {
+  padding-top: 20px;
+  padding-left: 12px;
+  padding-right: 16px;
+  background: rgb(240,244,245);
 }
 
 .c28 {
-  padding-left: 0;
-  padding-right: 16px;
-  border-top: 1px solid rgb(216,221,224);
-}
-
-.c32 {
-  display: none;
-  width: 100%;
-}
-
-.c32 a {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c33 {
-  font-weight: 700;
-  color: rgb(33,43,50);
+  background-color: #005eb8;
+  color: rgb(255,255,255);
+  display: inline-block;
+  font-size: 1.5rem;
+  line-height: 1.33333;
+  padding: 8px 32px;
+  position: relative;
+  top: 34px;
 }
 
 .c18 {
@@ -1356,8 +1388,8 @@ exports[`withUrql renders matching snapshot 1`] = `
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   background-color: rgb(255,255,255);
 }
 
@@ -1369,14 +1401,20 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 @media (min-width:641px) {
-  .c28 {
+  .c33 {
+    display: block;
+  }
+}
+
+@media (min-width:641px) {
+  .c29 {
     display: none;
   }
 }
 
 @media (min-width:641px) {
-  .c32 {
-    display: block;
+  .c28 {
+    display: none;
   }
 }
 
@@ -1466,6 +1504,20 @@ exports[`withUrql renders matching snapshot 1`] = `
   .c10 {
     display: block;
     width: 360px;
+  }
+}
+
+@media (min-width:641px) {
+  .c24 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width:990px) {
+  .c24 {
+    padding-left: 32px;
+    padding-right: 32px;
   }
 }
 
@@ -1846,14 +1898,16 @@ exports[`withUrql renders matching snapshot 1`] = `
         <p>
           first folder
         </p>
-        <h3>
+        <h3
+          class="c28"
+        >
           Files
         </h3>
         <ul
-          class="c28"
+          class="c29"
         >
           <li
-            class="c29"
+            class="c30"
           >
             <svg
               fill="none"
@@ -1870,10 +1924,10 @@ exports[`withUrql renders matching snapshot 1`] = `
               />
             </svg>
             <div
-              class="c30"
+              class="c31"
             >
               <p
-                class="c31"
+                class="c32"
               >
                 <a
                   href="/workspaces/1/folders/f7f24c43-d3f0-4720-8995-b087316f6b44/files/c12c2d6f-2669-4f82-8351-620ded995abb"
@@ -1889,105 +1943,115 @@ exports[`withUrql renders matching snapshot 1`] = `
                   Oct 6, 2020
                 </p>
               </div>
-              <a>
+              <a
+                href="/"
+              >
                 Download file
               </a>
             </div>
           </li>
         </ul>
         <div
-          class="c32"
+          class="c33"
         >
           <div
-            class="nhsuk-table-responsive"
+            class="nhsuk-table__panel-with-heading-tab"
           >
-            <table
-              class="nhsuk-table"
+            <h3
+              class="nhsuk-table__heading-tab"
             >
-              <thead
-                class="nhsuk-table__head"
+              Files
+            </h3>
+            <div
+              class="nhsuk-table-responsive"
+            >
+              <table
+                class="nhsuk-table c34"
               >
-                <tr
-                  class="nhsuk-table__row"
+                <thead
+                  class="nhsuk-table__head"
                 >
-                  <th
-                    class="nhsuk-table__header"
-                    scope="col"
+                  <tr
+                    class="nhsuk-table__row"
                   >
-                    Title
-                  </th>
-                  <th
-                    class="nhsuk-table__header"
-                    scope="col"
-                  />
-                  <th
-                    class="nhsuk-table__header"
-                    scope="col"
-                  >
-                    Last modified
-                  </th>
-                  <th
-                    class="nhsuk-table__header"
-                    scope="col"
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                class="nhsuk-table__body"
-              >
-                <tr
-                  class="nhsuk-table__row"
+                    <th
+                      class="nhsuk-table__header"
+                      scope="col"
+                    >
+                      Title
+                    </th>
+                    <th
+                      class="nhsuk-table__header"
+                      scope="col"
+                    />
+                    <th
+                      class="nhsuk-table__header"
+                      scope="col"
+                    >
+                      Last modified
+                    </th>
+                    <th
+                      class="nhsuk-table__header"
+                      scope="col"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="nhsuk-table__body"
                 >
-                  <td
-                    class="nhsuk-table__cell"
+                  <tr
+                    class="nhsuk-table__row"
                   >
-                    <svg
-                      fill="none"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      width="28"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <td
+                      class="nhsuk-table__cell"
                     >
-                      <path
-                        clip-rule="evenodd"
-                        d="M23.242 25.8876H6.06869C5.65632 25.8876 5.32202 25.5533 5.32202 25.1409V3.30093C5.32202 2.88855 5.65632 2.55426 6.06869 2.55426H18.832V6.80746C18.832 7.30643 19.2365 7.71093 19.7355 7.71093H23.9887V25.1409C23.9887 25.5533 23.6544 25.8876 23.242 25.8876ZM19.322 6.47426V2.55426L23.9887 7.22093H20.0687C19.6563 7.22093 19.322 6.88663 19.322 6.47426ZM12.6114 7.94453C13.2732 7.48714 14.0553 7.2354 14.8596 7.22092V11.3043H19.0165C19.0163 12.1087 18.7786 12.8952 18.3331 13.565C17.8876 14.2348 17.2541 14.7581 16.5123 15.0692C15.7704 15.3803 14.9532 15.4654 14.1632 15.3137C13.3731 15.162 12.6455 14.7803 12.0716 14.2166C11.4978 13.6529 11.1032 12.9322 10.9374 12.145C10.7717 11.3578 10.8421 10.5392 11.1399 9.79189C11.4378 9.0446 11.9497 8.40193 12.6114 7.94453ZM10.2004 21.9315V18.424H11.3369C11.7676 18.424 12.0483 18.4415 12.1791 18.4766C12.3801 18.5292 12.5483 18.6441 12.6839 18.8211C12.8195 18.9966 12.8873 19.2239 12.8873 19.503C12.8873 19.7183 12.8482 19.8994 12.77 20.0461C12.6919 20.1929 12.5922 20.3085 12.471 20.393C12.3513 20.476 12.2293 20.531 12.1049 20.5581C11.9358 20.5916 11.691 20.6084 11.3704 20.6084H10.9086V21.9315H10.2004ZM10.9086 19.0173V20.0126H11.2962C11.5753 20.0126 11.762 19.9943 11.8561 19.9576C11.9502 19.9209 12.0236 19.8635 12.0762 19.7853C12.1304 19.7072 12.1575 19.6163 12.1575 19.5126C12.1575 19.385 12.1201 19.2797 12.0451 19.1968C11.9701 19.1138 11.8752 19.062 11.7604 19.0412C11.6758 19.0253 11.506 19.0173 11.2508 19.0173H10.9086ZM13.4687 21.9315V18.424H14.6052C15.0358 18.424 15.3165 18.4415 15.4473 18.4766C15.6483 18.5292 15.8166 18.6441 15.9522 18.8211C16.0878 18.9966 16.1555 19.2239 16.1555 19.503C16.1555 19.7183 16.1165 19.8994 16.0383 20.0461C15.9601 20.1929 15.8605 20.3085 15.7392 20.393C15.6196 20.476 15.4976 20.531 15.3732 20.5581C15.2041 20.5916 14.9593 20.6084 14.6386 20.6084H14.1769V21.9315H13.4687ZM14.1769 19.0173V20.0126H14.5645C14.8436 20.0126 15.0302 19.9943 15.1243 19.9576C15.2184 19.9209 15.2918 19.8635 15.3445 19.7853C15.3987 19.7072 15.4258 19.6163 15.4258 19.5126C15.4258 19.385 15.3883 19.2797 15.3134 19.1968C15.2384 19.1138 15.1435 19.062 15.0286 19.0412C14.9441 19.0253 14.7742 19.0173 14.519 19.0173H14.1769ZM17.5265 19.0173V21.9315H18.2347V19.0173H19.2731V18.424H16.4857V19.0173H17.5265ZM16.0834 7.32131H16.0367V10.1376H18.8986C18.8987 9.76785 18.826 9.40165 18.6846 9.05996C18.5432 8.71828 18.3359 8.4078 18.0744 8.14626C17.813 7.88472 17.5026 7.67726 17.161 7.53571C16.8194 7.39416 16.4532 7.32131 16.0834 7.32131Z"
-                        fill="#FFB81C"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                  </td>
-                  <td
-                    class="nhsuk-table__cell"
-                  >
-                    <a
-                      href="/workspaces/1/folders/f7f24c43-d3f0-4720-8995-b087316f6b44/files/c12c2d6f-2669-4f82-8351-620ded995abb"
-                    >
-                      <span
-                        class="c33"
+                      <svg
+                        fill="none"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        London Region NHS England Safeguarding Annual Review
-                      </span>
-                    </a>
-                  </td>
-                  <td
-                    class="nhsuk-table__cell"
-                  >
-                    Oct 6, 2020
-                  </td>
-                  <td
-                    class="nhsuk-table__cell"
-                  >
-                    <a
-                      style="display: inline-block; padding-right: 8px;"
+                        <path
+                          clip-rule="evenodd"
+                          d="M23.242 25.8876H6.06869C5.65632 25.8876 5.32202 25.5533 5.32202 25.1409V3.30093C5.32202 2.88855 5.65632 2.55426 6.06869 2.55426H18.832V6.80746C18.832 7.30643 19.2365 7.71093 19.7355 7.71093H23.9887V25.1409C23.9887 25.5533 23.6544 25.8876 23.242 25.8876ZM19.322 6.47426V2.55426L23.9887 7.22093H20.0687C19.6563 7.22093 19.322 6.88663 19.322 6.47426ZM12.6114 7.94453C13.2732 7.48714 14.0553 7.2354 14.8596 7.22092V11.3043H19.0165C19.0163 12.1087 18.7786 12.8952 18.3331 13.565C17.8876 14.2348 17.2541 14.7581 16.5123 15.0692C15.7704 15.3803 14.9532 15.4654 14.1632 15.3137C13.3731 15.162 12.6455 14.7803 12.0716 14.2166C11.4978 13.6529 11.1032 12.9322 10.9374 12.145C10.7717 11.3578 10.8421 10.5392 11.1399 9.79189C11.4378 9.0446 11.9497 8.40193 12.6114 7.94453ZM10.2004 21.9315V18.424H11.3369C11.7676 18.424 12.0483 18.4415 12.1791 18.4766C12.3801 18.5292 12.5483 18.6441 12.6839 18.8211C12.8195 18.9966 12.8873 19.2239 12.8873 19.503C12.8873 19.7183 12.8482 19.8994 12.77 20.0461C12.6919 20.1929 12.5922 20.3085 12.471 20.393C12.3513 20.476 12.2293 20.531 12.1049 20.5581C11.9358 20.5916 11.691 20.6084 11.3704 20.6084H10.9086V21.9315H10.2004ZM10.9086 19.0173V20.0126H11.2962C11.5753 20.0126 11.762 19.9943 11.8561 19.9576C11.9502 19.9209 12.0236 19.8635 12.0762 19.7853C12.1304 19.7072 12.1575 19.6163 12.1575 19.5126C12.1575 19.385 12.1201 19.2797 12.0451 19.1968C11.9701 19.1138 11.8752 19.062 11.7604 19.0412C11.6758 19.0253 11.506 19.0173 11.2508 19.0173H10.9086ZM13.4687 21.9315V18.424H14.6052C15.0358 18.424 15.3165 18.4415 15.4473 18.4766C15.6483 18.5292 15.8166 18.6441 15.9522 18.8211C16.0878 18.9966 16.1555 19.2239 16.1555 19.503C16.1555 19.7183 16.1165 19.8994 16.0383 20.0461C15.9601 20.1929 15.8605 20.3085 15.7392 20.393C15.6196 20.476 15.4976 20.531 15.3732 20.5581C15.2041 20.5916 14.9593 20.6084 14.6386 20.6084H14.1769V21.9315H13.4687ZM14.1769 19.0173V20.0126H14.5645C14.8436 20.0126 15.0302 19.9943 15.1243 19.9576C15.2184 19.9209 15.2918 19.8635 15.3445 19.7853C15.3987 19.7072 15.4258 19.6163 15.4258 19.5126C15.4258 19.385 15.3883 19.2797 15.3134 19.1968C15.2384 19.1138 15.1435 19.062 15.0286 19.0412C14.9441 19.0253 14.7742 19.0173 14.519 19.0173H14.1769ZM17.5265 19.0173V21.9315H18.2347V19.0173H19.2731V18.424H16.4857V19.0173H17.5265ZM16.0834 7.32131H16.0367V10.1376H18.8986C18.8987 9.76785 18.826 9.40165 18.6846 9.05996C18.5432 8.71828 18.3359 8.4078 18.0744 8.14626C17.813 7.88472 17.5026 7.67726 17.161 7.53571C16.8194 7.39416 16.4532 7.32131 16.0834 7.32131Z"
+                          fill="#FFB81C"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </td>
+                    <td
+                      class="nhsuk-table__cell"
                     >
-                      Download file
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      <a
+                        href="/workspaces/1/folders/f7f24c43-d3f0-4720-8995-b087316f6b44/files/c12c2d6f-2669-4f82-8351-620ded995abb"
+                      >
+                        <span>
+                          London Region NHS England Safeguarding Annual Review
+                        </span>
+                      </a>
+                    </td>
+                    <td
+                      class="nhsuk-table__cell c35"
+                    >
+                      Oct 6, 2020
+                    </td>
+                    <td
+                      class="nhsuk-table__cell"
+                    >
+                      <a
+                        class="c36"
+                        href="/"
+                      >
+                        Download file
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
