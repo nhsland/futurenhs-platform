@@ -361,8 +361,8 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   background-color: rgb(255,255,255);
 }
 
@@ -452,6 +452,13 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+  }
+}
+
+@media (min-width:641px) {
+  .c10 {
+    padding-left: 40px;
+    padding-right: 66px;
   }
 }
 
@@ -1374,8 +1381,8 @@ exports[`withUrql renders matching snapshot 1`] = `
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   background-color: rgb(255,255,255);
 }
 
@@ -1490,6 +1497,13 @@ exports[`withUrql renders matching snapshot 1`] = `
   .c10 {
     display: block;
     width: 360px;
+  }
+}
+
+@media (min-width:641px) {
+  .c24 {
+    padding-left: 40px;
+    padding-right: 66px;
   }
 }
 

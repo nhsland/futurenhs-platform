@@ -22,10 +22,14 @@ const PageContent = styled.section`
   flex-grow: 3;
   min-height: 100vh;
   padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 16px;
+  padding-right: 16px;
   ${({ theme }) => `
-  background-color: ${theme.colorNhsukWhite};
+    background-color: ${theme.colorNhsukWhite};
+    @media (min-width: ${theme.mqBreakpoints.tablet}) {
+      padding-left: 40px;
+      padding-right: 66px;
+    }
   `}
 `;
 
