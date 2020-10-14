@@ -303,9 +303,9 @@ pub struct User {
 
 #[cfg(not(test))]
 impl User {
-    pub async fn find_by_auth_id(auth_id: &Uuid, pool: &PgPool) -> Result<Option<User>> {
+    pub async fn find_by_auth_id(auth_id: &Uuid, pool: &PgPool) -> Result<User> {
         let user = sqlx::query_file_as!(User, "sql/users/find_by_auth_id.sql", auth_id)
-            .fetch_optional(pool)
+            .fetch_one(pool)
             .await?;
 
         Ok(user)
@@ -329,13 +329,13 @@ impl User {
 
 #[cfg(test)]
 impl User {
-    pub async fn find_by_auth_id(auth_id: &Uuid, _pool: &PgPool) -> Result<Option<User>> {
-        Ok(Some(User {
+    pub async fn find_by_auth_id(auth_id: &Uuid, _pool: &PgPool) -> Result<User> {
+        Ok(User {
             id: Uuid::new_v4(),
             auth_id: auth_id.clone(),
             name: "Test".to_string(),
             is_platform_admin: true,
-        }))
+        })
     }
 
     pub async fn get_or_create(auth_id: &Uuid, name: &str, _pool: &PgPool) -> Result<User> {

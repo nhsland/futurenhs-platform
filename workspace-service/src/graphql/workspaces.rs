@@ -128,9 +128,7 @@ async fn create_workspace(
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
-    let user = db::User::find_by_auth_id(auth_id, pool)
-        .await?
-        .ok_or_else(|| anyhow::anyhow!("Could not find user with auth_id {}.", auth_id))?;
+    let user = db::User::find_by_auth_id(auth_id, pool).await?;
     if !user.is_platform_admin {
         Err(anyhow::anyhow!(
             "User with auth_id is not a platform admin. No workspace for you."
