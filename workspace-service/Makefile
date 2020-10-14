@@ -68,6 +68,10 @@ migrate: ## Run migrations on current cluster
 prepare: migrate-local ## Prepares new version of sqlx-data.json
 	cargo clean --package workspace_service && DATABASE_URL=$(localdb) cargo sqlx prepare -- --bin workspace_service
 
+.PHONY: default-folders-local
+default-folders-local: ## make folders locally (requires you to be running `make run-local` in another tab).
+	./scripts/create-workspace-if-needed.sh local
+
 .PHONY: graphql-schema.json
 graphql-schema.json: 
 	cargo run -- --generate-schema-only >$@
