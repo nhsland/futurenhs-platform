@@ -164,7 +164,7 @@ mod test {
         let workspace = create_workspace(
             "title",
             "description",
-            &Uuid::parse_str("0c8109ef-c247-4c41-b679-000000000000")?,
+            &Uuid::parse_str("feedface-0000-0000-0000-000000000000")?,
             &pool,
             &event_client,
         )

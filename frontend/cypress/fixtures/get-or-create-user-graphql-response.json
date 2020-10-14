@@ -3,7 +3,7 @@
     "getOrCreateUser": {
       "id": "073d9a5d-33a7-4a0f-ae78-ce93f48c6ae3",
       "name": "Local User",
-      "authId": "0c8109ef-c247-4c41-b679-000000000000",
+      "authId": "feedface-0000-0000-0000-000000000000",
       "isPlatformAdmin": true,
       "__typename": "User"
     }
