@@ -54,7 +54,7 @@ struct Mutation(
 );
 
 #[derive(Debug)]
-struct RequestingUser {
+pub struct RequestingUser {
     auth_id: Uuid,
 }
 

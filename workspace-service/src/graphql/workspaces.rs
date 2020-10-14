@@ -167,9 +167,7 @@ mod test {
         let workspace = create_workspace(
             "title",
             "description",
-            &RequestingUser {
-                auth_id: Uuid::parse_str("feedface-0000-0000-0000-000000000000")?,
-            },
+            &mock_admin_requesting_user(),
             &pool,
             &event_client,
         )
@@ -182,6 +180,27 @@ mod test {
         assert!(events
             .try_iter()
             .any(|e| matches!(e.data, EventData::WorkspaceCreated(_))));
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn creating_workspace_as_non_admin_fails() -> anyhow::Result<()> {
+        let pool = mock_connection_pool().await?;
+        let (events, event_client) = mock_event_emitter();
+
+        let result = create_workspace(
+            "title",
+            "description",
+            &mock_unprivileged_requesting_user(),
+            &pool,
+            &event_client,
+        )
+        .await;
+
+        assert_eq!(result.err().unwrap().0, "User with auth_id deadbeef-0000-0000-0000-000000000000 is not a platform admin. No workspace for you.");
+
+        assert_eq!(events.try_iter().collect::<Vec<_>>().len(), 0);
 
         Ok(())
     }

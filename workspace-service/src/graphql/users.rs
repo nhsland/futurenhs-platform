@@ -55,6 +55,7 @@ impl UsersMutation {
             .await?
             .into())
     }
+
     #[field(desc = "Update a user (returns the user)")]
     async fn update_user(
         &self,

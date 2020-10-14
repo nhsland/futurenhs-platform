@@ -3,6 +3,9 @@ use fnhs_event_models::EventClient;
 use sqlx::PgPool;
 use std::sync::mpsc::{sync_channel, Receiver};
 use std::sync::Arc;
+use uuid::Uuid;
+
+use super::RequestingUser;
 
 /// Should explode if you actually try to use it.
 pub async fn mock_connection_pool() -> anyhow::Result<PgPool> {
@@ -15,4 +18,16 @@ pub async fn mock_connection_pool() -> anyhow::Result<PgPool> {
 pub fn mock_event_emitter() -> (Receiver<Event>, EventClient) {
     let (sender, receiver) = sync_channel(1000);
     (receiver, EventClient::with_publisher(Arc::new(sender)))
+}
+
+pub fn mock_admin_requesting_user() -> RequestingUser {
+    RequestingUser {
+        auth_id: Uuid::parse_str("feedface-0000-0000-0000-000000000000").unwrap(),
+    }
+}
+
+pub fn mock_unprivileged_requesting_user() -> RequestingUser {
+    RequestingUser {
+        auth_id: Uuid::parse_str("deadbeef-0000-0000-0000-000000000000").unwrap(),
+    }
 }

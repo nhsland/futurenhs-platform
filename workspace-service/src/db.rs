@@ -334,7 +334,7 @@ impl User {
             id: Uuid::new_v4(),
             auth_id: auth_id.clone(),
             name: "Test".to_string(),
-            is_platform_admin: true,
+            is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
         })
     }
 
@@ -343,7 +343,7 @@ impl User {
             id: Uuid::new_v4(),
             auth_id: auth_id.clone(),
             name: name.to_string(),
-            is_platform_admin: true,
+            is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
         })
     }
 
