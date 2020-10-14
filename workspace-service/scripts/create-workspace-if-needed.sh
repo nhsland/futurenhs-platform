@@ -72,6 +72,7 @@ response=$(
 		--show-error \
 		-XPOST \
 		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
+		-H 'x-user-auth-id: feedface-0000-0000-0000-000000000000' \
 		-H 'Content-Type: application/json' \
 		-d "$body"
 )
