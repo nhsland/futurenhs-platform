@@ -184,10 +184,9 @@ async function main() {
       const response = await getFileDownloadUrl({
         fileId: req.params.fileId,
       });
-      const { temporaryBlobStoragePath } = response.file;
+      const temporaryBlobStoragePath = response.fileDownloadUrl;
       res.redirect(307, temporaryBlobStoragePath);
     } catch (err) {
-      console.log(err);
       res.status(500).end();
     }
   });

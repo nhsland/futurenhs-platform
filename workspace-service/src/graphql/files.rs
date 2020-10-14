@@ -1,7 +1,5 @@
 use super::azure;
 use super::db;
-use crate::azure::Config;
-use anyhow::Result;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use url::Url;
@@ -21,10 +19,6 @@ pub struct File {
     pub file_name: String,
     #[field(desc = "The type of the file")]
     pub file_type: String,
-    // #[field(desc = "The blob storage path for the file")]
-    // pub blob_storage_path: String,
-    #[field(desc = "The temporary url to download file from blob storage")]
-    pub temporary_blob_storage_path: String,
     #[field(desc = "The time the file was created")]
     pub created_at: DateTime<Utc>,
     #[field(desc = "The time the file was modified")]
@@ -43,25 +37,19 @@ pub struct NewFile {
     pub temporary_blob_storage_path: String,
 }
 
-impl File {
-    fn from_db(d: db::File, c: &Config) -> Result<Self> {
-        Ok(Self {
+impl From<db::File> for File {
+    fn from(d: db::File) -> Self {
+        Self {
             id: d.id.into(),
             title: d.title,
             description: d.description,
             folder: d.folder.into(),
             file_name: d.file_name,
             file_type: d.file_type,
-            // blob_storage_path: d.blob_storage_path,
-            temporary_blob_storage_path: azure::create_download_sas(
-                c,
-                &d.blob_storage_path.parse()?,
-            )?
-            .into_string(),
             created_at: d.created_at,
             modified_at: d.modified_at,
             deleted_at: d.deleted_at,
-        })
+        }
     }
 }
 
@@ -73,23 +61,18 @@ impl FilesQuery {
     #[field(desc = "Get all Files in a Folder")]
     async fn files_by_folder(&self, context: &Context<'_>, folder: ID) -> FieldResult<Vec<File>> {
         let pool = context.data()?;
-        let azure_config = context.data()?;
         let folder = Uuid::parse_str(&folder)?;
         let files = db::File::find_by_folder(folder, pool).await?;
 
-        Ok(files
-            .into_iter()
-            .map(|file| File::from_db(file, azure_config))
-            .collect::<Result<Vec<_>>>()?)
+        Ok(files.into_iter().map(Into::into).collect())
     }
 
     #[field(desc = "Get file by ID")]
     async fn file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
-        let azure_config = context.data()?;
         let id = Uuid::parse_str(&id)?;
         let file = db::File::find_by_id(id, pool).await?;
-        Ok(File::from_db(file, azure_config)?)
+        Ok(file.into())
     }
 }
 
@@ -122,6 +105,6 @@ impl FilesMutation {
         )
         .await?;
 
-        Ok(File::from_db(file, azure_config)?)
+        Ok(file.into())
     }
 }

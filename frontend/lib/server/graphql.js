@@ -32,9 +32,7 @@ const getFileDownloadUrl = async ({ fileId }) => {
   });
   const query = gql`
     query GetFileToDownload($id: ID!) {
-      file(id: $id) {
-        temporaryBlobStoragePath
-      }
+      fileDownloadUrl(id: $id)
     }
   `;
 
