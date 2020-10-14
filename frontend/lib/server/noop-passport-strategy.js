@@ -12,7 +12,7 @@ util.inherits(Strategy, passport.Strategy);
 Strategy.prototype.authenticate = async function () {
   try {
     // Test value that's an auto generated V4 UUID
-    const testAuthId = "0c8109ef-c247-4c41-b679-000000000000";
+    const testAuthId = "feedface-0000-0000-0000-000000000000";
     const testName = "Local User";
 
     const response = await getOrCreateUser({

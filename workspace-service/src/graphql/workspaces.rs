@@ -75,9 +75,12 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
+        let auth_id = context.data::<super::RequestingUser>()?.auth_id;
+
         create_workspace(
             &new_workspace.title,
             &new_workspace.description,
+            &auth_id,
             pool,
             event_client,
         )
@@ -117,9 +120,18 @@ impl WorkspacesMutation {
 async fn create_workspace(
     title: &str,
     description: &str,
+    auth_id: &Uuid,
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
+    let user = db::User::find_by_auth_id(auth_id, pool).await?;
+    if !user.is_platform_admin {
+        return Err(anyhow::anyhow!(
+            "User with auth_id is not a platform admin. No workspace for you."
+        )
+        .into());
+    }
+
     let workspace: Workspace = db::Workspace::create(title, description, pool)
         .await?
         .into();
@@ -150,9 +162,15 @@ mod test {
         let pool = mock_connection_pool().await?;
         let (events, event_client) = mock_event_emitter();
 
-        let workspace = create_workspace("title", "description", &pool, &event_client)
-            .await
-            .unwrap();
+        let workspace = create_workspace(
+            "title",
+            "description",
+            &Uuid::parse_str("feedface-0000-0000-0000-000000000000")?,
+            &pool,
+            &event_client,
+        )
+        .await
+        .unwrap();
 
         assert_eq!(workspace.title, "title");
         assert_eq!(workspace.description, "description");

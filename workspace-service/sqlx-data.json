@@ -189,6 +189,44 @@
       ]
     }
   },
+  "394f0934d95043c252988e7d90476223a7b1ad35c4366f60c4c81d676d3f0109": {
+    "query": "SELECT * FROM users WHERE auth_id = $1;\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "44b91b63dbd034f908add2ff7a3e9eace7a2cd8f625ca0e180d37f872ce26b22": {
     "query": "UPDATE workspaces\nSET title = COALESCE($2, title),\n    description = COALESCE($3, description)\nWHERE id = $1\nRETURNING id, title, description\n",
     "describe": {

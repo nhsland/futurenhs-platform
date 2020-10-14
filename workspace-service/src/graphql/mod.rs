@@ -16,6 +16,7 @@ use async_graphql::{
 use fnhs_event_models::EventClient;
 use sqlx::PgPool;
 use tide::{http::mime, Request, Response, StatusCode};
+use uuid::Uuid;
 
 #[derive(Clone)]
 pub struct State {
@@ -52,6 +53,11 @@ struct Mutation(
     users::UsersMutation,
 );
 
+#[derive(Debug)]
+struct RequestingUser {
+    auth_id: Uuid,
+}
+
 pub async fn handle_healthz(req: Request<State>) -> tide::Result {
     let response = if !req.state().event_client.is_configured() {
         Response::builder(500).body("invalid event client").build()
@@ -64,7 +70,16 @@ pub async fn handle_healthz(req: Request<State>) -> tide::Result {
 
 pub async fn handle_graphql(req: Request<State>) -> tide::Result {
     let schema = req.state().schema.clone();
-    async_graphql_tide::graphql(req, schema, |query_builder| query_builder).await
+    let auth_id = req
+        .header("x-user-auth-id")
+        .and_then(|values| values.get(0))
+        .and_then(|value| Uuid::parse_str(value.as_str()).ok());
+
+    async_graphql_tide::graphql(req, schema, |query_builder| match auth_id {
+        Some(auth_id) => query_builder.data(RequestingUser { auth_id }),
+        None => query_builder,
+    })
+    .await
 }
 
 pub async fn handle_graphiql(_: Request<State>) -> tide::Result {

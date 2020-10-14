@@ -65,7 +65,7 @@ impl UsersMutation {
         let auth_id = Uuid::parse_str(&update_user.auth_id)?;
 
         Ok(
-            db::User::update(&auth_id, &update_user.is_platform_admin, pool)
+            db::User::update(&auth_id, update_user.is_platform_admin, pool)
                 .await?
                 .into(),
         )
