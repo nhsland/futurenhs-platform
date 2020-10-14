@@ -5,7 +5,7 @@ const opentelemetry = require("@opentelemetry/api");
  * @param {Error} err
  */
 const reportError = (err) => {
-  const tracer = opentelemetry.trace.getTracer("dunno");
+  const tracer = opentelemetry.trace.getTracer("futurenhs.frontend");
   const span = tracer.getCurrentSpan();
 
   // `yarn dev:trace`s ConsoleSpanExporter is not very good at printing exceptions,
