@@ -54,8 +54,8 @@ struct Mutation(
 );
 
 #[derive(Debug)]
-struct IncomingHeaders {
-    auth_id: Option<Uuid>,
+struct RequestingUser {
+    auth_id: Uuid,
 }
 
 pub async fn handle_healthz(req: Request<State>) -> tide::Result {
@@ -73,17 +73,14 @@ pub async fn handle_graphql(req: Request<State>) -> tide::Result {
     let auth_id = req
         .header("x-user-auth-id")
         .and_then(|values| values.get(0))
-        .map(|value| value.as_str().to_string());
-    let headers = match auth_id {
-        Some(auth_id) => IncomingHeaders {
-            auth_id: Some(Uuid::parse_str(&auth_id)?),
-        },
-        None => IncomingHeaders { auth_id: None },
-    };
+        .and_then(|value| Uuid::parse_str(value.as_str()).ok());
 
-    async_graphql_tide::graphql(req, schema, |mut query_builder| {
-        query_builder = query_builder.data(headers);
-        query_builder
+    async_graphql_tide::graphql(req, schema, |query_builder| match auth_id {
+        Some(auth_id) => {
+            let query_builder = query_builder.data(RequestingUser { auth_id });
+            query_builder
+        }
+        None => query_builder,
     })
     .await
 }

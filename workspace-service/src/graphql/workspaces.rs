@@ -75,11 +75,7 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
-        let auth_id = context
-            .data::<super::IncomingHeaders>()?
-            .auth_id
-            .clone()
-            .ok_or_else(|| anyhow::anyhow!("no x-user-auth-id header"))?;
+        let auth_id = context.data::<super::RequestingUser>()?.auth_id;
 
         create_workspace(
             &new_workspace.title,
