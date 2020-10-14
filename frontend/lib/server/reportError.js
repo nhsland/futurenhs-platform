@@ -10,7 +10,9 @@ const reportError = (err) => {
 
   // `yarn dev:trace`s ConsoleSpanExporter is not very good at printing exceptions,
   // so we also add an event describing the error.
-  span?.addEvent(`exception occurred: ${err}`);
+  if (span) {
+    span.addEvent(`exception occurred: ${err}`);
+  }
 
   try {
     // @ts-ignore `yarn dev`s Noopspan doesn't have recordException() at all,
