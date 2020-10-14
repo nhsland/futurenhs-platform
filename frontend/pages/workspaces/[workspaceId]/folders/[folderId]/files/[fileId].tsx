@@ -8,6 +8,7 @@ import {
   FileTable,
 } from "../../../../../../components/FileTable";
 import { Head } from "../../../../../../components/Head";
+import { DeleteIcon } from "../../../../../../components/Icon";
 import { MainHeading } from "../../../../../../components/MainHeading";
 import { Menu } from "../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../components/NavHeader";
@@ -75,7 +76,18 @@ const FileHomepage = () => {
           <PageContent>
             <MainHeading
               withBorder
-              menu={<Menu items={[]} folderId={folderId} />}
+              menu={
+                <Menu
+                  items={[
+                    {
+                      title: "Delete file",
+                      icon: <DeleteIcon />,
+                      href: "#",
+                    },
+                  ]}
+                  folderId={folderId}
+                />
+              }
             >
               {file.data?.file.title || "Loading..."}
             </MainHeading>
