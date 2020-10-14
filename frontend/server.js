@@ -12,6 +12,7 @@ const Noop = require("./lib/server/noop-passport-strategy");
 const url = require("url");
 const { promises: fs } = require("fs");
 const { getOrCreateUser } = require("./lib/server/graphql");
+const { reportError } = require("./lib/server/reportError");
 const { requireEnv } = require("./lib/server/requireEnv");
 
 const setupSessionStore = async () => {
@@ -172,8 +173,7 @@ async function main() {
   server.get("/auth/logout", (req, res) => {
     req.session.destroy((err) => {
       if (err) {
-        console.log("logout error", err);
-        throw err;
+        reportError(err);
       }
       res.redirect("/");
     });
