@@ -3,20 +3,13 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { FolderMenuButton } from ".";
-import {
-  DeleteIcon,
-  EditIcon,
-  LockIcon,
-  MeatballIcon,
-  MoveIcon,
-  UploadIcon,
-} from "../Icon";
+import { MeatballIcon } from "../Icon";
 import FolderMenuList from "./FolderMenuList";
 import { MenuItem } from "./FolderMenuListItem";
 
 interface Props {
   hiddenUntilHover?: boolean;
-  workspaceId: string;
+  items: MenuItem[];
   folderId: string;
 }
 
@@ -55,7 +48,7 @@ const Container = styled.div`
   `}
 `;
 
-const FolderMenu: FC<Props> = ({ hiddenUntilHover, workspaceId, folderId }) => {
+const FolderMenu: FC<Props> = ({ hiddenUntilHover, items }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const container = React.useRef<HTMLDivElement>(null);
 
@@ -73,33 +66,7 @@ const FolderMenu: FC<Props> = ({ hiddenUntilHover, workspaceId, folderId }) => {
     return () => window.removeEventListener("click", pageClickEvent);
   }, [menuOpen]);
 
-  const items: MenuItem[] = [
-    {
-      title: "Upload file to this folder",
-      icon: <UploadIcon />,
-      href: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
-    },
-    {
-      title: "Edit folder details",
-      icon: <EditIcon />,
-      href: "#",
-    },
-    {
-      title: "Move folder",
-      icon: <MoveIcon />,
-      href: "#",
-    },
-    {
-      title: "View folder permissions",
-      icon: <LockIcon />,
-      href: "#",
-    },
-    {
-      title: "Delete folder",
-      icon: <DeleteIcon />,
-      href: "#",
-    },
-  ];
+  console.log(items ? items : "No items yet");
 
   return (
     <>

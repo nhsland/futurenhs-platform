@@ -7,6 +7,7 @@ import {
   MobileFileList,
   FileTable,
 } from "../../../../../../components/FileTable";
+import { FolderMenu } from "../../../../../../components/FolderMenu";
 import { Head } from "../../../../../../components/Head";
 import { MainHeading } from "../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../components/NavHeader";
@@ -72,7 +73,10 @@ const FileHomepage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder>
+            <MainHeading
+              withBorder
+              menu={<FolderMenu items={[]} folderId={folderId} />}
+            >
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <h2>Description</h2>
