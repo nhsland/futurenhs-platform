@@ -49,15 +49,21 @@ fi
 ./create-folder-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Good News"
 ./create-folder-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "NHS COVID-19 Data Store"
 
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Coronavirus Numbers.csv"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Trust List.doc"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Infographic.png"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Surgery.mov"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Leaflet.pdf"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Motivational Speech.ppt"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Encryption Keys.txt"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Backup.zip"
+# `make run-local` cannot upload files because it has no access to azure blob storage.
+# `make run` could theoretically upload files, but we're reaching the limit of how complex
+# I'm comfortable making my bash scripts. We should really make a proper migration script
+# in a proper language that does this properly.
+if false; then
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Coronavirus Numbers.csv"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Trust List.doc"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Infographic.png"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Surgery.mov"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Leaflet.pdf"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Motivational Speech.ppt"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Encryption Keys.txt"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Data" "Backup.zip"
 
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "London Region NHS England Safeguarding Annual Review.ppt"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "Midlands & East Region Safeguarding Annual Report.pdf"
-./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "South East Region Safeguarding Annual Report.doc"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "London Region NHS England Safeguarding Annual Review.ppt"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "Midlands & East Region Safeguarding Annual Report.pdf"
+	./create-file-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "Evidence" "South East Region Safeguarding Annual Report.doc"
+fi
