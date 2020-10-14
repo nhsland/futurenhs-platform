@@ -291,6 +291,14 @@ impl File {
 
         Ok(file)
     }
+
+    pub async fn delete(id: Uuid, pool: &PgPool) -> Result<File> {
+        let file = sqlx::query_file_as!(File, "sql/files/delete.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(file)
+    }
 }
 
 #[derive(Clone)]

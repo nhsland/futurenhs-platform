@@ -435,6 +435,80 @@
       ]
     }
   },
+  "af4da48cd02e22e50be4f4b826c1dac34e3aa2d3d339b0722b840527148d179f": {
+    "query": "DELETE FROM files\nWHERE id = $1\nRETURNING *\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 8,
+          "name": "modified_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "deleted_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "bc9295f39b14cbd41e34a3633acb31d0d727753dc9803cb7fb7325fb2665b267": {
     "query": "INSERT INTO workspaces (title, description)\nVALUES ($1, $2)\nRETURNING id, title, description\n",
     "describe": {
@@ -584,6 +658,32 @@
         false,
         false,
         true
+      ]
+    }
+  },
+  "d594e512c397a9e8d62d6425a703f294bc9392fd7cf9f26b3d15c7e282584df1": {
+    "query": "DELETE FROM files\nWHERE id = $1\nRETURNING id, title\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false
       ]
     }
   },
