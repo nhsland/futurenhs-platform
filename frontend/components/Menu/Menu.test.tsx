@@ -7,7 +7,7 @@ import theme from "../../lib/fixtures/theme.json";
 import { UploadIcon } from "../Icon";
 import Menu from "./Menu";
 
-describe("<FolderMenu/>", () => {
+describe(Menu, () => {
   const workspaceId = "workspace-id";
   const folderId = "folder-id";
 
