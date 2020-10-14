@@ -111,10 +111,7 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading
-              withBorder
-              menu={<Menu folderId={folderId} items={items} />}
-            >
+            <MainHeading withBorder menu={<Menu items={items} />}>
               {folder.data?.folder.title || ""}
             </MainHeading>
             <p>{folder.data?.folder.description}</p>

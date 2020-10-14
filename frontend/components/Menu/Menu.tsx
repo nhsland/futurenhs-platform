@@ -10,7 +10,6 @@ import { MenuItem } from "./MenuListItem";
 interface Props {
   hiddenUntilHover?: boolean;
   items: MenuItem[];
-  folderId: string;
 }
 
 const Container = styled.div`
@@ -26,24 +25,9 @@ const Container = styled.div`
   }
 
   ${({ theme }) => `
-    .folder-menu-item {
-      display: none;
-
-      a {
-        color: ${theme.colorNhsukWhite};
-        &:focus {
-          color: ${theme.colorNhsukBlack};
-        }
-      }
-    }
-
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
       justify-content: space-between;
       display: flex;
-
-      .folder-menu-item {
-        display: flex;
-      }
     }
   `}
 `;

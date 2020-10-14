@@ -85,7 +85,6 @@ const FileHomepage = () => {
                       href: "#",
                     },
                   ]}
-                  folderId={folderId}
                 />
               }
             >

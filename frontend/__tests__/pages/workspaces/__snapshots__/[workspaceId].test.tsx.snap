@@ -245,18 +245,6 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   top: -7px;
 }
 
-.c17 .folder-menu-item {
-  display: none;
-}
-
-.c17 .folder-menu-item a {
-  color: rgb(255,255,255);
-}
-
-.c17 .folder-menu-item a:focus {
-  color: rgb(33,43,50);
-}
-
 .c19 {
   display: inline-block;
   position: relative;
@@ -589,13 +577,6 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-
-  .c17 .folder-menu-item {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

@@ -152,13 +152,7 @@ const Navigation: FC<Props> = ({
                   folder.id === activeFolder ? "folder current page" : "folder"
                 }
                 href={`/workspaces/${workspaceId}/folders/${folder.id}`}
-                menu={
-                  <Menu
-                    folderId={folder.id}
-                    items={items}
-                    hiddenUntilHover={true}
-                  />
-                }
+                menu={<Menu items={items} hiddenUntilHover={true} />}
               />
             );
           })}
