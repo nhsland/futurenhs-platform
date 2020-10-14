@@ -75,6 +75,7 @@ fi
 FILE_TYPE=$(echo $FILE_NAME | sed -e 's/^.*[.]//' -e s/png/img/)
 FILE_TITLE=$(echo $FILE_NAME | sed -e 's/[.][^.]*$//')
 
+# FIXME: This doesn't actually work. Let's rip this out and do this in a proper language.
 body=$(
 	jq \
 		--null-input \
