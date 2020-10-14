@@ -2,7 +2,33 @@
 
 exports[`withUrql renders loading state matching snapshot 1`] = `
 <DocumentFragment>
-  .c13 {
+  .c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c12 {
+  margin-bottom: 23px;
+}
+
+.c19 {
+  margin-top: 0px;
+  margin-bottom: 25px;
+  color: rgb(76,98,114);
+  border-bottom: 1px solid rgb(76,98,114);
+}
+
+.c13 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -120,32 +146,6 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.c11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: baseline;
-  -webkit-box-align: baseline;
-  -ms-flex-align: baseline;
-  align-items: baseline;
-}
-
-.c12 {
-  margin-bottom: 23px;
-}
-
-.c19 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
 }
 
 .c1 {
@@ -830,6 +830,32 @@ exports[`withUrql renders matching snapshot 1`] = `
   top: 34px;
 }
 
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c26 {
+  margin-bottom: 23px;
+}
+
+.c27 {
+  margin-top: 0px;
+  margin-bottom: 25px;
+  color: rgb(76,98,114);
+  border-bottom: 1px solid rgb(76,98,114);
+}
+
 .c18 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -948,32 +974,6 @@ exports[`withUrql renders matching snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: baseline;
-  -webkit-box-align: baseline;
-  -ms-flex-align: baseline;
-  align-items: baseline;
-}
-
-.c26 {
-  margin-bottom: 23px;
-}
-
-.c27 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
 }
 
 .c1 {

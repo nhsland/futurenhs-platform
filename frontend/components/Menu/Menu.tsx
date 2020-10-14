@@ -2,10 +2,10 @@ import React, { FC, useEffect, useState } from "react";
 
 import styled from "styled-components";
 
-import { FolderMenuButton } from ".";
+import { MenuButton } from ".";
 import { MeatballIcon } from "../Icon";
-import FolderMenuList from "./FolderMenuList";
-import { MenuItem } from "./FolderMenuListItem";
+import MenuList from "./MenuList";
+import { MenuItem } from "./MenuListItem";
 
 interface Props {
   hiddenUntilHover?: boolean;
@@ -48,7 +48,7 @@ const Container = styled.div`
   `}
 `;
 
-const FolderMenu: FC<Props> = ({ hiddenUntilHover, items }) => {
+const Menu: FC<Props> = ({ hiddenUntilHover, items }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const container = React.useRef<HTMLDivElement>(null);
 
@@ -66,26 +66,24 @@ const FolderMenu: FC<Props> = ({ hiddenUntilHover, items }) => {
     return () => window.removeEventListener("click", pageClickEvent);
   }, [menuOpen]);
 
-  console.log(items ? items : "No items yet");
-
   return (
     <>
       <Container ref={container}>
-        <FolderMenuButton
+        <MenuButton
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
           hiddenUntilHover={hiddenUntilHover || false}
         >
           <MeatballIcon />
-        </FolderMenuButton>
+        </MenuButton>
         {menuOpen && (
-          <FolderMenuList hiddenUntilHover={hiddenUntilHover || false}>
+          <MenuList hiddenUntilHover={hiddenUntilHover || false}>
             {items}
-          </FolderMenuList>
+          </MenuList>
         )}
       </Container>
     </>
   );
 };
 
-export default FolderMenu;
+export default Menu;

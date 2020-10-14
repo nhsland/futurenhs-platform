@@ -7,9 +7,9 @@ import {
   MobileFileList,
   FileTable,
 } from "../../../../../../components/FileTable";
-import { FolderMenu } from "../../../../../../components/FolderMenu";
 import { Head } from "../../../../../../components/Head";
 import { MainHeading } from "../../../../../../components/MainHeading";
+import { Menu } from "../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../components/PageLayout";
@@ -75,7 +75,7 @@ const FileHomepage = () => {
           <PageContent>
             <MainHeading
               withBorder
-              menu={<FolderMenu items={[]} folderId={folderId} />}
+              menu={<Menu items={[]} folderId={folderId} />}
             >
               {file.data?.file.title || "Loading..."}
             </MainHeading>

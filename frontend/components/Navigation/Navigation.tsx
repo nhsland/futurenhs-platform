@@ -4,8 +4,8 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { useFoldersByWorkspaceQuery } from "../../lib/generated/graphql";
-import { FolderMenu, MenuItem } from "../FolderMenu";
 import { DeleteIcon, EditIcon, LockIcon, MoveIcon, UploadIcon } from "../Icon";
+import { Menu, MenuItem } from "../Menu";
 import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
 
@@ -153,7 +153,7 @@ const Navigation: FC<Props> = ({
                 }
                 href={`/workspaces/${workspaceId}/folders/${folder.id}`}
                 menu={
-                  <FolderMenu
+                  <Menu
                     folderId={folder.id}
                     items={items}
                     hiddenUntilHover={true}

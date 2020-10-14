@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { MobileFileList, FileTable } from "../../../../../components/FileTable";
-import { FolderMenu, MenuItem } from "../../../../../components/FolderMenu";
 import { Head } from "../../../../../components/Head";
 import {
   DeleteIcon,
@@ -15,6 +14,7 @@ import {
   UploadIcon,
 } from "../../../../../components/Icon";
 import { MainHeading } from "../../../../../components/MainHeading";
+import { Menu, MenuItem } from "../../../../../components/Menu";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
@@ -113,7 +113,7 @@ const FolderHomepage: NextPage = () => {
           <PageContent>
             <MainHeading
               withBorder
-              menu={<FolderMenu folderId={folderId} items={items} />}
+              menu={<Menu folderId={folderId} items={items} />}
             >
               {folder.data?.folder.title || ""}
             </MainHeading>
