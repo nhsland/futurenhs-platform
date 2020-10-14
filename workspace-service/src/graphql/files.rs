@@ -19,8 +19,6 @@ pub struct File {
     pub file_name: String,
     #[field(desc = "The type of the file")]
     pub file_type: String,
-    #[field(desc = "The blob storage path for the file")]
-    pub blob_storage_path: String,
     #[field(desc = "The time the file was created")]
     pub created_at: DateTime<Utc>,
     #[field(desc = "The time the file was modified")]
@@ -48,7 +46,6 @@ impl From<db::File> for File {
             folder: d.folder.into(),
             file_name: d.file_name,
             file_type: d.file_type,
-            blob_storage_path: d.blob_storage_path,
             created_at: d.created_at,
             modified_at: d.modified_at,
             deleted_at: d.deleted_at,
@@ -66,6 +63,7 @@ impl FilesQuery {
         let pool = context.data()?;
         let folder = Uuid::parse_str(&folder)?;
         let files = db::File::find_by_folder(folder, pool).await?;
+
         Ok(files.into_iter().map(Into::into).collect())
     }
 
@@ -87,9 +85,7 @@ impl FilesMutation {
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
         let pool = context.data()?;
         let azure_config = context.data()?;
-
         let folder = Uuid::parse_str(&new_file.folder)?;
-
         let destination = azure::copy_blob_from_url(
             &Url::parse(&new_file.temporary_blob_storage_path)?,
             azure_config,
@@ -98,7 +94,7 @@ impl FilesMutation {
 
         // TODO: add event.
 
-        let file: File = db::File::create(
+        let file = db::File::create(
             &new_file.title,
             &new_file.description,
             &folder,
@@ -107,9 +103,8 @@ impl FilesMutation {
             &destination,
             pool,
         )
-        .await?
-        .into();
+        .await?;
 
-        Ok(file)
+        Ok(file.into())
     }
 }

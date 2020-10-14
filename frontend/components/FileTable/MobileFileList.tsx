@@ -67,7 +67,7 @@ const FileListItem = ({ file, workspaceId, titleLink }: ListItemProps) => {
           <h4>Last modified</h4>
           <p>{modifiedAt}</p>
         </div>
-        <Link href="">
+        <Link href={`/workspaces/${workspaceId}/download/${file.id}`} passHref>
           <a>Download file</a>
         </Link>
       </RHContainer>

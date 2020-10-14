@@ -85,7 +85,10 @@ export const FileTable = ({
                 </Table.Cell>
                 <ModifiedDate>{modifiedAt}</ModifiedDate>
                 <Table.Cell>
-                  <Link href="" passHref>
+                  <Link
+                    href={`/workspaces/${workspaceId}/download/${file.id}`}
+                    passHref
+                  >
                     <DownloadFile>Download file</DownloadFile>
                   </Link>
                 </Table.Cell>

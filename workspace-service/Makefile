@@ -10,7 +10,11 @@ default: ## Run locally
 
 .PHONY: run
 run: ## Fetch DB URL and run locally
-	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) $(MAKE)
+	DATABASE_URL=$$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D) \
+	UPLOAD_CONTAINER_URL=$$(kubectl get configmap -n workspace-service files-storage-account -o jsonpath='{.data.upload_container_id}') \
+	FILES_CONTAINER_URL=$$(kubectl get configmap -n workspace-service files-storage-account -o jsonpath='{.data.files_container_id}') \
+	FILE_STORAGE_ACCESS_KEY=$$(kubectl get secret -n workspace-service files-storage-account -o jsonpath='{.data.primary_access_key}' | base64 -D) \
+	$(MAKE)
 
 .PHONY: run-local
 run-local: migrate-local ## Fetch DB URL and run locally. Does not have file support yet.
@@ -73,7 +77,7 @@ default-folders-local: ## make folders locally (requires you to be running `make
 	./scripts/create-workspace-if-needed.sh local
 
 .PHONY: graphql-schema.json
-graphql-schema.json: 
+graphql-schema.json:
 	cargo run -- --generate-schema-only >$@
 
 .PHONY: help

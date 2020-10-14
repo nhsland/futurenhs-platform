@@ -1906,7 +1906,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                 </p>
               </div>
               <a
-                href="/"
+                href="/workspaces/1/download/c12c2d6f-2669-4f82-8351-620ded995abb"
               >
                 Download file
               </a>
@@ -2005,7 +2005,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                     >
                       <a
                         class="c36"
-                        href="/"
+                        href="/workspaces/1/download/c12c2d6f-2669-4f82-8351-620ded995abb"
                       >
                         Download file
                       </a>
