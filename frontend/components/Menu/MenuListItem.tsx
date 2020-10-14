@@ -3,13 +3,13 @@ import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-interface FolderListItemProps {
+interface ListItemProps {
   className?: string;
   href: string;
   children: ReactNode;
 }
 
-const FolderListItem = ({ className, href, children }: FolderListItemProps) => {
+const ListItem = ({ className, href, children }: ListItemProps) => {
   return (
     <li className={className}>
       <Link href={href} passHref>
@@ -19,7 +19,7 @@ const FolderListItem = ({ className, href, children }: FolderListItemProps) => {
   );
 };
 
-const StyledListItem = styled(FolderListItem)`
+const StyledListItem = styled(ListItem)`
   list-style: none;
   margin: 0;
   box-shadow: inset 0px -1px 0px #e8edee;
@@ -63,16 +63,12 @@ export type MenuItem = {
   href: string;
 };
 
-interface FolderMenuListItemProps extends ComponentPropsWithoutRef<"li"> {
+interface MenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
   href: string;
 }
 
-const FolderMenuListItem: FC<FolderMenuListItemProps> = ({
-  title,
-  children,
-  ...props
-}) => {
+const MenuListItem: FC<MenuListItemProps> = ({ title, children, ...props }) => {
   return (
     <StyledListItem {...props}>
       {children}
@@ -81,4 +77,4 @@ const FolderMenuListItem: FC<FolderMenuListItemProps> = ({
   );
 };
 
-export default FolderMenuListItem;
+export default MenuListItem;

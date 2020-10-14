@@ -22,7 +22,7 @@ describe("Upload single file", () => {
     const start = `/workspaces/01bb9a4d-2977-4c43-b28c-2a72b4eda453/folders/d1275f92-bf97-428f-a4ce-b2cac0cc3513`;
     cy.visit(start);
 
-    cy.get('*[class^="FolderMenuButton"]').click();
+    cy.get('*[class^="MenuButton"]').click();
     cy.get("a").contains("Upload file").click();
 
     cy.contains("h1", "FutureNHS Case Study Library");

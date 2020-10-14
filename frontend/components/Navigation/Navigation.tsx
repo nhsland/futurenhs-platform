@@ -4,7 +4,8 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { useFoldersByWorkspaceQuery } from "../../lib/generated/graphql";
-import { FolderMenu } from "../FolderMenu";
+import { DeleteIcon, EditIcon, LockIcon, MoveIcon, UploadIcon } from "../Icon";
+import { Menu, MenuItem } from "../Menu";
 import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
 
@@ -111,27 +112,50 @@ const Navigation: FC<Props> = ({
             href={`/workspaces/${workspaceId}/folders/${createFolder.id}`}
             altText=""
           />
-          {alphabetisedFolders.map((folder) => (
-            <NavListItem
-              active={folder.id === activeFolder}
-              key={folder.id}
-              item={folder}
-              imgSrc={
-                folder.id === activeFolder ? icons["open"] : icons["closed"]
-              }
-              altText={
-                folder.id === activeFolder ? "folder current page" : "folder"
-              }
-              href={`/workspaces/${workspaceId}/folders/${folder.id}`}
-              menu={
-                <FolderMenu
-                  hiddenUntilHover={true}
-                  workspaceId={workspaceId}
-                  folderId={folder.id}
-                />
-              }
-            />
-          ))}
+          {alphabetisedFolders.map((folder) => {
+            const items: MenuItem[] = [
+              {
+                title: "Upload file to this folder",
+                icon: <UploadIcon />,
+                href: `/workspaces/${workspaceId}/folders/${folder.id}/upload-file`,
+              },
+              {
+                title: "Edit folder details",
+                icon: <EditIcon />,
+                href: "#",
+              },
+              {
+                title: "Move folder",
+                icon: <MoveIcon />,
+                href: "#",
+              },
+              {
+                title: "View folder permissions",
+                icon: <LockIcon />,
+                href: "#",
+              },
+              {
+                title: "Delete folder",
+                icon: <DeleteIcon />,
+                href: "#",
+              },
+            ];
+            return (
+              <NavListItem
+                active={folder.id === activeFolder}
+                key={folder.id}
+                item={folder}
+                imgSrc={
+                  folder.id === activeFolder ? icons["open"] : icons["closed"]
+                }
+                altText={
+                  folder.id === activeFolder ? "folder current page" : "folder"
+                }
+                href={`/workspaces/${workspaceId}/folders/${folder.id}`}
+                menu={<Menu items={items} hiddenUntilHover={true} />}
+              />
+            );
+          })}
         </List>
       </NavSection>
     </Nav>

@@ -18,18 +18,6 @@ exports[`<Navigation/> renders correctly 1`] = `
   top: -7px;
 }
 
-.c7 .folder-menu-item {
-  display: none;
-}
-
-.c7 .folder-menu-item a {
-  color: rgb(255,255,255);
-}
-
-.c7 .folder-menu-item a:focus {
-  color: rgb(33,43,50);
-}
-
 .c9 {
   display: inline-block;
   position: relative;
@@ -276,13 +264,6 @@ exports[`<Navigation/> renders correctly 1`] = `
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-
-  .c7 .folder-menu-item {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

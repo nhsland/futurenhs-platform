@@ -34,7 +34,7 @@ const MenuButton: FC<MenuProps> = ({
   );
 };
 
-const FolderMenuButton = styled(MenuButton)`
+const StyledMenuButton = styled(MenuButton)`
   ${({ theme }) => `
     opacity: 1;
     color: ${theme.colorNhsukGrey1};
@@ -77,4 +77,4 @@ const FolderMenuButton = styled(MenuButton)`
   `}
 `;
 
-export default FolderMenuButton;
+export default StyledMenuButton;

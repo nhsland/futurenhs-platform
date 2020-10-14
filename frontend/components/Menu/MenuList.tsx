@@ -3,8 +3,8 @@ import React, { FC, ComponentPropsWithoutRef } from "react";
 import classNames from "classnames";
 import styled from "styled-components";
 
-import { FolderMenuListItem } from ".";
-import { MenuItem } from "./FolderMenuListItem";
+import { MenuListItem } from ".";
+import { MenuItem } from "./MenuListItem";
 
 const Container = styled.div`
   z-index: 1000;
@@ -50,20 +50,16 @@ interface Props extends ComponentPropsWithoutRef<"div"> {
   hiddenUntilHover: boolean;
 }
 
-const FolderMenuList: FC<Props> = ({
-  children,
-  hiddenUntilHover,
-  className,
-}) => {
+const MenuList: FC<Props> = ({ children, hiddenUntilHover, className }) => {
   return (
     <Container className={classNames({ hidden: hiddenUntilHover }, className)}>
       <ul>
         {children?.map((item) => {
           const { icon, ...props } = item;
           return (
-            <FolderMenuListItem key={props.title} {...props}>
+            <MenuListItem key={props.title} {...props}>
               {icon}
-            </FolderMenuListItem>
+            </MenuListItem>
           );
         })}
       </ul>
@@ -71,4 +67,4 @@ const FolderMenuList: FC<Props> = ({
   );
 };
 
-export default FolderMenuList;
+export default MenuList;

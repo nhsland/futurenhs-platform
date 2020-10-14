@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FolderMenu/> takes a snapshot, as used in a page 1`] = `
+exports[`Menu takes a snapshot, as used in a page 1`] = `
 <DocumentFragment>
   .c2 {
   display: inline-block;
@@ -110,31 +110,12 @@ exports[`<FolderMenu/> takes a snapshot, as used in a page 1`] = `
   top: -7px;
 }
 
-.c0 .folder-menu-item {
-  display: none;
-}
-
-.c0 .folder-menu-item a {
-  color: rgb(255,255,255);
-}
-
-.c0 .folder-menu-item a:focus {
-  color: rgb(33,43,50);
-}
-
 @media (min-width:990px) {
   .c0 {
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-
-  .c0 .folder-menu-item {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -180,7 +161,7 @@ exports[`<FolderMenu/> takes a snapshot, as used in a page 1`] = `
 </DocumentFragment>
 `;
 
-exports[`<FolderMenu/> takes a snapshot, as used in the nav 1`] = `
+exports[`Menu takes a snapshot, as used in the nav 1`] = `
 <DocumentFragment>
   .c2 {
   display: inline-block;
@@ -290,31 +271,12 @@ exports[`<FolderMenu/> takes a snapshot, as used in the nav 1`] = `
   top: -7px;
 }
 
-.c0 .folder-menu-item {
-  display: none;
-}
-
-.c0 .folder-menu-item a {
-  color: rgb(255,255,255);
-}
-
-.c0 .folder-menu-item a:focus {
-  color: rgb(33,43,50);
-}
-
 @media (min-width:990px) {
   .c0 {
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-
-  .c0 .folder-menu-item {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

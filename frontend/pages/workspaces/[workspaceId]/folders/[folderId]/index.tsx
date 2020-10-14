@@ -5,9 +5,16 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { MobileFileList, FileTable } from "../../../../../components/FileTable";
-import { FolderMenu } from "../../../../../components/FolderMenu";
 import { Head } from "../../../../../components/Head";
+import {
+  DeleteIcon,
+  EditIcon,
+  LockIcon,
+  MoveIcon,
+  UploadIcon,
+} from "../../../../../components/Icon";
 import { MainHeading } from "../../../../../components/MainHeading";
+import { Menu, MenuItem } from "../../../../../components/Menu";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
@@ -58,6 +65,34 @@ const FolderHomepage: NextPage = () => {
     variables: { folder: folderId },
   });
 
+  const items: MenuItem[] = [
+    {
+      title: "Upload file to this folder",
+      icon: <UploadIcon />,
+      href: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
+    },
+    {
+      title: "Edit folder details",
+      icon: <EditIcon />,
+      href: "#",
+    },
+    {
+      title: "Move folder",
+      icon: <MoveIcon />,
+      href: "#",
+    },
+    {
+      title: "View folder permissions",
+      icon: <LockIcon />,
+      href: "#",
+    },
+    {
+      title: "Delete folder",
+      icon: <DeleteIcon />,
+      href: "#",
+    },
+  ];
+
   return (
     <>
       <Head
@@ -76,12 +111,7 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading
-              withBorder
-              menu={
-                <FolderMenu workspaceId={workspaceId} folderId={folderId} />
-              }
-            >
+            <MainHeading withBorder menu={<Menu items={items} />}>
               {folder.data?.folder.title || ""}
             </MainHeading>
             <p>{folder.data?.folder.description}</p>

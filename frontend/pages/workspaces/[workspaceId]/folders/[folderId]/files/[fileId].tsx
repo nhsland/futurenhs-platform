@@ -8,7 +8,9 @@ import {
   FileTable,
 } from "../../../../../../components/FileTable";
 import { Head } from "../../../../../../components/Head";
+import { DeleteIcon } from "../../../../../../components/Icon";
 import { MainHeading } from "../../../../../../components/MainHeading";
+import { Menu } from "../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../components/PageLayout";
@@ -72,7 +74,20 @@ const FileHomepage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder>
+            <MainHeading
+              withBorder
+              menu={
+                <Menu
+                  items={[
+                    {
+                      title: "Delete file",
+                      icon: <DeleteIcon />,
+                      href: "#",
+                    },
+                  ]}
+                />
+              }
+            >
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <h2>Description</h2>
