@@ -10,6 +10,7 @@ import { MainHeading } from "../../components/MainHeading";
 import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
 import { Textarea } from "../../components/Textarea";
+import { User } from "../../lib/auth";
 import {
   useCreateWorkspaceMutation,
   Workspace,
@@ -50,7 +51,13 @@ const FormField = styled.div`
   }
 `;
 
-const CreateWorkspace: NextPage = () => {
+interface InitialProps {
+  isPlatformAdmin: boolean;
+}
+
+export const CreateWorkspace: NextPage<InitialProps> = ({
+  isPlatformAdmin,
+}) => {
   const [remainingChars, setRemainingChars] = useState({
     title: null,
     description: null,
@@ -84,58 +91,78 @@ const CreateWorkspace: NextPage = () => {
       <PageLayout>
         <NavHeader />
         <PageContent>
-          <MainHeading>Create a workspace</MainHeading>
-          <H2>Workspace details</H2>
-          <p> Fields marked with * are required.</p>
+          {isPlatformAdmin ? (
+            <>
+              <MainHeading>Create a workspace</MainHeading>
+              <H2>Workspace details</H2>
+              <p> Fields marked with * are required.</p>
 
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <FormField>
-              <Input
-                name="title"
-                onChange={handleCharNumber}
-                id="title"
-                label="Name of workspace*"
-                hint="This is the name of the workspace as seen by users of FutureNHS."
-                inputRef={register({
-                  required: true,
-                  maxLength: MAX_CHARS.title,
-                })}
-                error={
-                  errors.title &&
-                  `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
-                }
-              />
-              {`${
-                remainingChars.title || MAX_CHARS.title
-              } characters remaining`}
-            </FormField>
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <FormField>
+                  <Input
+                    name="title"
+                    onChange={handleCharNumber}
+                    id="title"
+                    label="Name of workspace*"
+                    hint="This is the name of the workspace as seen by users of FutureNHS."
+                    inputRef={register({
+                      required: true,
+                      maxLength: MAX_CHARS.title,
+                    })}
+                    error={
+                      errors.title &&
+                      `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
+                    }
+                  />
+                  {`${
+                    remainingChars.title || MAX_CHARS.title
+                  } characters remaining`}
+                </FormField>
 
-            <FormField>
-              <Textarea
-                name="description"
-                onChange={handleCharNumber}
-                id="description"
-                label="Description"
-                error={
-                  errors.description &&
-                  `Description must be a maximum of ${MAX_CHARS.description} characters`
-                }
-                hint="This is the description as seen by users. Try to be as descriptive as possible."
-                inputRef={register({
-                  required: false,
-                  maxLength: MAX_CHARS.description,
-                })}
-              />
-              {`${
-                remainingChars.description || MAX_CHARS.description
-              } characters remaining`}
-            </FormField>
-            <Button type="submit">Save and complete</Button>
-          </Form>
+                <FormField>
+                  <Textarea
+                    name="description"
+                    onChange={handleCharNumber}
+                    id="description"
+                    label="Description"
+                    error={
+                      errors.description &&
+                      `Description must be a maximum of ${MAX_CHARS.description} characters`
+                    }
+                    hint="This is the description as seen by users. Try to be as descriptive as possible."
+                    inputRef={register({
+                      required: false,
+                      maxLength: MAX_CHARS.description,
+                    })}
+                  />
+                  {`${
+                    remainingChars.description || MAX_CHARS.description
+                  } characters remaining`}
+                </FormField>
+                <Button type="submit">Save and complete</Button>
+              </Form>
+            </>
+          ) : (
+            <>
+              <MainHeading>Error</MainHeading>
+              <H2>You do not have permission to do this.</H2>
+              <br />
+              <p>
+                Please contact your Platform Administrator to request a
+                workspace.
+              </p>
+            </>
+          )}
         </PageContent>
       </PageLayout>
     </>
   );
+};
+
+CreateWorkspace.getInitialProps = async (context): Promise<InitialProps> => {
+  // @ts-ignore
+  const user: User | undefined = context?.req?.user;
+  return { isPlatformAdmin: user?.isPlatformAdmin || false };
 };
 
 export default withUrqlClient(CreateWorkspace);

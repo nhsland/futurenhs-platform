@@ -12,6 +12,7 @@ const Noop = require("./lib/server/noop-passport-strategy");
 const url = require("url");
 const { promises: fs } = require("fs");
 const { getOrCreateUser } = require("./lib/server/graphql");
+const { reportError } = require("./lib/server/reportError");
 const { requireEnv } = require("./lib/server/requireEnv");
 
 const setupSessionStore = async () => {
@@ -170,8 +171,12 @@ async function main() {
   );
   server.get("/auth/callback", authenticateWithAADB2C, redirectAuthSuccess);
   server.get("/auth/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
+    req.session.destroy((err) => {
+      if (err) {
+        reportError(err);
+      }
+      res.redirect("/");
+    });
   });
 
   // Default catch-all handler to allow Next.js to handle all other routes
