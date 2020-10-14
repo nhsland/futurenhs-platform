@@ -84,9 +84,9 @@ impl WorkspacesMutation {
         create_workspace(
             &new_workspace.title,
             &new_workspace.description,
+            &auth_id,
             pool,
             event_client,
-            &auth_id,
         )
         .await
     }
@@ -124,9 +124,9 @@ impl WorkspacesMutation {
 async fn create_workspace(
     title: &str,
     description: &str,
+    auth_id: &Uuid,
     pool: &PgPool,
     event_client: &EventClient,
-    auth_id: &Uuid,
 ) -> FieldResult<Workspace> {
     let user = db::User::find_by_auth_id(auth_id, pool)
         .await?
@@ -167,9 +167,15 @@ mod test {
         let pool = mock_connection_pool().await?;
         let (events, event_client) = mock_event_emitter();
 
-        let workspace = create_workspace("title", "description", &pool, &event_client)
-            .await
-            .unwrap();
+        let workspace = create_workspace(
+            "title",
+            "description",
+            &Uuid::parse_str("0c8109ef-c247-4c41-b679-000000000000")?,
+            &pool,
+            &event_client,
+        )
+        .await
+        .unwrap();
 
         assert_eq!(workspace.title, "title");
         assert_eq!(workspace.description, "description");
