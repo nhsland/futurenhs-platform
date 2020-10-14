@@ -76,10 +76,7 @@ pub async fn handle_graphql(req: Request<State>) -> tide::Result {
         .and_then(|value| Uuid::parse_str(value.as_str()).ok());
 
     async_graphql_tide::graphql(req, schema, |query_builder| match auth_id {
-        Some(auth_id) => {
-            let query_builder = query_builder.data(RequestingUser { auth_id });
-            query_builder
-        }
+        Some(auth_id) => query_builder.data(RequestingUser { auth_id }),
         None => query_builder,
     })
     .await

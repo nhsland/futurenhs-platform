@@ -126,9 +126,10 @@ async fn create_workspace(
 ) -> FieldResult<Workspace> {
     let user = db::User::find_by_auth_id(auth_id, pool).await?;
     if !user.is_platform_admin {
-        Err(anyhow::anyhow!(
+        return Err(anyhow::anyhow!(
             "User with auth_id is not a platform admin. No workspace for you."
-        ))?;
+        )
+        .into());
     }
 
     let workspace: Workspace = db::Workspace::create(title, description, pool)
