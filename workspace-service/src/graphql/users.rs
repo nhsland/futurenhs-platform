@@ -62,8 +62,18 @@ impl UsersMutation {
         update_user: UpdateUser,
     ) -> FieldResult<User> {
         let pool = context.data()?;
-        let auth_id = Uuid::parse_str(&update_user.auth_id)?;
 
+        let requesting_user = context.data::<super::RequestingUser>()?;
+        let requesting_user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+        if !requesting_user.is_platform_admin {
+            return Err(anyhow::anyhow!(
+                "User with auth_id {} is not a platform admin.",
+                requesting_user.auth_id
+            )
+            .into());
+        }
+
+        let auth_id = Uuid::parse_str(&update_user.auth_id)?;
         Ok(
             db::User::update(&auth_id, update_user.is_platform_admin, pool)
                 .await?

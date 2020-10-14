@@ -1,4 +1,5 @@
 use crate::db;
+use crate::graphql::RequestingUser;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use sqlx::PgPool;
@@ -75,12 +76,12 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
-        let auth_id = context.data::<super::RequestingUser>()?.auth_id;
+        let requesting_user = context.data::<super::RequestingUser>()?;
 
         create_workspace(
             &new_workspace.title,
             &new_workspace.description,
-            &auth_id,
+            requesting_user,
             pool,
             event_client,
         )
@@ -120,14 +121,15 @@ impl WorkspacesMutation {
 async fn create_workspace(
     title: &str,
     description: &str,
-    auth_id: &Uuid,
+    requesting_user: &RequestingUser,
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
-    let user = db::User::find_by_auth_id(auth_id, pool).await?;
+    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     if !user.is_platform_admin {
         return Err(anyhow::anyhow!(
-            "User with auth_id is not a platform admin. No workspace for you."
+            "User with auth_id {} is not a platform admin. No workspace for you.",
+            requesting_user.auth_id,
         )
         .into());
     }
@@ -165,7 +167,9 @@ mod test {
         let workspace = create_workspace(
             "title",
             "description",
-            &Uuid::parse_str("feedface-0000-0000-0000-000000000000")?,
+            &RequestingUser {
+                auth_id: Uuid::parse_str("feedface-0000-0000-0000-000000000000")?,
+            },
             &pool,
             &event_client,
         )
