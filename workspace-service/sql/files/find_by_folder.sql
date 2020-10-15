@@ -11,4 +11,5 @@ SELECT id,
 
 FROM files
 WHERE folder = $1
+AND deleted_at IS NULL
 ORDER BY title

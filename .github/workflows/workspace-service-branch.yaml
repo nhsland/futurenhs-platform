@@ -58,7 +58,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             futurenhs-platform/workspace-service/target
-          key: cargo-${{ hashFiles('futurenhs-platform/workspace-service/Cargo.lock') }}-a
+          key: cargo-${{ hashFiles('futurenhs-platform/workspace-service/Cargo.lock') }}-a_
       - name: Build
         working-directory: futurenhs-platform/workspace-service
         run: |
