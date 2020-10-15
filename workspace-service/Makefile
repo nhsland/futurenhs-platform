@@ -19,8 +19,8 @@ run: ## Fetch DB URL and run locally
 .PHONY: run-local
 run-local: migrate-local ## Run locally against Postgres and Azure running in Docker
 	DATABASE_URL=$(localdb) \
-	UPLOAD_CONTAINER_URL=http://devstoreaccount1.local:10000/devstoreaccount1/uploads \
-	FILES_CONTAINER_URL=http://devstoreaccount1.local:10000/devstoreaccount1/files \
+	UPLOAD_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/uploads \
+	FILES_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/files \
 	FILE_STORAGE_ACCESS_KEY='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==' \
 		$(MAKE)
 

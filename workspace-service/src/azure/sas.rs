@@ -1,5 +1,5 @@
 use super::Config;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use azure_sdk_storage_core::prelude::*;
 use chrono::*;
 use url::Url;
@@ -17,15 +17,42 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let container_url = Url::parse(&format!("{}/", config.upload_container_url))?;
-    let path = container_url.join(&name.to_string())?;
+    let mut url = config.upload_container_url.clone();
+    url.path_segments_mut()
+        .map_err(|_| anyhow!("cannot be base"))?
+        .push(&name.to_string());
 
-    let sas = BlobSASBuilder::new(&path)
-        .with_key(&config.access_key)
-        .with_validity_start(&start)
-        .with_validity_end(&end)
-        .allow_write()
-        .finalize();
+    let sas = if url.host_str() == Some("127.0.0.1") {
+        // Workaround for local Azurite, which uses the following URL scheme:
+        // http://127.0.0.1:10000/<account>/<container>/<blob>
+        // The Azure SDK for Rust assumes it to be:
+        // http://<account>.some.domain/<container>/<blob>
+        let mut path_segments = url
+            .path_segments()
+            .expect("upload container url should have a path");
+        let account = path_segments
+            .next()
+            .expect("upload container url should have a path");
+        let path = path_segments.collect::<Vec<&str>>().join("/");
+        let mut workaround_url = url.clone();
+        workaround_url.set_host(Some(&format!("{}.some.domain", account)))?;
+        workaround_url.set_path(&path);
+        let sas = BlobSASBuilder::new(&workaround_url)
+            .with_key(&config.access_key)
+            .with_validity_start(&start)
+            .with_validity_end(&end)
+            .allow_write()
+            .finalize();
+        url.set_query(sas.query());
+        url
+    } else {
+        BlobSASBuilder::new(&url)
+            .with_key(&config.access_key)
+            .with_validity_start(&start)
+            .with_validity_end(&end)
+            .allow_write()
+            .finalize()
+    };
 
     Ok(sas)
 }
@@ -34,12 +61,38 @@ fn create_download_sas_impl(config: &Config, url: &Url, now: DateTime<Utc>) -> R
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let sas = BlobSASBuilder::new(&url)
-        .with_key(&config.access_key)
-        .with_validity_start(&start)
-        .with_validity_end(&end)
-        .allow_read()
-        .finalize();
+    let sas = if url.host_str() == Some("127.0.0.1") {
+        // Workaround for local Azurite, which uses the following URL scheme:
+        // http://127.0.0.1:10000/<account>/<container>/<blob>
+        // The Azure SDK for Rust assumes it to be:
+        // http://<account>.some.domain/<container>/<blob>
+        let mut path_segments = url
+            .path_segments()
+            .expect("upload container url should have a path");
+        let account = path_segments
+            .next()
+            .expect("upload container url should have a path");
+        let path = path_segments.collect::<Vec<&str>>().join("/");
+        let mut workaround_url = url.clone();
+        workaround_url.set_host(Some(&format!("{}.some.domain", account)))?;
+        workaround_url.set_path(&path);
+        let sas = BlobSASBuilder::new(&workaround_url)
+            .with_key(&config.access_key)
+            .with_validity_start(&start)
+            .with_validity_end(&end)
+            .allow_read()
+            .finalize();
+        let mut url = url.to_owned();
+        url.set_query(sas.query());
+        url
+    } else {
+        BlobSASBuilder::new(&url)
+            .with_key(&config.access_key)
+            .with_validity_start(&start)
+            .with_validity_end(&end)
+            .allow_read()
+            .finalize()
+    };
 
     Ok(sas)
 }

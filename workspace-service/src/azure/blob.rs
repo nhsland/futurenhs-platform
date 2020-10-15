@@ -17,27 +17,31 @@ impl TryFrom<&Url> for FileParts {
     type Error = anyhow::Error;
 
     fn try_from(value: &Url) -> Result<Self, Self::Error> {
-        let account = value
-            .host()
-            .ok_or_else(|| anyhow!("cannot get host from url"))?
-            .to_string();
-        let account = account
-            .split('.')
-            .next()
-            .ok_or_else(|| anyhow!("cannot get storage account from url"))?
-            .to_string();
-
-        let path_segments = value
+        let mut path_segments = value
             .path_segments()
-            .ok_or_else(|| anyhow!("url has no path"))?
-            .collect::<Vec<&str>>();
+            .ok_or_else(|| anyhow!("url has no path"))?;
+
+        let account = if value.host_str() == Some("127.0.0.1") {
+            path_segments
+                .next()
+                .ok_or_else(|| anyhow!("cannot get account from url"))?
+                .to_string()
+        } else {
+            let host = value
+                .host()
+                .ok_or_else(|| anyhow!("cannot get host from url"))?
+                .to_string();
+            host.split('.')
+                .next()
+                .ok_or_else(|| anyhow!("cannot get storage account from url"))?
+                .to_string()
+        };
 
         let container = path_segments
-            .get(0)
+            .next()
             .ok_or_else(|| anyhow!("cannot get container name from url"))?
             .to_string();
-
-        let blob = path_segments.get(1).cloned().map(|s| s.to_string());
+        let blob = path_segments.next().map(|s| s.to_string());
 
         Ok(Self {
             account,
@@ -68,7 +72,14 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
         .blob
         .ok_or_else(|| anyhow!("cannot get blob name from url"))?;
 
-    let client = client::with_access_key(&target.account, &azure_config.access_key);
+    let client = if target.account == "devstoreaccount1" {
+        client::with_emulator(
+            &Url::parse("http://127.0.0.1:10000").unwrap(),
+            &Url::parse("http://127.0.0.1:10001").unwrap(),
+        )
+    } else {
+        client::with_access_key(&target.account, &azure_config.access_key)
+    };
     let response = Compat::new(
         client
             .copy_blob_from_url()
