@@ -128,7 +128,7 @@ async fn create_workspace(
     let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     if !user.is_platform_admin {
         return Err(anyhow::anyhow!(
-            "User with auth_id {} is not a platform admin. No workspace for you.",
+            "User with auth_id {} does not have permission to create a workspace.",
             requesting_user.auth_id,
         )
         .into());
@@ -198,7 +198,7 @@ mod test {
         )
         .await;
 
-        assert_eq!(result.err().unwrap().0, "User with auth_id deadbeef-0000-0000-0000-000000000000 is not a platform admin. No workspace for you.");
+        assert_eq!(result.err().unwrap().0, "User with auth_id deadbeef-0000-0000-0000-000000000000 does not have permission to create a workspace.");
 
         assert_eq!(events.try_iter().collect::<Vec<_>>().len(), 0);
 
