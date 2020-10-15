@@ -65,13 +65,13 @@ const FileHomepage = () => {
 
   const [, deleteFile] = useDeleteFileMutation();
 
-  const onClick = () => {
+  const onClick = async () => {
     const message = "Are you sure you want to delete this file?";
     const result = window.confirm(message);
     console.log("The file id is....", fileId);
     if (result) {
-      deleteFile({ id: fileId });
-      router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+      await deleteFile({ id: fileId as string });
+      await router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
     }
   };
 
