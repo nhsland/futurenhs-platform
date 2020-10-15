@@ -7,14 +7,26 @@ interface ListItemProps {
   className?: string;
   href: string;
   children: ReactNode;
+  isButton?: boolean;
+  onClick?: () => void;
 }
 
-const ListItem = ({ className, href, children }: ListItemProps) => {
+const ListItem = ({
+  className,
+  href,
+  children,
+  isButton,
+  onClick,
+}: ListItemProps) => {
   return (
     <li className={className}>
-      <Link href={href} passHref>
-        <a>{children}</a>
-      </Link>
+      {isButton ? (
+        <button onClick={onClick}>{children}</button>
+      ) : (
+        <Link href={href} passHref>
+          <a>{children}</a>
+        </Link>
+      )}
     </li>
   );
 };
@@ -61,11 +73,15 @@ export type MenuItem = {
   title: string;
   icon: ReactNode;
   href: string;
+  isButton?: boolean;
+  onClick?: () => void;
 };
 
 interface MenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
   href: string;
+  isButton?: boolean;
+  onClick?: () => void;
 }
 
 const MenuListItem: FC<MenuListItemProps> = ({ title, children, ...props }) => {

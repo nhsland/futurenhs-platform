@@ -65,6 +65,16 @@ const FileHomepage = () => {
 
   const [, deleteFolder] = useDeleteFileMutation();
 
+  const deleteFile = () => {
+    const message = "Are you sure you want to delete this file?";
+    const result = window.confirm(message);
+    if (result) {
+      const someFileId = "asdfsafsdfsaf";
+      deleteFolder({ id: someFileId });
+      router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+    }
+  };
+
   return (
     <>
       <Head title={`File - ${file.data?.file.title || "Loading..."}`} />
@@ -86,6 +96,8 @@ const FileHomepage = () => {
                       title: "Delete file",
                       icon: <DeleteIcon />,
                       href: "#",
+                      isButton: true,
+                      onClick: deleteFile,
                     },
                   ]}
                 />
