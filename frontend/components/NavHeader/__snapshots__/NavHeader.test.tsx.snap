@@ -1277,7 +1277,7 @@ exports[`<NavHeader/> shows menu when open 1`] = `
           class="c6"
         >
           <a
-            href="#"
+            href="/auth/logout"
           >
             <div
               class="icon-wrapper "
