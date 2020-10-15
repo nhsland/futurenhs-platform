@@ -164,7 +164,7 @@ const navItems = [
   {
     title: "Log out",
     icon: <LogOutIcon />,
-    href: "#",
+    href: "/auth/logout",
   },
 ];
 
