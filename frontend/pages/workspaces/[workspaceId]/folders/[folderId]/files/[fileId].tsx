@@ -63,14 +63,14 @@ const FileHomepage = () => {
     variables: { id: fileId },
   });
 
-  const [, deleteFolder] = useDeleteFileMutation();
+  const [, deleteFile] = useDeleteFileMutation();
 
-  const deleteFile = () => {
+  const onClick = () => {
     const message = "Are you sure you want to delete this file?";
     const result = window.confirm(message);
+    console.log("The file id is....", fileId);
     if (result) {
-      const someFileId = "asdfsafsdfsaf";
-      deleteFolder({ id: someFileId });
+      deleteFile({ id: fileId });
       router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
     }
   };
@@ -97,7 +97,7 @@ const FileHomepage = () => {
                       icon: <DeleteIcon />,
                       href: "#",
                       isButton: true,
-                      onClick: deleteFile,
+                      onClick,
                     },
                   ]}
                 />
@@ -106,19 +106,6 @@ const FileHomepage = () => {
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <h2>Description</h2>
-            <button
-              onClick={() => {
-                const message = "Are you sure you want to delete this file?";
-                const result = window.confirm(message);
-                if (result) {
-                  const someFileId = "asdfsafsdfsaf";
-                  deleteFolder({ id: someFileId });
-                  router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
-                }
-              }}
-            >
-              Delete folder
-            </button>
             <Description>
               {file.data?.file.description || "Loading..."}
             </Description>
