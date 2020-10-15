@@ -17,6 +17,7 @@ import { PageLayout } from "../../../../../../components/PageLayout";
 import {
   useGetWorkspaceByIdQuery,
   useGetFileByIdQuery,
+  useDeleteFileMutation,
 } from "../../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../../lib/withUrqlClient";
 
@@ -62,6 +63,8 @@ const FileHomepage = () => {
     variables: { id: fileId },
   });
 
+  const [, deleteFolder] = useDeleteFileMutation();
+
   return (
     <>
       <Head title={`File - ${file.data?.file.title || "Loading..."}`} />
@@ -91,6 +94,19 @@ const FileHomepage = () => {
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <h2>Description</h2>
+            <button
+              onClick={() => {
+                const message = "Are you sure you want to delete this file?";
+                const result = window.confirm(message);
+                if (result) {
+                  const someFileId = "asdfsafsdfsaf";
+                  deleteFolder({ id: someFileId });
+                  router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+                }
+              }}
+            >
+              Delete folder
+            </button>
             <Description>
               {file.data?.file.description || "Loading..."}
             </Description>
