@@ -1,4 +1,5 @@
 use crate::db;
+use crate::graphql::RequestingUser;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use sqlx::PgPool;
@@ -75,12 +76,12 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
-        let auth_id = context.data::<super::RequestingUser>()?.auth_id;
+        let requesting_user = context.data::<super::RequestingUser>()?;
 
         create_workspace(
             &new_workspace.title,
             &new_workspace.description,
-            &auth_id,
+            requesting_user,
             pool,
             event_client,
         )
@@ -120,14 +121,15 @@ impl WorkspacesMutation {
 async fn create_workspace(
     title: &str,
     description: &str,
-    auth_id: &Uuid,
+    requesting_user: &RequestingUser,
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
-    let user = db::User::find_by_auth_id(auth_id, pool).await?;
+    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     if !user.is_platform_admin {
         return Err(anyhow::anyhow!(
-            "User with auth_id is not a platform admin. No workspace for you."
+            "User with auth_id {} does not have permission to create a workspace.",
+            requesting_user.auth_id,
         )
         .into());
     }
@@ -165,7 +167,7 @@ mod test {
         let workspace = create_workspace(
             "title",
             "description",
-            &Uuid::parse_str("feedface-0000-0000-0000-000000000000")?,
+            &mock_admin_requesting_user(),
             &pool,
             &event_client,
         )
@@ -178,6 +180,27 @@ mod test {
         assert!(events
             .try_iter()
             .any(|e| matches!(e.data, EventData::WorkspaceCreated(_))));
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn creating_workspace_as_non_admin_fails() -> anyhow::Result<()> {
+        let pool = mock_connection_pool().await?;
+        let (events, event_client) = mock_event_emitter();
+
+        let result = create_workspace(
+            "title",
+            "description",
+            &mock_unprivileged_requesting_user(),
+            &pool,
+            &event_client,
+        )
+        .await;
+
+        assert_eq!(result.err().unwrap().0, "User with auth_id deadbeef-0000-0000-0000-000000000000 does not have permission to create a workspace.");
+
+        assert_eq!(events.try_iter().collect::<Vec<_>>().len(), 0);
 
         Ok(())
     }

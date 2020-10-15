@@ -57,6 +57,54 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
+### Permissions
+
+By default the system is installed with a single platform admin. This has auth_id="feedface-0000-0000-0000-000000000000" and is_platform_admin set to true. This is the user that `yarn dev` uses by default.
+
+All other users are created when you log in using azure, and are not platform admin.
+
+If you go to https://fnhs-dev-\$FNHSNAME.westeurope.cloudapp.azure.com/auth/login?next=/api/graphql and attempt to do something that requires auth, like this then you will get an error:
+
+```
+mutation {
+  updateUser(
+    updateUser: {
+      authId: "feedface-0000-0000-0000-000000000000"
+      isPlatformAdmin: true
+    }
+  ) {
+    isPlatformAdmin
+  }
+}
+```
+
+- To find your auth id, go to https://portal.azure.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/AllUsers and select the user you log in with, of `User Type` 'Member'. On the Profile page you are taken to, copy the `Object ID`.
+
+- You can then go to http://workspace-service.workspace-service/graphiql and give yourself admin like this:
+
+In the query box, type:
+
+```
+mutation {
+  updateUser(
+    updateUser: {
+      authId: YOUR_OBJECT_ID
+      isPlatformAdmin: true
+    }
+  ) {
+    isPlatformAdmin
+  }
+}
+```
+
+- In the "HTTP HEADERS" box at the bottom, put:
+
+```
+{"x-user-auth-id": "feedface-0000-0000-0000-000000000000"}
+```
+
+- Submit the request.
+
 ## Testing
 
 ### Cypress
