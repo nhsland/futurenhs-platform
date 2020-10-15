@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - rust-toolchain
       - workspace-service/**
       - event-models/**
       - infrastructure/dev-overlay-variables.json
