@@ -10,3 +10,5 @@ SELECT id,
     deleted_at
 FROM files
 WHERE id = $1
+AND deleted_at IS NULL
+

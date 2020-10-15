@@ -107,4 +107,12 @@ impl FilesMutation {
 
         Ok(file.into())
     }
+
+    #[field(desc = "Deletes a file by id(returns delete file")]
+    async fn delete_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
+        let pool = context.data()?;
+        let file: File = db::File::delete(Uuid::parse_str(&id)?, pool).await?.into();
+
+        Ok(file)
+    }
 }
