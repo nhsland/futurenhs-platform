@@ -36,59 +36,65 @@ export default function withUrqlClient(
           ctx.res.end();
         }
       }
-      return {
-        exchanges: [
-          devtoolsExchange,
-          dedupExchange,
-          cacheExchange({
-            keys: {},
-            updates: {
-              Mutation: {
-                createFolder: (result, _args, cache) => {
-                  const folderMutation = result as CreateFolderMutation;
-                  cache.updateQuery(
-                    {
-                      query: FoldersByWorkspaceDocument,
-                      variables: {
-                        workspace: folderMutation.createFolder.workspace,
-                      },
-                    },
-                    (data) => {
-                      const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery;
-                      foldersByWorkspaceQuery.foldersByWorkspace.push(
-                        folderMutation.createFolder
-                      );
-                      return data;
-                    }
-                  );
-                },
-                deleteFile: (result, _args, cache) => {
-                  const mutationResult = result as DeleteFileMutation;
-                  cache.updateQuery(
-                    {
-                      query: FilesByFolderDocument,
-                      variables: {
-                        folder: mutationResult.deleteFile.folder,
-                      },
-                    },
-                    (data) => {
-                      const filesByFolderQuery = data as FilesByFolderQuery;
-                      const arr = filesByFolderQuery.filesByFolder.filter(
-                        (file) => file.id !== mutationResult.deleteFile.id
-                      );
 
-                      filesByFolderQuery.filesByFolder = arr;
+      const exchanges = [
+        dedupExchange,
+        cacheExchange({
+          keys: {},
+          updates: {
+            Mutation: {
+              createFolder: (result, _args, cache) => {
+                const folderMutation = result as CreateFolderMutation;
+                cache.updateQuery(
+                  {
+                    query: FoldersByWorkspaceDocument,
+                    variables: {
+                      workspace: folderMutation.createFolder.workspace,
+                    },
+                  },
+                  (data) => {
+                    const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery;
+                    foldersByWorkspaceQuery.foldersByWorkspace.push(
+                      folderMutation.createFolder
+                    );
+                    return data;
+                  }
+                );
+              },
+              deleteFile: (result, _args, cache) => {
+                const mutationResult = result as DeleteFileMutation;
+                cache.updateQuery(
+                  {
+                    query: FilesByFolderDocument,
+                    variables: {
+                      folder: mutationResult.deleteFile.folder,
+                    },
+                  },
+                  (data) => {
+                    const filesByFolderQuery = data as FilesByFolderQuery;
+                    const arr = filesByFolderQuery.filesByFolder.filter(
+                      (file) => file.id !== mutationResult.deleteFile.id
+                    );
 
-                      return data;
-                    }
-                  );
-                },
+                    filesByFolderQuery.filesByFolder = arr;
+
+                    return data;
+                  }
+                );
               },
             },
-          }),
-          ssrExchange,
-          fetchExchange,
-        ],
+          },
+        }),
+        ssrExchange,
+        fetchExchange,
+      ];
+
+      if (process.env.NODE_ENV !== "production") {
+        exchanges.unshift(devtoolsExchange);
+      }
+
+      return {
+        exchanges,
         url: workspaceAPIServerUrl,
       };
     },
