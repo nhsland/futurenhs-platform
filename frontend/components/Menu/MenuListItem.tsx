@@ -36,13 +36,20 @@ const StyledListItem = styled(ListItem)`
   margin: 0;
   box-shadow: inset 0px -1px 0px #e8edee;
 
-  a {
+  a,
+  button {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     padding: 12px 16px;
     border: none;
+  }
+
+  button {
+    background: ${({ theme }) => theme.colorNhsukWhite};
+    font-size: 19px;
+    line-height: 28px;
   }
 
   .icon-wrapper {
@@ -52,7 +59,7 @@ const StyledListItem = styled(ListItem)`
   }
 
   ${({ theme }) => `
-    a {
+    a, button {
       color: ${theme.colorNhsukBlue};
       text-decoration: none;
 
