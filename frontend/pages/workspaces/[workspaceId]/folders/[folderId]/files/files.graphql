@@ -32,5 +32,6 @@ mutation DeleteFile($id: ID!) {
   deleteFile(id: $id) {
     id
     title
+    folder
   }
 }

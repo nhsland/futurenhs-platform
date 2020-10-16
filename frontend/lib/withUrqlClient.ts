@@ -1,3 +1,4 @@
+import { devtoolsExchange } from "@urql/devtools";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { NextPage } from "next";
 import { withUrqlClient as withUrqlClientImpl } from "next-urql";
@@ -7,8 +8,11 @@ import { dedupExchange, fetchExchange } from "urql";
 import { User } from "./auth";
 import {
   CreateFolderMutation,
+  DeleteFileMutation,
   FoldersByWorkspaceDocument,
   FoldersByWorkspaceQuery,
+  FilesByFolderDocument,
+  FilesByFolderQuery,
 } from "./generated/graphql";
 import { requireEnv } from "./server/requireEnv";
 
@@ -34,6 +38,7 @@ export default function withUrqlClient(
       }
       return {
         exchanges: [
+          devtoolsExchange,
           dedupExchange,
           cacheExchange({
             keys: {},
@@ -53,6 +58,27 @@ export default function withUrqlClient(
                       foldersByWorkspaceQuery.foldersByWorkspace.push(
                         folderMutation.createFolder
                       );
+                      return data;
+                    }
+                  );
+                },
+                deleteFile: (result, _args, cache) => {
+                  const mutationResult = result as DeleteFileMutation;
+                  cache.updateQuery(
+                    {
+                      query: FilesByFolderDocument,
+                      variables: {
+                        folder: mutationResult.deleteFile.folder,
+                      },
+                    },
+                    (data) => {
+                      const filesByFolderQuery = data as FilesByFolderQuery;
+                      const arr = filesByFolderQuery.filesByFolder.filter(
+                        (file) => file.id !== mutationResult.deleteFile.id
+                      );
+
+                      filesByFolderQuery.filesByFolder = arr;
+
                       return data;
                     }
                   );
