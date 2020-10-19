@@ -12,7 +12,7 @@ interface ListItemProps {
   handler: Href | OnClickFn;
 }
 
-const ListItem = ({ className, children, handler }: ListItemProps) => {
+const ListItem = ({ className, children, ...props }: ListItemProps) => {
   return (
     <li className={className}>
       {typeof handler === "function" ? (
