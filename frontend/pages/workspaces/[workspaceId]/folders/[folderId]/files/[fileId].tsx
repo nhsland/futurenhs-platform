@@ -50,10 +50,19 @@ const Description = styled.p`
 
 const FileHomepage = () => {
   const router = useRouter();
-  let { workspaceId, folderId, fileId } = router.query;
-  workspaceId = (workspaceId || "unknown").toString();
-  folderId = (folderId || "unknown").toString();
-  fileId = (fileId || "unknown").toString();
+  const { fileId, workspaceId, folderId } = router.query;
+
+  if (fileId === undefined || Array.isArray(fileId)) {
+    throw new Error("fileId required in URL");
+  }
+
+  if (folderId === undefined || Array.isArray(folderId)) {
+    throw new Error("folderId required in URL");
+  }
+
+  if (workspaceId === undefined || Array.isArray(workspaceId)) {
+    throw new Error("workspaceId required in URL");
+  }
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -69,7 +78,7 @@ const FileHomepage = () => {
     const message = "Are you sure you want to delete this file?";
     const result = window.confirm(message);
     if (result) {
-      await deleteFile({ id: fileId as string });
+      await deleteFile({ id: fileId });
       await router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
     }
   };
