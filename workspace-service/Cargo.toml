@@ -39,8 +39,8 @@ features = [
   "tls",
   "uuid",
 ]
-git = "https://github.com/frigus02/sqlx"
-rev = "106a6a83952bfc0e3316d54f99d865e469dcc15a"
+git = "https://github.com/launchbadge/sqlx"
+rev = "144dcceb445e804b16258d0dd9e580d6a484a01e"
 
 [dev_dependencies]
 percent-encoding = "2.1.0"
