@@ -3,29 +3,28 @@ import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-interface LinkHandler {
-  type: "link";
+interface BaseListItemProps {
+  className?: string;
+  children: ReactNode;
+}
+
+interface LinkListItemProps extends BaseListItemProps {
   href: string;
 }
 
-interface ButtonHandler {
-  type: "button";
+interface ButtonListItemProps extends BaseListItemProps {
   onClick: () => void;
 }
 
-interface ListItemProps {
-  className?: string;
-  children: ReactNode;
-  handler: LinkHandler | ButtonHandler;
-}
+type ListItemProps = LinkListItemProps | ButtonListItemProps;
 
-const ListItem = ({ className, children, handler }: ListItemProps) => {
+const ListItem = ({ className, children, ...props }: ListItemProps) => {
   return (
     <li className={className}>
-      {handler.type === "button" ? (
-        <button onClick={handler.onClick}>{children}</button>
+      {"onClick" in props ? (
+        <button onClick={props.onClick}>{children}</button>
       ) : (
-        <Link href={handler.href} passHref>
+        <Link href={props.href} passHref>
           <a>{children}</a>
         </Link>
       )}
@@ -82,12 +81,14 @@ const StyledTitle = styled.div`
 export type MenuItem = {
   title: string;
   icon: ReactNode;
-  handler: LinkHandler | ButtonHandler;
+  onClick?: () => void;
+  href?: string;
 };
 
 interface MenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
-  handler: LinkHandler | ButtonHandler;
+  onClick: () => void | undefined;
+  href: string | undefined;
 }
 
 const MenuListItem: FC<MenuListItemProps> = ({ title, children, ...props }) => {

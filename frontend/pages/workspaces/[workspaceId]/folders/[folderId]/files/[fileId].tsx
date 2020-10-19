@@ -103,7 +103,7 @@ const FileHomepage = () => {
                     {
                       title: "Delete file",
                       icon: <DeleteIcon />,
-                      handler: { type: "button", onClick },
+                      onClick,
                     },
                   ]}
                 />
