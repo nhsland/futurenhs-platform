@@ -63,7 +63,7 @@ migrate-local: ## Bring up local postgres and migrate it.
 	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
 
 # You must have a version of sqlx that includes this patch
-# cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
+# cargo install --git https://github.com/launchbadge/sqlx --rev 144dcceb445e804b16258d0dd9e580d6a484a01e sqlx-cli
 .PHONY: migrate
 migrate: ## Run migrations on current cluster
 	DATABASE_URL=$(db) cargo sqlx migrate run
