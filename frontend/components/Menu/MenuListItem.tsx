@@ -3,28 +3,22 @@ import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-interface BaseListItemProps {
+type Href = string;
+type OnClickFn = () => void;
+
+interface ListItemProps {
   className?: string;
   children: ReactNode;
+  handler: Href | OnClickFn;
 }
 
-interface LinkListItemProps extends BaseListItemProps {
-  href: string;
-}
-
-interface ButtonListItemProps extends BaseListItemProps {
-  onClick: () => void;
-}
-
-type ListItemProps = LinkListItemProps | ButtonListItemProps;
-
-const ListItem = ({ className, children, ...props }: ListItemProps) => {
+const ListItem = ({ className, children, handler }: ListItemProps) => {
   return (
     <li className={className}>
-      {"onClick" in props ? (
-        <button onClick={props.onClick}>{children}</button>
+      {typeof handler === "function" ? (
+        <button onClick={handler}>{children}</button>
       ) : (
-        <Link href={props.href} passHref>
+        <Link href={handler} passHref>
           <a>{children}</a>
         </Link>
       )}
@@ -33,18 +27,18 @@ const ListItem = ({ className, children, ...props }: ListItemProps) => {
 };
 
 const StyledListItem = styled(ListItem)`
+  box-shadow: inset 0px -1px 0px #e8edee;
   list-style: none;
   margin: 0;
-  box-shadow: inset 0px -1px 0px #e8edee;
 
   a,
   button {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 12px 16px;
     border: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    width: 100%;
   }
 
   button {
@@ -55,8 +49,8 @@ const StyledListItem = styled(ListItem)`
   }
 
   .icon-wrapper {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
   }
 
@@ -81,14 +75,12 @@ const StyledTitle = styled.div`
 export type MenuItem = {
   title: string;
   icon: ReactNode;
-  onClick?: () => void;
-  href?: string;
+  handler: Href | OnClickFn;
 };
 
 interface MenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
-  onClick: () => void | undefined;
-  href: string | undefined;
+  handler: Href | OnClickFn;
 }
 
 const MenuListItem: FC<MenuListItemProps> = ({ title, children, ...props }) => {
