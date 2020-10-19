@@ -50,6 +50,7 @@ const StyledListItem = styled(ListItem)`
     background: ${({ theme }) => theme.colorNhsukWhite};
     font-size: 19px;
     line-height: 28px;
+    text-align: left;
   }
 
   .icon-wrapper {
