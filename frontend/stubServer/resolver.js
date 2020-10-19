@@ -23,6 +23,9 @@ const workspaceMutation = {
 const fileResolver = {
   filesByFolder: async () => filesByFolderResponse.data.filesByFolder,
   file: async () => fileResponse.data.file,
+};
+
+const fileMutation = {
   deleteFile: async () => deleteFileResponse.data.deleteFile,
 };
 
@@ -61,6 +64,11 @@ module.exports = (schema) => {
       ...fileUploadUrlResolver,
       ...federationResolver,
     },
-    Mutation: { ...folderMutation, ...userMutation, ...workspaceMutation },
+    Mutation: {
+      ...fileMutation,
+      ...folderMutation,
+      ...userMutation,
+      ...workspaceMutation,
+    },
   };
 };

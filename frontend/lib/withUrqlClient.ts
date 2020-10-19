@@ -53,7 +53,10 @@ export default function withUrqlClient(
                     },
                   },
                   (data) => {
-                    const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery;
+                    const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery | null;
+                    if (foldersByWorkspaceQuery === null) {
+                      return null;
+                    }
                     foldersByWorkspaceQuery.foldersByWorkspace.push(
                       folderMutation.createFolder
                     );
@@ -71,7 +74,10 @@ export default function withUrqlClient(
                     },
                   },
                   (data) => {
-                    const filesByFolderQuery = data as FilesByFolderQuery;
+                    const filesByFolderQuery = data as FilesByFolderQuery | null;
+                    if (filesByFolderQuery === null) {
+                      return null;
+                    }
                     const arr = filesByFolderQuery.filesByFolder.filter(
                       (file) => file.id !== mutationResult.deleteFile.id
                     );
