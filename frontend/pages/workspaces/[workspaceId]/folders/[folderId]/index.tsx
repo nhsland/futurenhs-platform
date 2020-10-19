@@ -69,27 +69,42 @@ const FolderHomepage: NextPage = () => {
     {
       title: "Upload file to this folder",
       icon: <UploadIcon />,
-      href: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
+      handler: {
+        type: "link",
+        href: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
+      },
     },
     {
       title: "Edit folder details",
       icon: <EditIcon />,
-      href: "#",
+      handler: {
+        type: "link",
+        href: "#",
+      },
     },
     {
       title: "Move folder",
       icon: <MoveIcon />,
-      href: "#",
+      handler: {
+        type: "link",
+        href: "#",
+      },
     },
     {
       title: "View folder permissions",
       icon: <LockIcon />,
-      href: "#",
+      handler: {
+        type: "link",
+        href: "#",
+      },
     },
     {
       title: "Delete folder",
       icon: <DeleteIcon />,
-      href: "#",
+      handler: {
+        type: "link",
+        href: "#",
+      },
     },
   ];
 

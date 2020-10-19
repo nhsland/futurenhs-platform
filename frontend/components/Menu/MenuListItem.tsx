@@ -3,27 +3,29 @@ import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-interface ListItemProps {
-  className?: string;
+interface LinkHandler {
+  type: "link";
   href: string;
-  children: ReactNode;
-  isButton?: boolean;
-  onClick?: () => void;
 }
 
-const ListItem = ({
-  className,
-  href,
-  children,
-  isButton,
-  onClick,
-}: ListItemProps) => {
+interface ButtonHandler {
+  type: "button";
+  onClick: () => void;
+}
+
+interface ListItemProps {
+  className?: string;
+  children: ReactNode;
+  handler: LinkHandler | ButtonHandler;
+}
+
+const ListItem = ({ className, children, handler }: ListItemProps) => {
   return (
     <li className={className}>
-      {isButton ? (
-        <button onClick={onClick}>{children}</button>
+      {handler.type === "button" ? (
+        <button onClick={handler.onClick}>{children}</button>
       ) : (
-        <Link href={href} passHref>
+        <Link href={handler.href} passHref>
           <a>{children}</a>
         </Link>
       )}
@@ -80,16 +82,12 @@ const StyledTitle = styled.div`
 export type MenuItem = {
   title: string;
   icon: ReactNode;
-  href: string;
-  isButton?: boolean;
-  onClick?: () => void;
+  handler: LinkHandler | ButtonHandler;
 };
 
 interface MenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
-  href: string;
-  isButton?: boolean;
-  onClick?: () => void;
+  handler: LinkHandler | ButtonHandler;
 }
 
 const MenuListItem: FC<MenuListItemProps> = ({ title, children, ...props }) => {
