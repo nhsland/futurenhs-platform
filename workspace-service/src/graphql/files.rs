@@ -5,29 +5,30 @@ use chrono::{DateTime, Utc};
 use url::Url;
 use uuid::Uuid;
 
-#[SimpleObject(desc = "A file")]
+/// A file
+#[derive(SimpleObject)]
 pub struct File {
-    #[field(desc = "The id of the file")]
+    /// The id of the file
     pub id: ID,
-    #[field(desc = "The title of the file")]
+    /// The title of the file
     pub title: String,
-    #[field(desc = "The description of the file")]
+    /// The description of the file
     pub description: String,
-    #[field(desc = "The id of the parent folder")]
+    /// The id of the parent folder
     pub folder: ID,
-    #[field(desc = "The name of the file")]
+    /// The name of the file
     pub file_name: String,
-    #[field(desc = "The type of the file")]
+    /// The type of the file
     pub file_type: String,
-    #[field(desc = "The time the file was created")]
+    /// The time the file was created
     pub created_at: DateTime<Utc>,
-    #[field(desc = "The time the file was modified")]
+    /// The time the file was modified
     pub modified_at: DateTime<Utc>,
-    #[field(desc = "The time the file was deleted")]
+    /// The time the file was deleted
     pub deleted_at: Option<DateTime<Utc>>,
 }
 
-#[InputObject]
+#[derive(InputObject)]
 pub struct NewFile {
     pub title: String,
     pub description: String,
@@ -58,7 +59,7 @@ pub struct FilesQuery;
 
 #[Object]
 impl FilesQuery {
-    #[field(desc = "Get all Files in a Folder")]
+    /// Get all Files in a Folder
     async fn files_by_folder(&self, context: &Context<'_>, folder: ID) -> FieldResult<Vec<File>> {
         let pool = context.data()?;
         let folder = Uuid::parse_str(&folder)?;
@@ -67,7 +68,7 @@ impl FilesQuery {
         Ok(files.into_iter().map(Into::into).collect())
     }
 
-    #[field(desc = "Get file by ID")]
+    /// Get file by ID
     async fn file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
@@ -81,7 +82,7 @@ pub struct FilesMutation;
 
 #[Object]
 impl FilesMutation {
-    #[field(desc = "Create a new file (returns the created file)")]
+    /// Create a new file (returns the created file)
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
         let pool = context.data()?;
         let azure_config = context.data()?;
@@ -108,7 +109,7 @@ impl FilesMutation {
         Ok(file.into())
     }
 
-    #[field(desc = "Deletes a file by id(returns delete file")]
+    /// Deletes a file by id(returns delete file
     async fn delete_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let file: File = db::File::delete(Uuid::parse_str(&id)?, pool).await?.into();

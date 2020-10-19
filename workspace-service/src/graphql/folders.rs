@@ -4,15 +4,16 @@ use fnhs_event_models::{Event, EventClient, EventPublisher, FolderCreatedData};
 use sqlx::PgPool;
 use uuid::Uuid;
 
-#[SimpleObject(desc = "A folder")]
+/// A folder
+#[derive(SimpleObject)]
 pub struct Folder {
-    #[field(desc = "The id of the folder")]
+    /// The id of the folder
     id: ID,
-    #[field(desc = "The title of the folder")]
+    /// The title of the folder
     title: String,
-    #[field(desc = "The description of the folder")]
+    /// The description of the folder
     description: String,
-    #[field(desc = "The workspace that this folder is in")]
+    /// The workspace that this folder is in
     workspace: ID,
 }
 
@@ -27,14 +28,14 @@ impl From<db::Folder> for Folder {
     }
 }
 
-#[InputObject]
+#[derive(InputObject)]
 struct NewFolder {
     title: String,
     description: String,
     workspace: ID,
 }
 
-#[InputObject]
+#[derive(InputObject)]
 struct UpdateFolder {
     title: String,
     description: String,
@@ -45,7 +46,7 @@ pub struct FoldersQuery;
 
 #[Object]
 impl FoldersQuery {
-    #[field(desc = "Get all Folders in a workspace")]
+    /// Get all Folders in a workspace
     async fn folders_by_workspace(
         &self,
         context: &Context<'_>,
@@ -57,12 +58,12 @@ impl FoldersQuery {
         Ok(folders.into_iter().map(Into::into).collect())
     }
 
-    #[field(desc = "Get folder by ID")]
+    /// Get folder by ID
     async fn folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         self.get_folder(context, id).await
     }
 
-    #[entity]
+    #[graphql(entity)]
     async fn get_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
@@ -76,7 +77,7 @@ pub struct FoldersMutation;
 
 #[Object]
 impl FoldersMutation {
-    #[field(desc = "Create a new folder (returns the created folder)")]
+    /// Create a new folder (returns the created folder)
     async fn create_folder(
         &self,
         context: &Context<'_>,
@@ -96,7 +97,7 @@ impl FoldersMutation {
         .await
     }
 
-    #[field(desc = "Update folder (returns updated folder")]
+    /// Update folder (returns updated folder
     async fn update_folder(
         &self,
         context: &Context<'_>,
@@ -116,7 +117,7 @@ impl FoldersMutation {
         Ok(folder.into())
     }
 
-    #[field(desc = "Delete folder (returns deleted folder")]
+    /// Delete folder (returns deleted folder
     async fn delete_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         // TODO: Add event
         let pool = context.data()?;
@@ -160,7 +161,7 @@ mod test {
 
     #[async_std::test]
     async fn creating_folder_emits_an_event() -> anyhow::Result<()> {
-        let pool = mock_connection_pool().await?;
+        let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
 
         let folder = create_folder("title", "description", Uuid::new_v4(), &pool, &event_client)

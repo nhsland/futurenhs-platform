@@ -8,7 +8,7 @@ pub struct FileUploadQuery;
 
 #[Object]
 impl FileUploadQuery {
-    #[field(desc = "Get a file upload URL")]
+    /// Get a file upload URL
     async fn file_upload_url(&self, context: &Context<'_>) -> FieldResult<Url> {
         let config = context.data()?;
         let name = Uuid::new_v4();
