@@ -38,44 +38,6 @@
       ]
     }
   },
-  "1e0b8019facae1c96adbe96d0780c21749ceec1be4a9ab5d07a91a7b99ef135b": {
-    "query": "SELECT id, \n    title,\n    description,\n    workspace\nFROM folders\nWHERE workspace = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 2,
-          "name": "description",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "workspace",
-          "type_info": "Uuid"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
   "2a8c5a976426f64dd6925adf663d51017c2f1c617e238bbe86060d3a2db7e235": {
     "query": "UPDATE files\nSET deleted_at = NOW()\nWHERE id = $1\nRETURNING *\n",
     "describe": {
@@ -212,6 +174,44 @@
           "ordinal": 3,
           "name": "is_platform_admin",
           "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "42e5d8db51d1fee228e254bfebe57a743d607c62f0b087ba44a0eacf4f7dc180": {
+    "query": "SELECT id,\n    title,\n    description,\n    workspace\nFROM folders\nWHERE workspace = $1\nORDER BY title\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "workspace",
+          "type_info": "Uuid"
         }
       ],
       "parameters": {
