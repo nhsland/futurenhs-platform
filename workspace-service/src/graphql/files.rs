@@ -70,6 +70,11 @@ impl FilesQuery {
 
     /// Get file by ID
     async fn file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
+        self.get_file(context, id).await
+    }
+
+    #[graphql(entity)]
+    async fn get_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
         let file = db::File::find_by_id(id, pool).await?;

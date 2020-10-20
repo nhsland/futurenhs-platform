@@ -1164,6 +1164,65 @@
                 "ofType": null
               }
             }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "_service",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "_Service",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "representations",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "_Any",
+                        "ofType": null
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "_entities",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "UNION",
+                  "name": "_Entity",
+                  "ofType": null
+                }
+              }
+            }
           }
         ],
         "inputFields": null,
@@ -1441,6 +1500,65 @@
         "interfaces": [],
         "kind": "OBJECT",
         "name": "Workspace",
+        "possibleTypes": null
+      },
+      {
+        "description": "The `_Any` scalar is used to pass representations of entities from external services into the root `_entities` field for execution.",
+        "enumValues": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "SCALAR",
+        "name": "_Any",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "UNION",
+        "name": "_Entity",
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "File",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Folder",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Workspace",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "sdl",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "_Service",
         "possibleTypes": null
       },
       {

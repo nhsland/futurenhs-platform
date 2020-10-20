@@ -95,6 +95,6 @@ pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
 }
 
 pub async fn generate_graphql_schema() -> anyhow::Result<String> {
-    let schema = Schema::build(Query::default(), Mutation::default(), EmptySubscription).finish();
+    let schema = Schema::new(Query::default(), Mutation::default(), EmptySubscription);
     schema::generate_introspection_schema(&schema).await
 }
