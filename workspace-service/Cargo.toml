@@ -16,6 +16,7 @@ chrono = "0.4.19"
 fnhs-event-models = {path = "../event-models/rust"}
 http-types = "2.6.0"
 lazy_static = "1.4.0"
+mime-db = "1.1.0"
 opentelemetry = "0.8.0"
 opentelemetry-application-insights = "0.4.0"
 regex = "1.4.1"

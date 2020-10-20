@@ -3,10 +3,11 @@ use super::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
+use mime_db::extensions2;
 use regex::Regex;
 use url::Url;
 use uuid::Uuid;
-use validator::Validate;
+use validator::{Validate, ValidationError};
 
 lazy_static! {
     static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[\w\s\.-]+$").expect("bad regex");
@@ -57,6 +58,10 @@ pub struct File {
 
 #[InputObject]
 #[derive(Debug, Validate)]
+#[validate(schema(
+    function = "match_file_type",
+    message = "filename extension does not match MIME type",
+))]
 pub struct NewFile {
     pub title: String,
     pub description: String,
@@ -79,6 +84,22 @@ pub struct NewFile {
     pub file_name: String,
     pub file_type: String,
     pub temporary_blob_storage_path: String,
+}
+
+fn match_file_type(new_file: &NewFile) -> Result<(), ValidationError> {
+    let extension = ALLOWED_EXTENSIONS
+        .captures(&new_file.file_name)
+        .and_then(|captures| captures.get(1))
+        .map(|m| m.as_str());
+    if let Some(ext) = extension {
+        if extensions2(new_file.file_type.clone()).any(|possible| ext == possible) {
+            Ok(())
+        } else {
+            Err(ValidationError::new("bad MIME type"))
+        }
+    } else {
+        Err(ValidationError::new("bad extension"))
+    }
 }
 
 impl From<db::File> for File {
@@ -168,19 +189,19 @@ mod test {
     use super::*;
     use test_case::test_case;
 
-    #[test_case("filename.doc", "no errors" ; "good extension doc")]
-    #[test_case("filename.docx", "no errors" ; "good extension docx")]
-    #[test_case("filename.zip", "filename does not have an allowed extension" ; "bad extension zip")]
-    #[test_case(".doc", "file_name must be between 5 and 255 characters long"; "too short")]
-    #[test_case("%.doc", "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
-    #[test_case("🦀.doc", "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
-    fn validate_filename(filename: &str, expected: &str) {
+    #[test_case("filename.doc", Some("application/msword"), "no errors" ; "good extension doc")]
+    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), "no errors" ; "good extension docx")]
+    #[test_case("filename.zip", None, "filename does not have an allowed extension" ; "bad extension zip")]
+    #[test_case(".doc", None, "file_name must be between 5 and 255 characters long"; "too short")]
+    #[test_case("%.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
+    #[test_case("🦀.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
+    fn validate_filename(file_name: &str, file_type: Option<&str>, expected: &str) {
         let actual = NewFile {
             title: "".to_string(),
             description: "".to_string(),
             folder: "".into(),
-            file_name: filename.to_string(),
-            file_type: "".to_string(),
+            file_name: file_name.to_string(),
+            file_type: file_type.map_or("", |m| m).to_string(),
             temporary_blob_storage_path: "".to_string(),
         }
         .validate()
