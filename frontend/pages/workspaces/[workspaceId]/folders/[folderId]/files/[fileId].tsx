@@ -103,11 +103,7 @@ const FileHomepage = () => {
                     {
                       title: "Delete file",
                       icon: <DeleteIcon />,
-<<<<<<< HEAD
                       handler: onClick,
-=======
-                      onClick,
->>>>>>> Type better
                     },
                   ]}
                 />

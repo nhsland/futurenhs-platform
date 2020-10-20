@@ -90,7 +90,6 @@ const FolderHomepage: NextPage = () => {
       title: "Delete folder",
       icon: <DeleteIcon />,
       handler: "#",
-      r,
     },
   ];
 
