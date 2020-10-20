@@ -1,3 +1,4 @@
+import { devtoolsExchange } from "@urql/devtools";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { NextPage } from "next";
 import { withUrqlClient as withUrqlClientImpl } from "next-urql";
@@ -7,8 +8,11 @@ import { dedupExchange, fetchExchange } from "urql";
 import { User } from "./auth";
 import {
   CreateFolderMutation,
+  DeleteFileMutation,
   FoldersByWorkspaceDocument,
   FoldersByWorkspaceQuery,
+  FilesByFolderDocument,
+  FilesByFolderQuery,
 } from "./generated/graphql";
 import { requireEnv } from "./server/requireEnv";
 
@@ -32,37 +36,71 @@ export default function withUrqlClient(
           ctx.res.end();
         }
       }
-      return {
-        exchanges: [
-          dedupExchange,
-          cacheExchange({
-            keys: {},
-            updates: {
-              Mutation: {
-                createFolder: (result, _args, cache) => {
-                  const folderMutation = result as CreateFolderMutation;
-                  cache.updateQuery(
-                    {
-                      query: FoldersByWorkspaceDocument,
-                      variables: {
-                        workspace: folderMutation.createFolder.workspace,
-                      },
+
+      const exchanges = [
+        dedupExchange,
+        cacheExchange({
+          keys: {},
+          updates: {
+            Mutation: {
+              createFolder: (result, _args, cache) => {
+                const folderMutation = result as CreateFolderMutation;
+                cache.updateQuery(
+                  {
+                    query: FoldersByWorkspaceDocument,
+                    variables: {
+                      workspace: folderMutation.createFolder.workspace,
                     },
-                    (data) => {
-                      const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery;
-                      foldersByWorkspaceQuery.foldersByWorkspace.push(
-                        folderMutation.createFolder
-                      );
-                      return data;
+                  },
+                  (data) => {
+                    const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery | null;
+                    if (foldersByWorkspaceQuery === null) {
+                      return null;
                     }
-                  );
-                },
+                    foldersByWorkspaceQuery.foldersByWorkspace.push(
+                      folderMutation.createFolder
+                    );
+                    return data;
+                  }
+                );
+              },
+              deleteFile: (result, _args, cache) => {
+                const mutationResult = result as DeleteFileMutation;
+                cache.updateQuery(
+                  {
+                    query: FilesByFolderDocument,
+                    variables: {
+                      folder: mutationResult.deleteFile.folder,
+                    },
+                  },
+                  (data) => {
+                    const filesByFolderQuery = data as FilesByFolderQuery | null;
+                    if (filesByFolderQuery === null) {
+                      return null;
+                    }
+                    const arr = filesByFolderQuery.filesByFolder.filter(
+                      (file) => file.id !== mutationResult.deleteFile.id
+                    );
+
+                    filesByFolderQuery.filesByFolder = arr;
+
+                    return data;
+                  }
+                );
               },
             },
-          }),
-          ssrExchange,
-          fetchExchange,
-        ],
+          },
+        }),
+        ssrExchange,
+        fetchExchange,
+      ];
+
+      if (process.env.NODE_ENV !== "production") {
+        exchanges.unshift(devtoolsExchange);
+      }
+
+      return {
+        exchanges,
         url: workspaceAPIServerUrl,
       };
     },

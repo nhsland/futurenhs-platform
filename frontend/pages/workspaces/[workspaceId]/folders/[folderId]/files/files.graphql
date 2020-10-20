@@ -27,3 +27,11 @@ mutation CreateFile($newFile: NewFile!) {
     id
   }
 }
+
+mutation DeleteFile($id: ID!) {
+  deleteFile(id: $id) {
+    id
+    title
+    folder
+  }
+}

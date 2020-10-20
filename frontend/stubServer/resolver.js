@@ -1,5 +1,6 @@
 const createFolderResponse = require("../cypress/fixtures/create-folder-graphql-response.json");
 const createWorkspaceResponse = require("../cypress/fixtures/create-workspace-graphql-response.json");
+const deleteFileResponse = require("../cypress/fixtures/delete-file-graphql-response.json");
 const fileResponse = require("../cypress/fixtures/file-graphql-response.json");
 const fileUploadUrlResponse = require("../cypress/fixtures/file-upload-url-graphql-response.json");
 const filesByFolderResponse = require("../cypress/fixtures/files-by-folder-graphql-response.json");
@@ -8,34 +9,42 @@ const foldersByWorkspaceResponse = require("../cypress/fixtures/folders-by-works
 const getOrCreateUserResponse = require("../cypress/fixtures/get-or-create-user-graphql-response.json");
 const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
 
+// Workspace
 const workspacesResolver = {
   workspaces: async () => workspaceResponse.data.workspaces,
   workspace: async () => workspaceResponse.data.workspaces[0],
-};
-
-const fileResolver = {
-  filesByFolder: async () => filesByFolderResponse.data.filesByFolder,
-  file: async () => fileResponse.data.file,
-};
-
-const folderResolver = {
-  foldersByWorkspace: async () =>
-    foldersByWorkspaceResponse.data.foldersByWorkspace,
-  folder: async () => folderResponse.data.folder,
-};
-
-const fileUploadUrlResolver = {
-  fileUploadUrl: async () => fileUploadUrlResponse.data.fileUploadUrl,
 };
 
 const workspaceMutation = {
   createWorkspace: async () => createWorkspaceResponse.data.createWorkspace,
 };
 
+// File
+const fileResolver = {
+  filesByFolder: async () => filesByFolderResponse.data.filesByFolder,
+  file: async () => fileResponse.data.file,
+};
+
+const fileMutation = {
+  deleteFile: async () => deleteFileResponse.data.deleteFile,
+};
+
+const fileUploadUrlResolver = {
+  fileUploadUrl: async () => fileUploadUrlResponse.data.fileUploadUrl,
+};
+
+// Folder
+const folderResolver = {
+  foldersByWorkspace: async () =>
+    foldersByWorkspaceResponse.data.foldersByWorkspace,
+  folder: async () => folderResponse.data.folder,
+};
+
 const folderMutation = {
   createFolder: async () => createFolderResponse.data.createFolder,
 };
 
+// User
 const userMutation = {
   getOrCreateUser: async () => getOrCreateUserResponse.data.getOrCreateUser,
 };
@@ -55,6 +64,11 @@ module.exports = (schema) => {
       ...fileUploadUrlResolver,
       ...federationResolver,
     },
-    Mutation: { ...folderMutation, ...userMutation, ...workspaceMutation },
+    Mutation: {
+      ...fileMutation,
+      ...folderMutation,
+      ...userMutation,
+      ...workspaceMutation,
+    },
   };
 };

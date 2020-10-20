@@ -117,27 +117,27 @@ const Navigation: FC<Props> = ({
               {
                 title: "Upload file to this folder",
                 icon: <UploadIcon />,
-                href: `/workspaces/${workspaceId}/folders/${folder.id}/upload-file`,
+                handler: `/workspaces/${workspaceId}/folders/${folder.id}/upload-file`,
               },
               {
                 title: "Edit folder details",
                 icon: <EditIcon />,
-                href: "#",
+                handler: "#",
               },
               {
                 title: "Move folder",
                 icon: <MoveIcon />,
-                href: "#",
+                handler: "#",
               },
               {
                 title: "View folder permissions",
                 icon: <LockIcon />,
-                href: "#",
+                handler: "#",
               },
               {
                 title: "Delete folder",
                 icon: <DeleteIcon />,
-                href: "#",
+                handler: "#",
               },
             ];
             return (
