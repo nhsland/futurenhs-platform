@@ -20,6 +20,9 @@ lazy_static! {
             (gif)|
             (jpeg)|
             (jpg)|
+            (odp)|
+            (ods)|
+            (odt)|
             (pdf)|
             (png)|
             (ppt)|
