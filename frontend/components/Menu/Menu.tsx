@@ -10,6 +10,7 @@ import { MenuItem } from "./MenuListItem";
 interface Props {
   hiddenUntilHover?: boolean;
   items: MenuItem[];
+  dataCy?: string;
 }
 
 const Container = styled.div`
@@ -32,7 +33,7 @@ const Container = styled.div`
   `}
 `;
 
-const Menu: FC<Props> = ({ hiddenUntilHover, items }) => {
+const Menu: FC<Props> = ({ hiddenUntilHover, items, dataCy }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const container = React.useRef<HTMLDivElement>(null);
 
@@ -57,6 +58,7 @@ const Menu: FC<Props> = ({ hiddenUntilHover, items }) => {
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
           hiddenUntilHover={hiddenUntilHover || false}
+          dataCy={dataCy}
         >
           <MeatballIcon />
         </MenuButton>

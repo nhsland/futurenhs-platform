@@ -79,13 +79,11 @@ const FolderHomepage: NextPage = () => {
     {
       title: "Move folder",
       icon: <MoveIcon />,
-
       handler: "#",
     },
     {
       title: "View folder permissions",
       icon: <LockIcon />,
-
       handler: "#",
     },
     {

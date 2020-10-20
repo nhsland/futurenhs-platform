@@ -46,6 +46,9 @@ const StyledListItem = styled(ListItem)`
     font-size: 19px;
     line-height: 28px;
     text-align: left;
+    border-radius: 4px;
+    border: none;
+    outline: 4px solid transparent;
   }
 
   .icon-wrapper {
@@ -55,6 +58,25 @@ const StyledListItem = styled(ListItem)`
   }
 
   ${({ theme }) => `
+   button {
+     &:hover {
+        color: ${theme.colorNhsukWhite};
+        &.hidden {
+          color: ${theme.colorNhsukWhite};
+        }
+        background-color: ${theme.colorShadeNhsukBlue35};
+      }
+      &:active, :focus {
+        color: ${theme.colorNhsukBlack};
+        &.hidden {
+          color: ${theme.colorNhsukBlack};
+        }
+        border:none;
+        background-color: ${theme.colorNhsukYellow};
+        box-shadow: 0 -2px transparent, 0 4px #212b32;
+      }
+   }
+
     a, button {
       color: ${theme.colorNhsukBlue};
       text-decoration: none;
@@ -76,18 +98,25 @@ export type MenuItem = {
   title: string;
   icon: ReactNode;
   handler: Href | OnClickFn;
+  dataCy?: string;
 };
 
 interface MenuListItemProps extends ComponentPropsWithoutRef<"li"> {
   title: string;
   handler: Href | OnClickFn;
+  dataCy?: string;
 }
 
-const MenuListItem: FC<MenuListItemProps> = ({ title, children, ...props }) => {
+const MenuListItem: FC<MenuListItemProps> = ({
+  title,
+  children,
+  dataCy,
+  ...props
+}) => {
   return (
     <StyledListItem {...props}>
       {children}
-      {title && <StyledTitle>{title}</StyledTitle>}
+      {title && <StyledTitle data-cy={dataCy}>{title}</StyledTitle>}
     </StyledListItem>
   );
 };
