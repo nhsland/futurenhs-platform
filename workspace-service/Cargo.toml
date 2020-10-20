@@ -47,3 +47,4 @@ rev = "144dcceb445e804b16258d0dd9e580d6a484a01e"
 
 [dev_dependencies]
 percent-encoding = "2.1.0"
+test-case = "1.0.0"

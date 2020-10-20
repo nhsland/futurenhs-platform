@@ -9,7 +9,28 @@ use uuid::Uuid;
 use validator::Validate;
 
 lazy_static! {
-    static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[A-z0-9-_\.\s]+$").unwrap();
+    static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[\w\s\.-]+$").expect("bad regex");
+    static ref ALLOWED_EXTENSIONS: Regex = Regex::new(
+        r"(?x)^[\w\s\.-]+(
+            (bmp)|
+            (doc)|
+            (docx)|
+            (eps)|
+            (gif)|
+            (jpeg)|
+            (jpg)|
+            (pdf)|
+            (png)|
+            (ppt)|
+            (pptx)|
+            (svg)|
+            (txt)|
+            (webp)|
+            (xls)|
+            (xslx)
+        )$"
+    )
+    .expect("bad regex");
 }
 
 #[SimpleObject(desc = "A file")]
@@ -49,6 +70,10 @@ pub struct NewFile {
         regex(
             path = "ALLOWED_FILENAME_CHARS",
             message = "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"
+        ),
+        regex(
+            path = "ALLOWED_EXTENSIONS",
+            message = "filename does not have an allowed extension"
         )
     )]
     pub file_name: String,
@@ -135,5 +160,34 @@ impl FilesMutation {
         let file: File = db::File::delete(Uuid::parse_str(&id)?, pool).await?.into();
 
         Ok(file)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use test_case::test_case;
+
+    #[test_case("filename.doc", "no errors" ; "good extension doc")]
+    #[test_case("filename.docx", "no errors" ; "good extension docx")]
+    #[test_case("filename.zip", "filename does not have an allowed extension" ; "bad extension zip")]
+    #[test_case(".doc", "file_name must be between 5 and 255 characters long"; "too short")]
+    #[test_case("%.doc", "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
+    #[test_case("🦀.doc", "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
+    fn validate_filename(filename: &str, expected: &str) {
+        let actual = NewFile {
+            title: "".to_string(),
+            description: "".to_string(),
+            folder: "".into(),
+            file_name: filename.to_string(),
+            file_type: "".to_string(),
+            temporary_blob_storage_path: "".to_string(),
+        }
+        .validate()
+        .map_or_else(
+            |es| format!("{:?}", es.into_errors().get("file_name").unwrap()),
+            |_| "no errors".to_string(),
+        );
+        assert!(actual.contains(expected));
     }
 }
