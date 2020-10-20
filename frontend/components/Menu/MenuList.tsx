@@ -57,7 +57,7 @@ const MenuList: FC<Props> = ({ children, hiddenUntilHover, className }) => {
         {children?.map((item) => {
           const { icon, ...props } = item;
           return (
-            <MenuListItem key={props.title} {...props}>
+            <MenuListItem key={props.title} {...props} dataCy={props.dataCy}>
               {icon}
             </MenuListItem>
           );

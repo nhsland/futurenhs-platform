@@ -99,11 +99,13 @@ const FileHomepage = () => {
               withBorder
               menu={
                 <Menu
+                  dataCy="file-options"
                   items={[
                     {
                       title: "Delete file",
                       icon: <DeleteIcon />,
                       handler: onClick,
+                      dataCy: "delete-file",
                     },
                   ]}
                 />
