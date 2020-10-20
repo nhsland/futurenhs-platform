@@ -201,7 +201,7 @@ mod test {
             description: "".to_string(),
             folder: "".into(),
             file_name: file_name.to_string(),
-            file_type: file_type.map_or("", |m| m).to_string(),
+            file_type: file_type.unwrap_or("").to_string(),
             temporary_blob_storage_path: "".to_string(),
         }
         .validate()
