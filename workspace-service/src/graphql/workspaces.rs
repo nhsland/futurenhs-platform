@@ -200,7 +200,7 @@ mod test {
 
         assert_eq!(result.err().unwrap().0, "User with auth_id deadbeef-0000-0000-0000-000000000000 does not have permission to create a workspace.");
 
-        assert_eq!(events.try_iter().collect::<Vec<_>>().len(), 0);
+        assert_eq!(events.try_iter().count(), 0);
 
         Ok(())
     }
