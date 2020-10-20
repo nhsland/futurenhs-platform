@@ -2,8 +2,15 @@ use super::azure;
 use super::db;
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
+use lazy_static::lazy_static;
+use regex::Regex;
 use url::Url;
 use uuid::Uuid;
+use validator::Validate;
+
+lazy_static! {
+    static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[A-z0-9-_\.\s]+$").unwrap();
+}
 
 #[SimpleObject(desc = "A file")]
 pub struct File {
@@ -28,10 +35,22 @@ pub struct File {
 }
 
 #[InputObject]
+#[derive(Debug, Validate)]
 pub struct NewFile {
     pub title: String,
     pub description: String,
     pub folder: ID,
+    #[validate(
+        length(
+            min = 5,
+            max = 255,
+            message = "file_name must be between 5 and 255 characters long"
+        ),
+        regex(
+            path = "ALLOWED_FILENAME_CHARS",
+            message = "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"
+        )
+    )]
     pub file_name: String,
     pub file_type: String,
     pub temporary_blob_storage_path: String,
@@ -83,6 +102,8 @@ pub struct FilesMutation;
 impl FilesMutation {
     #[field(desc = "Create a new file (returns the created file)")]
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
+        new_file.validate()?;
+
         let pool = context.data()?;
         let azure_config = context.data()?;
         let folder = Uuid::parse_str(&new_file.folder)?;
