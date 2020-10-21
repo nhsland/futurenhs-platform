@@ -7,6 +7,7 @@ mod schema;
 mod test_mocks;
 mod users;
 mod workspaces;
+mod file_versions;
 
 use super::azure;
 use super::db;
