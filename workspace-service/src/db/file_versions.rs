@@ -22,6 +22,7 @@ pub struct FileVersion {
 }
 
 impl FileVersion {
+    #[allow(clippy::too_many_arguments)]
     pub async fn create(
         folder: &Uuid,
         file: &Uuid,
