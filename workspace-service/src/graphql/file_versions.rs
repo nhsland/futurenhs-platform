@@ -64,21 +64,7 @@ impl From<db::FileVersion> for FileVersion {
         }
     }
 }
-//
-// #[derive(Default)]
-// pub struct FileVersionsQuery;
-//
-// #[Object]
-// impl FileVersionsQuery {
-//     #[field(desc = "Get file by ID")]
-//     async fn file(&self, context: &Context<'_>, id: ID) -> FieldResult<FileVersion> {
-//         let pool = context.data()?;
-//         let id = Uuid::parse_str(&id)?;
-//         let file = db::FileVersion::find_by_id(id, pool).await?;
-//         Ok(file.into())
-//     }
-// }
-//
+
 #[derive(Default)]
 pub struct FileVersionsMutation;
 
