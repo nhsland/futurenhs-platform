@@ -1,7 +1,7 @@
 CREATE TABLE file_versions (
     id uuid DEFAULT uuid_generate_v4 (),
     folder uuid NOT NULL REFERENCES folders,
-    file uuid NOT NULL REFERENCES files,
+    file uuid NOT NULL REFERENCES files(id),
     file_title TEXT NOT NULL,
     file_description TEXT NOT NULL,
     file_name TEXT NOT NULL,
