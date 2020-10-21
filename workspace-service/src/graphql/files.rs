@@ -12,7 +12,7 @@ use validator::{Validate, ValidationError};
 lazy_static! {
     static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[\w\s\.-]+$").expect("bad regex");
     static ref ALLOWED_EXTENSIONS: Regex = Regex::new(
-        r"(?x)^[\w\s\.-]+(
+        r"(?x)^[\w\s\.-]+\.(
             (bmp)|
             (doc)|
             (docx)|
@@ -95,7 +95,7 @@ fn match_file_type(new_file: &NewFile) -> Result<(), ValidationError> {
         .and_then(|captures| captures.get(1))
         .map(|m| m.as_str());
     if let Some(ext) = extension {
-        if extensions2(new_file.file_type.clone()).any(|possible| ext == possible) {
+        if extensions2(&new_file.file_type).any(|possible| ext == possible) {
             Ok(())
         } else {
             Err(ValidationError::new("bad MIME type"))
@@ -197,6 +197,8 @@ mod test {
     #[test_case("image.png", Some("image/png"), "no errors" ; "good mime type")]
     #[test_case("image.png", Some("image/gif"), "filename extension does not match MIME type" ; "bad mime type")]
     #[test_case("filename.zip", None, "filename does not have an allowed extension" ; "bad extension zip")]
+    #[test_case("filename.txt", Some("text/plain"), "no errors" ; "good extension has final dot")]
+    #[test_case("filenametxt", None, "filename does not have an allowed extension" ; "bad extension no final dot")]
     #[test_case(".doc", None, "file_name must be between 5 and 255 characters long"; "too short")]
     #[test_case("%.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
     #[test_case("🦀.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
