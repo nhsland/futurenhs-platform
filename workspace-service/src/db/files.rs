@@ -39,8 +39,8 @@ impl File {
             file_type,
             blob_storage_path,
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(file)
     }

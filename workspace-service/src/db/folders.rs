@@ -27,8 +27,8 @@ impl Folder {
             description,
             workspace
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(folder)
     }

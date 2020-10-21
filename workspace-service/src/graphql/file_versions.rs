@@ -87,7 +87,11 @@ pub struct FileVersionsMutation;
 #[Object]
 impl FileVersionsMutation {
     #[field(desc = "Create a new file version (returns the created file version)")]
-    async fn create_file_version(&self, context: &Context<'_>, new_file_version: NewFileVersion) -> FieldResult<FileVersion> {
+    async fn create_file_version(
+        &self,
+        context: &Context<'_>,
+        new_file_version: NewFileVersion,
+    ) -> FieldResult<FileVersion> {
         let pool = context.data()?;
         let azure_config = context.data()?;
         let folder = Uuid::parse_str(&new_file_version.folder)?;

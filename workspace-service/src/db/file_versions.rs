@@ -49,8 +49,8 @@ impl FileVersion {
             version_number,
             version_label,
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(file_version)
     }

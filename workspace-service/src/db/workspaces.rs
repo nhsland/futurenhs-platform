@@ -51,8 +51,8 @@ impl Workspace {
             title,
             description
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(workspace)
     }
