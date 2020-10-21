@@ -78,6 +78,8 @@ impl FileVersionsMutation {
     ) -> FieldResult<FileVersion> {
         let pool = context.data()?;
         let azure_config = context.data()?;
+        let requesting_user = context.data::<super::RequestingUser>()?;
+        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let folder = Uuid::parse_str(&new_file_version.folder)?;
         let destination = azure::copy_blob_from_url(
             &Url::parse(&new_file_version.blob_storage_path)?,
@@ -95,7 +97,7 @@ impl FileVersionsMutation {
             &new_file_version.file_name,
             &new_file_version.file_type,
             &destination,
-            &new_file_version.created_by,
+            &user.id,
             &new_file_version.version_number,
             &new_file_version.version_label,
             pool,
