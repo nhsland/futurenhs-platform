@@ -150,6 +150,101 @@
       ]
     }
   },
+  "33aa670d2117ff8b6d9e6b327f2d0f64d8e9cdfd1ef037bb5abd9c4237f8837c": {
+    "query": "INSERT INTO file_versions (\n    folder,\n    file,\n    file_title,\n    file_description,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    created_by,\n    version_number,\n    version_label\n)\nVALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), $8, $9, $10)\nRETURNING *\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "folder",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "file",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 3,
+          "name": "file_title",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 4,
+          "name": "file_description",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 5,
+          "name": "file_name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 6,
+          "name": "file_type",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 7,
+          "name": "blob_storage_path",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 8,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 9,
+          "name": "created_by",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 10,
+          "name": "version_number",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 11,
+          "name": "version_label",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid",
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Uuid",
+          "Int2",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "3588b04670ed16bc2dc9ddb7d791336923afaee153fdcce2bee466c8c8c390b2": {
     "query": "INSERT INTO users (auth_id, name, is_platform_admin)\nVALUES ($1, $2, FALSE)\nON CONFLICT (auth_id) DO UPDATE\n-- Noop; sql syntax to allow return without use of Option type\n    SET name = users.name\nRETURNING *;\n",
     "describe": {
