@@ -194,11 +194,13 @@ mod test {
 
     #[test_case("filename.doc", Some("application/msword"), "no errors" ; "good extension doc")]
     #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), "no errors" ; "good extension docx")]
+    #[test_case("image.png", Some("image/png"), "no errors" ; "good mime type")]
+    #[test_case("image.png", Some("image/gif"), "filename extension does not match MIME type" ; "bad mime type")]
     #[test_case("filename.zip", None, "filename does not have an allowed extension" ; "bad extension zip")]
     #[test_case(".doc", None, "file_name must be between 5 and 255 characters long"; "too short")]
     #[test_case("%.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
     #[test_case("🦀.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
-    fn validate_filename(file_name: &str, file_type: Option<&str>, expected: &str) {
+    fn validate_filename(file_name: &str, file_type: Option<&str>, error_message: &str) {
         let actual = NewFile {
             title: "".to_string(),
             description: "".to_string(),
@@ -208,10 +210,8 @@ mod test {
             temporary_blob_storage_path: "".to_string(),
         }
         .validate()
-        .map_or_else(
-            |es| format!("{:?}", es.into_errors().get("file_name").unwrap()),
-            |_| "no errors".to_string(),
-        );
-        assert!(actual.contains(expected));
+        .map_or_else(|es| format!("{:?}", es), |_| "no errors".to_string());
+        let expected = error_message.to_owned();
+        assert!(actual.contains(&expected));
     }
 }
