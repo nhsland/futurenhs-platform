@@ -91,6 +91,7 @@ impl FileVersionsMutation {
         // TODO: add event.
 
         let file_version = db::FileVersion::create(
+            &Uuid::new_v4(),
             &folder,
             &new_file_version.file,
             &new_file_version.file_title,
@@ -99,7 +100,7 @@ impl FileVersionsMutation {
             &new_file_version.file_type,
             &destination,
             &user.id,
-            &new_file_version.version_number,
+            new_file_version.version_number,
             &new_file_version.version_label,
             pool,
         )

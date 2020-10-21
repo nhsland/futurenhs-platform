@@ -1,4 +1,5 @@
 INSERT INTO file_versions (
+    id,
     folder,
     file,
     file_title,
@@ -11,6 +12,5 @@ INSERT INTO file_versions (
     version_number,
     version_label
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), $8, $9, $10)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10, $11)
 RETURNING *
-

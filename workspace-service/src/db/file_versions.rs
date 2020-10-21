@@ -24,6 +24,7 @@ pub struct FileVersion {
 impl FileVersion {
     #[allow(clippy::too_many_arguments)]
     pub async fn create(
+        id: &Uuid,
         folder: &Uuid,
         file: &Uuid,
         file_title: &str,
@@ -32,13 +33,14 @@ impl FileVersion {
         file_type: &str,
         blob_storage_path: &str,
         created_by: &Uuid,
-        version_number: &i16,
+        version_number: i16,
         version_label: &str,
         pool: &PgPool,
     ) -> Result<FileVersion> {
         let file_version = sqlx::query_file_as!(
             FileVersion,
             "sql/file_versions/create.sql",
+            id,
             folder,
             file,
             file_title,
