@@ -11,7 +11,7 @@ use validator::{Validate, ValidationError};
 lazy_static! {
     static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[\w\s\.-]+$").expect("bad regex");
     static ref ALLOWED_EXTENSIONS: Regex = Regex::new(
-        r"(?x)^[\w\s\.-]+\.(
+        r"(?x)\.(
             (bmp)|
             (doc)|
             (docx)|
@@ -193,25 +193,33 @@ mod test {
     use super::*;
     use test_case::test_case;
 
-    #[test_case("filename.doc", Some("application/msword"), "no errors" ; "good extension doc")]
-    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), "no errors" ; "good extension docx")]
-    #[test_case("image.png", Some("image/png"), "no errors" ; "good mime type")]
-    #[test_case("image.png", Some("image/gif"), "the file extension is not valid for the specified MIME type" ; "bad mime type")]
-    #[test_case("filename.zip", None, "the file name does not have an allowed extension" ; "bad extension zip")]
-    #[test_case("filename.txt", Some("text/plain"), "no errors" ; "good extension has final dot")]
-    #[test_case("filenametxt", None, "the file name does not have an allowed extension" ; "bad extension no final dot")]
-    #[test_case(".doc", None, "\
+    #[test_case("filename.doc", Some("application/msword"), "no errors"
+        ; "good extension doc")]
+    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), "no errors"
+        ; "good extension docx")]
+    #[test_case("image.png", Some("image/png"), "no errors"
+        ; "good mime type")]
+    #[test_case("image.png", Some("image/gif"), "the file extension is not valid for the specified MIME type"
+        ; "bad mime type")]
+    #[test_case("filename.zip", None, "the file name does not have an allowed extension"
+        ; "bad extension zip")]
+    #[test_case("filename.txt", Some("text/plain"), "no errors"
+        ; "good extension has dot")]
+    #[test_case("filenametxt", None, "the file name does not have an allowed extension"
+        ; "bad extension no dot")]
+    #[test_case(".doc", None, "the file name must be between 5 and 255 characters long"
+        ; "too short")]
+    #[test_case("%.doc", None, "the file name contains characters that are not alphanumeric, space, period, hyphen or underscore"
+        ; "bad char percent")]
+    #[test_case("%", None, "\
         the file name must be between 5 and 255 characters long, \
-        the file name does not have an allowed extension"; "too short")]
-    #[test_case("%.doc", None, "\
         the file name contains characters that are not alphanumeric, space, period, hyphen or underscore, \
-        the file name does not have an allowed extension"; "bad char percent")]
-    #[test_case("🦀.doc", None, "\
-        the file name contains characters that are not alphanumeric, space, period, hyphen or underscore, \
-        the file name does not have an allowed extension" ; "bad char emoji")]
-    #[test_case("xx\u{0}.doc", None, "\
-        the file name contains characters that are not alphanumeric, space, period, hyphen or underscore, \
-        the file name does not have an allowed extension"; "null char")]
+        the file name does not have an allowed extension"
+        ; "multiple errors")]
+    #[test_case("🦀.doc", None, "the file name contains characters that are not alphanumeric, space, period, hyphen or underscore"
+        ; "bad char emoji")]
+    #[test_case("xx\u{0}.doc", None, "the file name contains characters that are not alphanumeric, space, period, hyphen or underscore"
+        ; "null char")]
     fn validate_filename(file_name: &str, file_type: Option<&str>, expected: &str) {
         let new_file = NewFile {
             title: "".to_string(),
