@@ -7,7 +7,7 @@ use uuid::Uuid;
 
 #[SimpleObject(desc = "A file version")]
 pub struct FileVersion {
-    #[field(desc = "The id of the file")]
+    #[field(desc = "The id of the file version")]
     pub id: ID,
     #[field(desc = "The id of the parent folder")]
     pub folder: ID,
@@ -23,9 +23,9 @@ pub struct FileVersion {
     pub file_type: String,
     #[field(desc = "The path of the file")]
     pub blob_storage_path: String,
-    #[field(desc = "The time the file was created")]
+    #[field(desc = "The time the file version was created")]
     pub created_at: DateTime<Utc>,
-    #[field(desc = "The user that created the file")]
+    #[field(desc = "The user that created the file version")]
     pub created_by: Uuid,
     #[field(desc = "The version of the file")]
     pub version_number: i16,
