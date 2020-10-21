@@ -202,6 +202,7 @@ mod test {
     #[test_case(".doc", None, "file_name must be between 5 and 255 characters long"; "too short")]
     #[test_case("%.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
     #[test_case("🦀.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
+    #[test_case("xx\u{0}.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "null char")]
     fn validate_filename(file_name: &str, file_type: Option<&str>, error_message: &str) {
         let actual = NewFile {
             title: "".to_string(),
