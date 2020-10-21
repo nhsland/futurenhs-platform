@@ -26,6 +26,12 @@ To interact with the GraphQL playground, use portforwarding:
 
 `kubectl port-forward -n workspace-service deployments/workspace-service 3030:3030`
 
+## Migrations
+
+1. `sqlx migrate add <NAME>`
+1. Write migration
+1. `make prepare`
+
 ## Formatting
 
 [rustfmt](https://github.com/rust-lang/rustfmt) is used for formatting our rust code. CI will fail if code is not formatted correctly.

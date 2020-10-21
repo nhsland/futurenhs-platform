@@ -17,6 +17,7 @@ import { PageLayout } from "../../../../../../components/PageLayout";
 import {
   useGetWorkspaceByIdQuery,
   useGetFileByIdQuery,
+  useDeleteFileMutation,
 } from "../../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../../lib/withUrqlClient";
 
@@ -49,10 +50,19 @@ const Description = styled.p`
 
 const FileHomepage = () => {
   const router = useRouter();
-  let { workspaceId, folderId, fileId } = router.query;
-  workspaceId = (workspaceId || "unknown").toString();
-  folderId = (folderId || "unknown").toString();
-  fileId = (fileId || "unknown").toString();
+  const { fileId, workspaceId, folderId } = router.query;
+
+  if (fileId === undefined || Array.isArray(fileId)) {
+    throw new Error("fileId required in URL");
+  }
+
+  if (folderId === undefined || Array.isArray(folderId)) {
+    throw new Error("folderId required in URL");
+  }
+
+  if (workspaceId === undefined || Array.isArray(workspaceId)) {
+    throw new Error("workspaceId required in URL");
+  }
 
   const [workspace] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -61,6 +71,17 @@ const FileHomepage = () => {
   const [file] = useGetFileByIdQuery({
     variables: { id: fileId },
   });
+
+  const [, deleteFile] = useDeleteFileMutation();
+
+  const onClick = async () => {
+    const message = "Are you sure you want to delete this file?";
+    const result = window.confirm(message);
+    if (result) {
+      await deleteFile({ id: fileId });
+      await router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+    }
+  };
 
   return (
     <>
@@ -78,11 +99,13 @@ const FileHomepage = () => {
               withBorder
               menu={
                 <Menu
+                  dataCy="file-options"
                   items={[
                     {
                       title: "Delete file",
                       icon: <DeleteIcon />,
-                      href: "#",
+                      handler: onClick,
+                      dataCy: "delete-file",
                     },
                   ]}
                 />

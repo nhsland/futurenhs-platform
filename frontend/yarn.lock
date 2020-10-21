@@ -2954,6 +2954,13 @@
   dependencies:
     wonka "^4.0.14"
 
+"@urql/devtools@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@urql/devtools/-/devtools-2.0.2.tgz#0991bc3bb09444b162ef56518b76f64f286954fc"
+  integrity sha512-f3gIx4NDOuWdXC54m4VQlLKNtYHl6PITSEqexH6xiktzvH7QcwS5hNPg0Fkki8cas/DZtkmDpwxNV1uRZ5xlvA==
+  dependencies:
+    wonka ">= 4.0.9"
+
 "@urql/exchange-graphcache@^3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@urql/exchange-graphcache/-/exchange-graphcache-3.1.5.tgz#7fc8469c954730db732f669a14c08cb37c51c691"
@@ -12955,7 +12962,7 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2 || 2"
 
-wonka@^4.0.14:
+"wonka@>= 4.0.9", wonka@^4.0.14:
   version "4.0.14"
   resolved "https://registry.yarnpkg.com/wonka/-/wonka-4.0.14.tgz#77d680a84e575ed15a9f975eb87d6c530488f3a4"
   integrity sha512-v9vmsTxpZjrA8CYfztbuoTQSHEsG3ZH+NCYfasHm0V3GqBupXrjuuz0RJyUaw2cRO7ouW2js0P6i853/qxlDcA==

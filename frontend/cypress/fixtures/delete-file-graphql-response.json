@@ -1,0 +1,14 @@
+{
+  "data": {
+    "deleteFile": {
+      "id": "c51733b3-52b4-430c-ab89-16f743f42e77",
+      "title": "This is a test file",
+      "description": "",
+      "folder": "33ae3c55-d252-458a-b13b-40ac1d3bdfd4",
+      "fileType": "image/png",
+      "fileName": "Screenshot 2020-10-12 at 15.23.19.png",
+      "modifiedAt": "2020-10-13T10:43:06.998337+00:00",
+      "__typename": "File"
+    }
+  }
+}

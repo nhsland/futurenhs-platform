@@ -9,6 +9,7 @@ interface MenuProps extends ComponentPropsWithoutRef<"button"> {
   hiddenUntilHover: boolean;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
+  dataCy?: string;
 }
 
 const MenuButton: FC<MenuProps> = ({
@@ -16,6 +17,7 @@ const MenuButton: FC<MenuProps> = ({
   hiddenUntilHover,
   menuOpen,
   setMenuOpen,
+  dataCy,
   ...rest
 }) => {
   return (
@@ -28,6 +30,7 @@ const MenuButton: FC<MenuProps> = ({
         )}
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Options"
+        data-cy={dataCy}
         {...rest}
       />
     </Tooltip>
@@ -58,7 +61,7 @@ const StyledMenuButton = styled(MenuButton)`
       }
       background-color: ${theme.colorNhsukYellow};
     }
-    
+
     border-radius: 4px;
     border:none;
     cursor: pointer;
