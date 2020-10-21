@@ -42,8 +42,6 @@ pub struct NewFileVersion {
     pub file_name: String,
     pub file_type: String,
     pub blob_storage_path: String,
-    pub created_by: Uuid,
-    pub modified_at: DateTime<Utc>,
     pub version_number: i16,
     pub version_label: String,
 }
