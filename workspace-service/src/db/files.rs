@@ -8,36 +8,24 @@ use sqlx::{types::Uuid, PgPool};
 #[derive(Clone)]
 pub struct File {
     pub id: Uuid,
-    pub title: String,
-    pub description: String,
-    pub folder: Uuid,
-    pub file_name: String,
-    pub file_type: String,
-    pub blob_storage_path: String,
     pub created_at: DateTime<Utc>,
-    pub modified_at: DateTime<Utc>,
+    pub created_by: Uuid,
     pub deleted_at: Option<DateTime<Utc>>,
+    pub deleted_by: Option<Uuid>,
+    pub latest_version: Uuid
 }
 
 impl File {
     pub async fn create(
-        title: &str,
-        description: &str,
-        folder: &Uuid,
-        file_name: &str,
-        file_type: &str,
-        blob_storage_path: &str,
+        created_by: &Uuid,
+        latest_version: &Uuid,
         pool: &PgPool,
     ) -> Result<File> {
         let file = sqlx::query_file_as!(
             File,
             "sql/files/create.sql",
-            title,
-            description,
-            folder,
-            file_name,
-            file_type,
-            blob_storage_path,
+            created_by,
+            latest_version
         )
         .fetch_one(pool)
         .await?;
