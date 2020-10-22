@@ -173,8 +173,9 @@ impl FilesMutation {
 
         // TODO: add event.
 
+        let mut tx = pool.begin().await?;
         let version_id = Uuid::new_v4();
-        let file = db::File::create(user.id, version_id, pool).await?;
+        let file = db::File::create(user.id, version_id, &mut tx).await?;
         let file_version = db::FileVersion::create(
             version_id,
             folder,
@@ -187,9 +188,10 @@ impl FilesMutation {
             user.id,
             1,
             "",
-            pool,
+            &mut tx,
         )
         .await?;
+        tx.commit().await?;
 
         Ok(File {
             id: file.id.into(),

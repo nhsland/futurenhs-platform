@@ -3,7 +3,7 @@
 
 use anyhow::Result;
 use chrono::{DateTime, Utc};
-use sqlx::{types::Uuid, PgPool};
+use sqlx::{types::Uuid, Executor, PgPool, Postgres};
 
 #[derive(Clone)]
 pub struct File {
@@ -31,9 +31,12 @@ pub struct FileWithVersion {
 }
 
 impl File {
-    pub async fn create(created_by: Uuid, latest_version: Uuid, pool: &PgPool) -> Result<File> {
+    pub async fn create<'c, E>(created_by: Uuid, latest_version: Uuid, executor: E) -> Result<File>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
         let file = sqlx::query_file_as!(File, "sql/files/create.sql", created_by, latest_version)
-            .fetch_one(pool)
+            .fetch_one(executor)
             .await?;
 
         Ok(file)

@@ -3,7 +3,7 @@
 
 use anyhow::Result;
 use chrono::{DateTime, Utc};
-use sqlx::{types::Uuid, PgPool};
+use sqlx::{types::Uuid, Executor, Postgres};
 
 #[derive(Clone)]
 pub struct FileVersion {
@@ -23,7 +23,7 @@ pub struct FileVersion {
 
 impl FileVersion {
     #[allow(clippy::too_many_arguments)]
-    pub async fn create(
+    pub async fn create<'c, E>(
         id: Uuid,
         folder: Uuid,
         file: Uuid,
@@ -35,8 +35,11 @@ impl FileVersion {
         created_by: Uuid,
         version_number: i16,
         version_label: &str,
-        pool: &PgPool,
-    ) -> Result<FileVersion> {
+        executor: E,
+    ) -> Result<FileVersion>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
         let file_version = sqlx::query_file_as!(
             FileVersion,
             "sql/file_versions/create.sql",
@@ -52,7 +55,7 @@ impl FileVersion {
             version_number,
             version_label,
         )
-        .fetch_one(pool)
+        .fetch_one(executor)
         .await?;
 
         Ok(file_version)
