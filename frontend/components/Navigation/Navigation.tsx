@@ -155,7 +155,7 @@ const Navigation: FC<Props> = ({
                 href={`/workspaces/${workspaceId}/folders/${folder.id}`}
                 menu={
                   <Menu
-                    baackground="dark"
+                    background="dark"
                     items={items}
                     hiddenUntilHover={true}
                   />
