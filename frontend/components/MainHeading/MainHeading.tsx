@@ -9,16 +9,7 @@ const Container = styled.div`
 `;
 
 const H1 = styled.h1`
-  margin-bottom: 23px;
-`;
-
-const StyledHorizontalRule = styled.hr`
-  margin-top: 0px;
-  margin-bottom: 25px;
-  ${({ theme }) => `
-    color: ${theme.colorNhsukGrey1};
-    border-bottom: 1px solid ${theme.colorNhsukGrey1};
-  `}
+  /* margin-bottom: 23px; */
 `;
 
 interface Props {
@@ -32,14 +23,13 @@ interface Props {
  * It's a workaround for a known next.js accessibility issue that doesn't read out
  * headlines on navigation
  */
-const MainHeading: FC<Props> = ({ children, withBorder, menu }) => {
+const MainHeading: FC<Props> = ({ children, menu }) => {
   return (
     <>
       <Container>
         <H1 aria-live="polite">{children}</H1>
         {menu}
       </Container>
-      {withBorder && <StyledHorizontalRule />}
     </>
   );
 };

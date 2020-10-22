@@ -17,10 +17,6 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
   align-items: baseline;
 }
 
-.c11 {
-  margin-bottom: 23px;
-}
-
 .c1 {
   background-color: rgb(255,255,255);
   position: relative;
@@ -239,7 +235,7 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
   margin-bottom: 8px;
 }
 
-.c12 {
+.c11 {
   border-top: 1px solid rgb(76,98,114);
   padding-top: 24px;
   margin-bottom: 8px;
@@ -523,13 +519,13 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
       >
         <h1
           aria-live="polite"
-          class="c11"
+          class="MainHeading__H1-sc-1qiw6s5-1"
         >
           Error
         </h1>
       </div>
       <h2
-        class="c12"
+        class="c11"
       >
         You do not have permission to do this.
       </h2>
@@ -557,10 +553,6 @@ exports[`Render the page with form 1`] = `
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
   align-items: baseline;
-}
-
-.c11 {
-  margin-bottom: 23px;
 }
 
 .c1 {
@@ -781,18 +773,18 @@ exports[`Render the page with form 1`] = `
   margin-bottom: 8px;
 }
 
-.c12 {
+.c11 {
   border-top: 1px solid rgb(76,98,114);
   padding-top: 24px;
   margin-bottom: 8px;
   color: rgb(76,98,114);
 }
 
-.c13 {
+.c12 {
   padding-bottom: 40px;
 }
 
-.c13 #text {
+.c12 #text {
   padding-bottom: 60px;
 }
 
@@ -1073,13 +1065,13 @@ exports[`Render the page with form 1`] = `
       >
         <h1
           aria-live="polite"
-          class="c11"
+          class="MainHeading__H1-sc-1qiw6s5-1"
         >
           Create a workspace
         </h1>
       </div>
       <h2
-        class="c12"
+        class="c11"
       >
         Workspace details
       </h2>
@@ -1088,7 +1080,7 @@ exports[`Render the page with form 1`] = `
       </p>
       <form>
         <div
-          class="c13"
+          class="c12"
         >
           <div
             class="nhsuk-form-group"
@@ -1118,7 +1110,7 @@ exports[`Render the page with form 1`] = `
           100 characters remaining
         </div>
         <div
-          class="c13"
+          class="c12"
         >
           <div
             class="nhsuk-form-group"

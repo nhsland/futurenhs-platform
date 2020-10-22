@@ -96,7 +96,6 @@ const FileHomepage = () => {
           />
           <PageContent>
             <MainHeading
-              withBorder
               menu={
                 <Menu
                   dataCy="file-options"

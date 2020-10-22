@@ -27,7 +27,7 @@ const WorkspaceDirectory: NextPage = () => {
     <PageLayout>
       <NavHeader />
       <PageContent>
-        <MainHeading withBorder>My workspaces</MainHeading>
+        <MainHeading>My workspaces</MainHeading>
         {fetching && <p>Loading...</p>}
         {error && <p> Oh no... {error?.message} </p>}
         {data?.workspaces.map((workspace) => {

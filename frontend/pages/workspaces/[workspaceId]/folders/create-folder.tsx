@@ -108,7 +108,7 @@ const CreateFolder: NextPage = () => {
           activeFolder={"active"}
         />
         <PageContent>
-          <MainHeading withBorder>Create a folder</MainHeading>
+          <MainHeading>Create a folder</MainHeading>
           <h2>Folder details</h2>
           <p> Fields marked with * are mandatory.</p>
           <Form onSubmit={handleSubmit(onSubmit)}>

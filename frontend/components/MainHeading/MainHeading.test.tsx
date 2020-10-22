@@ -17,7 +17,7 @@ test("takes a snapshot with the prop", () => {
   const children = "example heading";
   const { asFragment } = render(
     <ThemeProvider theme={theme}>
-      <MainHeading withBorder>{children}</MainHeading>
+      <MainHeading>{children}</MainHeading>
     </ThemeProvider>
   );
 

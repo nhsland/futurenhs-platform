@@ -67,7 +67,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
           activeFolder={folderId}
         />
         <PageContent>
-          <MainHeading withBorder>
+          <MainHeading>
             {folder.fetching
               ? "Loading..."
               : folder.data?.folder.title || "No title!"}

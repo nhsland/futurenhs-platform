@@ -17,17 +17,6 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-items: baseline;
 }
 
-.c26 {
-  margin-bottom: 23px;
-}
-
-.c27 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
-}
-
 .c1 {
   background-color: rgb(255,255,255);
   position: relative;
@@ -541,16 +530,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c28 {
+.c26 {
   border: none;
   margin-bottom: 16px;
 }
 
-.c29 {
+.c27 {
   margin-bottom: 40px;
 }
 
-.c30 {
+.c28 {
   margin-left: 12px;
 }
 
@@ -986,14 +975,11 @@ exports[`withUrql renders matching snapshot 1`] = `
         >
           <h1
             aria-live="polite"
-            class="c26"
+            class="MainHeading__H1-sc-1qiw6s5-1"
           >
             folder 1
           </h1>
         </div>
-        <hr
-          class="c27"
-        />
         <p>
            Fields marked with * are mandatory.
         </p>
@@ -1012,7 +998,7 @@ exports[`withUrql renders matching snapshot 1`] = `
             <input
               aria-describedby="files--hint"
               aria-invalid="false"
-              class="nhsuk-input c28"
+              class="nhsuk-input c26"
               id="files"
               multiple=""
               name="files"
@@ -1020,7 +1006,7 @@ exports[`withUrql renders matching snapshot 1`] = `
             />
           </div>
           <p
-            class="c29"
+            class="c27"
           >
             All uploaded content must conform to the platform's 
             <a
@@ -1040,7 +1026,7 @@ exports[`withUrql renders matching snapshot 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary c30"
+            class="nhsuk-button nhsuk-button--secondary c28"
             type="button"
           >
             Discard

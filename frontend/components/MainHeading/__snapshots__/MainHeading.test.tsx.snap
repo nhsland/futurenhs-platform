@@ -17,16 +17,12 @@ exports[`takes a snapshot of the component 1`] = `
   align-items: baseline;
 }
 
-.c1 {
-  margin-bottom: 23px;
-}
-
 <div
     class="c0"
   >
     <h1
       aria-live="polite"
-      class="c1"
+      class="MainHeading__H1-sc-1qiw6s5-1"
     >
       example heading
     </h1>
@@ -51,29 +47,15 @@ exports[`takes a snapshot with the prop 1`] = `
   align-items: baseline;
 }
 
-.c1 {
-  margin-bottom: 23px;
-}
-
 <div
     class="c0"
   >
     <h1
       aria-live="polite"
-      class="c1"
+      class="MainHeading__H1-sc-1qiw6s5-1"
     >
       example heading
     </h1>
   </div>
-  .c0 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
-}
-
-<hr
-    class="c0"
-  />
 </DocumentFragment>
 `;

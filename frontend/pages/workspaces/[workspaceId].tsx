@@ -46,7 +46,7 @@ const WorkspaceHomepage: NextPage = () => {
         <ContentWrapper>
           <Navigation workspaceId={id} workspaceTitle={workspaceTitle} />
           <PageContent>
-            <MainHeading withBorder>{workspaceTitle}</MainHeading>
+            <MainHeading>{workspaceTitle}</MainHeading>
             <h2>Most recent items</h2>
             {error && <p> Oh no... {error?.message} </p>}
           </PageContent>
