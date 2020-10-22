@@ -6,31 +6,23 @@ import styled from "styled-components";
 const StyledContainer = styled.div`
   display: flex;
   margin-bottom: 40px;
+  img {
+    padding-right: 24px;
+    border-radius: 4px;
+    height: 44px;
+    display: block;
+  }
 `;
 
 const StyledLink = styled.a`
   ${({ theme }) => `
   display: flex;
-  img {
-    display: block;
-    height: 44px;
-    width: 44px;
-    border-radius: 4px;
-    cursor: pointer;
+  text-decoration: none;
+
+  h4 {
+    margin-bottom: 0px;
 
     &:hover {
-      & + h3 {
-        color: ${theme.colorNhsukBlue};
-        text-decoration: underline;
-      }
-    }
-  }
-  h3 {
-    margin-left: 25px;
-    color: ${theme.colorNhsukBlack};
-
-    &:hover {
-      color: ${theme.colorNhsukBlue};
       text-decoration: underline;
       cursor: pointer;
       }
@@ -39,7 +31,6 @@ const StyledLink = styled.a`
       color: ${theme.colorNhsukBlack};
       text-decoration: none;
       background-color: ${theme.colorNhsukYellow};
-      border-bottom: 2px solid ${theme.colorNhsukBlack};
       }
     }
  `}
@@ -53,13 +44,13 @@ interface Props {
 const WorkspaceDirectoryItem = ({ title, id }: Props) => {
   return (
     <StyledContainer>
+      <img
+        src={require("../../public/Placeholder_Workspace_Image.svg")}
+        alt=""
+      />
       <Link href="/workspaces/[id]" as={`/workspaces/${id}`} passHref>
         <StyledLink>
-          <img
-            src={require("../../public/Placeholder_Workspace_Image.svg")}
-            alt=""
-          />
-          <h3>{title}</h3>
+          <h4>{title}</h4>
         </StyledLink>
       </Link>
     </StyledContainer>

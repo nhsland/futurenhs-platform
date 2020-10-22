@@ -10,61 +10,53 @@ exports[`snapshot of component 1`] = `
   margin-bottom: 40px;
 }
 
+.c0 img {
+  padding-right: 24px;
+  border-radius: 4px;
+  height: 44px;
+  display: block;
+}
+
 .c1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
-.c1 img {
-  display: block;
-  height: 44px;
-  width: 44px;
-  border-radius: 4px;
-  cursor: pointer;
+.c1 h4 {
+  margin-bottom: 0px;
 }
 
-.c1 img:hover + h3 {
-  color: rgb(0,94,184);
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c1 h3 {
-  margin-left: 25px;
-  color: rgb(33,43,50);
-}
-
-.c1 h3:hover {
-  color: rgb(0,94,184);
+.c1 h4:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c1 h3:active {
+.c1 h4:active {
   color: rgb(33,43,50);
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: rgb(255,235,59);
-  border-bottom: 2px solid rgb(33,43,50);
 }
 
 <div
     class="c0"
   >
+    <img
+      alt=""
+      src="/public/Placeholder_Workspace_Image.svg"
+    />
     <a
       class="c1"
       href="/workspaces/test123"
     >
-      <img
-        alt=""
-        src="/public/Placeholder_Workspace_Image.svg"
-      />
-      <h3>
+      <h4>
         workspace name
-      </h3>
+      </h4>
     </a>
   </div>
 </DocumentFragment>

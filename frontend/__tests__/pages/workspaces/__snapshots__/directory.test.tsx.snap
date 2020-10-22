@@ -237,45 +237,37 @@ exports[`takes a snapshot of the component 1`] = `
   margin-bottom: 40px;
 }
 
+.c12 img {
+  padding-right: 24px;
+  border-radius: 4px;
+  height: 44px;
+  display: block;
+}
+
 .c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
-.c13 img {
-  display: block;
-  height: 44px;
-  width: 44px;
-  border-radius: 4px;
-  cursor: pointer;
+.c13 h4 {
+  margin-bottom: 0px;
 }
 
-.c13 img:hover + h3 {
-  color: rgb(0,94,184);
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c13 h3 {
-  margin-left: 25px;
-  color: rgb(33,43,50);
-}
-
-.c13 h3:hover {
-  color: rgb(0,94,184);
+.c13 h4:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c13 h3:active {
+.c13 h4:active {
   color: rgb(33,43,50);
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: rgb(255,235,59);
-  border-bottom: 2px solid rgb(33,43,50);
 }
 
 .c9 {
@@ -571,49 +563,49 @@ exports[`takes a snapshot of the component 1`] = `
       <div
         class="c12"
       >
+        <img
+          alt=""
+          src="/public/Placeholder_Workspace_Image.svg"
+        />
         <a
           class="c13"
           href="/workspaces/1"
         >
-          <img
-            alt=""
-            src="/public/Placeholder_Workspace_Image.svg"
-          />
-          <h3>
+          <h4>
             hospital
-          </h3>
+          </h4>
         </a>
       </div>
       <div
         class="c12"
       >
+        <img
+          alt=""
+          src="/public/Placeholder_Workspace_Image.svg"
+        />
         <a
           class="c13"
           href="/workspaces/2"
         >
-          <img
-            alt=""
-            src="/public/Placeholder_Workspace_Image.svg"
-          />
-          <h3>
+          <h4>
             pharmacy
-          </h3>
+          </h4>
         </a>
       </div>
       <div
         class="c12"
       >
+        <img
+          alt=""
+          src="/public/Placeholder_Workspace_Image.svg"
+        />
         <a
           class="c13"
           href="/workspaces/3"
         >
-          <img
-            alt=""
-            src="/public/Placeholder_Workspace_Image.svg"
-          />
-          <h3>
+          <h4>
             ambulance
-          </h3>
+          </h4>
         </a>
       </div>
     </section>
