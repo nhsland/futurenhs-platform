@@ -65,6 +65,7 @@ const LinkWrapper = styled.div<{ active: boolean }>`
   div {
     padding-left: 4px;
     padding-right: 4px;
+    font-size: 16px;
     ${({ theme }) => `
     color: ${theme.colorNhsukBlack};
   `}
