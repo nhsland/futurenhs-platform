@@ -1,6 +1,5 @@
 mod file_download_urls;
 mod file_upload_urls;
-mod file_versions;
 mod files;
 mod folders;
 mod schema;

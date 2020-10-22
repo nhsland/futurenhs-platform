@@ -63,7 +63,7 @@ pub struct File {
 
 #[derive(InputObject, Debug, Validate)]
 #[validate(schema(
-    function = "match_file_type",
+    function = "new_file_name_matches_type",
     message = "the file extension is not valid for the specified MIME type",
 ))]
 pub struct NewFile {
@@ -90,13 +90,56 @@ pub struct NewFile {
     pub temporary_blob_storage_path: String,
 }
 
-fn match_file_type(new_file: &NewFile) -> Result<(), ValidationError> {
+fn new_file_name_matches_type(new_file: &NewFile) -> Result<(), ValidationError> {
+    file_name_matches_file_type(&new_file.file_name, &new_file.file_type)
+}
+
+#[derive(InputObject, Debug, Validate)]
+#[validate(schema(
+    function = "new_file_version_name_matches_type",
+    message = "the file extension is not valid for the specified MIME type",
+))]
+pub struct NewFileVersion {
+    pub file: ID,
+    pub latest_version: ID,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub folder: Option<ID>,
+    #[validate(
+        length(
+            min = 5,
+            max = 255,
+            message = "the file name must be between 5 and 255 characters long"
+        ),
+        regex(
+            path = "ALLOWED_FILENAME_CHARS",
+            message = "the file name contains characters that are not alphanumeric, space, period, hyphen or underscore"
+        ),
+        regex(
+            path = "ALLOWED_EXTENSIONS",
+            message = "the file name does not have an allowed extension"
+        )
+    )]
+    pub file_name: Option<String>,
+    pub file_type: Option<String>,
+    pub temporary_blob_storage_path: Option<String>,
+}
+
+fn new_file_version_name_matches_type(new_file: &NewFileVersion) -> Result<(), ValidationError> {
+    match (&new_file.file_name, &new_file.file_type) {
+        (Some(file_name), Some(file_type)) => file_name_matches_file_type(file_name, file_type),
+        (None, None) => Ok(()),
+        _ => Err(ValidationError::new("file name and type are both required")),
+    }
+}
+
+fn file_name_matches_file_type(file_name: &str, file_type: &str) -> Result<(), ValidationError> {
     let extension = ALLOWED_EXTENSIONS
-        .captures(&new_file.file_name)
+        .captures(file_name)
         .and_then(|captures| captures.get(1))
         .map(|m| m.as_str());
     if let Some(ext) = extension {
-        if extensions2(&new_file.file_type).any(|possible| ext == possible) {
+        if extensions2(file_type).any(|possible| ext == possible) {
             Ok(())
         } else {
             Err(ValidationError::new("bad MIME type"))
@@ -115,7 +158,7 @@ impl From<db::FileWithVersion> for File {
             folder: d.folder.into(),
             file_name: d.file_name,
             file_type: d.file_type,
-            latest_version: d.latest_version.into(),
+            latest_version: d.version.into(),
             created_at: d.created_at,
             modified_at: d.modified_at,
             deleted_at: d.deleted_at,
@@ -192,6 +235,87 @@ impl FilesMutation {
             user.id,
             1,
             "",
+            &mut tx,
+        )
+        .await?;
+        tx.commit().await?;
+
+        Ok(File {
+            id: file.id.into(),
+            title: file_version.file_title,
+            description: file_version.file_description,
+            folder: file_version.folder.into(),
+            file_name: file_version.file_name,
+            file_type: file_version.file_type,
+            latest_version: file_version.id.into(),
+            created_at: file.created_at,
+            modified_at: file_version.created_at,
+            deleted_at: file.deleted_at,
+        })
+    }
+
+    /// Create a new file version (returns the updated file)
+    async fn create_file_version(
+        &self,
+        context: &Context<'_>,
+        new_version: NewFileVersion,
+    ) -> FieldResult<File> {
+        new_version
+            .validate()
+            .map_err(validation::ValidationError::from)?;
+
+        let pool = context.data()?;
+        let azure_config = context.data()?;
+        let requesting_user = context.data::<super::RequestingUser>()?;
+
+        let current_file_id = Uuid::parse_str(&new_version.file)?;
+        let current_latest_version_id = Uuid::parse_str(&new_version.latest_version)?;
+
+        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+        let current_file = db::File::find_by_id(current_file_id, pool).await?;
+        let folder = match &new_version.folder {
+            Some(folder) => Uuid::parse_str(folder)?,
+            None => current_file.folder,
+        };
+        let destination = match &new_version.temporary_blob_storage_path {
+            Some(temporary_blob_storage_path) => {
+                azure::copy_blob_from_url(&Url::parse(temporary_blob_storage_path)?, azure_config)
+                    .await?
+            }
+            None => current_file.blob_storage_path,
+        };
+
+        // TODO: add event.
+
+        let mut tx = pool.begin().await?;
+        let file_version = db::FileVersion::create(
+            Uuid::new_v4(),
+            folder,
+            current_file.id,
+            new_version.title.as_ref().unwrap_or(&current_file.title),
+            new_version
+                .description
+                .as_ref()
+                .unwrap_or(&current_file.description),
+            new_version
+                .file_name
+                .as_ref()
+                .unwrap_or(&current_file.file_name),
+            new_version
+                .file_type
+                .as_ref()
+                .unwrap_or(&current_file.file_type),
+            &destination,
+            user.id,
+            current_file.version_number + 1,
+            "",
+            &mut tx,
+        )
+        .await?;
+        let file = db::File::update_latest_version(
+            current_file.id,
+            current_latest_version_id,
+            file_version.id,
             &mut tx,
         )
         .await?;

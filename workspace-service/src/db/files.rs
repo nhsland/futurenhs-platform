@@ -27,7 +27,8 @@ pub struct FileWithVersion {
     pub created_at: DateTime<Utc>,
     pub modified_at: DateTime<Utc>,
     pub deleted_at: Option<DateTime<Utc>>,
-    pub latest_version: Uuid,
+    pub version: Uuid,
+    pub version_number: i16,
 }
 
 impl File {
@@ -54,6 +55,28 @@ impl File {
         let file = sqlx::query_file_as!(FileWithVersion, "sql/files/find_by_id.sql", id)
             .fetch_one(pool)
             .await?;
+
+        Ok(file)
+    }
+
+    pub async fn update_latest_version<'c, E>(
+        id: Uuid,
+        current_latest_version: Uuid,
+        new_latest_version: Uuid,
+        executor: E,
+    ) -> Result<File>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let file = sqlx::query_file_as!(
+            File,
+            "sql/files/update_latest_version.sql",
+            id,
+            current_latest_version,
+            new_latest_version
+        )
+        .fetch_one(executor)
+        .await?;
 
         Ok(file)
     }
