@@ -10,6 +10,7 @@ pub struct User {
     pub auth_id: Uuid,
     pub name: String,
     pub is_platform_admin: bool,
+    pub email_address: String,
 }
 
 #[cfg(not(test))]
@@ -46,6 +47,7 @@ impl User {
             auth_id: *auth_id,
             name: "Test".to_string(),
             is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
+            email_address: "testuser@example.com".to_string(),
         })
     }
 
@@ -55,6 +57,7 @@ impl User {
             auth_id: *auth_id,
             name: name.to_string(),
             is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
+            email_address: "testuser@example.com".to_string(),
         })
     }
 
@@ -64,6 +67,7 @@ impl User {
             auth_id: *auth_id,
             name: "Test".to_string(),
             is_platform_admin,
+            email_address: "testuser@example.com".to_string(),
         })
     }
 }

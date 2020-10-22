@@ -185,6 +185,11 @@
           "ordinal": 3,
           "name": "is_platform_admin",
           "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
         }
       ],
       "parameters": {
@@ -194,6 +199,7 @@
         ]
       },
       "nullable": [
+        false,
         false,
         false,
         false,
@@ -224,6 +230,11 @@
           "ordinal": 3,
           "name": "is_platform_admin",
           "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
         }
       ],
       "parameters": {
@@ -232,6 +243,7 @@
         ]
       },
       "nullable": [
+        false,
         false,
         false,
         false,
@@ -923,6 +935,11 @@
           "ordinal": 3,
           "name": "is_platform_admin",
           "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
         }
       ],
       "parameters": {
@@ -932,6 +949,7 @@
         ]
       },
       "nullable": [
+        false,
         false,
         false,
         false,
