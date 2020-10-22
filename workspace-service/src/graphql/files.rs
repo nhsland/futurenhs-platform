@@ -255,6 +255,12 @@ impl FilesMutation {
     }
 
     /// Create a new file version (returns the updated file)
+    ///
+    /// This will update the specified properties only and will take unspecified properties from
+    /// the latest version.
+    ///
+    /// Both file and latest version are required. The operation will fail if the specified latest
+    /// version is no longer the latest version of the file.
     async fn create_file_version(
         &self,
         context: &Context<'_>,
