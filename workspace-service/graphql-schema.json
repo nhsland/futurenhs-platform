@@ -928,6 +928,45 @@
               {
                 "defaultValue": null,
                 "description": null,
+                "name": "count",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Get URLs for uploading files",
+            "isDeprecated": false,
+            "name": "fileUploadUrls",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Url",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
                 "name": "id",
                 "type": {
                   "kind": "NON_NULL",
@@ -944,22 +983,6 @@
             "description": "Get a file download URL",
             "isDeprecated": false,
             "name": "fileDownloadUrl",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Url",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [],
-            "deprecationReason": null,
-            "description": "Get a file upload URL",
-            "isDeprecated": false,
-            "name": "fileUploadUrl",
             "type": {
               "kind": "NON_NULL",
               "name": null,

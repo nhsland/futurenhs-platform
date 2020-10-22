@@ -1,5 +1,5 @@
 mod file_download_urls;
-mod file_uploads;
+mod file_upload_urls;
 mod file_versions;
 mod files;
 mod folders;
@@ -7,6 +7,7 @@ mod schema;
 #[cfg(test)]
 mod test_mocks;
 mod users;
+mod validation;
 mod workspaces;
 
 use super::azure;
@@ -44,8 +45,8 @@ struct Query(
     files::FilesQuery,
     folders::FoldersQuery,
     workspaces::WorkspacesQuery,
-    file_uploads::FileUploadQuery,
     file_download_urls::FileDownloadUrlsQuery,
+    file_upload_urls::FileUploadUrlsQuery,
 );
 
 #[derive(MergedObject, Default)]
