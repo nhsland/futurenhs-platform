@@ -1,7 +1,7 @@
 ALTER TABLE files
 ADD COLUMN deleted_by uuid REFERENCES users,
 ADD COLUMN created_by uuid REFERENCES users,
-ADD COLUMN latest_version uuid REFERENCES file_versions
+ADD COLUMN latest_version uuid REFERENCES file_versions DEFERRABLE
 ;
 
 INSERT INTO file_versions

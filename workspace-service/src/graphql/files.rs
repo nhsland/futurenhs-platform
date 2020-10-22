@@ -178,6 +178,7 @@ impl FilesMutation {
 
         let mut tx = pool.begin().await?;
         let version_id = Uuid::new_v4();
+        db::defer_all_constraints(&mut tx).await?;
         let file = db::File::create(user.id, version_id, &mut tx).await?;
         let file_version = db::FileVersion::create(
             version_id,

@@ -514,6 +514,16 @@
       ]
     }
   },
+  "b80c3e5c6e1620ccee068d08214bc0c787967400a6a10f45c6065ba22bea4369": {
+    "query": "SET CONSTRAINTS ALL DEFERRED;",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": []
+      },
+      "nullable": []
+    }
+  },
   "bc9295f39b14cbd41e34a3633acb31d0d727753dc9803cb7fb7325fb2665b267": {
     "query": "INSERT INTO workspaces (title, description)\nVALUES ($1, $2)\nRETURNING id, title, description\n",
     "describe": {
