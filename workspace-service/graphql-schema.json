@@ -475,7 +475,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Create a new file version (returns the updated file)",
+            "description": "Create a new file version (returns the updated file)\n\nThis will update the specified properties only and will take unspecified properties from\nthe latest version.\n\nBoth file and latest version are required. The operation will fail if the specified latest\nversion is no longer the latest version of the file.",
             "isDeprecated": false,
             "name": "createFileVersion",
             "type": {
