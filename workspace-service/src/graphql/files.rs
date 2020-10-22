@@ -51,6 +51,8 @@ pub struct File {
     pub file_name: String,
     /// The type of the file
     pub file_type: String,
+    /// ID of the latest version of the file
+    pub latest_version: ID,
     /// The time the file was created
     pub created_at: DateTime<Utc>,
     /// The time the file was modified
@@ -113,6 +115,7 @@ impl From<db::FileWithVersion> for File {
             folder: d.folder.into(),
             file_name: d.file_name,
             file_type: d.file_type,
+            latest_version: d.latest_version.into(),
             created_at: d.created_at,
             modified_at: d.modified_at,
             deleted_at: d.deleted_at,
@@ -200,6 +203,7 @@ impl FilesMutation {
             folder: file_version.folder.into(),
             file_name: file_version.file_name,
             file_type: file_version.file_type,
+            latest_version: file_version.id.into(),
             created_at: file.created_at,
             modified_at: file_version.created_at,
             deleted_at: file.deleted_at,
