@@ -24,15 +24,15 @@ pub struct FileVersion {
 impl FileVersion {
     #[allow(clippy::too_many_arguments)]
     pub async fn create(
-        id: &Uuid,
-        folder: &Uuid,
-        file: &Uuid,
+        id: Uuid,
+        folder: Uuid,
+        file: Uuid,
         file_title: &str,
         file_description: &str,
         file_name: &str,
         file_type: &str,
         blob_storage_path: &str,
-        created_by: &Uuid,
+        created_by: Uuid,
         version_number: i16,
         version_label: &str,
         pool: &PgPool,

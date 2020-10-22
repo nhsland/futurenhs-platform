@@ -31,7 +31,7 @@ pub struct FileWithVersion {
 }
 
 impl File {
-    pub async fn create(created_by: &Uuid, latest_version: &Uuid, pool: &PgPool) -> Result<File> {
+    pub async fn create(created_by: Uuid, latest_version: Uuid, pool: &PgPool) -> Result<File> {
         let file = sqlx::query_file_as!(File, "sql/files/create.sql", created_by, latest_version)
             .fetch_one(pool)
             .await?;

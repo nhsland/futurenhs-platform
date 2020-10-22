@@ -162,8 +162,9 @@ impl FilesMutation {
         let pool = context.data()?;
         let azure_config = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
-        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+
         let folder = Uuid::parse_str(&new_file.folder)?;
+        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let destination = azure::copy_blob_from_url(
             &Url::parse(&new_file.temporary_blob_storage_path)?,
             azure_config,
@@ -173,19 +174,17 @@ impl FilesMutation {
         // TODO: add event.
 
         let version_id = Uuid::new_v4();
-
-        let file = db::File::create(&user.id, &version_id, pool).await?;
-
+        let file = db::File::create(user.id, version_id, pool).await?;
         let file_version = db::FileVersion::create(
-            &version_id,
-            &folder,
-            &file.id,
+            version_id,
+            folder,
+            file.id,
             &new_file.title,
             &new_file.description,
             &new_file.file_name,
             &new_file.file_type,
             &destination,
-            &user.id,
+            user.id,
             1,
             "",
             pool,

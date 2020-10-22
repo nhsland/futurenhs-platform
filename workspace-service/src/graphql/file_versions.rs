@@ -37,7 +37,7 @@ pub struct FileVersion {
 #[derive(InputObject)]
 pub struct NewFileVersion {
     pub folder: ID,
-    pub file: Uuid,
+    pub file: ID,
     pub file_title: String,
     pub file_description: String,
     pub file_name: String,
@@ -81,6 +81,7 @@ impl FileVersionsMutation {
         let azure_config = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
         let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+        let file = Uuid::parse_str(&new_file_version.file)?;
         let folder = Uuid::parse_str(&new_file_version.folder)?;
         let destination = azure::copy_blob_from_url(
             &Url::parse(&new_file_version.blob_storage_path)?,
@@ -91,15 +92,15 @@ impl FileVersionsMutation {
         // TODO: add event.
 
         let file_version = db::FileVersion::create(
-            &Uuid::new_v4(),
-            &folder,
-            &new_file_version.file,
+            Uuid::new_v4(),
+            folder,
+            file,
             &new_file_version.file_title,
             &new_file_version.file_description,
             &new_file_version.file_name,
             &new_file_version.file_type,
             &destination,
-            &user.id,
+            user.id,
             new_file_version.version_number,
             &new_file_version.version_label,
             pool,
