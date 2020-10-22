@@ -9,7 +9,7 @@ pub struct FileDownloadUrlsQuery;
 
 #[Object]
 impl FileDownloadUrlsQuery {
-    #[field(desc = "Get a file download URL")]
+    /// Get a file download URL
     async fn file_download_url(&self, context: &Context<'_>, id: ID) -> FieldResult<Url> {
         let pool = context.data()?;
         let config = context.data()?;

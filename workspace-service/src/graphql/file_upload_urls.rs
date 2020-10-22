@@ -9,7 +9,7 @@ pub struct FileUploadUrlsQuery;
 
 #[Object]
 impl FileUploadUrlsQuery {
-    #[field(desc = "Get URLs for uploading files")]
+    /// Get URLs for uploading files
     async fn file_upload_urls(&self, context: &Context<'_>, count: u8) -> FieldResult<Vec<Url>> {
         let config = context.data()?;
 

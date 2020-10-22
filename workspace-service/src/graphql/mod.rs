@@ -14,7 +14,7 @@ use super::azure;
 use super::db;
 use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
-    EmptySubscription, GQLMergedObject, Schema,
+    EmptySubscription, MergedObject, Schema,
 };
 use fnhs_event_models::EventClient;
 use sqlx::PgPool;
@@ -40,7 +40,7 @@ impl State {
     }
 }
 
-#[derive(GQLMergedObject, Default)]
+#[derive(MergedObject, Default)]
 struct Query(
     files::FilesQuery,
     folders::FoldersQuery,
@@ -49,7 +49,7 @@ struct Query(
     file_upload_urls::FileUploadUrlsQuery,
 );
 
-#[derive(GQLMergedObject, Default)]
+#[derive(MergedObject, Default)]
 struct Mutation(
     folders::FoldersMutation,
     workspaces::WorkspacesMutation,
@@ -79,11 +79,12 @@ pub async fn handle_graphql(req: Request<State>) -> tide::Result {
         .and_then(|values| values.get(0))
         .and_then(|value| Uuid::parse_str(value.as_str()).ok());
 
-    async_graphql_tide::graphql(req, schema, |query_builder| match auth_id {
-        Some(auth_id) => query_builder.data(RequestingUser { auth_id }),
-        None => query_builder,
-    })
-    .await
+    let mut req = async_graphql_tide::receive_request(req).await?;
+    if let Some(auth_id) = auth_id {
+        req = req.data(RequestingUser { auth_id });
+    }
+
+    async_graphql_tide::respond(schema.execute(req).await)
 }
 
 pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
@@ -96,6 +97,6 @@ pub async fn handle_graphiql(_: Request<State>) -> tide::Result {
 }
 
 pub async fn generate_graphql_schema() -> anyhow::Result<String> {
-    let schema = Schema::build(Query::default(), Mutation::default(), EmptySubscription).finish();
+    let schema = Schema::new(Query::default(), Mutation::default(), EmptySubscription);
     schema::generate_introspection_schema(&schema).await
 }

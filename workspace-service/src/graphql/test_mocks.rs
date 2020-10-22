@@ -8,9 +8,9 @@ use uuid::Uuid;
 use super::RequestingUser;
 
 /// Should explode if you actually try to use it.
-pub async fn mock_connection_pool() -> anyhow::Result<PgPool> {
+pub fn mock_connection_pool() -> anyhow::Result<PgPool> {
     let database_url = "postgresql://COMPLETELY_BOGUS_DB_URL";
-    let connection_pool = PgPool::connect(&database_url).await?;
+    let connection_pool = PgPool::connect_lazy(&database_url)?;
     Ok(connection_pool)
 }
 

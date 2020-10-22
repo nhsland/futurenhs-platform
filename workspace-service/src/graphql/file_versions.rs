@@ -5,35 +5,36 @@ use chrono::{DateTime, Utc};
 use url::Url;
 use uuid::Uuid;
 
-#[SimpleObject(desc = "A file version")]
+/// A file version
+#[derive(SimpleObject)]
 pub struct FileVersion {
-    #[field(desc = "The id of the file version")]
+    /// The id of the file version"
     pub id: ID,
-    #[field(desc = "The id of the parent folder")]
+    /// The id of the parent folder"
     pub folder: ID,
-    #[field(desc = "The id of the file")]
+    /// The id of the file"
     pub file: Uuid,
-    #[field(desc = "The title of the file")]
+    /// The title of the file"
     pub file_title: String,
-    #[field(desc = "The description of the file")]
+    /// The description of the file"
     pub file_description: String,
-    #[field(desc = "The name of the file")]
+    /// The name of the file"
     pub file_name: String,
-    #[field(desc = "The type of the file")]
+    /// The type of the file"
     pub file_type: String,
-    #[field(desc = "The path of the file")]
+    /// The path of the file"
     pub blob_storage_path: String,
-    #[field(desc = "The time the file version was created")]
+    /// The time the file version was created"
     pub created_at: DateTime<Utc>,
-    #[field(desc = "The user that created the file version")]
+    /// The user that created the file version"
     pub created_by: Uuid,
-    #[field(desc = "The version of the file")]
+    /// The version of the file"
     pub version_number: i16,
-    #[field(desc = "The version label")]
+    /// The version label"
     pub version_label: String,
 }
 
-#[InputObject]
+#[derive(InputObject)]
 pub struct NewFileVersion {
     pub folder: ID,
     pub file: Uuid,
@@ -70,7 +71,7 @@ pub struct FileVersionsMutation;
 
 #[Object]
 impl FileVersionsMutation {
-    #[field(desc = "Create a new file version (returns the created file version)")]
+    /// Create a new file version (returns the created file version)"
     async fn create_file_version(
         &self,
         context: &Context<'_>,
