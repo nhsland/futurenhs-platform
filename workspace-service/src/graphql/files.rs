@@ -353,49 +353,31 @@ mod test {
     use super::*;
     use test_case::test_case;
 
-    #[test_case("filename.doc", Some("application/msword")
-        , None
-        ; "good extension doc")]
-    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        , None
-        ; "good extension docx")]
-    #[test_case("image.png", Some("image/png")
-        , None
-        ; "good mime type")]
-    #[test_case("image.png", Some("image/gif")
-        , Some("the file extension is not valid for the specified MIME type")
-        ; "bad mime type")]
-    #[test_case("filename.zip", None
-        , Some("the file name does not have an allowed extension")
-        ; "bad extension zip")]
-    #[test_case("filename.txt", Some("text/plain")
-        , None
-        ; "good extension has dot")]
-    #[test_case("filenametxt", None
-        , Some("the file name does not have an allowed extension")
-        ; "bad extension no dot")]
-    #[test_case(".doc", None
-        , Some("the file name must be between 5 and 255 characters long")
-        ; "too short")]
-    #[test_case("%.doc", None
-        , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore")
-        ; "bad char percent")]
-    #[test_case("%", None
-        , Some("\
-            the file name must be between 5 and 255 characters long, \
-            the file name contains characters that are not alphanumeric, space, period, hyphen or underscore, \
-            the file name does not have an allowed extension")
-        ; "multiple errors")]
-    #[test_case("🦀.doc", None
-        , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore")
-        ; "bad char emoji")]
-    #[test_case("xx\u{0}.doc", None
-        , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore")
-        ; "null char")]
-    fn validate_filename<'a>(
-        file_name: &'a str,
-        file_type: Option<&'a str>,
-        expected: Option<&'a str>,
+    #[test_case("filename.doc", Some("application/msword") , None ; "good extension doc")]
+    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document") , None ; "good extension docx")]
+    #[test_case("image.png", Some("image/png") , None ; "good mime type")]
+    #[test_case("image.png", Some("image/gif") , Some("the file extension is not valid for the specified MIME type") ; "bad mime type")]
+    #[test_case("filename.zip", None , Some("the file name does not have an allowed extension") ; "bad extension zip")]
+    #[test_case("filename.txt", Some("text/plain") , None ; "good extension has dot")]
+    #[test_case("filenametxt", None , Some("the file name does not have an allowed extension") ; "bad extension no dot")]
+    #[test_case(".doc", None , Some("the file name must be between 5 and 255 characters long") ; "too short")]
+    #[test_case("%.doc", None , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore") ; "bad char percent")]
+    #[test_case("%", None , Some("the file name must be between 5 and 255 characters long, the file name contains characters that are not alphanumeric, space, period, hyphen or underscore, the file name does not have an allowed extension") ; "multiple errors")]
+    #[test_case("🦀.doc", None , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore") ; "bad char emoji")]
+    #[test_case("xx\u{0}.doc", None , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore") ; "null char")]
+    fn validate_filename(
+        file_name: &'static str,
+        file_type: Option<&'static str>,
+        expected: Option<&'static str>,
+    ) {
+        validate_newfile_filename(file_name, file_type, expected);
+        validate_newfileversion_filename(file_name, file_type, expected);
+    }
+
+    fn validate_newfile_filename(
+        file_name: &'static str,
+        file_type: Option<&'static str>,
+        expected: Option<&'static str>,
     ) {
         let new_file = NewFile {
             title: "".to_string(),
@@ -406,6 +388,29 @@ mod test {
             temporary_blob_storage_path: "".to_string(),
         };
         let actual = new_file
+            .validate()
+            .map_err(validation::ValidationError::from)
+            .map_err(|e| format!("{}", e))
+            .err();
+        assert_eq!(actual.as_deref(), expected);
+    }
+
+    fn validate_newfileversion_filename(
+        file_name: &'static str,
+        file_type: Option<&'static str>,
+        expected: Option<&'static str>,
+    ) {
+        let new_file_version = NewFileVersion {
+            file: "".into(),
+            latest_version: "".into(),
+            title: None,
+            description: None,
+            folder: None,
+            file_name: Some(file_name.to_string()),
+            file_type: file_type.map(Into::into),
+            temporary_blob_storage_path: None,
+        };
+        let actual = new_file_version
             .validate()
             .map_err(validation::ValidationError::from)
             .map_err(|e| format!("{}", e))
