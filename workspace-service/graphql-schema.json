@@ -191,6 +191,22 @@
           {
             "args": [],
             "deprecationReason": null,
+            "description": "ID of the latest version of the file",
+            "isDeprecated": false,
+            "name": "latestVersion",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
             "description": "The time the file was created",
             "isDeprecated": false,
             "name": "createdAt",
