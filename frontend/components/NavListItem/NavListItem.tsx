@@ -19,7 +19,7 @@ interface Props {
 
 const ListItem = styled.li`
   list-style-type: none;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   &:hover {
@@ -41,7 +41,6 @@ const LinkWrapper = styled.div<{ active: boolean }>`
     active ? theme.colorNhsukYellow : "inherit"};
   border-radius: 4px;
   width: 227px;
-  // height: 32px;
   margin-right: 4px;
   font-weight: ${({ active }) => (active ? 700 : "inherit")};
   a {
@@ -56,15 +55,14 @@ const LinkWrapper = styled.div<{ active: boolean }>`
     }
   }
   img {
-    padding-top: 2px;
+    padding-top: 4px;
     align-self: baseline;
     /* stop things jumping about while svgs load */
     width: 24px;
     flex-shrink: 0;
   }
   div {
-    padding-left: 4px;
-    padding-right: 4px;
+    padding: 4px;
     font-size: 16px;
     ${({ theme }) => `
     color: ${theme.colorNhsukBlack};
