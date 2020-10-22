@@ -51,6 +51,8 @@ pub struct File {
     pub file_name: String,
     /// The type of the file
     pub file_type: String,
+    /// ID of the latest version of the file
+    pub latest_version: ID,
     /// The time the file was created
     pub created_at: DateTime<Utc>,
     /// The time the file was modified
@@ -104,8 +106,8 @@ fn match_file_type(new_file: &NewFile) -> Result<(), ValidationError> {
     }
 }
 
-impl From<db::File> for File {
-    fn from(d: db::File) -> Self {
+impl From<db::FileWithVersion> for File {
+    fn from(d: db::FileWithVersion) -> Self {
         Self {
             id: d.id.into(),
             title: d.title,
@@ -113,6 +115,7 @@ impl From<db::File> for File {
             folder: d.folder.into(),
             file_name: d.file_name,
             file_type: d.file_type,
+            latest_version: d.latest_version.into(),
             created_at: d.created_at,
             modified_at: d.modified_at,
             deleted_at: d.deleted_at,
@@ -161,7 +164,10 @@ impl FilesMutation {
 
         let pool = context.data()?;
         let azure_config = context.data()?;
+        let requesting_user = context.data::<super::RequestingUser>()?;
+
         let folder = Uuid::parse_str(&new_file.folder)?;
+        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let destination = azure::copy_blob_from_url(
             &Url::parse(&new_file.temporary_blob_storage_path)?,
             azure_config,
@@ -170,24 +176,49 @@ impl FilesMutation {
 
         // TODO: add event.
 
-        let file = db::File::create(
+        let mut tx = pool.begin().await?;
+        let version_id = Uuid::new_v4();
+        db::defer_all_constraints(&mut tx).await?;
+        let file = db::File::create(user.id, version_id, &mut tx).await?;
+        let file_version = db::FileVersion::create(
+            version_id,
+            folder,
+            file.id,
             &new_file.title,
             &new_file.description,
-            &folder,
             &new_file.file_name,
             &new_file.file_type,
             &destination,
-            pool,
+            user.id,
+            1,
+            "",
+            &mut tx,
         )
         .await?;
+        tx.commit().await?;
 
-        Ok(file.into())
+        Ok(File {
+            id: file.id.into(),
+            title: file_version.file_title,
+            description: file_version.file_description,
+            folder: file_version.folder.into(),
+            file_name: file_version.file_name,
+            file_type: file_version.file_type,
+            latest_version: file_version.id.into(),
+            created_at: file.created_at,
+            modified_at: file_version.created_at,
+            deleted_at: file.deleted_at,
+        })
     }
 
     /// Deletes a file by id(returns delete file
     async fn delete_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
-        let file: File = db::File::delete(Uuid::parse_str(&id)?, pool).await?.into();
+        let requesting_user = context.data::<super::RequestingUser>()?;
+        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+        let file: File = db::File::delete(Uuid::parse_str(&id)?, user.id, pool)
+            .await?
+            .into();
 
         Ok(file)
     }
