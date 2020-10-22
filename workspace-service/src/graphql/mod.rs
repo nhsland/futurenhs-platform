@@ -1,5 +1,5 @@
 mod file_download_urls;
-mod file_uploads;
+mod file_upload_urls;
 mod file_versions;
 mod files;
 mod folders;
@@ -45,8 +45,8 @@ struct Query(
     files::FilesQuery,
     folders::FoldersQuery,
     workspaces::WorkspacesQuery,
-    file_uploads::FileUploadQuery,
     file_download_urls::FileDownloadUrlsQuery,
+    file_upload_urls::FileUploadUrlsQuery,
 );
 
 #[derive(GQLMergedObject, Default)]
