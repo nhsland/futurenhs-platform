@@ -284,8 +284,16 @@ impl FilesMutation {
         let current_file_id = Uuid::parse_str(&new_version.file)?;
         let current_latest_version_id = Uuid::parse_str(&new_version.latest_version)?;
 
-        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let current_file = db::File::find_by_id(current_file_id, pool).await?;
+        if current_file.version != current_latest_version_id {
+            // Early check to see if the latest version matches to avoid potentially copying the
+            // file unnecessarily. There is still a chance someone else creates a new version in
+            // the time from now until we store the new version in the DB. This will be caught by
+            // `db::File::update_latest_version`.
+            return Err("specified version is not the latest version of the file".into());
+        }
+
+        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let folder = match &new_version.folder {
             Some(folder) => Uuid::parse_str(folder)?,
             None => current_file.folder,
