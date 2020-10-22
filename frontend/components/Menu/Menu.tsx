@@ -3,14 +3,16 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { MenuButton } from ".";
-import { MeatballIcon } from "../Icon";
+import { MeatballIconDark, MeatballIconLight } from "../Icon";
 import MenuList from "./MenuList";
 import { MenuItem } from "./MenuListItem";
 
+type Background = "light" | "dark";
 interface Props {
   hiddenUntilHover?: boolean;
   items: MenuItem[];
   dataCy?: string;
+  background: Background;
 }
 
 const Container = styled.div`
@@ -33,7 +35,7 @@ const Container = styled.div`
   `}
 `;
 
-const Menu: FC<Props> = ({ hiddenUntilHover, items, dataCy }) => {
+const Menu: FC<Props> = ({ hiddenUntilHover, items, dataCy, background }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const container = React.useRef<HTMLDivElement>(null);
 
@@ -60,7 +62,11 @@ const Menu: FC<Props> = ({ hiddenUntilHover, items, dataCy }) => {
           hiddenUntilHover={hiddenUntilHover || false}
           dataCy={dataCy}
         >
-          <MeatballIcon />
+          {background === "light" ? (
+            <MeatballIconLight />
+          ) : (
+            <MeatballIconDark />
+          )}
         </MenuButton>
         {menuOpen && (
           <MenuList hiddenUntilHover={hiddenUntilHover || false}>

@@ -111,7 +111,7 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading menu={<Menu items={items} />}>
+            <MainHeading menu={<Menu background="light" items={items} />}>
               {folder.data?.folder.title || ""}
             </MainHeading>
             <p>{folder.data?.folder.description}</p>

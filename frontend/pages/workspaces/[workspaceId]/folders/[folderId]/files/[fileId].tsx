@@ -98,6 +98,7 @@ const FileHomepage = () => {
             <MainHeading
               menu={
                 <Menu
+                  background="light"
                   dataCy="file-options"
                   items={[
                     {
