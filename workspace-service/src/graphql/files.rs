@@ -166,6 +166,24 @@ impl From<db::FileWithVersion> for File {
     }
 }
 
+impl From<(db::File, db::FileVersion)> for File {
+    fn from(pair: (db::File, db::FileVersion)) -> Self {
+        let (file, file_version) = pair;
+        Self {
+            id: file.id.into(),
+            title: file_version.file_title,
+            description: file_version.file_description,
+            folder: file_version.folder.into(),
+            file_name: file_version.file_name,
+            file_type: file_version.file_type,
+            latest_version: file_version.id.into(),
+            created_at: file.created_at,
+            modified_at: file_version.created_at,
+            deleted_at: file.deleted_at,
+        }
+    }
+}
+
 #[derive(Default)]
 pub struct FilesQuery;
 
@@ -219,8 +237,8 @@ impl FilesMutation {
 
         // TODO: add event.
 
-        let mut tx = pool.begin().await?;
         let version_id = Uuid::new_v4();
+        let mut tx = pool.begin().await?;
         db::defer_all_constraints(&mut tx).await?;
         let file = db::File::create(user.id, version_id, &mut tx).await?;
         let file_version = db::FileVersion::create(
@@ -240,18 +258,7 @@ impl FilesMutation {
         .await?;
         tx.commit().await?;
 
-        Ok(File {
-            id: file.id.into(),
-            title: file_version.file_title,
-            description: file_version.file_description,
-            folder: file_version.folder.into(),
-            file_name: file_version.file_name,
-            file_type: file_version.file_type,
-            latest_version: file_version.id.into(),
-            created_at: file.created_at,
-            modified_at: file_version.created_at,
-            deleted_at: file.deleted_at,
-        })
+        Ok((file, file_version).into())
     }
 
     /// Create a new file version (returns the updated file)
@@ -327,18 +334,7 @@ impl FilesMutation {
         .await?;
         tx.commit().await?;
 
-        Ok(File {
-            id: file.id.into(),
-            title: file_version.file_title,
-            description: file_version.file_description,
-            folder: file_version.folder.into(),
-            file_name: file_version.file_name,
-            file_type: file_version.file_type,
-            latest_version: file_version.id.into(),
-            created_at: file.created_at,
-            modified_at: file_version.created_at,
-            deleted_at: file.deleted_at,
-        })
+        Ok((file, file_version).into())
     }
 
     /// Deletes a file by id(returns delete file
