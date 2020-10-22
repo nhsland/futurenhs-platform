@@ -5,6 +5,7 @@ import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import { Client } from "urql";
 
+import { H2 } from "../../../../../components/H2";
 import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
@@ -72,6 +73,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
               ? "Loading..."
               : folder.data?.folder.title || "No title!"}
           </MainHeading>
+          <H2 title="File details" />
           <p> Fields marked with * are mandatory.</p>
           <UploadFileForm
             urqlClient={urqlClient}

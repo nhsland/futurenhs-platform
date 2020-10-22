@@ -923,9 +923,100 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
           </h1>
         </div>
         <h2>
-          Most recent items
+
+          File details
         </h2>
-      </section>
+        <p>
+           Fields marked with * are mandatory.
+        </p>
+        <form>
+          <div
+            class="c27"
+          >
+            <div
+              class="nhsuk-form-group"
+            >
+              <label
+                class="nhsuk-label"
+                for="title"
+                id="title--label"
+              >
+                Enter file title*
+              </label>
+              <span
+                class="nhsuk-hint"
+                id="title--hint"
+              >
+                This is the file title as seen by users. Try to be as descriptive as possible. 
+              </span>
+              <input
+                aria-describedby="title--hint"
+                aria-invalid="false"
+                aria-labelledby="title--label"
+                class="nhsuk-input"
+                id="title"
+                name="title"
+                type="text"
+              />
+            </div>
+            50 characters remaining
+          </div>
+          <div
+            class="c27"
+          >
+            <div
+              class="nhsuk-form-group"
+            >
+              <label
+                class="nhsuk-label"
+                for="files"
+                id="files--label"
+              >
+                Upload a file*
+              </label>
+              <span
+                class="nhsuk-hint"
+                id="files--hint"
+              >
+                Maximum size 10GB
+              </span>
+              <input
+                aria-describedby="files--hint"
+                aria-invalid="false"
+                aria-labelledby="files--label"
+                class="nhsuk-input"
+                id="files"
+                name="files"
+                type="file"
+              />
+            </div>
+          </div>
+          <p>
+            All uploaded content must conform to the platform's 
+            <a
+              href="#"
+            >
+              Terms and Conditions
+            </a>
+            .
+          </p>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            name="submitButton"
+            type="submit"
+          >
+            Save and continue
+          </button>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary c28"
+            type="button"
+          >
+            Discard
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </DocumentFragment>

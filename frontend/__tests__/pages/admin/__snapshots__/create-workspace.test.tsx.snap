@@ -241,13 +241,6 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
   margin-bottom: 8px;
 }
 
-.c12 {
-  border-top: 1px solid rgb(76,98,114);
-  padding-top: 24px;
-  margin-bottom: 8px;
-  color: rgb(76,98,114);
-}
-
 @media (min-width:990px) {
   .c2 {
     background-color: rgb(255,255,255);
@@ -530,9 +523,7 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
           Error
         </h1>
       </div>
-      <h2
-        class="c12"
-      >
+      <h2>
         You do not have permission to do this.
       </h2>
       <br />
@@ -786,17 +777,10 @@ exports[`Render the page with form 1`] = `
 }
 
 .c12 {
-  border-top: 1px solid rgb(76,98,114);
-  padding-top: 24px;
-  margin-bottom: 8px;
-  color: rgb(76,98,114);
-}
-
-.c13 {
   padding-bottom: 40px;
 }
 
-.c13 #text {
+.c12 #text {
   padding-bottom: 60px;
 }
 
@@ -1082,9 +1066,7 @@ exports[`Render the page with form 1`] = `
           Create a workspace
         </h1>
       </div>
-      <h2
-        class="c12"
-      >
+      <h2>
         Workspace details
       </h2>
       <p>
@@ -1092,7 +1074,7 @@ exports[`Render the page with form 1`] = `
       </p>
       <form>
         <div
-          class="c13"
+          class="c12"
         >
           <div
             class="nhsuk-form-group"
@@ -1122,7 +1104,7 @@ exports[`Render the page with form 1`] = `
           100 characters remaining
         </div>
         <div
-          class="c13"
+          class="c12"
         >
           <div
             class="nhsuk-form-group"
