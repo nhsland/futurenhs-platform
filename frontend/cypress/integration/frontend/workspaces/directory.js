@@ -3,13 +3,13 @@ describe("Workspace Directory", () => {
   it("Shows title and loads directory items", () => {
     cy.visit(`/workspaces/directory`);
     cy.contains("h1", "My workspaces");
-    cy.contains("h3", Cypress.env("TEST_WORKSPACE_NAME"));
+    cy.contains("h4", Cypress.env("TEST_WORKSPACE_NAME"));
   });
 
   it("Navigates to workspace page", () => {
     cy.visit(`/workspaces/directory`);
 
-    cy.get("h3")
+    cy.get("h4")
       .contains(Cypress.env("TEST_WORKSPACE_NAME"))
       .click()
       .then(($h3) => {
