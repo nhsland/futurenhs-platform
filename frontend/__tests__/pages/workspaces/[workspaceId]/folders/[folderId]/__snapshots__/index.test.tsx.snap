@@ -18,6 +18,12 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
 }
 
 .c12 {
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
+}
+
+.c13 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -28,17 +34,17 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   margin-left: 7px;
 }
 
-.c12 .tooltip {
+.c13 .tooltip {
   left: 36px;
   top: -7px;
 }
 
-.c14 {
+.c15 {
   display: inline-block;
   position: relative;
 }
 
-.c17 {
+.c18 {
   opacity: 0;
   position: absolute;
   z-index: 2000;
@@ -50,13 +56,13 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   color: rgb(255,255,255);
 }
 
-.c13:hover .c16 {
+.c14:hover .c17 {
   opacity: 1;
   -webkit-transition: opacity 0s linear 0.5s;
   transition: opacity 0s linear 0.5s;
 }
 
-.c17::after {
+.c18::after {
   position: absolute;
   bottom: 33%;
   left: -10%;
@@ -67,7 +73,7 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   content: " ";
 }
 
-.c15 {
+.c16 {
   opacity: 1;
   color: rgb(76,98,114);
   background-color: rgb(216,221,224);
@@ -82,35 +88,35 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
   position: relative;
 }
 
-.c15.hidden {
+.c16.hidden {
   opacity: 0;
 }
 
-.c15:hover {
+.c16:hover {
   opacity: 1;
   color: rgb(255,255,255);
   background-color: rgb(0,61,120);
 }
 
-.c15:hover.hidden {
+.c16:hover.hidden {
   color: rgb(255,255,255);
 }
 
-.c15.open,
-.c15:active,
-.c15:focus {
+.c16.open,
+.c16:active,
+.c16:focus {
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
 }
 
-.c15.open.hidden,
-.c15:active.hidden,
-.c15:focus.hidden {
+.c16.open.hidden,
+.c16:active.hidden,
+.c16:focus.hidden {
   color: rgb(33,43,50);
 }
 
-.c15 .icon-wrapper {
+.c16 .icon-wrapper {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -351,7 +357,7 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
 }
 
 @media (min-width:990px) {
-  .c12 {
+  .c13 {
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
@@ -660,17 +666,17 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
         >
           <h1
             aria-live="polite"
-            class="MainHeading__H1-sc-1qiw6s5-1"
+            class="c12"
           />
           <div
-            class="c12"
+            class="c13"
           >
             <div
-              class="c13 c14"
+              class="c14 c15"
             >
               <button
                 aria-label="Options"
-                class="c15"
+                class="c16"
               >
                 <div
                   class="icon-wrapper "
@@ -691,7 +697,7 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
                 </div>
               </button>
               <span
-                class="c16 c17 tooltip"
+                class="c17 c18 tooltip"
               >
                 Options
               </span>
@@ -710,29 +716,29 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
 
 exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
-  .c31 {
+  .c32 {
   display: none;
   width: 100%;
 }
 
-.c31 > div {
+.c32 > div {
   background: rgb(240,244,245);
 }
 
-.c32 tbody tr:hover {
+.c33 tbody tr:hover {
   background: rgb(255,255,255);
 }
 
-.c33 {
+.c34 {
   color: rgb(76,98,114);
 }
 
-.c34 {
+.c35 {
   display: inline-block;
   padding-right: 8px;
 }
 
-.c28 {
+.c29 {
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
@@ -746,7 +752,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   border-bottom: 1px solid rgb(216,221,224);
 }
 
-.c29 {
+.c30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -757,36 +763,36 @@ exports[`withUrql renders matching snapshot 1`] = `
   padding-left: 12px;
 }
 
-.c29 > div {
+.c30 > div {
   padding-bottom: 20px;
 }
 
-.c29 p,
-.c29 h4 {
+.c30 p,
+.c30 h4 {
   margin-bottom: 0;
   font-size: 18px;
 }
 
-.c29 p {
+.c30 p {
   color: rgb(76,98,114);
 }
 
-.c29 a {
+.c30 a {
   font-size: 16px;
 }
 
-.c30 {
+.c31 {
   padding-bottom: 20px;
 }
 
-.c27 {
+.c28 {
   padding-top: 20px;
   padding-left: 12px;
   padding-right: 16px;
   background: rgb(240,244,245);
 }
 
-.c26 {
+.c27 {
   background-color: #005eb8;
   color: rgb(255,255,255);
   display: inline-block;
@@ -810,6 +816,12 @@ exports[`withUrql renders matching snapshot 1`] = `
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
   align-items: baseline;
+}
+
+.c26 {
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 .c18 {
@@ -1345,19 +1357,19 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 @media (min-width:641px) {
-  .c31 {
+  .c32 {
     display: block;
   }
 }
 
 @media (min-width:641px) {
-  .c27 {
+  .c28 {
     display: none;
   }
 }
 
 @media (min-width:641px) {
-  .c26 {
+  .c27 {
     display: none;
   }
 }
@@ -1789,7 +1801,7 @@ exports[`withUrql renders matching snapshot 1`] = `
         >
           <h1
             aria-live="polite"
-            class="MainHeading__H1-sc-1qiw6s5-1"
+            class="c26"
           >
             folder 1
           </h1>
@@ -1833,15 +1845,15 @@ exports[`withUrql renders matching snapshot 1`] = `
           first folder
         </p>
         <h3
-          class="c26"
+          class="c27"
         >
           Files
         </h3>
         <ul
-          class="c27"
+          class="c28"
         >
           <li
-            class="c28"
+            class="c29"
           >
             <svg
               fill="none"
@@ -1858,10 +1870,10 @@ exports[`withUrql renders matching snapshot 1`] = `
               />
             </svg>
             <div
-              class="c29"
+              class="c30"
             >
               <p
-                class="c30"
+                class="c31"
               >
                 <a
                   href="/workspaces/1/folders/f7f24c43-d3f0-4720-8995-b087316f6b44/files/c12c2d6f-2669-4f82-8351-620ded995abb"
@@ -1886,7 +1898,7 @@ exports[`withUrql renders matching snapshot 1`] = `
           </li>
         </ul>
         <div
-          class="c31"
+          class="c32"
         >
           <div
             class="nhsuk-table__panel-with-heading-tab"
@@ -1900,7 +1912,7 @@ exports[`withUrql renders matching snapshot 1`] = `
               class="nhsuk-table-responsive"
             >
               <table
-                class="nhsuk-table c32"
+                class="nhsuk-table c33"
               >
                 <thead
                   class="nhsuk-table__head"
@@ -1968,7 +1980,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                       </a>
                     </td>
                     <td
-                      class="nhsuk-table__cell c33"
+                      class="nhsuk-table__cell c34"
                     >
                       Oct 6, 2020
                     </td>
@@ -1976,7 +1988,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                       class="nhsuk-table__cell"
                     >
                       <a
-                        class="c34"
+                        class="c35"
                         href="/workspaces/1/download/c12c2d6f-2669-4f82-8351-620ded995abb"
                       >
                         Download file

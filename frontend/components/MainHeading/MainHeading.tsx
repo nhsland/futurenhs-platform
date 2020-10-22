@@ -9,7 +9,9 @@ const Container = styled.div`
 `;
 
 const H1 = styled.h1`
-  /* margin-bottom: 23px; */
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 `;
 
 interface Props {

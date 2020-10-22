@@ -17,6 +17,12 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   align-items: baseline;
 }
 
+.c25 {
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
+}
+
 .c1 {
   background-color: rgb(255,255,255);
   position: relative;
@@ -911,7 +917,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
         >
           <h1
             aria-live="polite"
-            class="MainHeading__H1-sc-1qiw6s5-1"
+            class="c25"
           >
             hospital
           </h1>

@@ -17,6 +17,12 @@ exports[`takes a snapshot of the component 1`] = `
   align-items: baseline;
 }
 
+.c11 {
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
+}
+
 .c1 {
   background-color: rgb(255,255,255);
   position: relative;
@@ -223,7 +229,7 @@ exports[`takes a snapshot of the component 1`] = `
   margin: 0px auto;
 }
 
-.c11 {
+.c12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -231,14 +237,14 @@ exports[`takes a snapshot of the component 1`] = `
   margin-bottom: 40px;
 }
 
-.c12 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c12 img {
+.c13 img {
   display: block;
   height: 44px;
   width: 44px;
@@ -246,25 +252,25 @@ exports[`takes a snapshot of the component 1`] = `
   cursor: pointer;
 }
 
-.c12 img:hover + h3 {
+.c13 img:hover + h3 {
   color: rgb(0,94,184);
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.c12 h3 {
+.c13 h3 {
   margin-left: 25px;
   color: rgb(33,43,50);
 }
 
-.c12 h3:hover {
+.c13 h3:hover {
   color: rgb(0,94,184);
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c12 h3:active {
+.c13 h3:active {
   color: rgb(33,43,50);
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -557,16 +563,16 @@ exports[`takes a snapshot of the component 1`] = `
       >
         <h1
           aria-live="polite"
-          class="MainHeading__H1-sc-1qiw6s5-1"
+          class="c11"
         >
           My workspaces
         </h1>
       </div>
       <div
-        class="c11"
+        class="c12"
       >
         <a
-          class="c12"
+          class="c13"
           href="/workspaces/1"
         >
           <img
@@ -579,10 +585,10 @@ exports[`takes a snapshot of the component 1`] = `
         </a>
       </div>
       <div
-        class="c11"
+        class="c12"
       >
         <a
-          class="c12"
+          class="c13"
           href="/workspaces/2"
         >
           <img
@@ -595,10 +601,10 @@ exports[`takes a snapshot of the component 1`] = `
         </a>
       </div>
       <div
-        class="c11"
+        class="c12"
       >
         <a
-          class="c12"
+          class="c13"
           href="/workspaces/3"
         >
           <img

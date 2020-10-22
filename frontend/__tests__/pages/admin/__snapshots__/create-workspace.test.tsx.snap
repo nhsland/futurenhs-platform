@@ -17,6 +17,12 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
   align-items: baseline;
 }
 
+.c11 {
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
+}
+
 .c1 {
   background-color: rgb(255,255,255);
   position: relative;
@@ -235,7 +241,7 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
   margin-bottom: 8px;
 }
 
-.c11 {
+.c12 {
   border-top: 1px solid rgb(76,98,114);
   padding-top: 24px;
   margin-bottom: 8px;
@@ -519,13 +525,13 @@ exports[`Render the page with error text when no platform admin privs 1`] = `
       >
         <h1
           aria-live="polite"
-          class="MainHeading__H1-sc-1qiw6s5-1"
+          class="c11"
         >
           Error
         </h1>
       </div>
       <h2
-        class="c11"
+        class="c12"
       >
         You do not have permission to do this.
       </h2>
@@ -553,6 +559,12 @@ exports[`Render the page with form 1`] = `
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
   align-items: baseline;
+}
+
+.c11 {
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 .c1 {
@@ -773,18 +785,18 @@ exports[`Render the page with form 1`] = `
   margin-bottom: 8px;
 }
 
-.c11 {
+.c12 {
   border-top: 1px solid rgb(76,98,114);
   padding-top: 24px;
   margin-bottom: 8px;
   color: rgb(76,98,114);
 }
 
-.c12 {
+.c13 {
   padding-bottom: 40px;
 }
 
-.c12 #text {
+.c13 #text {
   padding-bottom: 60px;
 }
 
@@ -1065,13 +1077,13 @@ exports[`Render the page with form 1`] = `
       >
         <h1
           aria-live="polite"
-          class="MainHeading__H1-sc-1qiw6s5-1"
+          class="c11"
         >
           Create a workspace
         </h1>
       </div>
       <h2
-        class="c11"
+        class="c12"
       >
         Workspace details
       </h2>
@@ -1080,7 +1092,7 @@ exports[`Render the page with form 1`] = `
       </p>
       <form>
         <div
-          class="c12"
+          class="c13"
         >
           <div
             class="nhsuk-form-group"
@@ -1110,7 +1122,7 @@ exports[`Render the page with form 1`] = `
           100 characters remaining
         </div>
         <div
-          class="c12"
+          class="c13"
         >
           <div
             class="nhsuk-form-group"
