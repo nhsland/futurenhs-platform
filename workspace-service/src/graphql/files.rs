@@ -1,5 +1,4 @@
-use super::azure;
-use super::db;
+use super::{azure, db, validation};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
@@ -12,7 +11,7 @@ use validator::{Validate, ValidationError};
 lazy_static! {
     static ref ALLOWED_FILENAME_CHARS: Regex = Regex::new(r"^[\w\s\.-]+$").expect("bad regex");
     static ref ALLOWED_EXTENSIONS: Regex = Regex::new(
-        r"(?x)^[\w\s\.-]+\.(
+        r"(?x)\.(
             (bmp)|
             (doc)|
             (docx)|
@@ -63,7 +62,7 @@ pub struct File {
 #[derive(Debug, Validate)]
 #[validate(schema(
     function = "match_file_type",
-    message = "filename extension does not match MIME type",
+    message = "the file extension is not valid for the specified MIME type",
 ))]
 pub struct NewFile {
     pub title: String,
@@ -73,15 +72,15 @@ pub struct NewFile {
         length(
             min = 5,
             max = 255,
-            message = "file_name must be between 5 and 255 characters long"
+            message = "the file name must be between 5 and 255 characters long"
         ),
         regex(
             path = "ALLOWED_FILENAME_CHARS",
-            message = "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"
+            message = "the file name contains characters that are not alphanumeric, space, period, hyphen or underscore"
         ),
         regex(
             path = "ALLOWED_EXTENSIONS",
-            message = "filename does not have an allowed extension"
+            message = "the file name does not have an allowed extension"
         )
     )]
     pub file_name: String,
@@ -151,7 +150,9 @@ pub struct FilesMutation;
 impl FilesMutation {
     #[field(desc = "Create a new file (returns the created file)")]
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
-        new_file.validate()?;
+        new_file
+            .validate()
+            .map_err(validation::ValidationError::from)?;
 
         let pool = context.data()?;
         let azure_config = context.data()?;
@@ -192,29 +193,63 @@ mod test {
     use super::*;
     use test_case::test_case;
 
-    #[test_case("filename.doc", Some("application/msword"), "no errors" ; "good extension doc")]
-    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), "no errors" ; "good extension docx")]
-    #[test_case("image.png", Some("image/png"), "no errors" ; "good mime type")]
-    #[test_case("image.png", Some("image/gif"), "filename extension does not match MIME type" ; "bad mime type")]
-    #[test_case("filename.zip", None, "filename does not have an allowed extension" ; "bad extension zip")]
-    #[test_case("filename.txt", Some("text/plain"), "no errors" ; "good extension has final dot")]
-    #[test_case("filenametxt", None, "filename does not have an allowed extension" ; "bad extension no final dot")]
-    #[test_case(".doc", None, "file_name must be between 5 and 255 characters long"; "too short")]
-    #[test_case("%.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char percent")]
-    #[test_case("🦀.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "bad char emoji")]
-    #[test_case("xx\u{0}.doc", None, "filename contains characters that are not alphanumeric, space, period, hyphen or underscore"; "null char")]
-    fn validate_filename(file_name: &str, file_type: Option<&str>, error_message: &str) {
-        let actual = NewFile {
+    #[test_case("filename.doc", Some("application/msword")
+        , None
+        ; "good extension doc")]
+    #[test_case("filename.docx", Some("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        , None
+        ; "good extension docx")]
+    #[test_case("image.png", Some("image/png")
+        , None
+        ; "good mime type")]
+    #[test_case("image.png", Some("image/gif")
+        , Some("the file extension is not valid for the specified MIME type")
+        ; "bad mime type")]
+    #[test_case("filename.zip", None
+        , Some("the file name does not have an allowed extension")
+        ; "bad extension zip")]
+    #[test_case("filename.txt", Some("text/plain")
+        , None
+        ; "good extension has dot")]
+    #[test_case("filenametxt", None
+        , Some("the file name does not have an allowed extension")
+        ; "bad extension no dot")]
+    #[test_case(".doc", None
+        , Some("the file name must be between 5 and 255 characters long")
+        ; "too short")]
+    #[test_case("%.doc", None
+        , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore")
+        ; "bad char percent")]
+    #[test_case("%", None
+        , Some("\
+            the file name must be between 5 and 255 characters long, \
+            the file name contains characters that are not alphanumeric, space, period, hyphen or underscore, \
+            the file name does not have an allowed extension")
+        ; "multiple errors")]
+    #[test_case("🦀.doc", None
+        , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore")
+        ; "bad char emoji")]
+    #[test_case("xx\u{0}.doc", None
+        , Some("the file name contains characters that are not alphanumeric, space, period, hyphen or underscore")
+        ; "null char")]
+    fn validate_filename<'a>(
+        file_name: &'a str,
+        file_type: Option<&'a str>,
+        expected: Option<&'a str>,
+    ) {
+        let new_file = NewFile {
             title: "".to_string(),
             description: "".to_string(),
             folder: "".into(),
             file_name: file_name.to_string(),
             file_type: file_type.unwrap_or("").to_string(),
             temporary_blob_storage_path: "".to_string(),
-        }
-        .validate()
-        .map_or_else(|es| format!("{:?}", es), |_| "no errors".to_string());
-        let expected = error_message.to_owned();
-        assert!(actual.contains(&expected));
+        };
+        let actual = new_file
+            .validate()
+            .map_err(validation::ValidationError::from)
+            .map_err(|e| format!("{}", e))
+            .err();
+        assert_eq!(actual.as_deref(), expected);
     }
 }

@@ -7,6 +7,7 @@ mod schema;
 #[cfg(test)]
 mod test_mocks;
 mod users;
+mod validation;
 mod workspaces;
 
 use super::azure;
