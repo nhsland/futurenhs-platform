@@ -8,7 +8,8 @@ SELECT files.id,
     files.created_at,
     file_versions.created_at AS modified_at,
     files.deleted_at,
-    files.latest_version
+    files.latest_version AS version,
+    file_versions.version_number
 
 FROM files JOIN file_versions ON files.latest_version = file_versions.id
 WHERE files.id = $1

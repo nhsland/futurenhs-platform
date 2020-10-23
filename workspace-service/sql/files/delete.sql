@@ -14,4 +14,5 @@ RETURNING
     files.created_at,
     file_versions.created_at AS modified_at,
     files.deleted_at,
-    files.latest_version
+    files.latest_version AS version,
+    file_versions.version_number
