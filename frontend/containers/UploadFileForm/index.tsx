@@ -1,3 +1,4 @@
-import UploadFileForm from "./UploadFileForm";
+import MultiUploadFileForm from "./MultiUploadFileForm";
+import SingleUploadFileForm from "./SingleUploadFileForm";
 
-export { UploadFileForm };
+export { SingleUploadFileForm, MultiUploadFileForm };
