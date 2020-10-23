@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { H2 } from "../../components/H2";
 import { Head } from "../../components/Head";
 import { MainHeading } from "../../components/MainHeading";
 import { NavHeader } from "../../components/NavHeader";
@@ -46,8 +47,8 @@ const WorkspaceHomepage: NextPage = () => {
         <ContentWrapper>
           <Navigation workspaceId={id} workspaceTitle={workspaceTitle} />
           <PageContent>
-            <MainHeading withBorder>{workspaceTitle}</MainHeading>
-            <h2>Most recent items</h2>
+            <MainHeading>{workspaceTitle}</MainHeading>
+            <H2 title="Most recent items" />
             {error && <p> Oh no... {error?.message} </p>}
           </PageContent>
         </ContentWrapper>

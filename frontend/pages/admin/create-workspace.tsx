@@ -5,6 +5,7 @@ import { Input, Form, Button } from "nhsuk-react-components";
 import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
+import { H2 } from "../../components/H2";
 import { Head } from "../../components/Head";
 import { MainHeading } from "../../components/MainHeading";
 import { NavHeader } from "../../components/NavHeader";
@@ -32,15 +33,6 @@ const PageContent = styled.div`
   .nhsuk-form-group {
     margin-bottom: 8px;
   }
-  `}
-`;
-
-const H2 = styled.h2`
-  ${({ theme }) => `
-  border-top: 1px solid ${theme.colorNhsukGrey1};
-  padding-top: 24px;
-  margin-bottom: 8px;
-  color: ${theme.colorNhsukGrey1}
   `}
 `;
 
@@ -94,7 +86,7 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
           {isPlatformAdmin ? (
             <>
               <MainHeading>Create a workspace</MainHeading>
-              <H2>Workspace details</H2>
+              <H2 title="Workspace details" />
               <p> Fields marked with * are required.</p>
 
               <Form onSubmit={handleSubmit(onSubmit)}>
@@ -145,7 +137,7 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
           ) : (
             <>
               <MainHeading>Error</MainHeading>
-              <H2>You do not have permission to do this.</H2>
+              <H2 title="You do not have permission to do this." />
               <br />
               <p>
                 Please contact your Platform Administrator to request a

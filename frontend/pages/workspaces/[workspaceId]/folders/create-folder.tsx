@@ -6,6 +6,7 @@ import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
+import { H2 } from "../../../../components/H2";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
 import { Navigation } from "../../../../components/Navigation";
@@ -108,8 +109,8 @@ const CreateFolder: NextPage = () => {
           activeFolder={"active"}
         />
         <PageContent>
-          <MainHeading withBorder>Create a folder</MainHeading>
-          <h2>Folder details</h2>
+          <MainHeading>Create a folder</MainHeading>
+          <H2 title="Folder details" />
           <p> Fields marked with * are mandatory.</p>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormField>

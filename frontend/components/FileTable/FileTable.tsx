@@ -27,6 +27,9 @@ const NHSTable = styled(Table)`
   tbody tr:hover {
     background: ${({ theme }) => theme.colorNhsukWhite};
   }
+  td {
+    font-size: 16px;
+  }
 `;
 
 const ModifiedDate = styled(Table.Cell)`
@@ -36,6 +39,7 @@ const ModifiedDate = styled(Table.Cell)`
 const DownloadFile = styled.a`
   display: inline-block;
   padding-right: 8px;
+  font-size: 16px;
 `;
 
 interface Props {

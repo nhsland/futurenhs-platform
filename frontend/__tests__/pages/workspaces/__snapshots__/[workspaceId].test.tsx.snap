@@ -18,14 +18,9 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 }
 
 .c25 {
-  margin-bottom: 23px;
-}
-
-.c26 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 .c1 {
@@ -294,6 +289,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   position: relative;
 }
 
+.c20.light {
+  background-color: rgb(240,244,245);
+}
+
 .c20.hidden {
   opacity: 0;
 }
@@ -339,7 +338,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 .c15 {
   list-style-type: none;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -394,7 +393,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 }
 
 .c16 img {
-  padding-top: 2px;
+  padding-top: 4px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
   align-self: baseline;
@@ -405,8 +404,8 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 }
 
 .c16 div {
-  padding-left: 4px;
-  padding-right: 4px;
+  padding: 4px;
+  font-size: 16px;
   color: rgb(33,43,50);
 }
 
@@ -437,10 +436,6 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   background: inherit;
 }
 
-.c13 h4 {
-  color: rgb(0,94,184);
-}
-
 .c10 {
   display: none;
   padding-top: 24px;
@@ -458,8 +453,7 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 }
 
 .c11 {
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgb(76,98,114);
+  padding-bottom: 24px;
 }
 
 .c12 {
@@ -474,6 +468,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
 
 .c12:visited {
   color: inherit;
+}
+
+.c12 h3 {
+  margin-bottom: 12px;
 }
 
 .c14 {
@@ -927,9 +925,6 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
             hospital
           </h1>
         </div>
-        <hr
-          class="c26"
-        />
         <h2>
           Most recent items
         </h2>
