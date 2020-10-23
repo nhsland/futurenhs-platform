@@ -2,7 +2,7 @@
 
 exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
-  .c25 {
+  .c27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,11 +17,11 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-items: baseline;
 }
 
-.c26 {
+.c28 {
   margin-bottom: 23px;
 }
 
-.c27 {
+.c29 {
   margin-top: 0px;
   margin-bottom: 25px;
   color: rgb(76,98,114);
@@ -229,7 +229,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   flex-grow: 1;
 }
 
-.c18 {
+.c20 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -240,17 +240,17 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin-left: 7px;
 }
 
-.c18 .tooltip {
+.c20 .tooltip {
   left: 36px;
   top: -7px;
 }
 
-.c20 {
+.c22 {
   display: inline-block;
   position: relative;
 }
 
-.c23 {
+.c25 {
   opacity: 0;
   position: absolute;
   z-index: 2000;
@@ -262,13 +262,13 @@ exports[`withUrql renders matching snapshot 1`] = `
   color: rgb(255,255,255);
 }
 
-.c19:hover .c22 {
+.c21:hover .c24 {
   opacity: 1;
   -webkit-transition: opacity 0s linear 0.5s;
   transition: opacity 0s linear 0.5s;
 }
 
-.c23::after {
+.c25::after {
   position: absolute;
   bottom: 33%;
   left: -10%;
@@ -279,7 +279,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   content: " ";
 }
 
-.c21 {
+.c23 {
   opacity: 1;
   color: rgb(76,98,114);
   background-color: rgb(216,221,224);
@@ -294,35 +294,35 @@ exports[`withUrql renders matching snapshot 1`] = `
   position: relative;
 }
 
-.c21.hidden {
+.c23.hidden {
   opacity: 0;
 }
 
-.c21:hover {
+.c23:hover {
   opacity: 1;
   color: rgb(255,255,255);
   background-color: rgb(0,61,120);
 }
 
-.c21:hover.hidden {
+.c23:hover.hidden {
   color: rgb(255,255,255);
 }
 
-.c21.open,
-.c21:active,
-.c21:focus {
+.c23.open,
+.c23:active,
+.c23:focus {
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
 }
 
-.c21.open.hidden,
-.c21:active.hidden,
-.c21:focus.hidden {
+.c23.open.hidden,
+.c23:active.hidden,
+.c23:focus.hidden {
   color: rgb(33,43,50);
 }
 
-.c21 .icon-wrapper {
+.c23 .icon-wrapper {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -337,7 +337,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   justify-content: center;
 }
 
-.c15 {
+.c17 {
   list-style-type: none;
   margin-bottom: 12px;
   display: -webkit-box;
@@ -350,16 +350,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-items: center;
 }
 
-.c15:hover > div {
+.c17:hover > div {
   background-color: rgb(216,221,224);
 }
 
-.c15:hover > div button {
+.c17:hover > div button {
   opacity: 1;
   color: rgb(76,98,114);
 }
 
-.c16 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -371,7 +371,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   font-weight: inherit;
 }
 
-.c16 a {
+.c18 a {
   height: 100%;
   -webkit-box-flex: 2;
   -webkit-flex-grow: 2;
@@ -389,11 +389,11 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-self: flex-start;
 }
 
-.c16 a:focus {
+.c18 a:focus {
   box-shadow: none;
 }
 
-.c16 img {
+.c18 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -404,13 +404,13 @@ exports[`withUrql renders matching snapshot 1`] = `
   flex-shrink: 0;
 }
 
-.c16 div {
+.c18 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
 }
 
-.c17 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -422,7 +422,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   font-weight: 700;
 }
 
-.c17 a {
+.c19 a {
   height: 100%;
   -webkit-box-flex: 2;
   -webkit-flex-grow: 2;
@@ -440,11 +440,11 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-self: flex-start;
 }
 
-.c17 a:focus {
+.c19 a:focus {
   box-shadow: none;
 }
 
-.c17 img {
+.c19 img {
   padding-top: 2px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
@@ -455,17 +455,17 @@ exports[`withUrql renders matching snapshot 1`] = `
   flex-shrink: 0;
 }
 
-.c17 div {
+.c19 div {
   padding-left: 4px;
   padding-right: 4px;
   color: rgb(33,43,50);
 }
 
-.c13 {
+.c15 {
   padding-top: 20px;
 }
 
-.c13 div {
+.c15 div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -483,12 +483,12 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-items: start;
 }
 
-.c13 button {
+.c15 button {
   border: none;
   background: inherit;
 }
 
-.c13 h4 {
+.c15 h4 {
   color: rgb(0,94,184);
 }
 
@@ -527,13 +527,22 @@ exports[`withUrql renders matching snapshot 1`] = `
   color: inherit;
 }
 
-.c14 {
+.c16 {
   padding-left: 0px;
 }
 
-.c14 .nav-list-item div {
+.c16 .nav-list-item div {
   font-weight: 700;
   color: rgb(0,94,184);
+}
+
+.c13 {
+  list-style: none;
+  padding-left: 0;
+}
+
+.c14 {
+  list-style-type: none;
 }
 
 .c0 {
@@ -541,16 +550,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c28 {
+.c30 {
   border: none;
   margin-bottom: 16px;
 }
 
-.c29 {
+.c31 {
   margin-bottom: 40px;
 }
 
-.c30 {
+.c32 {
   margin-left: 12px;
 }
 
@@ -561,7 +570,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   display: flex;
 }
 
-.c24 {
+.c26 {
   background-color: rgb(255,255,255);
   min-height: 100vh;
   padding-top: 24px;
@@ -569,7 +578,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   padding-right: 10%;
 }
 
-.c24 .nhsuk-form-group {
+.c26 .nhsuk-form-group {
   margin-bottom: 8px;
 }
 
@@ -636,7 +645,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 @media (min-width:990px) {
-  .c18 {
+  .c20 {
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
@@ -879,14 +888,31 @@ exports[`withUrql renders matching snapshot 1`] = `
               hospital
             </h3>
           </a>
-          <a
-            href="/workspaces/w1"
+          <ul
+            class="c13"
           >
-            About this workspace
-          </a>
+            <li
+              class="c14"
+            >
+              <a
+                href="/workspaces/w1"
+              >
+                About this workspace
+              </a>
+            </li>
+            <li
+              class="c14"
+            >
+              <a
+                href="/workspaces/w1/members"
+              >
+                View members
+              </a>
+            </li>
+          </ul>
         </header>
         <section
-          class="c13"
+          class="c15"
         >
           <div>
             <h4>
@@ -900,13 +926,13 @@ exports[`withUrql renders matching snapshot 1`] = `
             </button>
           </div>
           <ul
-            class="c14"
+            class="c16"
           >
             <li
-              class="c15 nav-list-item"
+              class="c17 nav-list-item"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <a
                   href="/workspaces/w1/folders/create-folder"
@@ -922,10 +948,10 @@ exports[`withUrql renders matching snapshot 1`] = `
               </div>
             </li>
             <li
-              class="c15"
+              class="c17"
             >
               <div
-                class="c17"
+                class="c19"
               >
                 <a
                   href="/workspaces/w1/folders/f1"
@@ -940,14 +966,14 @@ exports[`withUrql renders matching snapshot 1`] = `
                 </a>
               </div>
               <div
-                class="c18"
+                class="c20"
               >
                 <div
-                  class="c19 c20"
+                  class="c21 c22"
                 >
                   <button
                     aria-label="Options"
-                    class="hidden c21"
+                    class="hidden c23"
                   >
                     <div
                       class="icon-wrapper "
@@ -968,7 +994,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                     </div>
                   </button>
                   <span
-                    class="c22 c23 tooltip"
+                    class="c24 c25 tooltip"
                   >
                     Options
                   </span>
@@ -979,20 +1005,20 @@ exports[`withUrql renders matching snapshot 1`] = `
         </section>
       </nav>
       <div
-        class="c24"
+        class="c26"
       >
         <div
-          class="c25"
+          class="c27"
         >
           <h1
             aria-live="polite"
-            class="c26"
+            class="c28"
           >
             folder 1
           </h1>
         </div>
         <hr
-          class="c27"
+          class="c29"
         />
         <p>
            Fields marked with * are mandatory.
@@ -1012,7 +1038,7 @@ exports[`withUrql renders matching snapshot 1`] = `
             <input
               aria-describedby="files--hint"
               aria-invalid="false"
-              class="nhsuk-input c28"
+              class="nhsuk-input c30"
               id="files"
               multiple=""
               name="files"
@@ -1020,7 +1046,7 @@ exports[`withUrql renders matching snapshot 1`] = `
             />
           </div>
           <p
-            class="c29"
+            class="c31"
           >
             All uploaded content must conform to the platform's 
             <a
@@ -1040,7 +1066,7 @@ exports[`withUrql renders matching snapshot 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary c30"
+            class="nhsuk-button nhsuk-button--secondary c32"
             type="button"
           >
             Discard
