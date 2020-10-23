@@ -4,13 +4,13 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { Head } from "../../components/Head";
-import { MainHeading } from "../../components/MainHeading";
-import { NavHeader } from "../../components/NavHeader";
-import { Navigation } from "../../components/Navigation";
-import { PageLayout } from "../../components/PageLayout";
-import { useGetWorkspaceByIdQuery } from "../../lib/generated/graphql";
-import withUrqlClient from "../../lib/withUrqlClient";
+import { Head } from "../../../components/Head";
+import { MainHeading } from "../../../components/MainHeading";
+import { NavHeader } from "../../../components/NavHeader";
+import { Navigation } from "../../../components/Navigation";
+import { PageLayout } from "../../../components/PageLayout";
+import { useGetWorkspaceByIdQuery } from "../../../lib/generated/graphql";
+import withUrqlClient from "../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   flex-grow: 3;

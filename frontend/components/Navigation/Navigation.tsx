@@ -55,6 +55,15 @@ const List = styled.ul`
   }
 `;
 
+const LinkList = styled.ul`
+  list-style: none;
+  padding-left: 0;
+`;
+
+const LinkListItem = styled.li`
+  list-style-type: none;
+`;
+
 interface Props {
   workspaceId: string;
   workspaceTitle: string;
@@ -97,10 +106,18 @@ const Navigation: FC<Props> = ({
             <h3>{workspaceTitle}</h3>
           </WorkspaceTitleLink>
         </Link>
-
-        <Link href={`/workspaces/${workspaceId}`}>
-          <a>About this workspace</a>
-        </Link>
+        <LinkList>
+          <LinkListItem>
+            <Link href={`/workspaces/${workspaceId}`} passHref>
+              <a>About this workspace</a>
+            </Link>
+          </LinkListItem>
+          <LinkListItem>
+            <Link href={`/workspaces/${workspaceId}/members`} passHref>
+              <a>View members</a>
+            </Link>
+          </LinkListItem>
+        </LinkList>
       </Header>
       <NavSection title="Folders">
         <List>
