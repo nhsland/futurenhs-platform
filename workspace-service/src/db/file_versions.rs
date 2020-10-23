@@ -1,9 +1,13 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
-use anyhow::Result;
 use chrono::{DateTime, Utc};
-use sqlx::{types::Uuid, Executor, Postgres};
+use sqlx::types::Uuid;
+#[cfg(not(test))]
+use {
+    anyhow::Result,
+    sqlx::{Executor, Postgres},
+};
 
 #[derive(Clone)]
 pub struct FileVersion {
@@ -21,6 +25,7 @@ pub struct FileVersion {
     pub version_label: String,
 }
 
+#[cfg(not(test))]
 impl FileVersion {
     #[allow(clippy::too_many_arguments)]
     pub async fn create<'c, E>(

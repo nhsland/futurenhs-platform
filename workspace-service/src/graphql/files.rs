@@ -1,9 +1,10 @@
-use super::{azure, db, validation};
+use super::{azure, db, validation, RequestingUser};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
 use mime_db::extensions2;
 use regex::Regex;
+use sqlx::PgPool;
 use url::Url;
 use uuid::Uuid;
 use validator::{Validate, ValidationError};
@@ -201,39 +202,11 @@ pub struct FilesMutation;
 impl FilesMutation {
     /// Create a new file (returns the created file)
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
-        new_file
-            .validate()
-            .map_err(validation::ValidationError::from)?;
-
         let pool = context.data()?;
         let azure_config = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
 
-        let folder = Uuid::parse_str(&new_file.folder)?;
-        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-        let destination = azure::copy_blob_from_url(
-            &Url::parse(&new_file.temporary_blob_storage_path)?,
-            azure_config,
-        )
-        .await?;
-
-        let file = db::FileWithVersion::create(
-            db::CreateFileArgs {
-                user_id: user.id,
-                folder_id: folder,
-                title: &new_file.title,
-                description: &new_file.description,
-                file_name: &new_file.file_name,
-                file_type: &new_file.file_type,
-                blob_storage_path: &destination,
-            },
-            pool,
-        )
-        .await?;
-
-        // TODO: add event.
-
-        Ok(file.into())
+        create_file(new_file, pool, azure_config, requesting_user).await
     }
 
     /// Create a new file version (returns the updated file)
@@ -248,68 +221,11 @@ impl FilesMutation {
         context: &Context<'_>,
         new_version: NewFileVersion,
     ) -> FieldResult<File> {
-        new_version
-            .validate()
-            .map_err(validation::ValidationError::from)?;
-
         let pool = context.data()?;
         let azure_config = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
 
-        let current_file_id = Uuid::parse_str(&new_version.file)?;
-        let current_latest_version_id = Uuid::parse_str(&new_version.latest_version)?;
-
-        let current_file = db::FileWithVersion::find_by_id(current_file_id, pool).await?;
-        if current_file.version != current_latest_version_id {
-            // Early check to see if the latest version matches to avoid potentially copying the
-            // file unnecessarily. There is still a chance someone else creates a new version in
-            // the time from now until we store the new version in the DB. This will be caught by
-            // `db::File::update_latest_version`.
-            return Err("specified version is not the latest version of the file".into());
-        }
-
-        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-        let folder = match &new_version.folder {
-            Some(folder) => Uuid::parse_str(folder)?,
-            None => current_file.folder,
-        };
-        let destination = match &new_version.temporary_blob_storage_path {
-            Some(temporary_blob_storage_path) => {
-                azure::copy_blob_from_url(&Url::parse(temporary_blob_storage_path)?, azure_config)
-                    .await?
-            }
-            None => current_file.blob_storage_path,
-        };
-
-        let file = db::FileWithVersion::create_version(
-            db::CreateFileVersionArgs {
-                user_id: user.id,
-                file_id: current_file_id,
-                latest_version: current_latest_version_id,
-                folder_id: folder,
-                title: new_version.title.as_ref().unwrap_or(&current_file.title),
-                description: new_version
-                    .description
-                    .as_ref()
-                    .unwrap_or(&current_file.description),
-                file_name: new_version
-                    .file_name
-                    .as_ref()
-                    .unwrap_or(&current_file.file_name),
-                file_type: new_version
-                    .file_type
-                    .as_ref()
-                    .unwrap_or(&current_file.file_type),
-                blob_storage_path: &destination,
-                version_number: current_file.version_number + 1,
-            },
-            pool,
-        )
-        .await?;
-
-        // TODO: add event.
-
-        Ok(file.into())
+        create_file_version(new_version, pool, azure_config, requesting_user).await
     }
 
     /// Deletes a file by id(returns delete file
@@ -325,9 +241,113 @@ impl FilesMutation {
     }
 }
 
+async fn create_file(
+    new_file: NewFile,
+    pool: &PgPool,
+    azure_config: &azure::Config,
+    requesting_user: &RequestingUser,
+) -> FieldResult<File> {
+    new_file
+        .validate()
+        .map_err(validation::ValidationError::from)?;
+
+    let folder = Uuid::parse_str(&new_file.folder)?;
+    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let destination = azure::copy_blob_from_url(
+        &Url::parse(&new_file.temporary_blob_storage_path)?,
+        azure_config,
+    )
+    .await?;
+
+    let file = db::FileWithVersion::create(
+        db::CreateFileArgs {
+            user_id: user.id,
+            folder_id: folder,
+            title: &new_file.title,
+            description: &new_file.description,
+            file_name: &new_file.file_name,
+            file_type: &new_file.file_type,
+            blob_storage_path: &destination,
+        },
+        pool,
+    )
+    .await?;
+
+    // TODO: add event.
+
+    Ok(file.into())
+}
+
+async fn create_file_version(
+    new_version: NewFileVersion,
+    pool: &PgPool,
+    azure_config: &azure::Config,
+    requesting_user: &RequestingUser,
+) -> FieldResult<File> {
+    new_version
+        .validate()
+        .map_err(validation::ValidationError::from)?;
+
+    let current_file_id = Uuid::parse_str(&new_version.file)?;
+    let current_latest_version_id = Uuid::parse_str(&new_version.latest_version)?;
+
+    let current_file = db::FileWithVersion::find_by_id(current_file_id, pool).await?;
+    if current_file.version != current_latest_version_id {
+        // Early check to see if the latest version matches to avoid potentially copying the
+        // file unnecessarily. There is still a chance someone else creates a new version in
+        // the time from now until we store the new version in the DB. This will be caught by
+        // `db::File::update_latest_version`.
+        return Err("specified version is not the latest version of the file".into());
+    }
+
+    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let folder = match &new_version.folder {
+        Some(folder) => Uuid::parse_str(folder)?,
+        None => current_file.folder,
+    };
+    let destination = match &new_version.temporary_blob_storage_path {
+        Some(temporary_blob_storage_path) => {
+            azure::copy_blob_from_url(&Url::parse(temporary_blob_storage_path)?, azure_config)
+                .await?
+        }
+        None => current_file.blob_storage_path,
+    };
+
+    let file = db::FileWithVersion::create_version(
+        db::CreateFileVersionArgs {
+            user_id: user.id,
+            file_id: current_file_id,
+            latest_version: current_latest_version_id,
+            folder_id: folder,
+            title: new_version.title.as_ref().unwrap_or(&current_file.title),
+            description: new_version
+                .description
+                .as_ref()
+                .unwrap_or(&current_file.description),
+            file_name: new_version
+                .file_name
+                .as_ref()
+                .unwrap_or(&current_file.file_name),
+            file_type: new_version
+                .file_type
+                .as_ref()
+                .unwrap_or(&current_file.file_type),
+            blob_storage_path: &destination,
+            version_number: current_file.version_number + 1,
+        },
+        pool,
+    )
+    .await?;
+
+    // TODO: add event.
+
+    Ok(file.into())
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::graphql::test_mocks::*;
     use test_case::test_case;
 
     #[test_case("filename.doc", Some("application/msword") , None ; "good extension doc")]
@@ -393,5 +413,102 @@ mod test {
             .map_err(|e| format!("{}", e))
             .err();
         assert_eq!(actual.as_deref(), expected);
+    }
+
+    #[async_std::test]
+    async fn create_file_works() -> anyhow::Result<()> {
+        let pool = mock_connection_pool()?;
+        let azure_config = mock_azure_config()?;
+        let requesting_user = mock_unprivileged_requesting_user();
+
+        let result = create_file(
+            NewFile {
+                title: "title".into(),
+                description: "description".into(),
+                folder: "d890181d-6b17-428e-896b-f76add15b54a".into(),
+                file_name: "file.txt".into(),
+                file_type: "text/plain".into(),
+                temporary_blob_storage_path: "http://localhost:10000/devstoreaccount1/upload/fake"
+                    .into(),
+            },
+            &pool,
+            &azure_config,
+            &requesting_user,
+        )
+        .await;
+
+        assert_eq!(result.unwrap().title, "title");
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn create_file_version_works() -> anyhow::Result<()> {
+        let pool = mock_connection_pool()?;
+        let azure_config = mock_azure_config()?;
+        let requesting_user = mock_unprivileged_requesting_user();
+
+        let file_id = Uuid::new_v4();
+        let current_file = db::FileWithVersion::find_by_id(file_id, &pool).await?;
+
+        let result = create_file_version(
+            NewFileVersion {
+                file: file_id.into(),
+                latest_version: current_file.version.into(),
+                title: Some("title".into()),
+                description: None,
+                folder: Some("d890181d-6b17-428e-896b-f76add15b54a".into()),
+                file_name: Some("file.txt".into()),
+                file_type: Some("text/plain".into()),
+                temporary_blob_storage_path: Some(
+                    "http://localhost:10000/devstoreaccount1/upload/new-fake".into(),
+                ),
+            },
+            &pool,
+            &azure_config,
+            &requesting_user,
+        )
+        .await
+        .unwrap();
+
+        assert_eq!(result.title, "title");
+        assert_eq!(result.description, "fake file for tests");
+        assert_eq!(result.folder, "d890181d-6b17-428e-896b-f76add15b54a");
+        assert_eq!(result.file_name, "file.txt");
+        assert_eq!(result.file_type, "text/plain");
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn create_file_version_fails_if_latest_version_mismatch() -> anyhow::Result<()> {
+        let pool = mock_connection_pool()?;
+        let azure_config = mock_azure_config()?;
+        let requesting_user = mock_unprivileged_requesting_user();
+
+        let file_id = Uuid::new_v4();
+        let result = create_file_version(
+            NewFileVersion {
+                file: file_id.into(),
+                latest_version: Uuid::new_v4().into(),
+                title: Some("title".into()),
+                description: None,
+                folder: None,
+                file_name: None,
+                file_type: None,
+                temporary_blob_storage_path: None,
+            },
+            &pool,
+            &azure_config,
+            &requesting_user,
+        )
+        .await;
+
+        assert_eq!(
+            result.err().unwrap().message,
+            "specified version is not the latest version of the file"
+        );
+
+        Ok(())
     }
 }

@@ -3,7 +3,9 @@
 
 use anyhow::Result;
 use chrono::{DateTime, Utc};
-use sqlx::{types::Uuid, Executor, PgPool, Postgres};
+use sqlx::{types::Uuid, PgPool};
+#[cfg(not(test))]
+use sqlx::{Executor, Postgres};
 
 #[derive(Clone)]
 pub struct File {
@@ -13,6 +15,42 @@ pub struct File {
     pub deleted_at: Option<DateTime<Utc>>,
     pub deleted_by: Option<Uuid>,
     pub latest_version: Uuid,
+}
+
+#[cfg(not(test))]
+impl File {
+    async fn create<'c, E>(created_by: Uuid, latest_version: Uuid, executor: E) -> Result<File>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let file = sqlx::query_file_as!(File, "sql/files/create.sql", created_by, latest_version)
+            .fetch_one(executor)
+            .await?;
+
+        Ok(file)
+    }
+
+    async fn update_latest_version<'c, E>(
+        id: Uuid,
+        current_latest_version: Uuid,
+        new_latest_version: Uuid,
+        executor: E,
+    ) -> Result<File>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let file = sqlx::query_file_as!(
+            File,
+            "sql/files/update_latest_version.sql",
+            id,
+            current_latest_version,
+            new_latest_version
+        )
+        .fetch_one(executor)
+        .await?;
+
+        Ok(file)
+    }
 }
 
 #[derive(Clone)]
@@ -76,6 +114,7 @@ pub struct CreateFileVersionArgs<'a> {
     pub version_number: i16,
 }
 
+#[cfg(not(test))]
 impl FileWithVersion {
     pub async fn create(args: CreateFileArgs<'_>, pool: &PgPool) -> Result<FileWithVersion> {
         let version_id = Uuid::new_v4();
@@ -160,37 +199,86 @@ impl FileWithVersion {
     }
 }
 
-impl File {
-    async fn create<'c, E>(created_by: Uuid, latest_version: Uuid, executor: E) -> Result<File>
-    where
-        E: Executor<'c, Database = Postgres>,
-    {
-        let file = sqlx::query_file_as!(File, "sql/files/create.sql", created_by, latest_version)
-            .fetch_one(executor)
-            .await?;
-
+// Fake implementation for tests. If you want integration tests that exercise the database,
+// see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
+#[cfg(test)]
+impl FileWithVersion {
+    pub async fn create(args: CreateFileArgs<'_>, _pool: &PgPool) -> Result<FileWithVersion> {
+        let file = FileWithVersion {
+            id: Uuid::new_v4(),
+            title: args.title.into(),
+            description: args.description.into(),
+            folder: args.folder_id,
+            file_name: args.file_name.into(),
+            file_type: args.file_type.into(),
+            blob_storage_path: args.blob_storage_path.into(),
+            version: Uuid::new_v4(),
+            version_number: 1,
+            created_at: Utc::now(),
+            modified_at: Utc::now(),
+            deleted_at: None,
+        };
         Ok(file)
     }
 
-    async fn update_latest_version<'c, E>(
-        id: Uuid,
-        current_latest_version: Uuid,
-        new_latest_version: Uuid,
-        executor: E,
-    ) -> Result<File>
-    where
-        E: Executor<'c, Database = Postgres>,
-    {
-        let file = sqlx::query_file_as!(
-            File,
-            "sql/files/update_latest_version.sql",
-            id,
-            current_latest_version,
-            new_latest_version
-        )
-        .fetch_one(executor)
-        .await?;
+    pub async fn create_version(
+        args: CreateFileVersionArgs<'_>,
+        _pool: &PgPool,
+    ) -> Result<FileWithVersion> {
+        let file = FileWithVersion {
+            id: args.file_id,
+            title: args.title.into(),
+            description: args.description.into(),
+            folder: args.folder_id,
+            file_name: args.file_name.into(),
+            file_type: args.file_type.into(),
+            blob_storage_path: args.blob_storage_path.into(),
+            version: Uuid::new_v4(),
+            version_number: args.version_number,
+            created_at: Utc::now(),
+            modified_at: Utc::now(),
+            deleted_at: None,
+        };
+        Ok(file)
+    }
 
+    pub async fn find_by_folder(_folder: Uuid, _pool: &PgPool) -> Result<Vec<FileWithVersion>> {
+        Ok(vec![])
+    }
+
+    pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<FileWithVersion> {
+        let file = FileWithVersion {
+            id,
+            title: "fake file".into(),
+            description: "fake file for tests".into(),
+            folder: Uuid::parse_str("805eaaca-6c7d-40ac-bede-99b83ef838e4")?,
+            file_name: "fake.txt".into(),
+            file_type: "text/plain".into(),
+            blob_storage_path: "http://localhost:10000/devstoreaccount1/files/fake".into(),
+            version: Uuid::parse_str("393ec819-92f2-4bb3-bb1d-189d2ef8a30a")?,
+            version_number: 1,
+            created_at: Utc::now(),
+            modified_at: Utc::now(),
+            deleted_at: None,
+        };
+        Ok(file)
+    }
+
+    pub async fn delete(id: Uuid, _deleted_by: Uuid, _pool: &PgPool) -> Result<FileWithVersion> {
+        let file = FileWithVersion {
+            id,
+            title: "fake file".into(),
+            description: "fake file for tests".into(),
+            folder: Uuid::parse_str("805eaaca-6c7d-40ac-bede-99b83ef838e4")?,
+            file_name: "fake.txt".into(),
+            file_type: "text/plain".into(),
+            blob_storage_path: "http://localhost:10000/devstoreaccount1/files/fake".into(),
+            version: Uuid::parse_str("393ec819-92f2-4bb3-bb1d-189d2ef8a30a")?,
+            version_number: 1,
+            created_at: Utc::now(),
+            modified_at: Utc::now(),
+            deleted_at: Some(Utc::now()),
+        };
         Ok(file)
     }
 }
