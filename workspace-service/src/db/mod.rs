@@ -1,12 +1,15 @@
 mod file_versions;
 mod files;
 mod folders;
+mod groups;
 mod users;
 mod workspaces;
 
 pub use file_versions::*;
 pub use files::*;
 pub use folders::*;
+pub use groups::*;
+use sqlx::{Executor, Postgres};
 pub use users::*;
 pub use workspaces::*;
 #[cfg(not(test))]
