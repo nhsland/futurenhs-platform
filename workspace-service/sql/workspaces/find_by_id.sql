@@ -1,5 +1,3 @@
-SELECT id, 
-    title,
-    description
+SELECT *
 FROM workspaces
 WHERE id = $1

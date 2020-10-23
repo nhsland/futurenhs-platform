@@ -3,17 +3,23 @@
 
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
+use crate::db::Group;
 
 #[derive(Clone)]
 pub struct Workspace {
     pub id: Uuid,
     pub title: String,
     pub description: String,
+    pub admins: Option<Uuid>,
+    pub members: Option<Uuid>,
 }
 
 #[cfg(not(test))]
 impl Workspace {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
+        let admins = Group::create(title, pool).await?;
+        let members = Group::create(title, pool).await?;
+
         let workspace =
             sqlx::query_file_as!(Workspace, "sql/workspaces/create.sql", title, description)
                 .fetch_one(pool)
