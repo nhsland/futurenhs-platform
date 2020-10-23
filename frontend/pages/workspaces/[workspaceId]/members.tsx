@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { H2 } from "../../../components/H2";
 import { Head } from "../../../components/Head";
 import { MainHeading } from "../../../components/MainHeading";
 import { NavHeader } from "../../../components/NavHeader";
@@ -47,7 +48,7 @@ const WorkspaceMembersPage: NextPage = () => {
           <Navigation workspaceId={id} workspaceTitle={workspaceTitle} />
           <PageContent>
             <MainHeading withBorder>Workspace members</MainHeading>
-            <h2>This is a list of all workspace members.</h2>
+            <H2 title="This is a list of all workspace members." />
             {error && <p> Oh no... {error?.message} </p>}
           </PageContent>
         </ContentWrapper>
