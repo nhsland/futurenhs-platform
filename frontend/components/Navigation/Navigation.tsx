@@ -27,20 +27,21 @@ const Nav = styled.nav`
 `;
 
 const Header = styled.header`
-  padding-bottom: 20px;
-  ${({ theme }) => `
-  border-bottom: 1px solid ${theme.colorNhsukGrey1};
-  `};
+  padding-bottom: 24px;
 `;
 
 const WorkspaceTitleLink = styled.a`
   text-decoration: none;
   color: inherit;
+
   &:hover {
     color: inherit;
   }
   &:visited {
     color: inherit;
+  }
+  h3 {
+    margin-bottom: 12px;
   }
 `;
 
@@ -169,7 +170,13 @@ const Navigation: FC<Props> = ({
                   folder.id === activeFolder ? "folder current page" : "folder"
                 }
                 href={`/workspaces/${workspaceId}/folders/${folder.id}`}
-                menu={<Menu items={items} hiddenUntilHover={true} />}
+                menu={
+                  <Menu
+                    background="dark"
+                    items={items}
+                    hiddenUntilHover={true}
+                  />
+                }
               />
             );
           })}

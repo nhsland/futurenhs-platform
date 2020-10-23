@@ -51,6 +51,10 @@ exports[`Menu takes a snapshot, as used in a page 1`] = `
   position: relative;
 }
 
+.c3.light {
+  background-color: rgb(240,244,245);
+}
+
 .c3.hidden {
   opacity: 0;
 }
@@ -210,6 +214,10 @@ exports[`Menu takes a snapshot, as used in the nav 1`] = `
   line-height: 24px;
   padding: 0;
   position: relative;
+}
+
+.c3.light {
+  background-color: rgb(240,244,245);
 }
 
 .c3.hidden {

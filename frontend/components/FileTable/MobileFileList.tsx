@@ -25,7 +25,7 @@ const RHContainer = styled.div`
   p,
   h4 {
     margin-bottom: 0;
-    font-size: 18px;
+    font-size: 16px;
   }
   p {
     color: ${({ theme }) => theme.colorNhsukGrey1};

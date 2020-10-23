@@ -29,10 +29,6 @@ exports[`<NavSection/> does not render children when closed 1`] = `
   background: inherit;
 }
 
-.c0 h4 {
-  color: rgb(0,94,184);
-}
-
 <section
     class="c0"
   >
@@ -78,10 +74,6 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
 .c0 button {
   border: none;
   background: inherit;
-}
-
-.c0 h4 {
-  color: rgb(0,94,184);
 }
 
 <section

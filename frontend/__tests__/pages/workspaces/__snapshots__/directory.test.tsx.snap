@@ -18,14 +18,9 @@ exports[`takes a snapshot of the component 1`] = `
 }
 
 .c11 {
-  margin-bottom: 23px;
-}
-
-.c12 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 .c1 {
@@ -234,7 +229,11 @@ exports[`takes a snapshot of the component 1`] = `
   margin: 0px auto;
 }
 
-.c13 {
+.c12 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -242,45 +241,39 @@ exports[`takes a snapshot of the component 1`] = `
   margin-bottom: 40px;
 }
 
-.c14 {
+.c12 img {
+  padding-right: 24px;
+  border-radius: 4px;
+  height: 44px;
+  display: block;
+}
+
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
-.c14 img {
-  display: block;
-  height: 44px;
-  width: 44px;
-  border-radius: 4px;
-  cursor: pointer;
+.c13 div {
+  margin-bottom: 0px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
-.c14 img:hover + h3 {
-  color: rgb(0,94,184);
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c14 h3 {
-  margin-left: 25px;
-  color: rgb(33,43,50);
-}
-
-.c14 h3:hover {
-  color: rgb(0,94,184);
+.c13 div:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c14 h3:active {
+.c13 div:active {
   color: rgb(33,43,50);
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: rgb(255,235,59);
-  border-bottom: 2px solid rgb(33,43,50);
 }
 
 .c9 {
@@ -573,55 +566,52 @@ exports[`takes a snapshot of the component 1`] = `
           My workspaces
         </h1>
       </div>
-      <hr
-        class="c12"
-      />
       <div
-        class="c13"
+        class="c12"
       >
+        <img
+          alt=""
+          src="/public/Placeholder_Workspace_Image.svg"
+        />
         <a
-          class="c14"
+          class="c13"
           href="/workspaces/1"
         >
-          <img
-            alt=""
-            src="/public/Placeholder_Workspace_Image.svg"
-          />
-          <h3>
+          <div>
             hospital
-          </h3>
+          </div>
         </a>
       </div>
       <div
-        class="c13"
+        class="c12"
       >
+        <img
+          alt=""
+          src="/public/Placeholder_Workspace_Image.svg"
+        />
         <a
-          class="c14"
+          class="c13"
           href="/workspaces/2"
         >
-          <img
-            alt=""
-            src="/public/Placeholder_Workspace_Image.svg"
-          />
-          <h3>
+          <div>
             pharmacy
-          </h3>
+          </div>
         </a>
       </div>
       <div
-        class="c13"
+        class="c12"
       >
+        <img
+          alt=""
+          src="/public/Placeholder_Workspace_Image.svg"
+        />
         <a
-          class="c14"
+          class="c13"
           href="/workspaces/3"
         >
-          <img
-            alt=""
-            src="/public/Placeholder_Workspace_Image.svg"
-          />
-          <h3>
+          <div>
             ambulance
-          </h3>
+          </div>
         </a>
       </div>
     </section>

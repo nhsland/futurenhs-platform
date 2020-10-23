@@ -18,14 +18,9 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c28 {
-  margin-bottom: 23px;
-}
-
-.c29 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 .c1 {
@@ -294,6 +289,10 @@ exports[`withUrql renders matching snapshot 1`] = `
   position: relative;
 }
 
+.c23.light {
+  background-color: rgb(240,244,245);
+}
+
 .c23.hidden {
   opacity: 0;
 }
@@ -339,7 +338,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 
 .c17 {
   list-style-type: none;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -394,7 +393,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c18 img {
-  padding-top: 2px;
+  padding-top: 4px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
   align-self: baseline;
@@ -405,8 +404,8 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c18 div {
-  padding-left: 4px;
-  padding-right: 4px;
+  padding: 4px;
+  font-size: 16px;
   color: rgb(33,43,50);
 }
 
@@ -445,7 +444,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c19 img {
-  padding-top: 2px;
+  padding-top: 4px;
   -webkit-align-self: baseline;
   -ms-flex-item-align: baseline;
   align-self: baseline;
@@ -456,8 +455,8 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c19 div {
-  padding-left: 4px;
-  padding-right: 4px;
+  padding: 4px;
+  font-size: 16px;
   color: rgb(33,43,50);
 }
 
@@ -488,10 +487,6 @@ exports[`withUrql renders matching snapshot 1`] = `
   background: inherit;
 }
 
-.c15 h4 {
-  color: rgb(0,94,184);
-}
-
 .c10 {
   display: none;
   padding-top: 24px;
@@ -509,8 +504,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c11 {
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgb(76,98,114);
+  padding-bottom: 24px;
 }
 
 .c12 {
@@ -525,6 +519,10 @@ exports[`withUrql renders matching snapshot 1`] = `
 
 .c12:visited {
   color: inherit;
+}
+
+.c12 h3 {
+  margin-bottom: 12px;
 }
 
 .c16 {
@@ -550,16 +548,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c30 {
+.c29 {
   border: none;
   margin-bottom: 16px;
 }
 
-.c31 {
+.c30 {
   margin-bottom: 40px;
 }
 
-.c32 {
+.c31 {
   margin-left: 12px;
 }
 
@@ -1017,9 +1015,9 @@ exports[`withUrql renders matching snapshot 1`] = `
             folder 1
           </h1>
         </div>
-        <hr
-          class="c29"
-        />
+        <h2>
+          File details
+        </h2>
         <p>
            Fields marked with * are mandatory.
         </p>
@@ -1038,7 +1036,7 @@ exports[`withUrql renders matching snapshot 1`] = `
             <input
               aria-describedby="files--hint"
               aria-invalid="false"
-              class="nhsuk-input c30"
+              class="nhsuk-input c29"
               id="files"
               multiple=""
               name="files"
@@ -1046,7 +1044,7 @@ exports[`withUrql renders matching snapshot 1`] = `
             />
           </div>
           <p
-            class="c31"
+            class="c30"
           >
             All uploaded content must conform to the platform's 
             <a
@@ -1066,7 +1064,7 @@ exports[`withUrql renders matching snapshot 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary c32"
+            class="nhsuk-button nhsuk-button--secondary c31"
             type="button"
           >
             Discard
