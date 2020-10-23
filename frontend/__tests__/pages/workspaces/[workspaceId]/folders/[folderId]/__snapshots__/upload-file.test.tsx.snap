@@ -289,6 +289,10 @@ exports[`withUrql renders matching snapshot 1`] = `
   position: relative;
 }
 
+.c21.light {
+  background-color: rgb(240,244,245);
+}
+
 .c21.hidden {
   opacity: 0;
 }

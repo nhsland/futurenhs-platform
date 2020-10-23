@@ -289,6 +289,10 @@ exports[`withUrql renders with folders matching snapshot 1`] = `
   position: relative;
 }
 
+.c20.light {
+  background-color: rgb(240,244,245);
+}
+
 .c20.hidden {
   opacity: 0;
 }

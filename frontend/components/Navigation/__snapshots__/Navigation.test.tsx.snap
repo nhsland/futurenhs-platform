@@ -67,6 +67,10 @@ exports[`<Navigation/> renders correctly 1`] = `
   position: relative;
 }
 
+.c10.light {
+  background-color: rgb(240,244,245);
+}
+
 .c10.hidden {
   opacity: 0;
 }

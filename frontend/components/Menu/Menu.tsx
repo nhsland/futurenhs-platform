@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { MenuButton } from ".";
-import { MeatballIconDark, MeatballIconLight } from "../Icon";
+import { MeatballIcon } from "../Icon";
 import MenuList from "./MenuList";
 import { MenuItem } from "./MenuListItem";
 
@@ -61,12 +61,9 @@ const Menu: FC<Props> = ({ hiddenUntilHover, items, dataCy, background }) => {
           setMenuOpen={setMenuOpen}
           hiddenUntilHover={hiddenUntilHover || false}
           dataCy={dataCy}
+          background={background}
         >
-          {background === "light" ? (
-            <MeatballIconLight />
-          ) : (
-            <MeatballIconDark />
-          )}
+          <MeatballIcon />
         </MenuButton>
         {menuOpen && (
           <MenuList hiddenUntilHover={hiddenUntilHover || false}>

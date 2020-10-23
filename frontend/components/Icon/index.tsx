@@ -7,7 +7,7 @@ import FnhsLogoIcon from "./FnhsLogoIcon";
 import HelpIcon from "./HelpIcon";
 import LockIcon from "./LockIcon";
 import LogOutIcon from "./LogOutIcon";
-import { MeatballIconDark, MeatballIconLight } from "./MeatballIcon";
+import MeatballIcon from "./MeatballIcon";
 import MoveIcon from "./MoveIcon";
 import NhsukLogoIcon from "./NhsukLogoIcon";
 import NotificationsIcon from "./NotificationsIcon";
@@ -26,8 +26,7 @@ export {
   HelpIcon,
   LockIcon,
   LogOutIcon,
-  MeatballIconDark,
-  MeatballIconLight,
+  MeatballIcon,
   MoveIcon,
   NhsukLogoIcon,
   NotificationsIcon,
