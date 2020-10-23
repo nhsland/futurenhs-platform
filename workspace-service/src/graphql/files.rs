@@ -166,24 +166,6 @@ impl From<db::FileWithVersion> for File {
     }
 }
 
-impl From<(db::File, db::FileVersion)> for File {
-    fn from(pair: (db::File, db::FileVersion)) -> Self {
-        let (file, file_version) = pair;
-        Self {
-            id: file.id.into(),
-            title: file_version.file_title,
-            description: file_version.file_description,
-            folder: file_version.folder.into(),
-            file_name: file_version.file_name,
-            file_type: file_version.file_type,
-            latest_version: file_version.id.into(),
-            created_at: file.created_at,
-            modified_at: file_version.created_at,
-            deleted_at: file.deleted_at,
-        }
-    }
-}
-
 #[derive(Default)]
 pub struct FilesQuery;
 
@@ -193,7 +175,7 @@ impl FilesQuery {
     async fn files_by_folder(&self, context: &Context<'_>, folder: ID) -> FieldResult<Vec<File>> {
         let pool = context.data()?;
         let folder = Uuid::parse_str(&folder)?;
-        let files = db::File::find_by_folder(folder, pool).await?;
+        let files = db::FileWithVersion::find_by_folder(folder, pool).await?;
 
         Ok(files.into_iter().map(Into::into).collect())
     }
@@ -207,7 +189,7 @@ impl FilesQuery {
     async fn get_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
-        let file = db::File::find_by_id(id, pool).await?;
+        let file = db::FileWithVersion::find_by_id(id, pool).await?;
         Ok(file.into())
     }
 }
@@ -235,30 +217,23 @@ impl FilesMutation {
         )
         .await?;
 
-        // TODO: add event.
-
-        let version_id = Uuid::new_v4();
-        let mut tx = pool.begin().await?;
-        db::defer_all_constraints(&mut tx).await?;
-        let file = db::File::create(user.id, version_id, &mut tx).await?;
-        let file_version = db::FileVersion::create(
-            version_id,
-            folder,
-            file.id,
-            &new_file.title,
-            &new_file.description,
-            &new_file.file_name,
-            &new_file.file_type,
-            &destination,
-            user.id,
-            1,
-            "",
-            &mut tx,
+        let file = db::FileWithVersion::create(
+            db::CreateFileArgs {
+                user_id: user.id,
+                folder_id: folder,
+                title: &new_file.title,
+                description: &new_file.description,
+                file_name: &new_file.file_name,
+                file_type: &new_file.file_type,
+                blob_storage_path: &destination,
+            },
+            pool,
         )
         .await?;
-        tx.commit().await?;
 
-        Ok((file, file_version).into())
+        // TODO: add event.
+
+        Ok(file.into())
     }
 
     /// Create a new file version (returns the updated file)
@@ -284,7 +259,7 @@ impl FilesMutation {
         let current_file_id = Uuid::parse_str(&new_version.file)?;
         let current_latest_version_id = Uuid::parse_str(&new_version.latest_version)?;
 
-        let current_file = db::File::find_by_id(current_file_id, pool).await?;
+        let current_file = db::FileWithVersion::find_by_id(current_file_id, pool).await?;
         if current_file.version != current_latest_version_id {
             // Early check to see if the latest version matches to avoid potentially copying the
             // file unnecessarily. There is still a chance someone else creates a new version in
@@ -306,43 +281,35 @@ impl FilesMutation {
             None => current_file.blob_storage_path,
         };
 
+        let file = db::FileWithVersion::create_version(
+            db::CreateFileVersionArgs {
+                user_id: user.id,
+                file_id: current_file_id,
+                latest_version: current_latest_version_id,
+                folder_id: folder,
+                title: new_version.title.as_ref().unwrap_or(&current_file.title),
+                description: new_version
+                    .description
+                    .as_ref()
+                    .unwrap_or(&current_file.description),
+                file_name: new_version
+                    .file_name
+                    .as_ref()
+                    .unwrap_or(&current_file.file_name),
+                file_type: new_version
+                    .file_type
+                    .as_ref()
+                    .unwrap_or(&current_file.file_type),
+                blob_storage_path: &destination,
+                version_number: current_file.version_number + 1,
+            },
+            pool,
+        )
+        .await?;
+
         // TODO: add event.
 
-        let mut tx = pool.begin().await?;
-        let file_version = db::FileVersion::create(
-            Uuid::new_v4(),
-            folder,
-            current_file.id,
-            new_version.title.as_ref().unwrap_or(&current_file.title),
-            new_version
-                .description
-                .as_ref()
-                .unwrap_or(&current_file.description),
-            new_version
-                .file_name
-                .as_ref()
-                .unwrap_or(&current_file.file_name),
-            new_version
-                .file_type
-                .as_ref()
-                .unwrap_or(&current_file.file_type),
-            &destination,
-            user.id,
-            current_file.version_number + 1,
-            "",
-            &mut tx,
-        )
-        .await?;
-        let file = db::File::update_latest_version(
-            current_file.id,
-            current_latest_version_id,
-            file_version.id,
-            &mut tx,
-        )
-        .await?;
-        tx.commit().await?;
-
-        Ok((file, file_version).into())
+        Ok(file.into())
     }
 
     /// Deletes a file by id(returns delete file
@@ -350,7 +317,7 @@ impl FilesMutation {
         let pool = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
         let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-        let file: File = db::File::delete(Uuid::parse_str(&id)?, user.id, pool)
+        let file: File = db::FileWithVersion::delete(Uuid::parse_str(&id)?, user.id, pool)
             .await?
             .into();
 
