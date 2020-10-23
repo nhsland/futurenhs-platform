@@ -21,7 +21,7 @@ impl Workspace {
         let members = Group::create(title, pool).await?;
 
         let workspace =
-            sqlx::query_file_as!(Workspace, "sql/workspaces/create.sql", title, description)
+            sqlx::query_file_as!(Workspace, "sql/workspaces/create.sql", title, description, admins.id, members.id )
                 .fetch_one(pool)
                 .await?;
 
