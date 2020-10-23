@@ -214,10 +214,6 @@ exports[`<Navigation/> renders correctly 1`] = `
   background: inherit;
 }
 
-.c3 h4 {
-  color: rgb(0,94,184);
-}
-
 .c0 {
   display: none;
   padding-top: 24px;

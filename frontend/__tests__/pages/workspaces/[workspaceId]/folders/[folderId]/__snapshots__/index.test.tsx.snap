@@ -1297,10 +1297,6 @@ exports[`withUrql renders matching snapshot 1`] = `
   background: inherit;
 }
 
-.c13 h4 {
-  color: rgb(0,94,184);
-}
-
 .c10 {
   display: none;
   padding-top: 24px;
