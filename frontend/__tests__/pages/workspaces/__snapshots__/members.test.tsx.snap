@@ -1,0 +1,966 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withUrql renders with members matching snapshot 1`] = `
+<DocumentFragment>
+  .c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.c27 {
+  margin-bottom: 23px;
+}
+
+.c28 {
+  margin-top: 0px;
+  margin-bottom: 25px;
+  color: rgb(76,98,114);
+  border-bottom: 1px solid rgb(76,98,114);
+}
+
+.c1 {
+  background-color: rgb(255,255,255);
+  position: relative;
+}
+
+.c2 {
+  padding: 20px;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: rgb(0,94,184);
+}
+
+.c2 button {
+  right: 0;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: rgb(255,255,255);
+}
+
+.c3 svg {
+  height: 40px;
+  width: auto;
+}
+
+.c4 {
+  display: none;
+  border: 4px solid transparent;
+}
+
+.c4:hover:not(:active) {
+  border: 4px solid rgb(0,61,120);
+}
+
+.c4:active {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
+}
+
+.c4:focus {
+  background-color: white;
+  border: 4px solid rgb(255,235,59);
+}
+
+.c6 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0px 20px;
+  display: none;
+  background-color: rgb(0,94,184);
+}
+
+.c6 .nav-bar-item {
+  display: none;
+  border-top: none;
+}
+
+.c6 .nav-bar-item a {
+  color: rgb(255,255,255);
+}
+
+.c6 .nav-bar-item a:focus {
+  color: rgb(33,43,50);
+}
+
+.c6 .nav-bar-item .nhsuk-icon {
+  display: none;
+}
+
+.c5 {
+  color: rgb(255,255,255);
+  padding: 7px 16px;
+  height: 100%;
+  background-color: transparent;
+  border: 1px solid rgb(255,255,255);
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.c5:focus {
+  outline: none;
+}
+
+.c5:hover {
+  background-color: rgb(0,61,120);
+  border-color: rgb(240,244,245);
+  box-shadow: none;
+}
+
+.c5:active,
+.c5:focus {
+  border: 1px solid rgb(255,235,59);
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+  border-color: rgb(255,235,59);
+}
+
+.c7 {
+  list-style: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 0;
+  border-top: 1px solid rgb(240,244,245);
+}
+
+.c7 a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+}
+
+.c7 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c7 a {
+  color: rgb(0,94,184);
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7 a:hover:not(:active) {
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c7 a:hover:not(:active) .nhsuk-icon__chevron-right {
+  fill: rgb(255,255,255);
+}
+
+.c7 a:focus {
+  box-shadow: none;
+  outline: none;
+  border-bottom: 4px solid rgb(33,43,50);
+}
+
+.c8 {
+  padding-left: 20px;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+.c19 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+
+.c19 .tooltip {
+  left: 36px;
+  top: -7px;
+}
+
+.c21 {
+  display: inline-block;
+  position: relative;
+}
+
+.c24 {
+  opacity: 0;
+  position: absolute;
+  z-index: 2000;
+  border-radius: 4px;
+  background-color: rgb(76,98,114);
+  padding: 5px;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255,255,255);
+}
+
+.c20:hover .c23 {
+  opacity: 1;
+  -webkit-transition: opacity 0s linear 0.5s;
+  transition: opacity 0s linear 0.5s;
+}
+
+.c24::after {
+  position: absolute;
+  bottom: 33%;
+  left: -10%;
+  margin-left: -2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(76,98,114) transparent transparent;
+  content: " ";
+}
+
+.c22 {
+  opacity: 1;
+  color: rgb(76,98,114);
+  background-color: rgb(216,221,224);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+}
+
+.c22.hidden {
+  opacity: 0;
+}
+
+.c22:hover {
+  opacity: 1;
+  color: rgb(255,255,255);
+  background-color: rgb(0,61,120);
+}
+
+.c22:hover.hidden {
+  color: rgb(255,255,255);
+}
+
+.c22.open,
+.c22:active,
+.c22:focus {
+  opacity: 1;
+  color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
+}
+
+.c22.open.hidden,
+.c22:active.hidden,
+.c22:focus.hidden {
+  color: rgb(33,43,50);
+}
+
+.c22 .icon-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c17 {
+  list-style-type: none;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c17:hover > div {
+  background-color: rgb(216,221,224);
+}
+
+.c17:hover > div button {
+  opacity: 1;
+  color: rgb(76,98,114);
+}
+
+.c18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: inherit;
+  border-radius: 4px;
+  width: 227px;
+  margin-right: 4px;
+  font-weight: inherit;
+}
+
+.c18 a {
+  height: 100%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+
+.c18 a:focus {
+  box-shadow: none;
+}
+
+.c18 img {
+  padding-top: 2px;
+  -webkit-align-self: baseline;
+  -ms-flex-item-align: baseline;
+  align-self: baseline;
+  width: 24px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c18 div {
+  padding-left: 4px;
+  padding-right: 4px;
+  color: rgb(33,43,50);
+}
+
+.c15 {
+  padding-top: 20px;
+}
+
+.c15 div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c15 button {
+  border: none;
+  background: inherit;
+}
+
+.c15 h4 {
+  color: rgb(0,94,184);
+}
+
+.c10 {
+  display: none;
+  padding-top: 24px;
+  padding-right: 52px;
+  padding-left: 20px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  box-sizing: border-box;
+  width: 270px;
+}
+
+.c11 {
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(76,98,114);
+}
+
+.c12 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+.c12:hover {
+  color: inherit;
+}
+
+.c12:visited {
+  color: inherit;
+}
+
+.c16 {
+  padding-left: 0px;
+}
+
+.c16 .nav-list-item div {
+  font-weight: 700;
+  color: rgb(0,94,184);
+}
+
+.c13 {
+  list-style: none;
+  padding-left: 0;
+}
+
+.c14 {
+  list-style-type: none;
+}
+
+.c0 {
+  max-width: 1200px;
+  margin: 0px auto;
+}
+
+.c25 {
+  -webkit-box-flex: 3;
+  -webkit-flex-grow: 3;
+  -ms-flex-positive: 3;
+  flex-grow: 3;
+  min-height: 100vh;
+  padding-top: 24px;
+  padding-left: 10%;
+  padding-right: 10%;
+  background-color: rgb(255,255,255);
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (min-width:990px) {
+  .c2 {
+    background-color: rgb(255,255,255);
+  }
+
+  .c2 button {
+    display: none;
+  }
+
+  .c2 .nhsuk-header__menu {
+    position: absolute;
+  }
+}
+
+@media (min-width:990px) {
+  .c3 {
+    color: rgb(0,94,184);
+  }
+}
+
+@media (max-width:641px) {
+  .c3 svg {
+    height: 32px;
+  }
+}
+
+@media (max-width:320px) {
+  .c3 svg {
+    height: 28px;
+  }
+}
+
+@media (min-width:990px) {
+  .c4 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width:990px) {
+  .c6 {
+    border-top: none;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .c6 .nav-bar-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width:990px) {
+  .c19 {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width:990px) {
+  .c10 {
+    display: block;
+    width: 360px;
+  }
+}
+
+<div
+    class="c0"
+  >
+    <header
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div
+          class="icon-wrapper fnhs-logo-icon-wrapper c3 fnhs-logo"
+        >
+          <svg
+            fill="none"
+            height="29"
+            viewBox="0 0 138 29"
+            width="138"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              fill="none"
+              height="29"
+              width="138"
+            />
+            <mask
+              height="24"
+              id="mask0"
+              mask-type="alpha"
+              maskUnits="userSpaceOnUse"
+              width="13"
+              x="13"
+              y="3"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M13.4502 3.00006H25.198V26.8382H13.4502V3.00006Z"
+                fill="white"
+                fill-rule="evenodd"
+              />
+            </mask>
+            <g
+              mask="url(#mask0)"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M13.464 26.8129C13.464 26.7985 15.4417 24.1256 17.8581 20.8726C20.2755 17.62 22.2526 14.9314 22.2526 14.8986C22.2526 14.8548 14.7228 4.67131 13.5923 3.18647L13.4502 3.00006L14.9364 3.00145L16.4222 3.00237L20.8366 8.94818C23.9031 13.0792 25.2343 14.9152 25.1974 14.9637C25.1683 15.002 23.1732 17.6897 20.7641 20.9358L16.3834 26.8382H14.924C14.1206 26.8382 13.464 26.8262 13.464 26.8119V26.8129Z"
+                fill="#EC8A00"
+                fill-rule="evenodd"
+              />
+            </g>
+            <path
+              clip-rule="evenodd"
+              d="M7.35102 26.7676C7.75338 26.2665 16.1147 14.9595 16.1189 14.911C16.1221 14.8746 14.1994 12.2528 11.8457 9.08519C9.492 5.91756 7.51806 3.25288 7.45992 3.16337L7.35379 3.00049H8.81971H10.2856L14.67 8.90201C17.0814 12.1476 19.0544 14.8469 19.0544 14.9004C19.0544 14.9535 17.0772 17.6611 14.6603 20.9164L10.2658 26.8359L8.77957 26.8377C7.59834 26.8391 7.30534 26.8248 7.35102 26.7676Z"
+              fill="#F0A133"
+              fill-rule="evenodd"
+            />
+            <mask
+              height="24"
+              id="mask1"
+              mask-type="alpha"
+              maskUnits="userSpaceOnUse"
+              width="12"
+              x="1"
+              y="3"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M1 3H12.7391V26.8385H1V3Z"
+                fill="white"
+                fill-rule="evenodd"
+              />
+            </mask>
+            <g
+              mask="url(#mask1)"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M1.01406 26.7918C1.02421 26.766 3.00415 24.093 5.41321 20.8525C7.82226 17.6115 9.79297 14.932 9.79297 14.8984C9.79297 14.8647 7.95377 12.3615 5.70528 9.33507C3.45634 6.30864 1.47824 3.64534 1.30844 3.41648L0.999756 2.99982L2.48136 3.0012L3.96297 3.00259L8.37735 8.9484C11.4624 13.1035 12.7756 14.915 12.7382 14.9639C12.7091 15.0026 10.714 17.6899 8.30537 20.9365L3.9256 26.8384H2.46014C1.65451 26.8384 1.00345 26.8177 1.01406 26.7918Z"
+                fill="#F3B55C"
+                fill-rule="evenodd"
+              />
+            </g>
+            <path
+              d="M28.2 22.7909H29.8531V14.9033H35.8667V13.4648H29.8531V7.49518H36.1542V6.0567H28.2V22.7909Z"
+              fill="currentColor"
+            />
+            <path
+              d="M48.4291 10.5639H46.9197V17.3247C46.9197 17.8362 46.8638 18.3477 46.752 18.8591C46.6402 19.3706 46.4405 19.8501 46.153 20.2976C45.8974 20.7291 45.5301 21.0808 45.0509 21.3525C44.5717 21.6402 43.9887 21.784 43.3019 21.784C42.2797 21.784 41.545 21.4324 41.0977 20.7291C40.6345 20.0738 40.4029 19.1628 40.4029 17.996V10.5639H38.8935V18.3796C38.8776 19.7542 39.197 20.873 39.8519 21.7361C40.5068 22.6151 41.5769 23.0627 43.0623 23.0786C43.7012 23.0786 44.2443 22.9907 44.6915 22.8149C45.1388 22.6711 45.5141 22.4793 45.8176 22.2395C46.1211 21.9838 46.3686 21.7121 46.5603 21.4244C46.752 21.1527 46.9037 20.881 47.0155 20.6093H47.0634V22.7909H48.5249C48.445 21.8 48.4131 20.841 48.4291 19.914V10.5639Z"
+              fill="currentColor"
+            />
+            <path
+              d="M57.4774 10.5639H54.6982V7.08761L53.1888 7.61505V10.5639H50.7929V11.8585H53.1888V19.003C53.1888 19.5624 53.2127 20.0818 53.2607 20.5613C53.3086 21.0408 53.4124 21.4723 53.5721 21.8559C53.7638 22.2236 54.0433 22.5192 54.4107 22.743C54.794 22.9668 55.3131 23.0786 55.968 23.0786C56.3673 23.0786 56.7347 23.0387 57.0701 22.9588C57.3895 22.8789 57.6371 22.8069 57.8128 22.743L57.717 21.4963C57.3336 21.6881 56.8704 21.784 56.3274 21.784C55.7364 21.784 55.3211 21.5842 55.0815 21.1847C54.826 20.8011 54.6982 20.3296 54.6982 19.7702V11.8585H57.4774V10.5639Z"
+              fill="currentColor"
+            />
+            <path
+              d="M69.7204 10.5639H68.211V17.3247C68.211 17.8362 68.1551 18.3477 68.0433 18.8591C67.9315 19.3706 67.7319 19.8501 67.4444 20.2976C67.1888 20.7291 66.8214 21.0808 66.3423 21.3525C65.8631 21.6402 65.2801 21.784 64.5933 21.784C63.571 21.784 62.8363 21.4324 62.3891 20.7291C61.9259 20.0738 61.6943 19.1628 61.6943 17.996V10.5639H60.1849V18.3796C60.1689 19.7542 60.4884 20.873 61.1432 21.7361C61.7981 22.6151 62.8683 23.0627 64.3537 23.0786C64.9926 23.0786 65.5356 22.9907 65.9829 22.8149C66.4301 22.6711 66.8055 22.4793 67.1089 22.2395C67.4124 21.9838 67.66 21.7121 67.8516 21.4244C68.0433 21.1527 68.1951 20.881 68.3069 20.6093H68.3548V22.7909H69.8163C69.7364 21.8 69.7044 20.841 69.7204 19.914V10.5639Z"
+              fill="currentColor"
+            />
+            <path
+              d="M73.4978 22.7909H75.0072V16.7494C75.0072 16.19 75.0631 15.6146 75.1749 15.0232C75.2708 14.4638 75.4305 13.9443 75.6541 13.4648C75.8937 12.9694 76.2052 12.5778 76.5885 12.2901C76.9718 12.0184 77.459 11.8745 78.05 11.8585C78.4493 11.8585 78.8166 11.9065 79.1521 12.0024V10.4201C78.8486 10.3402 78.4972 10.2922 78.0979 10.2762C77.3312 10.2922 76.6923 10.5559 76.1812 11.0674C75.6541 11.5788 75.2468 12.1942 74.9593 12.9134H74.9114V10.5639H73.402C73.4659 11.2512 73.4978 12.1622 73.4978 13.297V22.7909Z"
+              fill="currentColor"
+            />
+            <path
+              d="M89.6701 20.873C89.2867 21.0967 88.7676 21.2965 88.1128 21.4723C87.4579 21.6801 86.835 21.784 86.244 21.784C84.9183 21.768 83.92 21.3045 83.2492 20.3935C82.5624 19.5304 82.219 18.4356 82.219 17.109H90.5805V16.3418C90.5805 14.6476 90.2052 13.2251 89.4545 12.0743C88.6718 10.9076 87.426 10.3082 85.7169 10.2762C84.1516 10.2922 82.9138 10.8836 82.0033 12.0503C81.061 13.2331 80.5818 14.7755 80.5658 16.6774C80.5498 18.5475 80.9731 20.0658 81.8356 21.2326C82.6981 22.4313 84.1277 23.0467 86.1242 23.0786C87.3381 23.0627 88.5201 22.8389 89.6701 22.4074V20.873ZM82.219 15.8144C82.219 14.7435 82.5464 13.7765 83.2013 12.9134C83.8402 12.0503 84.7107 11.6028 85.8127 11.5709C86.9308 11.6028 87.7374 12.0424 88.2326 12.8895C88.6958 13.7206 88.9274 14.6955 88.9274 15.8144H82.219Z"
+              fill="currentColor"
+            />
+            <path
+              d="M106.631 22.7909H102.747L97.5057 13.1332C97.1703 12.5245 96.7297 11.5802 96.1837 10.3003C96.4255 11.9626 96.5464 13.3361 96.5464 14.4209V22.7909H93.4814V6.8001H97.2834L102.653 16.4812C102.84 16.8246 102.961 17.0705 103.016 17.2187C103.078 17.367 103.191 17.648 103.355 18.0616C103.519 18.4752 103.686 18.8927 103.858 19.3142C103.663 18.1982 103.566 16.8949 103.566 15.4043V6.8001H106.631V22.7909Z"
+              fill="currentColor"
+            />
+            <path
+              d="M123.289 22.7909H120.072V15.9076H113.696V22.7909H110.468V6.8001H113.696V13.2971H120.072V6.8001H123.289V22.7909Z"
+              fill="currentColor"
+            />
+            <path
+              d="M126.881 22.4281L127.173 19.56C128.437 20.2468 129.642 20.5902 130.788 20.5902C131.529 20.5902 132.176 20.4068 132.73 20.04C133.292 19.6732 133.572 19.1347 133.572 18.4245C133.572 17.7065 133.334 17.1953 132.859 16.891C132.391 16.5866 131.537 16.1691 130.297 15.6384C129.057 15.0999 128.125 14.5029 127.501 13.8473C126.885 13.184 126.577 12.2396 126.577 11.0144C126.577 9.99203 126.834 9.14137 127.349 8.4624C127.871 7.77563 128.558 7.27226 129.408 6.95228C130.265 6.62451 131.197 6.46062 132.204 6.46062C133.553 6.46062 134.824 6.67133 136.017 7.09276L135.748 9.72668C134.586 9.196 133.483 8.93065 132.438 8.93065C131.751 8.93065 131.151 9.08674 130.636 9.39891C130.129 9.70327 129.876 10.1871 129.876 10.8505C129.876 11.4826 130.067 11.9158 130.449 12.1499C130.831 12.384 131.697 12.8015 133.046 13.4025C134.403 13.9956 135.401 14.6316 136.041 15.3106C136.68 15.9818 137 16.9261 137 18.1435C137 19.0098 136.84 19.759 136.52 20.3912C136.201 21.0233 135.756 21.5462 135.187 21.9598C134.625 22.3656 133.978 22.6661 133.245 22.8612C132.519 23.0563 131.747 23.1538 130.928 23.1538C129.634 23.1538 128.285 22.9119 126.881 22.4281Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <a
+          href="https://www.nhs.uk/"
+        >
+          <div
+            class="icon-wrapper nhsuk-logo-icon-wrapper c4"
+          >
+            <svg
+              class="nhsuk-logo"
+              fill="none"
+              height="40"
+              viewBox="0 0 99 40"
+              width="99"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                fill="white"
+                height="40"
+                width="99"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M84.9142 9.56844C88.0571 9.56844 90.2896 10.2515 91.9298 11.0247L93.9829 4.68519C91.8403 3.6851 88.1523 3.27167 84.2317 3.27167C77.2576 3.27167 70.0563 5.73379 70.0563 13.9482C70.0563 19.068 74.0689 20.6465 77.5196 22.004C80.1226 23.0279 82.4058 23.9261 82.4058 26.1237C82.4058 29.4069 78.2631 29.9104 75.6175 29.9104C72.8398 29.9104 69.4638 29.1794 67.7816 28.0829L65.7763 34.5598C68.5535 35.4288 72.3367 36.2077 75.6175 36.2077C82.9983 36.2077 91.1579 33.9246 91.1579 25.123C91.1579 19.3771 86.7982 17.6396 83.2595 16.2293C80.8424 15.266 78.8083 14.4553 78.8083 12.6241C78.8083 10.0662 81.5439 9.56844 84.9142 9.56844ZM9.54762 3.81675H20.1613L26.6802 25.8962H26.7702L31.2359 3.81675H39.2571L32.5166 35.6563H21.9393L15.2889 13.6248H15.1989L10.7747 35.6563H2.75354L9.54762 3.81675ZM42.4 3.81675H50.9184L48.4158 15.9974H58.4849L60.9933 3.81675H69.5117L62.9028 35.6563H54.3844L57.21 22.0194H47.1351L44.3095 35.6563H35.7911L42.4 3.81675Z"
+                fill="#005EB8"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </a>
+        <button
+          class="c5 mobile-nav-menu"
+        >
+          Menu
+        </button>
+      </div>
+      <div
+        class="c6"
+      >
+        <li
+          class="c7 nav-bar-item"
+        >
+          <a
+            href="/workspaces/directory"
+          >
+            <div
+              class="icon-wrapper workspaces-icon-wrapper "
+            >
+              <svg
+                fill="currentColor"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M2.24028 9.48647C2.01733 9.39277 2 9.1849 2 9.12343C2 9.06195 2.01733 8.85409 2.24028 8.76037L11.0455 5.05934C11.3494 4.93157 11.6706 4.86679 12 4.86679C12.3294 4.86679 12.6506 4.93157 12.9545 5.05934L21.7597 8.76037C21.9827 8.85409 22 9.06195 22 9.12343C22 9.1849 21.9827 9.39277 21.7597 9.48647L12.9545 13.1875C12.6506 13.3153 12.3294 13.3801 12 13.3801C11.6706 13.3801 11.3494 13.3153 11.0455 13.1875L2.24028 9.48647ZM21.7597 15.2471C21.9827 15.3408 22 15.5487 22 15.6102C22 15.6716 21.9827 15.8795 21.7597 15.9732L12.9545 19.6742C12.6506 19.802 12.3294 19.8668 12 19.8668C11.6706 19.8668 11.3494 19.802 11.0455 19.6742L2.24028 15.9732C2.01733 15.8795 2 15.6716 2 15.6102C2 15.5487 2.01733 15.3408 2.24028 15.2471L4.5921 14.2586L10.8546 16.8908C11.221 17.0449 11.6105 17.1219 12 17.1219C12.3895 17.1219 12.779 17.0449 13.1454 16.8908L19.4079 14.2586L21.7597 15.2471ZM21.7597 12.7298L12.9545 16.4309C12.6506 16.5586 12.3294 16.6234 12 16.6234C11.6706 16.6234 11.3494 16.5586 11.0455 16.4309L2.24028 12.7298C2.01733 12.6361 2 12.4283 2 12.3668C2 12.3053 2.01733 12.0975 2.24028 12.0037L4.5921 11.0152L10.8546 13.6475C11.221 13.8015 11.6105 13.8785 12 13.8785C12.3895 13.8785 12.779 13.8015 13.1454 13.6475L19.4079 11.0152L21.7597 12.0037C21.9827 12.0975 22 12.3053 22 12.3668C22 12.4283 21.9827 12.6361 21.7597 12.7298Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div
+              class="c8"
+            >
+              My workspaces
+            </div>
+            <svg
+              aria-hidden="true"
+              class="nhsuk-icon nhsuk-icon__chevron-right"
+              height="32"
+              viewBox="0 0 24 24"
+              width="32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"
+              />
+            </svg>
+          </a>
+        </li>
+        <button
+          class="c5 desktop-nav-menu"
+        >
+          Menu
+        </button>
+      </div>
+    </header>
+    <div
+      class="c9"
+    >
+      <nav
+        class="c10"
+      >
+        <header
+          class="c11"
+        >
+          <a
+            class="c12"
+            href="/workspaces/1"
+          >
+            <h3>
+              hospital
+            </h3>
+          </a>
+          <ul
+            class="c13"
+          >
+            <li
+              class="c14"
+            >
+              <a
+                href="/workspaces/1"
+              >
+                About this workspace
+              </a>
+            </li>
+            <li
+              class="c14"
+            >
+              <a
+                href="/workspaces/1/members"
+              >
+                View members
+              </a>
+            </li>
+          </ul>
+        </header>
+        <section
+          class="c15"
+        >
+          <div>
+            <h4>
+              Folders
+            </h4>
+            <button>
+              <img
+                alt="Hide Folders"
+                src="/public/chevronOpen.svg"
+              />
+            </button>
+          </div>
+          <ul
+            class="c16"
+          >
+            <li
+              class="c17 nav-list-item"
+            >
+              <div
+                class="c18"
+              >
+                <a
+                  href="/workspaces/1/folders/create-folder"
+                >
+                  <img
+                    alt=""
+                    src="/public/createFolder.svg"
+                  />
+                  <div>
+                    Create new folder
+                  </div>
+                </a>
+              </div>
+            </li>
+            <li
+              class="c17"
+            >
+              <div
+                class="c18"
+              >
+                <a
+                  href="/workspaces/1/folders/f1"
+                >
+                  <img
+                    alt="folder"
+                    src="/public/folderClosed.svg"
+                  />
+                  <div>
+                    folder 1
+                  </div>
+                </a>
+              </div>
+              <div
+                class="c19"
+              >
+                <div
+                  class="c20 c21"
+                >
+                  <button
+                    aria-label="Options"
+                    class="hidden c22"
+                  >
+                    <div
+                      class="icon-wrapper "
+                    >
+                      <svg
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M17 12a2 2 0 104 0 2 2 0 00-4 0zm-5 2a2 2 0 110-4 2 2 0 010 4zm-7 0a2 2 0 110-4 2 2 0 010 4z"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  <span
+                    class="c23 c24 tooltip"
+                  >
+                    Options
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </nav>
+      <section
+        class="c25"
+      >
+        <div
+          class="c26"
+        >
+          <h1
+            aria-live="polite"
+            class="c27"
+          >
+            Workspace members
+          </h1>
+        </div>
+        <hr
+          class="c28"
+        />
+        <h2>
+          This is a list of all workspace members.
+        </h2>
+      </section>
+    </div>
+  </div>
+</DocumentFragment>
+`;
