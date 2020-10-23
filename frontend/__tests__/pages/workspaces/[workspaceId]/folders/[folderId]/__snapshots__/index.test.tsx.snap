@@ -681,6 +681,7 @@ exports[`withUrql renders loading state matching snapshot 1`] = `
               <button
                 aria-label="Options"
                 class="light c16"
+                data-cy="folder-options"
               >
                 <div
                   class="icon-wrapper "
@@ -1826,6 +1827,7 @@ exports[`withUrql renders matching snapshot 1`] = `
               <button
                 aria-label="Options"
                 class="light c21"
+                data-cy="folder-options"
               >
                 <div
                   class="icon-wrapper "
