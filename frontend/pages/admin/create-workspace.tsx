@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { NextPage } from "next";
 import { Input, Form, Button } from "nhsuk-react-components";

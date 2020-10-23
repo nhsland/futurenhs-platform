@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
@@ -46,11 +46,6 @@ const PageContent = styled.div`
 const StyledButton = styled(Button)`
   margin-left: 12px;
 `;
-
-const MAX_CHARS: { [key: string]: number } = {
-  title: 100,
-  description: 250,
-};
 
 const CreateFolder: NextPage = () => {
   const router = useRouter();
