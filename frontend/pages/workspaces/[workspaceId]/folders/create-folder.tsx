@@ -16,6 +16,7 @@ import {
   useCreateFolderMutation,
   useGetWorkspaceByIdQuery,
 } from "../../../../lib/generated/graphql";
+import { useMaxLengthHelper } from "../../../../lib/useMaxLengthHelper";
 import withUrqlClient from "../../../../lib/withUrqlClient";
 
 const ContentWrapper = styled.div`
@@ -55,10 +56,8 @@ const CreateFolder: NextPage = () => {
   const router = useRouter();
   const workspaceId = (router.query.workspaceId || "unknown").toString();
 
-  const [remainingChars, setRemainingChars] = useState({
-    title: null,
-    description: null,
-  });
+  const titleMaxLength = useMaxLengthHelper("Title", 100);
+  const descriptionMaxLength = useMaxLengthHelper("Description", 250);
 
   const { errors, handleSubmit, register, setError } = useForm();
 
@@ -88,16 +87,6 @@ const CreateFolder: NextPage = () => {
     });
   };
 
-  const handleCharNumber = (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRemainingChars({
-      ...remainingChars,
-      [event.currentTarget.name]:
-        MAX_CHARS[event.currentTarget.name] - event.currentTarget.value.length,
-    });
-  };
-
   return (
     <PageLayout>
       <NavHeader />
@@ -115,43 +104,33 @@ const CreateFolder: NextPage = () => {
             <FormField>
               <Input
                 name="title"
-                onChange={handleCharNumber}
+                onChange={titleMaxLength.onChange}
                 id="title"
                 label="Enter folder title*"
                 hint="The title of your folder should accurately reflect its content or audience"
                 inputRef={register({
-                  required: true,
-                  maxLength: MAX_CHARS.title,
+                  required: {
+                    value: true,
+                    message: "Title is required",
+                  },
+                  ...titleMaxLength.validation,
                 })}
-                error={
-                  errors.title &&
-                  `Folder name is required and cannot be longer than ${MAX_CHARS.title} characters`
-                }
+                error={errors.title?.message}
               />
-              {`${
-                remainingChars.title || MAX_CHARS.title
-              } characters remaining`}
+              {titleMaxLength.remainingText("title")}
             </FormField>
 
             <FormField>
               <Textarea
                 name="description"
-                onChange={handleCharNumber}
+                onChange={descriptionMaxLength.onChange}
                 id="description"
                 label="Description"
-                error={
-                  errors.description &&
-                  `Description must be a maximum of ${MAX_CHARS.description} characters`
-                }
+                error={errors.description?.message}
                 hint="This is the description as seen by users"
-                inputRef={register({
-                  required: false,
-                  maxLength: MAX_CHARS.description,
-                })}
+                inputRef={register(descriptionMaxLength.validation)}
               />
-              {`${
-                remainingChars.description || MAX_CHARS.description
-              } characters remaining`}
+              {descriptionMaxLength.remainingText("description")}
             </FormField>
             <Button type="submit" name="submitButton">
               Save and complete

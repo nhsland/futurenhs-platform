@@ -15,12 +15,8 @@ import {
   useCreateWorkspaceMutation,
   Workspace,
 } from "../../lib/generated/graphql";
+import { useMaxLengthHelper } from "../../lib/useMaxLengthHelper";
 import withUrqlClient from "../../lib/withUrqlClient";
-
-const MAX_CHARS: { [key: string]: number } = {
-  title: 100,
-  description: 250,
-};
 
 const PageContent = styled.div`
   ${({ theme }) => `
@@ -58,10 +54,8 @@ interface InitialProps {
 export const CreateWorkspace: NextPage<InitialProps> = ({
   isPlatformAdmin,
 }) => {
-  const [remainingChars, setRemainingChars] = useState({
-    title: null,
-    description: null,
-  });
+  const titleMaxLength = useMaxLengthHelper("Title", 100);
+  const descriptionMaxLength = useMaxLengthHelper("Description", 250);
   const { errors, handleSubmit, register } = useForm();
   const [, createWorkspace] = useCreateWorkspaceMutation();
 
@@ -74,16 +68,6 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
         window.alert("Error creating workspace, failed");
       }
     });
-
-  const handleCharNumber = (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRemainingChars({
-      ...remainingChars,
-      [event.currentTarget.name]:
-        MAX_CHARS[event.currentTarget.name] - event.currentTarget.value.length,
-    });
-  };
 
   return (
     <>
@@ -101,43 +85,33 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
                 <FormField>
                   <Input
                     name="title"
-                    onChange={handleCharNumber}
+                    onChange={titleMaxLength.onChange}
                     id="title"
                     label="Name of workspace*"
                     hint="This is the name of the workspace as seen by users of FutureNHS."
                     inputRef={register({
-                      required: true,
-                      maxLength: MAX_CHARS.title,
+                      required: {
+                        value: true,
+                        message: "Title is required",
+                      },
+                      ...titleMaxLength.validation,
                     })}
-                    error={
-                      errors.title &&
-                      `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
-                    }
+                    error={errors.title?.message}
                   />
-                  {`${
-                    remainingChars.title || MAX_CHARS.title
-                  } characters remaining`}
+                  {titleMaxLength.remainingText("title")}
                 </FormField>
 
                 <FormField>
                   <Textarea
                     name="description"
-                    onChange={handleCharNumber}
+                    onChange={descriptionMaxLength.onChange}
                     id="description"
                     label="Description"
-                    error={
-                      errors.description &&
-                      `Description must be a maximum of ${MAX_CHARS.description} characters`
-                    }
+                    error={errors.description?.message}
                     hint="This is the description as seen by users. Try to be as descriptive as possible."
-                    inputRef={register({
-                      required: false,
-                      maxLength: MAX_CHARS.description,
-                    })}
+                    inputRef={register(descriptionMaxLength.validation)}
                   />
-                  {`${
-                    remainingChars.description || MAX_CHARS.description
-                  } characters remaining`}
+                  {descriptionMaxLength.remainingText("description")}
                 </FormField>
                 <Button type="submit">Save and complete</Button>
               </Form>

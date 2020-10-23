@@ -13,6 +13,7 @@ import {
   FileUploadUrlsDocument,
   useCreateFileMutation,
 } from "../../lib/generated/graphql";
+import { useMaxLengthHelper } from "../../lib/useMaxLengthHelper";
 
 interface FormData {
   files: FileList;
@@ -80,29 +81,14 @@ const UploadFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
 
   const [results, setResults] = useState<Array<Boolean>>([]);
   const [isDisabled, disableButton] = useState<boolean>(false);
-  const [remainingChars, setRemainingChars] = useState<{
-    [key: string]: number;
-  }>({});
+
+  const titleMaxLength = useMaxLengthHelper("Title", 50);
+  const descriptionMaxLength = useMaxLengthHelper("Description", 250);
 
   const { fields } = useFieldArray({
     control,
     name: "fileData",
   });
-
-  const handleRemainingChars = (fieldType: "title" | "description") => (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const maxChars = MAX_CHARS[fieldType];
-    setRemainingChars({
-      ...remainingChars,
-      [event.currentTarget.name]: maxChars - event.currentTarget.value.length,
-    });
-  };
-
-  const MAX_CHARS: { [key: string]: number } = {
-    title: 50,
-    description: 250,
-  };
 
   const handleFiles = (files: FileList | null) => {
     if (files === null) {
@@ -245,22 +231,17 @@ const UploadFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
                 defaultValue={item.title}
                 label="Enter file title*"
                 hint="The title of your file should accurately reflect its content or audience"
-                onChange={handleRemainingChars("title")}
+                onChange={titleMaxLength.onChange}
                 inputRef={register({
                   required: {
                     value: true,
                     message: "Title is required",
                   },
-                  maxLength: {
-                    value: MAX_CHARS.title,
-                    message: `Title must be a maximum of ${MAX_CHARS.title} characters`,
-                  },
+                  ...titleMaxLength.validation,
                 })}
                 error={errors.fileData?.[index]?.title?.message}
               />
-              {`${
-                remainingChars[`fileData[${index}].title`] || MAX_CHARS.title
-              } characters remaining`}
+              {titleMaxLength.remainingText(`fileData[${index}].title`)}
             </FormField>
             <FormField>
               <Textarea
@@ -268,18 +249,12 @@ const UploadFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
                 label="Enter description (optional)"
                 error={errors.fileData?.[index]?.description?.message}
                 hint="This is the description as seen by users"
-                onChange={handleRemainingChars("description")}
-                inputRef={register({
-                  maxLength: {
-                    value: MAX_CHARS.description,
-                    message: `Description must be a maximum of ${MAX_CHARS.description} characters`,
-                  },
-                })}
+                onChange={descriptionMaxLength.onChange}
+                inputRef={register(descriptionMaxLength.validation)}
               />
-              {`${
-                remainingChars[`fileData[${index}].description`] ||
-                MAX_CHARS.description
-              } characters remaining`}
+              {descriptionMaxLength.remainingText(
+                `fileData[${index}].description`
+              )}
             </FormField>
           </StyledFileInfoBox>
         );
