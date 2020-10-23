@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
+  align-items: center;
   display: flex;
   margin-bottom: 40px;
   img {
@@ -19,8 +20,10 @@ const StyledLink = styled.a`
   display: flex;
   text-decoration: none;
 
-  h4 {
+  div {
     margin-bottom: 0px;
+    font-size: 22px;
+    font-weight: 600;
 
     &:hover {
       text-decoration: underline;
@@ -50,7 +53,7 @@ const WorkspaceDirectoryItem = ({ title, id }: Props) => {
       />
       <Link href="/workspaces/[id]" as={`/workspaces/${id}`} passHref>
         <StyledLink>
-          <h4>{title}</h4>
+          <div>{title}</div>
         </StyledLink>
       </Link>
     </StyledContainer>

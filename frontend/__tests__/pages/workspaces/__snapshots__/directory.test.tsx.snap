@@ -230,6 +230,10 @@ exports[`takes a snapshot of the component 1`] = `
 }
 
 .c12 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -253,17 +257,19 @@ exports[`takes a snapshot of the component 1`] = `
   text-decoration: none;
 }
 
-.c13 h4 {
+.c13 div {
   margin-bottom: 0px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
-.c13 h4:hover {
+.c13 div:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c13 h4:active {
+.c13 div:active {
   color: rgb(33,43,50);
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -571,9 +577,9 @@ exports[`takes a snapshot of the component 1`] = `
           class="c13"
           href="/workspaces/1"
         >
-          <h4>
+          <div>
             hospital
-          </h4>
+          </div>
         </a>
       </div>
       <div
@@ -587,9 +593,9 @@ exports[`takes a snapshot of the component 1`] = `
           class="c13"
           href="/workspaces/2"
         >
-          <h4>
+          <div>
             pharmacy
-          </h4>
+          </div>
         </a>
       </div>
       <div
@@ -603,9 +609,9 @@ exports[`takes a snapshot of the component 1`] = `
           class="c13"
           href="/workspaces/3"
         >
-          <h4>
+          <div>
             ambulance
-          </h4>
+          </div>
         </a>
       </div>
     </section>
