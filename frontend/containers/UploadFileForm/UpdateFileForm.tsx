@@ -36,7 +36,7 @@ interface Props {
   workspaceId: string;
 }
 
-const SingleUploadFileForm: FC<Props> = ({
+const UpdateFileForm: FC<Props> = ({
   fileDescription,
   fileId,
   fileTitle,
@@ -172,4 +172,4 @@ const SingleUploadFileForm: FC<Props> = ({
   );
 };
 
-export default SingleUploadFileForm;
+export default UpdateFileForm;

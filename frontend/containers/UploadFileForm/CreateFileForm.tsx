@@ -33,11 +33,7 @@ interface Props {
   urqlClient: Client;
 }
 
-const MultiUploadFileForm: FC<Props> = ({
-  workspaceId,
-  folderId,
-  urqlClient,
-}) => {
+const CreateFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
   const {
     register,
     handleSubmit,
@@ -215,4 +211,4 @@ const MultiUploadFileForm: FC<Props> = ({
   );
 };
 
-export default MultiUploadFileForm;
+export default CreateFileForm;
