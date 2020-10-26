@@ -2,14 +2,14 @@ import React from "react";
 
 import { ThemeProvider } from "styled-components";
 
-import theme from "../../../lib/fixtures/theme.json";
+import theme from "../../../../lib/fixtures/theme.json";
 import {
   FoldersByWorkspaceDocument,
   GetWorkspaceByIdDocument,
-} from "../../../lib/generated/graphql";
-import { render } from "../../../lib/test-helpers/render";
-import { mockUrqlClient } from "../../../lib/test-helpers/urql";
-import WorkspaceHomepage from "../../../pages/workspaces/[workspaceId]";
+} from "../../../../lib/generated/graphql";
+import { render } from "../../../../lib/test-helpers/render";
+import { mockUrqlClient } from "../../../../lib/test-helpers/urql";
+import WorkspaceHomepage from "../../../../pages/workspaces/[workspaceId]";
 
 describe(WorkspaceHomepage, () => {
   const client = mockUrqlClient([

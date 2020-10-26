@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`withUrql renders matching snapshot 1`] = `
+exports[`withUrql renders with folders matching snapshot 1`] = `
 <DocumentFragment>
-  .c27 {
+  .c26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   align-items: baseline;
 }
 
-.c28 {
+.c27 {
   padding-top: 24px;
   font-size: 40px;
   line-height: 1.25;
@@ -224,7 +224,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   flex-grow: 1;
 }
 
-.c20 {
+.c19 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -235,17 +235,17 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin-left: 7px;
 }
 
-.c20 .tooltip {
+.c19 .tooltip {
   left: 36px;
   top: -7px;
 }
 
-.c22 {
+.c21 {
   display: inline-block;
   position: relative;
 }
 
-.c25 {
+.c24 {
   opacity: 0;
   position: absolute;
   z-index: 2000;
@@ -257,13 +257,13 @@ exports[`withUrql renders matching snapshot 1`] = `
   color: rgb(255,255,255);
 }
 
-.c21:hover .c24 {
+.c20:hover .c23 {
   opacity: 1;
   -webkit-transition: opacity 0s linear 0.5s;
   transition: opacity 0s linear 0.5s;
 }
 
-.c25::after {
+.c24::after {
   position: absolute;
   bottom: 33%;
   left: -10%;
@@ -274,7 +274,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   content: " ";
 }
 
-.c23 {
+.c22 {
   opacity: 1;
   color: rgb(76,98,114);
   background-color: rgb(216,221,224);
@@ -289,39 +289,39 @@ exports[`withUrql renders matching snapshot 1`] = `
   position: relative;
 }
 
-.c23.light {
+.c22.light {
   background-color: rgb(240,244,245);
 }
 
-.c23.hidden {
+.c22.hidden {
   opacity: 0;
 }
 
-.c23:hover {
+.c22:hover {
   opacity: 1;
   color: rgb(255,255,255);
   background-color: rgb(0,61,120);
 }
 
-.c23:hover.hidden {
+.c22:hover.hidden {
   color: rgb(255,255,255);
 }
 
-.c23.open,
-.c23:active,
-.c23:focus {
+.c22.open,
+.c22:active,
+.c22:focus {
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
 }
 
-.c23.open.hidden,
-.c23:active.hidden,
-.c23:focus.hidden {
+.c22.open.hidden,
+.c22:active.hidden,
+.c22:focus.hidden {
   color: rgb(33,43,50);
 }
 
-.c23 .icon-wrapper {
+.c22 .icon-wrapper {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -404,57 +404,6 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 .c18 div {
-  padding: 4px;
-  font-size: 16px;
-  color: rgb(33,43,50);
-}
-
-.c19 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  background: rgb(255,235,59);
-  border-radius: 4px;
-  width: 227px;
-  margin-right: 4px;
-  font-weight: 700;
-}
-
-.c19 a {
-  height: 100%;
-  -webkit-box-flex: 2;
-  -webkit-flex-grow: 2;
-  -ms-flex-positive: 2;
-  flex-grow: 2;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-left: 8px;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  -webkit-align-self: flex-start;
-  -ms-flex-item-align: start;
-  align-self: flex-start;
-}
-
-.c19 a:focus {
-  box-shadow: none;
-}
-
-.c19 img {
-  padding-top: 4px;
-  -webkit-align-self: baseline;
-  -ms-flex-item-align: baseline;
-  align-self: baseline;
-  width: 24px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c19 div {
   padding: 4px;
   font-size: 16px;
   color: rgb(33,43,50);
@@ -548,17 +497,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c29 {
-  border: none;
-  margin-bottom: 16px;
-}
-
-.c30 {
-  margin-bottom: 40px;
-}
-
-.c31 {
-  margin-left: 12px;
+.c25 {
+  -webkit-box-flex: 3;
+  -webkit-flex-grow: 3;
+  -ms-flex-positive: 3;
+  flex-grow: 3;
+  min-height: 100vh;
+  padding-top: 24px;
+  padding-left: 10%;
+  padding-right: 10%;
+  background-color: rgb(255,255,255);
 }
 
 .c9 {
@@ -566,18 +514,6 @@ exports[`withUrql renders matching snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.c26 {
-  background-color: rgb(255,255,255);
-  min-height: 100vh;
-  padding-top: 24px;
-  padding-left: 10%;
-  padding-right: 10%;
-}
-
-.c26 .nhsuk-form-group {
-  margin-bottom: 8px;
 }
 
 @media (min-width:990px) {
@@ -643,7 +579,7 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 @media (min-width:990px) {
-  .c20 {
+  .c19 {
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
@@ -880,7 +816,7 @@ exports[`withUrql renders matching snapshot 1`] = `
         >
           <a
             class="c12"
-            href="/workspaces/w1"
+            href="/workspaces/1"
           >
             <h3>
               hospital
@@ -893,7 +829,7 @@ exports[`withUrql renders matching snapshot 1`] = `
               class="c14"
             >
               <a
-                href="/workspaces/w1"
+                href="/workspaces/1"
               >
                 About this workspace
               </a>
@@ -902,7 +838,7 @@ exports[`withUrql renders matching snapshot 1`] = `
               class="c14"
             >
               <a
-                href="/workspaces/w1/members"
+                href="/workspaces/1/members"
               >
                 View members
               </a>
@@ -933,7 +869,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                 class="c18"
               >
                 <a
-                  href="/workspaces/w1/folders/create-folder"
+                  href="/workspaces/1/folders/create-folder"
                 >
                   <img
                     alt=""
@@ -949,14 +885,14 @@ exports[`withUrql renders matching snapshot 1`] = `
               class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <a
-                  href="/workspaces/w1/folders/f1"
+                  href="/workspaces/1/folders/f1"
                 >
                   <img
-                    alt="folder current page"
-                    src="/public/folderOpen.svg"
+                    alt="folder"
+                    src="/public/folderClosed.svg"
                   />
                   <div>
                     folder 1
@@ -964,14 +900,14 @@ exports[`withUrql renders matching snapshot 1`] = `
                 </a>
               </div>
               <div
-                class="c20"
+                class="c19"
               >
                 <div
-                  class="c21 c22"
+                  class="c20 c21"
                 >
                   <button
                     aria-label="Options"
-                    class="hidden c23"
+                    class="hidden c22"
                   >
                     <div
                       class="icon-wrapper "
@@ -992,7 +928,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                     </div>
                   </button>
                   <span
-                    class="c24 c25 tooltip"
+                    class="c23 c24 tooltip"
                   >
                     Options
                   </span>
@@ -1002,75 +938,23 @@ exports[`withUrql renders matching snapshot 1`] = `
           </ul>
         </section>
       </nav>
-      <div
-        class="c26"
+      <section
+        class="c25"
       >
         <div
-          class="c27"
+          class="c26"
         >
           <h1
             aria-live="polite"
-            class="c28"
+            class="c27"
           >
-            folder 1
+            hospital
           </h1>
         </div>
         <h2>
-          File details
+          Most recent items
         </h2>
-        <p>
-           Fields marked with * are mandatory.
-        </p>
-        <form
-          id="filesUploadForm"
-        >
-          <div
-            class="nhsuk-form-group"
-          >
-            <span
-              class="nhsuk-hint"
-              id="files--hint"
-            >
-              Maximum 5 files
-            </span>
-            <input
-              aria-describedby="files--hint"
-              aria-invalid="false"
-              class="nhsuk-input c29"
-              id="files"
-              multiple=""
-              name="files"
-              type="file"
-            />
-          </div>
-          <p
-            class="c30"
-          >
-            All uploaded content must conform to the platform's 
-            <a
-              href="#"
-            >
-              Terms and Conditions
-            </a>
-            .
-          </p>
-          <button
-            aria-disabled="false"
-            class="nhsuk-button"
-            name="submitButton"
-            type="submit"
-          >
-            Upload and continue
-          </button>
-          <button
-            aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary c31"
-            type="button"
-          >
-            Discard
-          </button>
-        </form>
-      </div>
+      </section>
     </div>
   </div>
 </DocumentFragment>
