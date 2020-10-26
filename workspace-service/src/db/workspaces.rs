@@ -10,8 +10,8 @@ pub struct Workspace {
     pub id: Uuid,
     pub title: String,
     pub description: String,
-    pub admins: Option<Uuid>,
-    pub members: Option<Uuid>,
+    pub admins: Uuid,
+    pub members: Uuid,
 }
 
 #[cfg(not(test))]
