@@ -13,10 +13,9 @@ pub struct Group {
 #[cfg(not(test))]
 impl Group {
     pub async fn create(title: &str, pool: &PgPool) -> Result<Group> {
-        let group =
-            sqlx::query_file_as!(Group, "sql/groups/create.sql", title)
-                .fetch_one(pool)
-                .await?;
+        let group = sqlx::query_file_as!(Group, "sql/groups/create.sql", title)
+            .fetch_one(pool)
+            .await?;
 
         Ok(group)
     }
@@ -29,19 +28,10 @@ impl Group {
         Ok(group)
     }
 
-    pub async fn update(
-        id: Uuid,
-        title: &str,
-        pool: &PgPool,
-    ) -> Result<Group> {
-        let group = sqlx::query_file_as!(
-            Group,
-            "sql/groups/update.sql",
-            id,
-            title,
-        )
-        .fetch_one(pool)
-        .await?;
+    pub async fn update(id: Uuid, title: &str, pool: &PgPool) -> Result<Group> {
+        let group = sqlx::query_file_as!(Group, "sql/groups/update.sql", id, title,)
+            .fetch_one(pool)
+            .await?;
 
         Ok(group)
     }
@@ -75,11 +65,7 @@ impl Group {
         Ok(group)
     }
 
-    pub async fn update(
-        id: Uuid,
-        title: &str,
-        _pool: &PgPool,
-    ) -> Result<Group> {
+    pub async fn update(id: Uuid, title: &str, _pool: &PgPool) -> Result<Group> {
         let group = Group {
             id,
             title: title.to_string(),

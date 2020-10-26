@@ -13,3 +13,20 @@ CREATE TABLE IF NOT EXISTS user_groups (
 ALTER TABLE workspaces ADD COLUMN members uuid REFERENCES groups;
 
 ALTER TABLE workspaces ADD COLUMN admins uuid REFERENCES groups;
+
+WITH groups_to_insert AS (
+	UPDATE
+		workspaces
+	SET
+		admins = uuid_generate_v4 ()
+	WHERE
+		admins ISNULL
+	RETURNING
+		admins AS id,
+		title
+) INSERT INTO GROUPS (id, title)
+SELECT
+	id,
+	title
+FROM
+	groups_to_insert;

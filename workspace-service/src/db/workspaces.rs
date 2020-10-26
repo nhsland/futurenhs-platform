@@ -1,9 +1,9 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
+use crate::db::Group;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
-use crate::db::Group;
 
 #[derive(Clone)]
 pub struct Workspace {
@@ -20,10 +20,16 @@ impl Workspace {
         let admins = Group::create(title, pool).await?;
         let members = Group::create(title, pool).await?;
 
-        let workspace =
-            sqlx::query_file_as!(Workspace, "sql/workspaces/create.sql", title, description, admins.id, members.id )
-                .fetch_one(pool)
-                .await?;
+        let workspace = sqlx::query_file_as!(
+            Workspace,
+            "sql/workspaces/create.sql",
+            title,
+            description,
+            admins.id,
+            members.id
+        )
+        .fetch_one(pool)
+        .await?;
 
         Ok(workspace)
     }
