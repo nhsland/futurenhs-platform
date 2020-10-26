@@ -13,13 +13,13 @@ import {
 import { uploadBlob } from "../../lib/uploadBlob";
 import { useMaxLengthHelper } from "../../lib/useMaxLengthHelper";
 import {
-  StyledInput,
-  StyledTag,
+  FormField,
   StyledButton,
   StyledFileInfoBox,
-  FormField,
-  StyledHeadingSection,
   StyledFileName,
+  StyledHeadingSection,
+  StyledInput,
+  StyledTag,
 } from "./styles";
 
 interface FormData {
