@@ -22,8 +22,8 @@ impl User {
 
         Ok(user)
     }
-    pub async fn get_or_create(auth_id: &Uuid, name: &str, pool: &PgPool) -> Result<User> {
-        let user = sqlx::query_file_as!(User, "sql/users/get_or_create.sql", auth_id, name)
+    pub async fn get_or_create(auth_id: &Uuid, name: &str, email_address: & str, pool: &PgPool) -> Result<User> {
+        let user = sqlx::query_file_as!(User, "sql/users/get_or_create.sql", auth_id, name, email_address)
             .fetch_one(pool)
             .await?;
 
