@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS user_groups (
 );
 
 ALTER TABLE workspaces ADD COLUMN members uuid REFERENCES groups;
-
-
 ALTER TABLE workspaces ADD COLUMN admins uuid REFERENCES groups;
 
 WITH groups_to_insert AS (
@@ -32,7 +30,7 @@ SELECT
 FROM
 	groups_to_insert;
 
-  WITH groups_to_insert AS (
+WITH groups_to_insert AS (
 	UPDATE
 		workspaces
 	SET
@@ -49,6 +47,6 @@ SELECT
 FROM
 	groups_to_insert;
 
---the last 2 alter would usually be done in a separate migration
+-- The last 2 ALTER TABLEs would usually be done in a separate migration
 ALTER TABLE workspaces ALTER COLUMN members SET NOT NULL;
-;
+ALTER TABLE workspaces ALTER COLUMN admins SET NOT NULL;
