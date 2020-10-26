@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { NextPage } from "next";
 import { Input, Form, Button } from "nhsuk-react-components";
 import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
+import { H2 } from "../../components/H2";
 import { Head } from "../../components/Head";
 import { MainHeading } from "../../components/MainHeading";
 import { NavHeader } from "../../components/NavHeader";
@@ -15,12 +16,8 @@ import {
   useCreateWorkspaceMutation,
   Workspace,
 } from "../../lib/generated/graphql";
+import { useMaxLengthHelper } from "../../lib/useMaxLengthHelper";
 import withUrqlClient from "../../lib/withUrqlClient";
-
-const MAX_CHARS: { [key: string]: number } = {
-  title: 100,
-  description: 250,
-};
 
 const PageContent = styled.div`
   ${({ theme }) => `
@@ -32,15 +29,6 @@ const PageContent = styled.div`
   .nhsuk-form-group {
     margin-bottom: 8px;
   }
-  `}
-`;
-
-const H2 = styled.h2`
-  ${({ theme }) => `
-  border-top: 1px solid ${theme.colorNhsukGrey1};
-  padding-top: 24px;
-  margin-bottom: 8px;
-  color: ${theme.colorNhsukGrey1}
   `}
 `;
 
@@ -58,10 +46,8 @@ interface InitialProps {
 export const CreateWorkspace: NextPage<InitialProps> = ({
   isPlatformAdmin,
 }) => {
-  const [remainingChars, setRemainingChars] = useState({
-    title: null,
-    description: null,
-  });
+  const titleMaxLength = useMaxLengthHelper("Title", 100);
+  const descriptionMaxLength = useMaxLengthHelper("Description", 250);
   const { errors, handleSubmit, register } = useForm();
   const [, createWorkspace] = useCreateWorkspaceMutation();
 
@@ -75,16 +61,6 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
       }
     });
 
-  const handleCharNumber = (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRemainingChars({
-      ...remainingChars,
-      [event.currentTarget.name]:
-        MAX_CHARS[event.currentTarget.name] - event.currentTarget.value.length,
-    });
-  };
-
   return (
     <>
       <Head title="Admin - Create Workspace" />
@@ -94,50 +70,40 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
           {isPlatformAdmin ? (
             <>
               <MainHeading>Create a workspace</MainHeading>
-              <H2>Workspace details</H2>
+              <H2 title="Workspace details" />
               <p> Fields marked with * are required.</p>
 
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormField>
                   <Input
                     name="title"
-                    onChange={handleCharNumber}
+                    onChange={titleMaxLength.onChange}
                     id="title"
                     label="Name of workspace*"
                     hint="This is the name of the workspace as seen by users of FutureNHS."
                     inputRef={register({
-                      required: true,
-                      maxLength: MAX_CHARS.title,
+                      required: {
+                        value: true,
+                        message: "Title is required",
+                      },
+                      ...titleMaxLength.validation,
                     })}
-                    error={
-                      errors.title &&
-                      `Workspace name is required and cannot be longer than ${MAX_CHARS.title} characters`
-                    }
+                    error={errors.title?.message}
                   />
-                  {`${
-                    remainingChars.title || MAX_CHARS.title
-                  } characters remaining`}
+                  {titleMaxLength.remainingText("title")}
                 </FormField>
 
                 <FormField>
                   <Textarea
                     name="description"
-                    onChange={handleCharNumber}
+                    onChange={descriptionMaxLength.onChange}
                     id="description"
                     label="Description"
-                    error={
-                      errors.description &&
-                      `Description must be a maximum of ${MAX_CHARS.description} characters`
-                    }
+                    error={errors.description?.message}
                     hint="This is the description as seen by users. Try to be as descriptive as possible."
-                    inputRef={register({
-                      required: false,
-                      maxLength: MAX_CHARS.description,
-                    })}
+                    inputRef={register(descriptionMaxLength.validation)}
                   />
-                  {`${
-                    remainingChars.description || MAX_CHARS.description
-                  } characters remaining`}
+                  {descriptionMaxLength.remainingText("description")}
                 </FormField>
                 <Button type="submit">Save and complete</Button>
               </Form>
@@ -145,7 +111,7 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
           ) : (
             <>
               <MainHeading>Error</MainHeading>
-              <H2>You do not have permission to do this.</H2>
+              <H2 title="You do not have permission to do this." />
               <br />
               <p>
                 Please contact your Platform Administrator to request a

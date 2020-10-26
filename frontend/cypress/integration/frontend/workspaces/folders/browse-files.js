@@ -89,7 +89,6 @@ describe("Browse files", () => {
           .click();
       });
     cy.contains("h1", "London Region NHS England Safeguarding Annual Review");
-    cy.contains("h2", "Description");
     cy.contains(
       "p",
       "London Region NHS England Safeguarding Annual Review.ppt"

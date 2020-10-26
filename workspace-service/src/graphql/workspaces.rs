@@ -5,13 +5,14 @@ use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreate
 use sqlx::PgPool;
 use uuid::Uuid;
 
-#[SimpleObject(desc = "A workspace")]
+/// A workspace
+#[derive(SimpleObject)]
 pub struct Workspace {
-    #[field(desc = "The id of the workspace")]
+    /// The id of the workspace
     id: ID,
-    #[field(desc = "The title of the workspace")]
+    /// The title of the workspace
     title: String,
-    #[field(desc = "The description of the workspace")]
+    /// The description of the workspace
     description: String,
 }
 
@@ -25,13 +26,13 @@ impl From<db::Workspace> for Workspace {
     }
 }
 
-#[InputObject]
+#[derive(InputObject)]
 struct NewWorkspace {
     title: String,
     description: String,
 }
 
-#[InputObject]
+#[derive(InputObject)]
 struct UpdateWorkspace {
     title: String,
     description: String,
@@ -42,19 +43,19 @@ pub struct WorkspacesQuery;
 
 #[Object]
 impl WorkspacesQuery {
-    #[field(desc = "Get all Workspaces")]
+    /// Get all Workspaces
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
         let workspaces = db::Workspace::find_all(pool).await?;
         Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
-    #[field(desc = "Get workspace by ID")]
+    /// Get workspace by ID
     async fn workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         self.get_workspace(context, id).await
     }
 
-    #[entity]
+    #[graphql(entity)]
     async fn get_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
@@ -68,7 +69,7 @@ pub struct WorkspacesMutation;
 
 #[Object]
 impl WorkspacesMutation {
-    #[field(desc = "Create a new workspace (returns the created workspace)")]
+    /// Create a new workspace (returns the created workspace)
     async fn create_workspace(
         &self,
         context: &Context<'_>,
@@ -88,7 +89,7 @@ impl WorkspacesMutation {
         .await
     }
 
-    #[field(desc = "Update workspace (returns updated workspace")]
+    /// Update workspace (returns updated workspace
     async fn update_workspace(
         &self,
         context: &Context<'_>,
@@ -108,7 +109,7 @@ impl WorkspacesMutation {
         Ok(workspace.into())
     }
 
-    #[field(desc = "Delete workspace(returns deleted workspace")]
+    /// Delete workspace(returns deleted workspace
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         // TODO: Add event
         let pool = context.data()?;
@@ -161,7 +162,7 @@ mod test {
 
     #[async_std::test]
     async fn creating_workspace_emits_an_event() -> anyhow::Result<()> {
-        let pool = mock_connection_pool().await?;
+        let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
 
         let workspace = create_workspace(
@@ -186,7 +187,7 @@ mod test {
 
     #[async_std::test]
     async fn creating_workspace_as_non_admin_fails() -> anyhow::Result<()> {
-        let pool = mock_connection_pool().await?;
+        let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
 
         let result = create_workspace(
@@ -198,9 +199,9 @@ mod test {
         )
         .await;
 
-        assert_eq!(result.err().unwrap().0, "User with auth_id deadbeef-0000-0000-0000-000000000000 does not have permission to create a workspace.");
+        assert_eq!(result.err().unwrap().message, "User with auth_id deadbeef-0000-0000-0000-000000000000 does not have permission to create a workspace.");
 
-        assert_eq!(events.try_iter().collect::<Vec<_>>().len(), 0);
+        assert_eq!(events.try_iter().count(), 0);
 
         Ok(())
     }

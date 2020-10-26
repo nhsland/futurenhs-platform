@@ -9,12 +9,12 @@ pub struct FileDownloadUrlsQuery;
 
 #[Object]
 impl FileDownloadUrlsQuery {
-    #[field(desc = "Get a file download URL")]
+    /// Get a file download URL
     async fn file_download_url(&self, context: &Context<'_>, id: ID) -> FieldResult<Url> {
         let pool = context.data()?;
         let config = context.data()?;
         let id = Uuid::parse_str(&id)?;
-        let file = db::File::find_by_id(id, pool).await?;
+        let file = db::FileWithVersion::find_by_id(id, pool).await?;
 
         Ok(azure::create_download_sas(
             config,

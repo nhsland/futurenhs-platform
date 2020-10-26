@@ -14,10 +14,6 @@ const Section = styled.section`
     border: none;
     background: inherit;
   }
-  ${({ theme }) => `
-    h4 {
-      color: ${theme.colorNhsukBlue};
-    }`}
 `;
 
 const NavSection = ({

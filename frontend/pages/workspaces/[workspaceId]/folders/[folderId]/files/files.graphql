@@ -25,5 +25,19 @@ query GetFileById($id: ID!) {
 mutation CreateFile($newFile: NewFile!) {
   createFile(newFile: $newFile) {
     id
+    title
+    description
+    folder
+    fileType
+    fileName
+    modifiedAt
+  }
+}
+
+mutation DeleteFile($id: ID!) {
+  deleteFile(id: $id) {
+    id
+    title
+    folder
   }
 }

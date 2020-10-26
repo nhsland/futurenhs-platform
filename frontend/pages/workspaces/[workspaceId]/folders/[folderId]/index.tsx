@@ -69,27 +69,27 @@ const FolderHomepage: NextPage = () => {
     {
       title: "Upload file to this folder",
       icon: <UploadIcon />,
-      href: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
+      handler: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
     },
     {
       title: "Edit folder details",
       icon: <EditIcon />,
-      href: "#",
+      handler: "#",
     },
     {
       title: "Move folder",
       icon: <MoveIcon />,
-      href: "#",
+      handler: "#",
     },
     {
       title: "View folder permissions",
       icon: <LockIcon />,
-      href: "#",
+      handler: "#",
     },
     {
       title: "Delete folder",
       icon: <DeleteIcon />,
-      href: "#",
+      handler: "#",
     },
   ];
 
@@ -111,7 +111,15 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading withBorder menu={<Menu items={items} />}>
+            <MainHeading
+              menu={
+                <Menu
+                  background="light"
+                  items={items}
+                  dataCy="folder-options"
+                />
+              }
+            >
               {folder.data?.folder.title || ""}
             </MainHeading>
             <p>{folder.data?.folder.description}</p>

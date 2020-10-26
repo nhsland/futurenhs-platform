@@ -5,8 +5,17 @@ describe("Upload single file", () => {
     );
     cy.contains("h1", "FutureNHS Case Study Library");
 
-    cy.get("#title").type("New file title");
-    cy.get("#files").attachFile("single-file-upload.txt");
+    cy.get("#files")
+      .attachFile("single-file-upload.txt")
+      .attachFile("multi-file-upload.txt");
+    cy.get('input[name="fileData[1].title"]').should(
+      "have.value",
+      "single-file-upload.txt"
+    );
+    cy.get('input[name="fileData[0].title"]').should(
+      "have.value",
+      "multi-file-upload.txt"
+    );
 
     cy.get("form").submit();
 
@@ -22,7 +31,7 @@ describe("Upload single file", () => {
     const start = `/workspaces/01bb9a4d-2977-4c43-b28c-2a72b4eda453/folders/d1275f92-bf97-428f-a4ce-b2cac0cc3513`;
     cy.visit(start);
 
-    cy.get('*[class^="MenuButton"]').click();
+    cy.get(`[data-cy="folder-options"]`).click();
     cy.get("a").contains("Upload file").click();
 
     cy.contains("h1", "FutureNHS Case Study Library");

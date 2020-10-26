@@ -62,5 +62,6 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "ignorePatterns": ["lib/generated/*.ts"]
 }

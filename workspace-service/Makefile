@@ -67,7 +67,7 @@ migrate-local: ## Bring up local dependencies and migrate run DB migrations
 	az storage container create  --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' -n uploads
 
 # You must have a version of sqlx that includes this patch
-# cargo install --git https://github.com/launchbadge/sqlx --rev 106a6a83952bfc0e3316d54f99d865e469dcc15a sqlx-cli
+# cargo install --git https://github.com/launchbadge/sqlx --rev 144dcceb445e804b16258d0dd9e580d6a484a01e sqlx-cli
 .PHONY: migrate
 migrate: ## Run migrations on current cluster
 	DATABASE_URL=$(db) cargo sqlx migrate run

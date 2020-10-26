@@ -1,10 +1,14 @@
-use anyhow::{anyhow, bail, Result};
-use async_compat::Compat;
-use azure_sdk_core::prelude::*;
-use azure_sdk_storage_blob::{blob::CopyStatus, Blob};
-use azure_sdk_storage_core::prelude::*;
+use anyhow::{anyhow, Result};
 use std::convert::{TryFrom, TryInto};
 use url::Url;
+#[cfg(not(test))]
+use {
+    anyhow::bail,
+    async_compat::Compat,
+    azure_sdk_core::prelude::*,
+    azure_sdk_storage_blob::{blob::CopyStatus, Blob},
+    azure_sdk_storage_core::prelude::*,
+};
 
 #[derive(PartialEq, Debug)]
 struct FileParts {
@@ -51,6 +55,7 @@ impl TryFrom<&Url> for FileParts {
     }
 }
 
+#[cfg(not(test))]
 pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Result<String> {
     let input: FileParts = url.try_into()?;
     let target: FileParts = (&azure_config.files_container_url).try_into()?;
@@ -98,6 +103,13 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
         )),
         _ => bail!("Sync copy did not complete: {}", response.copy_status),
     }
+}
+
+// Fake implementation for tests. If you want integration tests that exercise the database,
+// see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
+#[cfg(test)]
+pub async fn copy_blob_from_url(_url: &Url, _azure_config: &super::Config) -> Result<String> {
+    Ok("http://localhost:10000/devstoreaccount1/files/fake".into())
 }
 
 #[cfg(test)]

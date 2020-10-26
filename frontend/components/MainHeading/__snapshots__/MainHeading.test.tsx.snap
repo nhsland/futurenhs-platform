@@ -18,7 +18,9 @@ exports[`takes a snapshot of the component 1`] = `
 }
 
 .c1 {
-  margin-bottom: 23px;
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 <div
@@ -52,7 +54,9 @@ exports[`takes a snapshot with the prop 1`] = `
 }
 
 .c1 {
-  margin-bottom: 23px;
+  padding-top: 24px;
+  font-size: 40px;
+  line-height: 1.25;
 }
 
 <div
@@ -65,15 +69,5 @@ exports[`takes a snapshot with the prop 1`] = `
       example heading
     </h1>
   </div>
-  .c0 {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  color: rgb(76,98,114);
-  border-bottom: 1px solid rgb(76,98,114);
-}
-
-<hr
-    class="c0"
-  />
 </DocumentFragment>
 `;

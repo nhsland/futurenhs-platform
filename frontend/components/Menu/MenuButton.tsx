@@ -5,10 +5,13 @@ import styled from "styled-components";
 
 import { Tooltip } from "../Tooltip";
 
+type Background = "light" | "dark";
 interface MenuProps extends ComponentPropsWithoutRef<"button"> {
   hiddenUntilHover: boolean;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
+  dataCy?: string;
+  background: Background;
 }
 
 const MenuButton: FC<MenuProps> = ({
@@ -16,6 +19,8 @@ const MenuButton: FC<MenuProps> = ({
   hiddenUntilHover,
   menuOpen,
   setMenuOpen,
+  dataCy,
+  background,
   ...rest
 }) => {
   return (
@@ -24,10 +29,12 @@ const MenuButton: FC<MenuProps> = ({
         className={classNames(
           { open: menuOpen },
           { hidden: hiddenUntilHover },
+          { light: background === "light" },
           className
         )}
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Options"
+        data-cy={dataCy}
         {...rest}
       />
     </Tooltip>
@@ -35,46 +42,49 @@ const MenuButton: FC<MenuProps> = ({
 };
 
 const StyledMenuButton = styled(MenuButton)`
-  ${({ theme }) => `
+  opacity: 1;
+  color: ${({ theme }) => theme.colorNhsukGrey1};
+  background-color: ${({ theme }) => theme.colorNhsukGrey4};
+  &.light {
+    background-color: ${({ theme }) => theme.colorNhsukGrey5};
+  }
+  &.hidden {
+    opacity: 0;
+  }
+  :hover {
     opacity: 1;
-    color: ${theme.colorNhsukGrey1};
-    background-color: ${theme.colorNhsukGrey4};
+    color: ${({ theme }) => theme.colorNhsukWhite};
     &.hidden {
-      opacity: 0;
+      color: ${({ theme }) => theme.colorNhsukWhite};
     }
-    :hover {
-      opacity: 1;
-      color: ${theme.colorNhsukWhite};
-      &.hidden {
-        color: ${theme.colorNhsukWhite};
-      }
-      background-color: ${theme.colorShadeNhsukBlue35};
+    background-color: ${({ theme }) => theme.colorShadeNhsukBlue35};
+  }
+  &.open,
+  :active,
+  :focus {
+    opacity: 1;
+    color: ${({ theme }) => theme.colorNhsukBlack};
+    &.hidden {
+      color: ${({ theme }) => theme.colorNhsukBlack};
     }
-    &.open, :active, :focus {
-      opacity: 1;
-      color: ${theme.colorNhsukBlack};
-      &.hidden {
-        color: ${theme.colorNhsukBlack};
-      }
-      background-color: ${theme.colorNhsukYellow};
-    }
-    
-    border-radius: 4px;
-    border:none;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 16px;
-    height: 100%;
-    line-height: 24px;
-    padding: 0;
-    position: relative;
+    background-color: ${({ theme }) => theme.colorNhsukYellow};
+  }
 
-    .icon-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  `}
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  height: 100%;
+  line-height: 24px;
+  padding: 0;
+  position: relative;
+
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export default StyledMenuButton;

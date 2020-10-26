@@ -27,20 +27,21 @@ const Nav = styled.nav`
 `;
 
 const Header = styled.header`
-  padding-bottom: 20px;
-  ${({ theme }) => `
-  border-bottom: 1px solid ${theme.colorNhsukGrey1};
-  `};
+  padding-bottom: 24px;
 `;
 
 const WorkspaceTitleLink = styled.a`
   text-decoration: none;
   color: inherit;
+
   &:hover {
     color: inherit;
   }
   &:visited {
     color: inherit;
+  }
+  h3 {
+    margin-bottom: 12px;
   }
 `;
 
@@ -53,6 +54,15 @@ const List = styled.ul`
       color: ${theme.colorNhsukBlue}`}
     }
   }
+`;
+
+const LinkList = styled.ul`
+  list-style: none;
+  padding-left: 0;
+`;
+
+const LinkListItem = styled.li`
+  list-style-type: none;
 `;
 
 interface Props {
@@ -97,10 +107,18 @@ const Navigation: FC<Props> = ({
             <h3>{workspaceTitle}</h3>
           </WorkspaceTitleLink>
         </Link>
-
-        <Link href={`/workspaces/${workspaceId}`}>
-          <a>About this workspace</a>
-        </Link>
+        <LinkList>
+          <LinkListItem>
+            <Link href={`/workspaces/${workspaceId}`} passHref>
+              <a>About this workspace</a>
+            </Link>
+          </LinkListItem>
+          <LinkListItem>
+            <Link href={`/workspaces/${workspaceId}/members`} passHref>
+              <a>View members</a>
+            </Link>
+          </LinkListItem>
+        </LinkList>
       </Header>
       <NavSection title="Folders">
         <List>
@@ -117,27 +135,27 @@ const Navigation: FC<Props> = ({
               {
                 title: "Upload file to this folder",
                 icon: <UploadIcon />,
-                href: `/workspaces/${workspaceId}/folders/${folder.id}/upload-file`,
+                handler: `/workspaces/${workspaceId}/folders/${folder.id}/upload-file`,
               },
               {
                 title: "Edit folder details",
                 icon: <EditIcon />,
-                href: "#",
+                handler: "#",
               },
               {
                 title: "Move folder",
                 icon: <MoveIcon />,
-                href: "#",
+                handler: "#",
               },
               {
                 title: "View folder permissions",
                 icon: <LockIcon />,
-                href: "#",
+                handler: "#",
               },
               {
                 title: "Delete folder",
                 icon: <DeleteIcon />,
-                href: "#",
+                handler: "#",
               },
             ];
             return (
@@ -152,7 +170,13 @@ const Navigation: FC<Props> = ({
                   folder.id === activeFolder ? "folder current page" : "folder"
                 }
                 href={`/workspaces/${workspaceId}/folders/${folder.id}`}
-                menu={<Menu items={items} hiddenUntilHover={true} />}
+                menu={
+                  <Menu
+                    background="dark"
+                    items={items}
+                    hiddenUntilHover={true}
+                  />
+                }
               />
             );
           })}

@@ -7,7 +7,8 @@ The API is built with [Rust](https://www.rust-lang.org/), using a web server cra
 1. Install the rust toolchain (see https://www.rust-lang.org/learn/get-started)
 1. Install the [SQLx CLI](https://github.com/launchbadge/sqlx/tree/master/sqlx-cli) so that you use database in local development (e.g. run migrations, `prepare` when you change the schema)
 1. Run the tests to make sure everything is set up correctly: `cargo test`
-1. Run locally: `make run-local` (requires Docker)
+1. Start Docker for Desktop
+1. Run locally: `make run-local`
 1. Build a Docker image `make docker-build` (requires Linux machine)
 1. Run docker image `make docker-run`
 
@@ -18,6 +19,12 @@ After you changed the database schema:
 After you changed the GraphQL schema:
 
 - Run `make graphql-schema.json` to update graphql-schema.json
+
+## Migrations
+
+1. `sqlx migrate add <NAME>`
+1. Write migration
+1. `make prepare`
 
 ## Formatting
 
