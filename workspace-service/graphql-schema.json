@@ -1019,6 +1019,20 @@
                 "ofType": null
               }
             }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "emailAddress",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
           }
         ],
         "interfaces": null,
@@ -1579,6 +1593,22 @@
             "description": "The name of the user",
             "isDeprecated": false,
             "name": "name",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "The email of the user",
+            "isDeprecated": false,
+            "name": "emailAddress",
             "type": {
               "kind": "NON_NULL",
               "name": null,

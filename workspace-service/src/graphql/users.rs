@@ -57,9 +57,11 @@ impl UsersMutation {
         let pool = context.data()?;
         let auth_id = Uuid::parse_str(&new_user.auth_id)?;
 
-        Ok(db::User::get_or_create(&auth_id, &new_user.name, &new_user.email_address, pool)
-            .await?
-            .into())
+        Ok(
+            db::User::get_or_create(&auth_id, &new_user.name, &new_user.email_address, pool)
+                .await?
+                .into(),
+        )
     }
 
     /// Update a user (returns the user)

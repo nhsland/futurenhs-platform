@@ -77,7 +77,7 @@ default-folders-local: ## make folders locally (requires you to be running `make
 	./scripts/create-workspace-if-needed.sh local
 
 .PHONY: graphql-schema.json
-graphql-schema.json:
+graphql-schema.json: ## Regenerate the graphql-schema.json
 	cargo run -- --generate-schema-only >$@
 
 .PHONY: help
