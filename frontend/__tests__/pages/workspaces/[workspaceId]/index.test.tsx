@@ -2,16 +2,16 @@ import React from "react";
 
 import { ThemeProvider } from "styled-components";
 
-import theme from "../../../lib/fixtures/theme.json";
+import theme from "../../../../lib/fixtures/theme.json";
 import {
   FoldersByWorkspaceDocument,
   GetWorkspaceByIdDocument,
-} from "../../../lib/generated/graphql";
-import { render } from "../../../lib/test-helpers/render";
-import { mockUrqlClient } from "../../../lib/test-helpers/urql";
-import WorkspaceMembers from "../../../pages/workspaces/[workspaceId]/members";
+} from "../../../../lib/generated/graphql";
+import { render } from "../../../../lib/test-helpers/render";
+import { mockUrqlClient } from "../../../../lib/test-helpers/urql";
+import WorkspaceHomepage from "../../../../pages/workspaces/[workspaceId]";
 
-describe(WorkspaceMembers, () => {
+describe(WorkspaceHomepage, () => {
   const client = mockUrqlClient([
     [
       GetWorkspaceByIdDocument,
@@ -38,10 +38,10 @@ describe(WorkspaceMembers, () => {
     ],
   ]);
 
-  test("renders with members matching snapshot", () => {
+  test("renders with folders matching snapshot", () => {
     const container = render(
       <ThemeProvider theme={theme}>
-        <WorkspaceMembers urqlClient={client} />
+        <WorkspaceHomepage urqlClient={client} />
       </ThemeProvider>,
       {
         router: {
