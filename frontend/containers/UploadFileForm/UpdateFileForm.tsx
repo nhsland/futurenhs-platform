@@ -94,7 +94,7 @@ const UpdateFileForm: FC<Props> = ({
             `/workspaces/${workspaceId}/folders/${folderId}/files/${fileId}`
           );
         } catch (error) {
-          setError(`fileData.title`, {
+          setError("fileData.title", {
             type: "server",
             message: error.toString(),
           });
