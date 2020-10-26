@@ -56,7 +56,7 @@ const SingleUploadFileForm: FC<Props> = ({
 
   const [fileName, setFileName] = useState<string | undefined>();
 
-  const handleFiles = (files: FileList | null) => {
+  const handleFile = (files: FileList | null) => {
     setFileName(files?.[0]?.name);
   };
 
@@ -112,7 +112,7 @@ const SingleUploadFileForm: FC<Props> = ({
         name="files"
         id="files"
         hint="Maximum size 256MB"
-        onChange={(e) => handleFiles(e.currentTarget.files)}
+        onChange={(e) => handleFile(e.currentTarget.files)}
         inputRef={register({
           required: {
             value: true,
