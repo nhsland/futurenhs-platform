@@ -1,3 +1,4 @@
-import UploadFileForm from "./UploadFileForm";
+import CreateFileForm from "./CreateFileForm";
+import UpdateFileForm from "./UpdateFileForm";
 
-export { UploadFileForm };
+export { UpdateFileForm, CreateFileForm };

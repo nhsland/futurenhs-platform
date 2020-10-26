@@ -10,7 +10,7 @@ import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
-import { UploadFileForm } from "../../../../../containers/UploadFileForm";
+import { CreateFileForm } from "../../../../../containers/UploadFileForm";
 import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
@@ -75,7 +75,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
           </MainHeading>
           <H2 title="File details" />
           <p> Fields marked with * are mandatory.</p>
-          <UploadFileForm
+          <CreateFileForm
             urqlClient={urqlClient}
             workspaceId={workspaceId}
             folderId={folderId}
