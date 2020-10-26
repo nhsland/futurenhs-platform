@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
   flex-direction: row;
   height: 26px;
   line-height: inherit;
-  padding: 2px 0;
+  /* padding: 2px 0; */
   ${({ theme }) => `
     background-color: ${theme.colorNhsukWhite};
   `}

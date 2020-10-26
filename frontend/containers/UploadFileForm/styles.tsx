@@ -31,13 +31,12 @@ export const FormField = styled.div`
 
 export const StyledHeadingSection = styled.div`
   display: flex;
-  direction: column;
-  justify-content: space-between;
 `;
 
 export const StyledFileName = styled.h4`
-  width: 225px;
-  white-space: nowrap;
+  flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 0px;
 `;

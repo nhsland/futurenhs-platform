@@ -110,6 +110,7 @@ const UpdateFileForm: FC<Props> = ({
   return (
     <Form id="filesUploadForm" onSubmit={handleSubmit(onSubmit)}>
       <StyledInput
+        label="Upload a file *"
         type="file"
         name="files"
         id="files"
@@ -128,42 +129,45 @@ const UpdateFileForm: FC<Props> = ({
         All uploaded content must conform to the platform&apos;s{" "}
         <a href="#">Terms and Conditions</a>.
       </StyledTag>
-      <StyledFileInfoBox>
-        <FormField>
-          <StyledHeadingSection>
-            <StyledFileName>{fileName}</StyledFileName>
-          </StyledHeadingSection>
-          <Input
-            type="text"
-            name={`fileData.title`}
-            defaultValue={fileTitle}
-            label="Update file title (optional)"
-            hint="The title of your file should accurately reflect its content or audience"
-            onChange={titleMaxLength.onChange}
-            inputRef={register({
-              required: {
-                value: true,
-                message: "Title is required",
-              },
-              ...titleMaxLength.validation,
-            })}
-            error={errors.fileData?.title?.message}
-          />
-          {titleMaxLength.remainingText(`fileData.title`)}
-        </FormField>
-        <FormField>
-          <Textarea
-            name={`fileData.description`}
-            defaultValue={fileDescription}
-            label="Update description (optional)"
-            error={errors.fileData?.description?.message}
-            hint="This is the description as seen by users"
-            onChange={descriptionMaxLength.onChange}
-            inputRef={register(descriptionMaxLength.validation)}
-          />
-          {descriptionMaxLength.remainingText(`fileData.description`)}
-        </FormField>
-      </StyledFileInfoBox>
+      {fileName && (
+        <StyledFileInfoBox>
+          <FormField>
+            <StyledHeadingSection>
+              <StyledFileName>{fileName}</StyledFileName>
+            </StyledHeadingSection>
+            <Input
+              type="text"
+              name={`fileData.title`}
+              defaultValue={fileTitle}
+              label="Update file title (optional)"
+              hint="The title of your file should accurately reflect its content or audience"
+              onChange={titleMaxLength.onChange}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Title is required",
+                },
+                ...titleMaxLength.validation,
+              })}
+              error={errors.fileData?.title?.message}
+            />
+            {titleMaxLength.remainingText(`fileData.title`)}
+          </FormField>
+          <FormField>
+            <Textarea
+              name={`fileData.description`}
+              defaultValue={fileDescription}
+              label="Update description (optional)"
+              error={errors.fileData?.description?.message}
+              hint="This is the description as seen by users"
+              onChange={descriptionMaxLength.onChange}
+              inputRef={register(descriptionMaxLength.validation)}
+            />
+            {descriptionMaxLength.remainingText(`fileData.description`)}
+          </FormField>
+        </StyledFileInfoBox>
+      )}
+
       <Button type="submit" name="submitButton">
         Upload and continue
       </Button>
