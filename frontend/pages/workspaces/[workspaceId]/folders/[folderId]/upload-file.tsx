@@ -9,7 +9,7 @@ import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
-import { UploadFileForm } from "../../../../../containers/UploadFileForm";
+import { MultiUploadFileForm } from "../../../../../containers/UploadFileForm";
 import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
@@ -73,7 +73,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
               : folder.data?.folder.title || "No title!"}
           </MainHeading>
           <p> Fields marked with * are mandatory.</p>
-          <UploadFileForm
+          <MultiUploadFileForm
             urqlClient={urqlClient}
             workspaceId={workspaceId}
             folderId={folderId}

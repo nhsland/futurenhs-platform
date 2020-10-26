@@ -66,6 +66,7 @@ const MultiUploadFileForm: FC<Props> = ({
     if (files === null) {
       return;
     }
+
     const filenames = Object.values(files).map((file) => file.name);
 
     setValue(
