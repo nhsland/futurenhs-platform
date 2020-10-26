@@ -62,13 +62,18 @@ impl User {
         })
     }
 
-    pub async fn get_or_create(auth_id: &Uuid, name: &str, _pool: &PgPool) -> Result<User> {
+    pub async fn get_or_create(
+        auth_id: &Uuid,
+        name: &str,
+        email_address: &str,
+        _pool: &PgPool,
+    ) -> Result<User> {
         Ok(User {
             id: Uuid::new_v4(),
             auth_id: *auth_id,
             name: name.to_string(),
             is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
-            email_address: "testuser@example.com".to_string(),
+            email_address: email_address.to_string(),
         })
     }
 
