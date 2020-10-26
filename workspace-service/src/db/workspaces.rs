@@ -1,6 +1,7 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
+#[cfg(not(test))]
 use crate::db::Group;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
@@ -87,6 +88,8 @@ impl Workspace {
             id: Uuid::new_v4(),
             title: title.to_string(),
             description: description.to_string(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
@@ -100,6 +103,8 @@ impl Workspace {
             id,
             title: "fake workspace".into(),
             description: "fake workspace for tests".into(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
@@ -114,6 +119,8 @@ impl Workspace {
             id,
             title: title.to_string(),
             description: description.to_string(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
@@ -123,6 +130,8 @@ impl Workspace {
             id,
             title: "fake deleted workspace".into(),
             description: "fake deleted workspace for tests".into(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }

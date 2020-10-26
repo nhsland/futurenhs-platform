@@ -19,7 +19,7 @@ impl Group {
 
         Ok(group)
     }
-
+    #[allow(dead_code)]
     pub async fn find_by_id(id: Uuid, pool: &PgPool) -> Result<Group> {
         let group = sqlx::query_file_as!(Group, "sql/groups/find_by_id.sql", id)
             .fetch_one(pool)
@@ -27,7 +27,7 @@ impl Group {
 
         Ok(group)
     }
-
+    #[allow(dead_code)]
     pub async fn update(id: Uuid, title: &str, pool: &PgPool) -> Result<Group> {
         let group = sqlx::query_file_as!(Group, "sql/groups/update.sql", id, title,)
             .fetch_one(pool)
@@ -35,7 +35,7 @@ impl Group {
 
         Ok(group)
     }
-
+    #[allow(dead_code)]
     pub async fn delete(id: Uuid, pool: &PgPool) -> Result<Group> {
         let group = sqlx::query_file_as!(Group, "sql/groups/delete.sql", id)
             .fetch_one(pool)
@@ -49,6 +49,7 @@ impl Group {
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
 #[cfg(test)]
 impl Group {
+    #[allow(dead_code)]
     pub async fn create(title: &str, _pool: &PgPool) -> Result<Group> {
         let group = Group {
             id: Uuid::new_v4(),
@@ -56,7 +57,7 @@ impl Group {
         };
         Ok(group)
     }
-
+    #[allow(dead_code)]
     pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<Group> {
         let group = Group {
             id,
@@ -64,7 +65,7 @@ impl Group {
         };
         Ok(group)
     }
-
+    #[allow(dead_code)]
     pub async fn update(id: Uuid, title: &str, _pool: &PgPool) -> Result<Group> {
         let group = Group {
             id,
@@ -72,7 +73,7 @@ impl Group {
         };
         Ok(group)
     }
-
+    #[allow(dead_code)]
     pub async fn delete(id: Uuid, _pool: &PgPool) -> Result<Group> {
         let group = Group {
             id,
