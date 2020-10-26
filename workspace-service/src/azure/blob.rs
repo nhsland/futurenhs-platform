@@ -5,7 +5,7 @@ use url::Url;
 use {
     anyhow::bail,
     async_compat::Compat,
-    azure_sdk_core::prelude::*,
+    azure_sdk_core::{errors::AzureError, prelude::*},
     azure_sdk_storage_blob::{blob::CopyStatus, Blob},
     azure_sdk_storage_core::prelude::*,
 };
@@ -85,7 +85,7 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
     } else {
         client::with_access_key(&target.account, &azure_config.access_key)
     };
-    let response = Compat::new(
+    let result = Compat::new(
         client
             .copy_blob_from_url()
             .with_container_name(&target.container)
@@ -94,14 +94,23 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
             .with_is_synchronous(true)
             .finalize(),
     )
-    .await?;
+    .await;
+    let copy_status = match result {
+        Ok(response) => Ok(response.copy_status),
+        Err(AzureError::HeaderNotFound(header))
+            if target.account == "devstoreaccount1" && header == "x-ms-copy-status" =>
+        {
+            Ok(CopyStatus::Success)
+        }
+        Err(err) => Err(err),
+    }?;
 
-    match response.copy_status {
+    match copy_status {
         CopyStatus::Success => Ok(format!(
             "{}/{}",
             azure_config.files_container_url, target_blob
         )),
-        _ => bail!("Sync copy did not complete: {}", response.copy_status),
+        _ => bail!("Sync copy did not complete: {}", copy_status),
     }
 }
 
