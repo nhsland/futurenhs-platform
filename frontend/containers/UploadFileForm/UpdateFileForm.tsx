@@ -90,7 +90,9 @@ const UpdateFileForm: FC<Props> = ({
             throw new Error(`Failed to save file: ${file.error?.message}`);
           }
 
-          router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
+          router.push(
+            `/workspaces/${workspaceId}/folders/${folderId}/files/${fileId}`
+          );
         } catch (error) {
           setError(`fileData.title`, {
             type: "server",
