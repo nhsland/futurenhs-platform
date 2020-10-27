@@ -1,6 +1,6 @@
 # Workspace Service
 
-## To get going
+## How to use
 
 The API is built with [Rust](https://www.rust-lang.org/), using a web server crate called [tide](https://github.com/http-rs/tide), and the source code can be seen in [./src/main.rs](./src/main.rs).
 
@@ -19,12 +19,6 @@ After you changed the database schema:
 After you changed the GraphQL schema:
 
 - Run `make graphql-schema.json` to update graphql-schema.json
-
-## Development cluster port forwarding.
-
-To interact with the GraphQL playground, use portforwarding:
-
-`kubectl port-forward -n workspace-service deployments/workspace-service 3030:3030`
 
 ## Migrations
 
