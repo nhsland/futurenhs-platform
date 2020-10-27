@@ -120,7 +120,9 @@ const FileHomepage = () => {
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <h2>Description</h2>
-            <Description>{file.data?.file.description || ""}</Description>
+            <Description>
+              {file.data?.file.description ?? "Loading..."}
+            </Description>
             {file.error && <p> Oh no... {file.error?.message} </p>}
             {file.fetching || !file.data ? (
               "Loading..."
