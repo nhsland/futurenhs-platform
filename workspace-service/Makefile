@@ -1,10 +1,13 @@
 app := workspace-service
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
+
+db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
 localdb := postgres://postgres:postgres@localhost:5432
+
+# Azurite default storage account: https://github.com/Azure/Azurite#default-storage-account
 localazurekey := Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
 localazure := 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=$(localazurekey);BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;'
-db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
 
 .PHONY: default
 default: ## Run locally

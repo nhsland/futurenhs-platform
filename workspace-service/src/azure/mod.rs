@@ -10,6 +10,11 @@ pub use sas::create_upload_sas;
 use std::convert::TryInto;
 use url::Url;
 
+/// Azurite (the local Azure Storage emulator) comes with a [default storage account], which has a
+/// hardcoded key. This key is also used by the Azure SDK for Rust when we create a client using
+/// `with_emulator`.
+///
+/// [default storage account]: https://github.com/Azure/Azurite#default-storage-account
 const DEFAULT_EMULATOR_ACCESS_KEY: &str =
     "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
 
