@@ -74,7 +74,7 @@ const FileHomepage = () => {
 
   const [, deleteFile] = useDeleteFileMutation();
 
-  const onClickDelete = async () => {
+  const onClick = async () => {
     const message = "Are you sure you want to delete this file?";
     const result = window.confirm(message);
     if (result) {
@@ -110,7 +110,7 @@ const FileHomepage = () => {
                     {
                       title: "Delete file",
                       icon: <DeleteIcon />,
-                      handler: onClickDelete,
+                      handler: onClick,
                       dataCy: "delete-file",
                     },
                   ]}
