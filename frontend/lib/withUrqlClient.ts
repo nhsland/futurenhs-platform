@@ -7,13 +7,16 @@ import { dedupExchange, fetchExchange } from "urql";
 
 import { User } from "./auth";
 import {
+  CreateFileMutation,
+  CreateFileVersionMutation,
   CreateFolderMutation,
   DeleteFileMutation,
-  FoldersByWorkspaceDocument,
-  FoldersByWorkspaceQuery,
-  CreateFileMutation,
+  GetFileByIdDocument,
+  GetFileByIdQuery,
   FilesByFolderDocument,
   FilesByFolderQuery,
+  FoldersByWorkspaceDocument,
+  FoldersByWorkspaceQuery,
 } from "./generated/graphql";
 import { requireEnv } from "./server/requireEnv";
 
@@ -99,10 +102,59 @@ export default function withUrqlClient(
                     },
                   },
                   (data) => {
-                    const filesByFolderQuery = data as FilesByFolderQuery;
+                    const filesByFolderQuery = data as FilesByFolderQuery | null;
+                    if (filesByFolderQuery === null) {
+                      return null;
+                    }
                     filesByFolderQuery.filesByFolder.push(
                       fileMutation.createFile
                     );
+                    return data;
+                  }
+                );
+              },
+              createFileVersion: (result, _args, cache) => {
+                const fileMutation = result as CreateFileVersionMutation;
+                cache.updateQuery(
+                  {
+                    query: FilesByFolderDocument,
+                    variables: {
+                      folder: fileMutation.createFileVersion.folder,
+                    },
+                  },
+                  (data) => {
+                    const filesByFolderQuery = data as FilesByFolderQuery | null;
+                    if (filesByFolderQuery === null) {
+                      return null;
+                    }
+
+                    const arr = filesByFolderQuery.filesByFolder.filter(
+                      (file) => file.id !== fileMutation.createFileVersion.id
+                    );
+
+                    filesByFolderQuery.filesByFolder = arr;
+
+                    filesByFolderQuery.filesByFolder.push(
+                      fileMutation.createFileVersion
+                    );
+                    return data;
+                  }
+                );
+                cache.updateQuery(
+                  {
+                    query: GetFileByIdDocument,
+                    variables: {
+                      id: fileMutation.createFileVersion.id,
+                    },
+                  },
+                  (data) => {
+                    const getFileByIdQuery = data as GetFileByIdQuery | null;
+
+                    if (getFileByIdQuery === null) {
+                      return null;
+                    }
+
+                    getFileByIdQuery.file = fileMutation.createFileVersion;
                     return data;
                   }
                 );

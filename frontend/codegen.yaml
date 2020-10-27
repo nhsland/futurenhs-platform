@@ -1,6 +1,6 @@
 overwrite: true
 schema: ../workspace-service/graphql-schema.json
-documents: "pages/**/*.graphql"
+documents: ["pages/**/*.graphql", "containers/**/*.graphql"]
 generates:
   lib/generated/graphql.ts:
     plugins:

@@ -1,0 +1,11 @@
+mutation CreateFileVersion($newFileVersion: NewFileVersion!) {
+  createFileVersion(newVersion: $newFileVersion) {
+    description
+    fileName
+    fileType
+    folder
+    id
+    modifiedAt
+    title
+  }
+}
