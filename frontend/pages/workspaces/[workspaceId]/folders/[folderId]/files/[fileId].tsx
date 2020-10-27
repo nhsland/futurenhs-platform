@@ -1,5 +1,7 @@
 import React from "react";
 
+import { parseISO, format } from "date-fns";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -8,13 +10,14 @@ import {
   FileTable,
 } from "../../../../../../components/FileTable";
 import { Head } from "../../../../../../components/Head";
-import { DeleteIcon } from "../../../../../../components/Icon";
+import { DeleteIcon, FileIcon } from "../../../../../../components/Icon";
 import { MainHeading } from "../../../../../../components/MainHeading";
 import { Menu } from "../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../components/PageLayout";
 import {
+  File,
   useGetWorkspaceByIdQuery,
   useGetFileByIdQuery,
   useDeleteFileMutation,
@@ -46,6 +49,16 @@ const ContentWrapper = styled.div`
 
 const Description = styled.p`
   padding-bottom: 40px;
+`;
+
+const ModifiedDate = styled.span`
+  color: ${({ theme }) => theme.colorNhsukGrey1};
+`;
+
+const DownloadFile = styled.a`
+  display: inline-block;
+  padding-right: 8px;
+  font-size: 16px;
 `;
 
 const FileHomepage = () => {
@@ -127,9 +140,41 @@ const FileHomepage = () => {
                   titleLink={false}
                 />
                 <FileTable
-                  files={[file.data.file]}
-                  workspaceId={workspaceId}
-                  titleLink={false}
+                  columns={[
+                    {
+                      name: "Title",
+                      // eslint-disable-next-line react/display-name
+                      content: ({ fileType }: File) => (
+                        <FileIcon fileType={fileType} />
+                      ),
+                    },
+                    {
+                      // eslint-disable-next-line react/display-name
+                      content: ({ title }: File) => <span>{title}</span>,
+                    },
+                    {
+                      name: "Last modified",
+                      // eslint-disable-next-line react/display-name
+                      content: ({ modifiedAt }: File) => (
+                        <ModifiedDate>
+                          {format(parseISO(modifiedAt), "LLL d, yyyy")}
+                        </ModifiedDate>
+                      ),
+                    },
+                    {
+                      name: "Actions",
+                      // eslint-disable-next-line react/display-name
+                      content: ({ id }: File) => (
+                        <Link
+                          href={`/workspaces/${workspaceId}/download/${id}`}
+                          passHref
+                        >
+                          <DownloadFile>Download file</DownloadFile>
+                        </Link>
+                      ),
+                    },
+                  ]}
+                  data={[file.data.file as File]}
                 />
               </>
             )}

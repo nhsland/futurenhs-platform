@@ -1,6 +1,8 @@
 import React from "react";
 
+import { parseISO, format } from "date-fns";
 import { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -9,6 +11,7 @@ import { Head } from "../../../../../components/Head";
 import {
   DeleteIcon,
   EditIcon,
+  FileIcon,
   LockIcon,
   MoveIcon,
   UploadIcon,
@@ -19,6 +22,7 @@ import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
 import {
+  File,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
   useFilesByFolderQuery,
@@ -46,6 +50,16 @@ const PageContent = styled.section`
 
 const ContentWrapper = styled.div`
   display: flex;
+`;
+
+const ModifiedDate = styled.span`
+  color: ${({ theme }) => theme.colorNhsukGrey1};
+`;
+
+const DownloadFile = styled.a`
+  display: inline-block;
+  padding-right: 8px;
+  font-size: 16px;
 `;
 
 const FolderHomepage: NextPage = () => {
@@ -135,9 +149,50 @@ const FolderHomepage: NextPage = () => {
                   tableHeading="Files"
                 ></MobileFileList>
                 <FileTable
-                  files={files.data.filesByFolder}
-                  workspaceId={workspaceId}
-                  titleLink={true}
+                  columns={[
+                    {
+                      name: "Title",
+                      // eslint-disable-next-line react/display-name
+                      content: ({ fileType }: File) => (
+                        <FileIcon fileType={fileType} />
+                      ),
+                    },
+                    {
+                      // eslint-disable-next-line react/display-name
+                      content: ({ id, title }: File) => (
+                        <Link
+                          href={`/workspaces/${workspaceId}/folders/${folder.data?.folder.id}/files/${id}`}
+                          passHref
+                        >
+                          <a>
+                            <span>{title}</span>
+                          </a>
+                        </Link>
+                      ),
+                    },
+                    {
+                      name: "Last modified",
+                      // eslint-disable-next-line react/display-name
+                      content: ({ modifiedAt }: File) => (
+                        <ModifiedDate>
+                          {format(parseISO(modifiedAt), "LLL d, yyyy")}
+                        </ModifiedDate>
+                      ),
+                    },
+                    {
+                      name: "Actions",
+                      // eslint-disable-next-line react/display-name
+                      content: ({ id }: File) => (
+                        <Link
+                          href={`/workspaces/${workspaceId}/download/${id}`}
+                          passHref
+                        >
+                          <DownloadFile>Download file</DownloadFile>
+                        </Link>
+                      ),
+                    },
+                  ]}
+                  data={files.data.filesByFolder as File[]}
                   tableHeading="Files"
                 />
               </>

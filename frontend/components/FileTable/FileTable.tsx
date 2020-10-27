@@ -1,12 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-import { parseISO, format } from "date-fns";
-import Link from "next/link";
 import { Table } from "nhsuk-react-components";
 import styled from "styled-components";
-
-import { File } from "../../lib/generated/graphql";
-import { FileIcon } from "../Icon";
 
 const TableContainer = styled.div`
   display: none;
@@ -32,73 +27,42 @@ const NHSTable = styled(Table)`
   }
 `;
 
-const ModifiedDate = styled(Table.Cell)`
-  color: ${({ theme }) => theme.colorNhsukGrey1};
-`;
-
-const DownloadFile = styled.a`
-  display: inline-block;
-  padding-right: 8px;
-  font-size: 16px;
-`;
-
-interface Props {
-  files: Pick<File, "title" | "id" | "folder" | "fileType" | "modifiedAt">[];
-  workspaceId: string;
-  tableHeading?: string;
-  titleLink: boolean;
+interface Item {
+  id: string;
 }
 
-export const FileTable = ({
-  files,
-  workspaceId,
-  titleLink,
+interface Props<ItemType extends Item> {
+  columns: Array<{
+    name?: string;
+    content: (x: ItemType) => ReactNode;
+  }>;
+  data: ItemType[];
+  tableHeading?: string;
+}
+
+export const FileTable = <ItemType extends Item>({
+  columns,
+  data,
   tableHeading,
-}: Props) => (
+}: Props<ItemType>) => (
   <TableContainer>
     <Table.Panel heading={tableHeading}>
       <NHSTable>
         <Table.Head>
           <Table.Row>
-            <Table.Cell>Title</Table.Cell>
-            <Table.Cell></Table.Cell>
-            <Table.Cell>Last modified</Table.Cell>
-            <Table.Cell>Actions</Table.Cell>
+            {columns.map((c, i) => (
+              <Table.Cell key={i}>{c.name}</Table.Cell>
+            ))}
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {files.map((file) => {
-            const modifiedAt = format(parseISO(file.modifiedAt), "LLL d, yyyy");
-            return (
-              <Table.Row key={file.id}>
-                <Table.Cell>
-                  <FileIcon fileType={file.fileType} />
-                </Table.Cell>
-                <Table.Cell>
-                  {titleLink ? (
-                    <Link
-                      href={`/workspaces/${workspaceId}/folders/${file.folder}/files/${file.id}`}
-                    >
-                      <a>
-                        <span>{file.title}</span>
-                      </a>
-                    </Link>
-                  ) : (
-                    <span>{file.title}</span>
-                  )}
-                </Table.Cell>
-                <ModifiedDate>{modifiedAt}</ModifiedDate>
-                <Table.Cell>
-                  <Link
-                    href={`/workspaces/${workspaceId}/download/${file.id}`}
-                    passHref
-                  >
-                    <DownloadFile>Download file</DownloadFile>
-                  </Link>
-                </Table.Cell>
-              </Table.Row>
-            );
-          })}
+          {data.map((x) => (
+            <Table.Row key={x.id}>
+              {columns.map(({ content }, i) => (
+                <Table.Cell key={i}>{content(x)}</Table.Cell>
+              ))}
+            </Table.Row>
+          ))}
         </Table.Body>
       </NHSTable>
     </Table.Panel>
