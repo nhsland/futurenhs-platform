@@ -738,16 +738,6 @@ exports[`withUrql renders matching snapshot 1`] = `
   font-size: 16px;
 }
 
-.c36 {
-  color: rgb(76,98,114);
-}
-
-.c37 {
-  display: inline-block;
-  padding-right: 8px;
-  font-size: 16px;
-}
-
 .c31 {
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
@@ -1376,6 +1366,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.c36 {
+  color: rgb(76,98,114);
+}
+
+.c37 {
+  display: inline-block;
+  padding-right: 8px;
+  font-size: 16px;
 }
 
 @media (min-width:641px) {
@@ -2012,7 +2012,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                       class="nhsuk-table__cell"
                     >
                       <a
-                        href="/workspaces/1/folders/f7f24c43-d3f0-4720-8995-b087316f6b44/files/c12c2d6f-2669-4f82-8351-620ded995abb"
+                        href="/workspaces/1/folders/f1/files/c12c2d6f-2669-4f82-8351-620ded995abb"
                       >
                         <span>
                           London Region NHS England Safeguarding Annual Review
@@ -2020,9 +2020,13 @@ exports[`withUrql renders matching snapshot 1`] = `
                       </a>
                     </td>
                     <td
-                      class="nhsuk-table__cell c36"
+                      class="nhsuk-table__cell"
                     >
-                      Oct 6, 2020
+                      <span
+                        class="c36"
+                      >
+                        Oct 6, 2020
+                      </span>
                     </td>
                     <td
                       class="nhsuk-table__cell"
