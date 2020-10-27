@@ -70,21 +70,21 @@ describe(FolderHomepage, () => {
     ],
   ]);
 
-  const renderAndMatchSnapshot = (client: Client) => {
+  const renderWithClient = (client: Client) => {
     const container = render(<FolderHomepage urqlClient={client} />, {
       router: {
         query: { workspaceId: "1", folderId: "f1" },
       },
     });
-    expect(container.asFragment()).toMatchSnapshot();
+    expect(container.asFragment()).toBeTruthy();
   };
 
-  test("renders loading state matching snapshot", () => {
+  test("renders loading state without exploding", () => {
     const emptyClient = mockUrqlClient([]);
-    renderAndMatchSnapshot(emptyClient);
+    renderWithClient(emptyClient);
   });
 
-  test("renders matching snapshot", () => {
-    renderAndMatchSnapshot(client);
+  test("renders without exploding", () => {
+    renderWithClient(client);
   });
 });
