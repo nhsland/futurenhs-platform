@@ -2,6 +2,8 @@ app := workspace-service
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
 localdb := postgres://postgres:postgres@localhost:5432
+localazurekey := Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+localazure := 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=$(localazurekey);BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;'
 db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
 
 .PHONY: default
@@ -19,9 +21,9 @@ run: ## Fetch DB URL and run locally
 .PHONY: run-local
 run-local: migrate-local ## Run locally against Postgres and Azure running in Docker
 	DATABASE_URL=$(localdb) \
-	UPLOAD_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/uploads \
+	UPLOAD_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/upload \
 	FILES_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/files \
-	FILE_STORAGE_ACCESS_KEY='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==' \
+	FILE_STORAGE_ACCESS_KEY=$(localazurekey) \
 		$(MAKE)
 
 .PHONY: test
@@ -58,13 +60,13 @@ reset-local: ## Resets local database
 	docker-compose down --volumes
 
 .PHONY: migrate-local
-migrate-local: ## Bring up local dependencies and migrate run DB migrations
-	docker-compose up -d \
-	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
-	az storage cors clear --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' --services b
-	az storage cors add --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' --services b --methods DELETE GET HEAD MERGE OPTIONS POST PUT --origins '*' --allowed-headers '*'
-	az storage container create  --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' -n files
-	az storage container create  --connection-string='DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;' -n uploads
+migrate-local: ## Bring up local dependencies, run DB migrations and setup storage account
+	docker-compose up -d
+	until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
+	az storage cors clear --connection-string=$(localazure) --services b
+	az storage cors add --connection-string=$(localazure) --services b --methods DELETE GET HEAD MERGE OPTIONS POST PUT --origins '*' --allowed-headers '*'
+	az storage container create --connection-string=$(localazure) -n upload -o none
+	az storage container create --connection-string=$(localazure) -n files -o none
 
 # You must have a version of sqlx that includes this patch
 # cargo install --git https://github.com/launchbadge/sqlx --rev 144dcceb445e804b16258d0dd9e580d6a484a01e sqlx-cli
