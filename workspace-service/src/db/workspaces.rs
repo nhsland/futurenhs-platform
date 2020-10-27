@@ -18,8 +18,10 @@ pub struct Workspace {
 #[cfg(not(test))]
 impl Workspace {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
-        let admins = Group::create(title, pool).await?;
-        let members = Group::create(title, pool).await?;
+        let mut tx = pool.begin().await?;
+
+        let admins = Group::create(title, &mut tx).await?;
+        let members = Group::create(title, &mut tx).await?;
 
         let workspace = sqlx::query_file_as!(
             Workspace,
@@ -29,8 +31,9 @@ impl Workspace {
             admins.id,
             members.id
         )
-        .fetch_one(pool)
+        .fetch_one(&mut tx)
         .await?;
+        tx.commit().await?;
 
         Ok(workspace)
     }
