@@ -17,7 +17,7 @@ test("Render the page with error text when no platform admin privs", () => {
       <CreateWorkspace urqlClient={client} isPlatformAdmin={false} />
     </ThemeProvider>
   );
-  expect(getByText("You do not have permission to do this.")).toBeTruthy()
+  expect(getByText("You do not have permission to do this.")).toBeTruthy();
 });
 
 test("Render the page with form", () => {
@@ -28,7 +28,7 @@ test("Render the page with form", () => {
       <CreateWorkspace urqlClient={client} isPlatformAdmin={true} />
     </ThemeProvider>
   );
-  expect(getByText("Create a workspace")).toBeTruthy()
+  expect(getByText("Create a workspace")).toBeTruthy();
 });
 
 test("getInitialProps returns the correct field", async () => {
