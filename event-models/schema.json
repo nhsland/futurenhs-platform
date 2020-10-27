@@ -6,6 +6,8 @@
     {
       "oneOf": [
         { "$ref": "#/definitions/ContentViewed" },
+        { "$ref": "#/definitions/FileCreated" },
+        { "$ref": "#/definitions/FileUpdated" },
         { "$ref": "#/definitions/FolderCreated" },
         { "$ref": "#/definitions/WorkspaceCreated" }
       ]
@@ -60,6 +62,136 @@
             }
           },
           "required": ["userId", "contentId", "contentType", "workspaceId"]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "FileCreated": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FileCreated"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "fileId": {
+              "type": "string"
+            },
+            "createdAt": {
+              "description": "The date at which the file has been created",
+              "type": "string",
+              "format": "date-time"
+            },
+            "folderId": {
+              "description": "The folder that the file is in",
+              "type": "string"
+            },
+            "workspaceId": {
+              "description": "The workspace that the file is in",
+              "type": "string"
+            },
+            "fileTitle": {
+              "type": "string"
+            },
+            "fileDescription": {
+              "type": "string"
+            },
+            "fileType": {
+              "description": "The MIME type of the file, e.g. text/csv for a CSV file",
+              "type": "string"
+            },
+            "versionId": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that created the file",
+              "type": "string"
+            }
+          },
+          "required": [
+            "fileId",
+            "createdAt",
+            "folderId",
+            "workspaceId",
+            "fileTitle",
+            "fileDescription",
+            "fileType",
+            "versionId",
+            "userId"
+          ]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "FileUpdated": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FileUpdated"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "fileId": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "description": "The date at which the file has been updated (= the new file version has been created)",
+              "type": "string",
+              "format": "date-time"
+            },
+            "folderId": {
+              "description": "The folder that the file is in",
+              "type": "string"
+            },
+            "workspaceId": {
+              "description": "The workspace that the file is in",
+              "type": "string"
+            },
+            "fileTitle": {
+              "type": "string"
+            },
+            "fileDescription": {
+              "type": "string"
+            },
+            "fileType": {
+              "description": "The MIME type of the file, e.g. text/csv for a CSV file",
+              "type": "string"
+            },
+            "versionId": {
+              "type": "string"
+            },
+            "versionNumber": {
+              "type": "integer"
+            },
+            "userId": {
+              "description": "The user that created the file",
+              "type": "string"
+            }
+          },
+          "required": [
+            "fileId",
+            "updatedAt",
+            "folderId",
+            "workspaceId",
+            "fileTitle",
+            "fileDescription",
+            "fileType",
+            "versionId",
+            "versionNumber",
+            "userId"
+          ]
         }
       },
       "required": ["eventType", "dataVersion", "data"]
