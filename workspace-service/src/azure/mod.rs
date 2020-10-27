@@ -2,7 +2,7 @@ mod blob;
 mod sas;
 
 use anyhow::{bail, Result};
-use azure_sdk_storage_core::{client, key_client::KeyClient};
+use azure_sdk_storage_core::{client, key_client::KeyClient, shared_access_signature::SasProtocol};
 pub use blob::copy_blob_from_url;
 use blob::BlobUrlParts;
 pub use sas::create_download_sas;
@@ -50,12 +50,20 @@ impl Config {
         })
     }
 
-    pub fn is_emulator(&self) -> bool {
+    pub fn is_local_emulator(&self) -> bool {
         self.access_key == DEFAULT_EMULATOR_ACCESS_KEY
     }
 
+    pub fn sas_protocol(&self) -> SasProtocol {
+        if self.is_local_emulator() {
+            SasProtocol::HttpHttps
+        } else {
+            SasProtocol::Https
+        }
+    }
+
     pub fn client(&self) -> KeyClient {
-        if self.is_emulator() {
+        if self.is_local_emulator() {
             client::with_emulator(
                 &Url::parse("http://127.0.0.1:10000").unwrap(),
                 &Url::parse("http://127.0.0.1:10001").unwrap(),
