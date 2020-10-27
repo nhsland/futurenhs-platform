@@ -1,7 +1,9 @@
+use super::blob::FileParts;
 use super::Config;
 use anyhow::{anyhow, Result};
 use azure_sdk_storage_core::prelude::*;
 use chrono::*;
+use std::convert::TryInto;
 use url::Url;
 use uuid::Uuid;
 
@@ -14,87 +16,68 @@ pub fn create_download_sas(config: &Config, url: &Url) -> Result<Url> {
 }
 
 fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> Result<Url> {
+    let target: FileParts = (&config.upload_container_url).try_into()?;
+    let client = if target.account == "devstoreaccount1" {
+        client::with_emulator(
+            &Url::parse("http://127.0.0.1:10000").unwrap(),
+            &Url::parse("http://127.0.0.1:10001").unwrap(),
+        )
+    } else {
+        client::with_access_key(&target.account, &config.access_key)
+    };
+
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
+
+    let token = client
+        .shared_access_signature()
+        .with_start(start)
+        .with_expiry(end)
+        .with_permissions(SasPermissions::Write)
+        .with_resource(SasResource::Blob)
+        .with_resource_type(SasResourceType::Object)
+        .with_protocol(SasProtocol::Https)
+        .finalize()
+        .token();
 
     let mut url = config.upload_container_url.clone();
     url.path_segments_mut()
         .map_err(|_| anyhow!("cannot be base"))?
         .push(&name.to_string());
+    url.set_query(Some(&token));
 
-    let sas = if url.host_str() == Some("127.0.0.1") {
-        // Workaround for local Azurite, which uses the following URL scheme:
-        // http://127.0.0.1:10000/<account>/<container>/<blob>
-        // The Azure SDK for Rust assumes it to be:
-        // http://<account>.some.domain/<container>/<blob>
-        let mut path_segments = url
-            .path_segments()
-            .expect("upload container url should have a path");
-        let account = path_segments
-            .next()
-            .expect("upload container url should have a path");
-        let path = path_segments.collect::<Vec<&str>>().join("/");
-        let mut workaround_url = url.clone();
-        workaround_url.set_host(Some(&format!("{}.some.domain", account)))?;
-        workaround_url.set_path(&path);
-        let sas = BlobSASBuilder::new(&workaround_url)
-            .with_key(&config.access_key)
-            .with_validity_start(&start)
-            .with_validity_end(&end)
-            .allow_write()
-            .finalize();
-        url.set_query(sas.query());
-        url
-    } else {
-        BlobSASBuilder::new(&url)
-            .with_key(&config.access_key)
-            .with_validity_start(&start)
-            .with_validity_end(&end)
-            .allow_write()
-            .finalize()
-    };
-
-    Ok(sas)
+    Ok(url)
 }
 
 fn create_download_sas_impl(config: &Config, url: &Url, now: DateTime<Utc>) -> Result<Url> {
+    let target: FileParts = url.try_into()?;
+    let client = if target.account == "devstoreaccount1" {
+        client::with_emulator(
+            &Url::parse("http://127.0.0.1:10000").unwrap(),
+            &Url::parse("http://127.0.0.1:10001").unwrap(),
+        )
+    } else {
+        client::with_access_key(&target.account, &config.access_key)
+    };
+
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let sas = if url.host_str() == Some("127.0.0.1") {
-        // Workaround for local Azurite, which uses the following URL scheme:
-        // http://127.0.0.1:10000/<account>/<container>/<blob>
-        // The Azure SDK for Rust assumes it to be:
-        // http://<account>.some.domain/<container>/<blob>
-        let mut path_segments = url
-            .path_segments()
-            .expect("upload container url should have a path");
-        let account = path_segments
-            .next()
-            .expect("upload container url should have a path");
-        let path = path_segments.collect::<Vec<&str>>().join("/");
-        let mut workaround_url = url.clone();
-        workaround_url.set_host(Some(&format!("{}.some.domain", account)))?;
-        workaround_url.set_path(&path);
-        let sas = BlobSASBuilder::new(&workaround_url)
-            .with_key(&config.access_key)
-            .with_validity_start(&start)
-            .with_validity_end(&end)
-            .allow_read()
-            .finalize();
-        let mut url = url.to_owned();
-        url.set_query(sas.query());
-        url
-    } else {
-        BlobSASBuilder::new(&url)
-            .with_key(&config.access_key)
-            .with_validity_start(&start)
-            .with_validity_end(&end)
-            .allow_read()
-            .finalize()
-    };
+    let token = client
+        .shared_access_signature()
+        .with_start(start)
+        .with_expiry(end)
+        .with_permissions(SasPermissions::Read)
+        .with_resource(SasResource::Blob)
+        .with_resource_type(SasResourceType::Object)
+        .with_protocol(SasProtocol::Https)
+        .finalize()
+        .token();
 
-    Ok(sas)
+    let mut url = url.clone();
+    url.set_query(Some(&token));
+
+    Ok(url)
 }
 
 #[cfg(test)]
@@ -138,10 +121,10 @@ mod tests {
 
         let expected =
             format!(
-                "https://fnhsfilesdevstu.blob.core.windows.net/upload/{}?st={}&se={}&sp=w&sr=b&spr=https&sv=2019-02-02&sig={}",
+                "https://fnhsfilesdevstu.blob.core.windows.net/upload/{}?sv=2018-11-09&ss=b&srt=o&se={}&sp=w&st={}&spr=https&sig={}",
                 uuid,
-                start,
                 end,
+                start,
                 sig
             );
         let expected = Url::parse(&expected).unwrap().to_string();
@@ -178,8 +161,8 @@ mod tests {
             .replace(":", "%3A");
 
         let expected = format!(
-            "{}?st={}&se={}&sp=r&sr=b&spr=https&sv=2019-02-02&sig={}",
-            url, start, end, sig
+            "{}?sv=2018-11-09&ss=b&srt=o&se={}&sp=r&st={}&spr=https&sig={}",
+            url, end, start, sig
         );
         let expected = Url::parse(&expected).unwrap().to_string();
 

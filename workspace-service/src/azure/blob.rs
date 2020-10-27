@@ -11,10 +11,10 @@ use {
 };
 
 #[derive(PartialEq, Debug)]
-struct FileParts {
-    account: String,
-    container: String,
-    blob: Option<String>,
+pub struct FileParts {
+    pub account: String,
+    pub container: String,
+    pub blob: Option<String>,
 }
 
 impl TryFrom<&Url> for FileParts {
