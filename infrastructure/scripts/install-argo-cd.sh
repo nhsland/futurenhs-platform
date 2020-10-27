@@ -39,7 +39,7 @@ else
 fi
 
 echo "Installing Argo CD CLI"
-brew install argoproj/tap/argocd || {
+brew install argoproj/tap/argocd || brew upgrade argocd || {
 	echo 'Unable to install.'
 	exit 1
 }
@@ -80,5 +80,9 @@ if ! argocd login --username admin --password $POD_NAME; then
 		exit 1
 	fi
 fi
+
+for app in $(argocd app list -o name); do
+	argocd app sync $app
+done
 
 echo "Your argocd username for the web ui is 'admin' and password is '$POD_NAME'"

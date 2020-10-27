@@ -1,5 +1,5 @@
 use super::Config;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use azure_sdk_storage_core::prelude::*;
 use chrono::*;
 use url::Url;
@@ -17,31 +17,47 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let container_url = Url::parse(&format!("{}/", config.upload_container_url))?;
-    let path = container_url.join(&name.to_string())?;
+    let token = config
+        .client()
+        .shared_access_signature()
+        .with_start(start)
+        .with_expiry(end)
+        .with_permissions(SasPermissions::Write)
+        .with_resource(SasResource::Blob)
+        .with_resource_type(SasResourceType::Object)
+        .with_protocol(config.sas_protocol())
+        .finalize()
+        .token();
 
-    let sas = BlobSASBuilder::new(&path)
-        .with_key(&config.access_key)
-        .with_validity_start(&start)
-        .with_validity_end(&end)
-        .allow_write()
-        .finalize();
+    let mut url = config.upload_container_url.clone();
+    url.path_segments_mut()
+        .map_err(|_| anyhow!("cannot be base"))?
+        .push(&name.to_string());
+    url.set_query(Some(&token));
 
-    Ok(sas)
+    Ok(url)
 }
 
 fn create_download_sas_impl(config: &Config, url: &Url, now: DateTime<Utc>) -> Result<Url> {
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let sas = BlobSASBuilder::new(&url)
-        .with_key(&config.access_key)
-        .with_validity_start(&start)
-        .with_validity_end(&end)
-        .allow_read()
-        .finalize();
+    let token = config
+        .client()
+        .shared_access_signature()
+        .with_start(start)
+        .with_expiry(end)
+        .with_permissions(SasPermissions::Read)
+        .with_resource(SasResource::Blob)
+        .with_resource_type(SasResourceType::Object)
+        .with_protocol(config.sas_protocol())
+        .finalize()
+        .token();
 
-    Ok(sas)
+    let mut url = url.clone();
+    url.set_query(Some(&token));
+
+    Ok(url)
 }
 
 #[cfg(test)]
@@ -64,7 +80,8 @@ mod tests {
             ACCESS_KEY.to_string(),
             Url::parse(UPLOAD_CONTAINER_URL).unwrap(),
             Url::parse(FILES_CONTAINER_URL).unwrap(),
-        );
+        )
+        .unwrap();
         let actual = create_upload_sas_impl(&config, &uuid, now).unwrap();
 
         let sig = actual
@@ -85,10 +102,10 @@ mod tests {
 
         let expected =
             format!(
-                "https://fnhsfilesdevstu.blob.core.windows.net/upload/{}?st={}&se={}&sp=w&sr=b&spr=https&sv=2019-02-02&sig={}",
+                "https://fnhsfilesdevstu.blob.core.windows.net/upload/{}?sv=2018-11-09&ss=b&srt=o&se={}&sp=w&st={}&spr=https&sig={}",
                 uuid,
-                start,
                 end,
+                start,
                 sig
             );
         let expected = Url::parse(&expected).unwrap().to_string();
@@ -105,7 +122,8 @@ mod tests {
             ACCESS_KEY.to_string(),
             Url::parse(UPLOAD_CONTAINER_URL).unwrap(),
             Url::parse(FILES_CONTAINER_URL).unwrap(),
-        );
+        )
+        .unwrap();
         let actual = create_download_sas_impl(&config, &url, now).unwrap();
 
         let sig = actual
@@ -125,8 +143,8 @@ mod tests {
             .replace(":", "%3A");
 
         let expected = format!(
-            "{}?st={}&se={}&sp=r&sr=b&spr=https&sv=2019-02-02&sig={}",
-            url, start, end, sig
+            "{}?sv=2018-11-09&ss=b&srt=o&se={}&sp=r&st={}&spr=https&sig={}",
+            url, end, start, sig
         );
         let expected = Url::parse(&expected).unwrap().to_string();
 

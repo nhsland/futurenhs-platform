@@ -5,43 +5,46 @@ use url::Url;
 use {
     anyhow::bail,
     async_compat::Compat,
-    azure_sdk_core::prelude::*,
+    azure_sdk_core::{errors::AzureError, prelude::*},
     azure_sdk_storage_blob::{blob::CopyStatus, Blob},
-    azure_sdk_storage_core::prelude::*,
 };
 
 #[derive(PartialEq, Debug)]
-struct FileParts {
-    account: String,
-    container: String,
-    blob: Option<String>,
+pub struct BlobUrlParts {
+    pub account: String,
+    pub container: String,
+    pub blob: Option<String>,
 }
 
-impl TryFrom<&Url> for FileParts {
+impl TryFrom<&Url> for BlobUrlParts {
     type Error = anyhow::Error;
 
     fn try_from(value: &Url) -> Result<Self, Self::Error> {
-        let account = value
-            .host()
-            .ok_or_else(|| anyhow!("cannot get host from url"))?
-            .to_string();
-        let account = account
-            .split('.')
-            .next()
-            .ok_or_else(|| anyhow!("cannot get storage account from url"))?
-            .to_string();
-
-        let path_segments = value
+        let mut path_segments = value
             .path_segments()
-            .ok_or_else(|| anyhow!("url has no path"))?
-            .collect::<Vec<&str>>();
+            .ok_or_else(|| anyhow!("url has no path"))?;
+
+        let account = if value.host_str() == Some("127.0.0.1") {
+            path_segments
+                .next()
+                .ok_or_else(|| anyhow!("cannot get account from url"))?
+                .to_string()
+        } else {
+            let host = value
+                .host()
+                .ok_or_else(|| anyhow!("cannot get host from url"))?
+                .to_string();
+            host.split('.')
+                .next()
+                .ok_or_else(|| anyhow!("cannot get storage account from url"))?
+                .to_string()
+        };
 
         let container = path_segments
-            .get(0)
+            .next()
             .ok_or_else(|| anyhow!("cannot get container name from url"))?
             .to_string();
-
-        let blob = path_segments.get(1).cloned().map(|s| s.to_string());
+        let blob = path_segments.next().map(|s| s.to_string());
 
         Ok(Self {
             account,
@@ -53,15 +56,13 @@ impl TryFrom<&Url> for FileParts {
 
 #[cfg(not(test))]
 pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Result<String> {
-    let input: FileParts = url.try_into()?;
-    let target: FileParts = (&azure_config.files_container_url).try_into()?;
-    let source: FileParts = (&azure_config.upload_container_url).try_into()?;
+    let input: BlobUrlParts = url.try_into()?;
 
-    if input.account != source.account {
+    if input.account != azure_config.account {
         bail!("source file is from an unsupported storage account");
     }
 
-    if input.container != source.container {
+    if input.container != azure_config.upload_container {
         bail!("source file is from an unsupported container");
     }
 
@@ -73,24 +74,37 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
         .blob
         .ok_or_else(|| anyhow!("cannot get blob name from url"))?;
 
-    let client = client::with_access_key(&target.account, &azure_config.access_key);
-    let response = Compat::new(
-        client
+    let result = Compat::new(
+        azure_config
+            .client()
             .copy_blob_from_url()
-            .with_container_name(&target.container)
+            .with_container_name(&azure_config.files_container)
             .with_blob_name(&target_blob)
             .with_source_url(source_url.as_str())
             .with_is_synchronous(true)
             .finalize(),
     )
-    .await?;
+    .await;
+    let copy_status = match result {
+        Ok(response) => Ok(response.copy_status),
+        // Azurite doesn't return a `x-ms-copy-status` header for synchronous blob copy, but the
+        // Azure SDK for Rust expects it. The operation does succeed, though. Since we don't care
+        // about the response properties, we can look for the exact error and ignore it.
+        // Upstream issue: https://github.com/Azure/Azurite/issues/603
+        Err(AzureError::HeaderNotFound(header))
+            if azure_config.is_local_emulator() && header == "x-ms-copy-status" =>
+        {
+            Ok(CopyStatus::Success)
+        }
+        Err(err) => Err(err),
+    }?;
 
-    match response.copy_status {
+    match copy_status {
         CopyStatus::Success => Ok(format!(
             "{}/{}",
             azure_config.files_container_url, target_blob
         )),
-        _ => bail!("Sync copy did not complete: {}", response.copy_status),
+        _ => bail!("Sync copy did not complete: {}", copy_status),
     }
 }
 
@@ -109,8 +123,8 @@ mod test {
     fn extract_from_url() {
         let url =
             &Url::parse("https://fnhsfilesdevstu.blob.core.windows.net/upload/my_blob").unwrap();
-        let actual: FileParts = url.try_into().unwrap();
-        let expected = FileParts {
+        let actual: BlobUrlParts = url.try_into().unwrap();
+        let expected = BlobUrlParts {
             account: "fnhsfilesdevstu".to_string(),
             container: "upload".to_string(),
             blob: Some("my_blob".to_string()),
@@ -121,8 +135,8 @@ mod test {
     #[test]
     fn extract_from_url_without_blob() {
         let url = &Url::parse("https://fnhsfilesdevstu.blob.core.windows.net/upload").unwrap();
-        let actual: FileParts = url.try_into().unwrap();
-        let expected = FileParts {
+        let actual: BlobUrlParts = url.try_into().unwrap();
+        let expected = BlobUrlParts {
             account: "fnhsfilesdevstu".to_string(),
             container: "upload".to_string(),
             blob: None,

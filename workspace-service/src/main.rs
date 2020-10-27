@@ -42,7 +42,7 @@ async fn main() -> Result<()> {
     let tracer = provider.get_tracer("workspace-service");
     let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
     let subscriber = Registry::default().with(telemetry);
-    tracing::subscriber::set_global_default(subscriber).expect("setting global default failed");
+    tracing::subscriber::set_global_default(subscriber)?;
 
     let connection_pool = PgPool::connect(config.database_url.expect("required").as_str()).await?;
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
@@ -68,7 +68,7 @@ async fn main() -> Result<()> {
             config.file_storage_access_key.expect("required"),
             config.upload_container_url.expect("required"),
             config.files_container_url.expect("required"),
-        ),
+        )?,
     )
     .await?;
     app.listen("0.0.0.0:3030").await?;

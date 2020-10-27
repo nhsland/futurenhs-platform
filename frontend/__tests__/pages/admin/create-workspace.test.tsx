@@ -12,23 +12,23 @@ import CreateWorkspace, {
 test("Render the page with error text when no platform admin privs", () => {
   const client = mockUrqlClient([]);
 
-  const { asFragment } = render(
+  const { getByText } = render(
     <ThemeProvider theme={theme}>
       <CreateWorkspace urqlClient={client} isPlatformAdmin={false} />
     </ThemeProvider>
   );
-  expect(asFragment()).toMatchSnapshot();
+  expect(getByText("You do not have permission to do this.")).toBeTruthy();
 });
 
 test("Render the page with form", () => {
   const client = mockUrqlClient([]);
 
-  const { asFragment } = render(
+  const { getByText } = render(
     <ThemeProvider theme={theme}>
       <CreateWorkspace urqlClient={client} isPlatformAdmin={true} />
     </ThemeProvider>
   );
-  expect(asFragment()).toMatchSnapshot();
+  expect(getByText("Create a workspace")).toBeTruthy();
 });
 
 test("getInitialProps returns the correct field", async () => {
