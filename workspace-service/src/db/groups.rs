@@ -19,30 +19,6 @@ impl Group {
 
         Ok(group)
     }
-    #[allow(dead_code)]
-    pub async fn find_by_id(id: Uuid, pool: &PgPool) -> Result<Group> {
-        let group = sqlx::query_file_as!(Group, "sql/groups/find_by_id.sql", id)
-            .fetch_one(pool)
-            .await?;
-
-        Ok(group)
-    }
-    #[allow(dead_code)]
-    pub async fn update(id: Uuid, title: &str, pool: &PgPool) -> Result<Group> {
-        let group = sqlx::query_file_as!(Group, "sql/groups/update.sql", id, title,)
-            .fetch_one(pool)
-            .await?;
-
-        Ok(group)
-    }
-    #[allow(dead_code)]
-    pub async fn delete(id: Uuid, pool: &PgPool) -> Result<Group> {
-        let group = sqlx::query_file_as!(Group, "sql/groups/delete.sql", id)
-            .fetch_one(pool)
-            .await?;
-
-        Ok(group)
-    }
 }
 
 // Fake implementation for tests. If you want integration tests that exercise the database,
@@ -54,30 +30,6 @@ impl Group {
         let group = Group {
             id: Uuid::new_v4(),
             title: title.to_string(),
-        };
-        Ok(group)
-    }
-    #[allow(dead_code)]
-    pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<Group> {
-        let group = Group {
-            id,
-            title: "fake group".into(),
-        };
-        Ok(group)
-    }
-    #[allow(dead_code)]
-    pub async fn update(id: Uuid, title: &str, _pool: &PgPool) -> Result<Group> {
-        let group = Group {
-            id,
-            title: title.to_string(),
-        };
-        Ok(group)
-    }
-    #[allow(dead_code)]
-    pub async fn delete(id: Uuid, _pool: &PgPool) -> Result<Group> {
-        let group = Group {
-            id,
-            title: "fake deleted group".into(),
         };
         Ok(group)
     }

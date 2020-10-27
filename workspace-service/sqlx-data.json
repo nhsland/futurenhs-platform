@@ -1,31 +1,5 @@
 {
   "db": "PostgreSQL",
-  "035667989f970f1a8f3f5d113f76989181b02d76c966cd9666506323be5c1e8b": {
-    "query": "SELECT id,\n    title\nFROM groups\nWHERE id = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
-    }
-  },
   "0ccd2b33326bb27bb182abad240df798cf875cb624ad3e5b95c366fe1123ce11": {
     "query": "SELECT *\nFROM workspaces\nORDER BY id\n",
     "describe": {
@@ -748,32 +722,6 @@
       ]
     }
   },
-  "b531590724ea3eeda73e980d92c5d54e058f2aea7bb4b87081e29ac5790d1ddf": {
-    "query": "DELETE FROM groups\nWHERE id = $1\nRETURNING id, title\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
-    }
-  },
   "b80c3e5c6e1620ccee068d08214bc0c787967400a6a10f45c6065ba22bea4369": {
     "query": "SET CONSTRAINTS ALL DEFERRED;",
     "describe": {
@@ -905,33 +853,6 @@
       "nullable": [
         false,
         false,
-        false,
-        false
-      ]
-    }
-  },
-  "e37fdf2271141c860eb7bf8cf99c18bb0f5f13de2e4dc03865752d939334a283": {
-    "query": "UPDATE groups\nSET title = COALESCE($2, title)\nWHERE id = $1\nRETURNING id, title\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid",
-          "Text"
-        ]
-      },
-      "nullable": [
         false,
         false
       ]
