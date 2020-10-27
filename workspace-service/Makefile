@@ -28,6 +28,10 @@ run-local: migrate-local ## Fetch DB URL and run locally. Does not have file sup
 check: ## Run `cargo check` (because David keeps saying "make check" when he means "cargo check").
 	cargo check
 
+.PHONY: clippy
+clippy: ## Run `cargo clippy`, the Rust linter.
+	cargo clippy
+
 .PHONY: fmt
 check: ## Run `cargo fmt` (convenience so that you can write `make fmt check test` in one command)
 	cargo fmt
