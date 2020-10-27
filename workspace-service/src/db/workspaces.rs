@@ -20,8 +20,8 @@ impl Workspace {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
         let mut tx = pool.begin().await?;
 
-        let admins = Group::create(title, &mut tx).await?;
-        let members = Group::create(title, &mut tx).await?;
+        let admins = Group::create(&format!("{} Admins", title), &mut tx).await?;
+        let members = Group::create(&format!("{} Members", title), &mut tx).await?;
 
         let workspace = sqlx::query_file_as!(
             Workspace,
