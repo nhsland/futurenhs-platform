@@ -7,17 +7,16 @@ use {
     async_compat::Compat,
     azure_sdk_core::{errors::AzureError, prelude::*},
     azure_sdk_storage_blob::{blob::CopyStatus, Blob},
-    azure_sdk_storage_core::prelude::*,
 };
 
 #[derive(PartialEq, Debug)]
-pub struct FileParts {
+pub struct BlobUrlParts {
     pub account: String,
     pub container: String,
     pub blob: Option<String>,
 }
 
-impl TryFrom<&Url> for FileParts {
+impl TryFrom<&Url> for BlobUrlParts {
     type Error = anyhow::Error;
 
     fn try_from(value: &Url) -> Result<Self, Self::Error> {
@@ -57,15 +56,13 @@ impl TryFrom<&Url> for FileParts {
 
 #[cfg(not(test))]
 pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Result<String> {
-    let input: FileParts = url.try_into()?;
-    let target: FileParts = (&azure_config.files_container_url).try_into()?;
-    let source: FileParts = (&azure_config.upload_container_url).try_into()?;
+    let input: BlobUrlParts = url.try_into()?;
 
-    if input.account != source.account {
+    if input.account != azure_config.account {
         bail!("source file is from an unsupported storage account");
     }
 
-    if input.container != source.container {
+    if input.container != azure_config.upload_container {
         bail!("source file is from an unsupported container");
     }
 
@@ -77,18 +74,11 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
         .blob
         .ok_or_else(|| anyhow!("cannot get blob name from url"))?;
 
-    let client = if target.account == "devstoreaccount1" {
-        client::with_emulator(
-            &Url::parse("http://127.0.0.1:10000").unwrap(),
-            &Url::parse("http://127.0.0.1:10001").unwrap(),
-        )
-    } else {
-        client::with_access_key(&target.account, &azure_config.access_key)
-    };
     let result = Compat::new(
-        client
+        azure_config
+            .client()
             .copy_blob_from_url()
-            .with_container_name(&target.container)
+            .with_container_name(&azure_config.files_container)
             .with_blob_name(&target_blob)
             .with_source_url(source_url.as_str())
             .with_is_synchronous(true)
@@ -98,7 +88,7 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
     let copy_status = match result {
         Ok(response) => Ok(response.copy_status),
         Err(AzureError::HeaderNotFound(header))
-            if target.account == "devstoreaccount1" && header == "x-ms-copy-status" =>
+            if azure_config.is_emulator() && header == "x-ms-copy-status" =>
         {
             Ok(CopyStatus::Success)
         }
@@ -129,8 +119,8 @@ mod test {
     fn extract_from_url() {
         let url =
             &Url::parse("https://fnhsfilesdevstu.blob.core.windows.net/upload/my_blob").unwrap();
-        let actual: FileParts = url.try_into().unwrap();
-        let expected = FileParts {
+        let actual: BlobUrlParts = url.try_into().unwrap();
+        let expected = BlobUrlParts {
             account: "fnhsfilesdevstu".to_string(),
             container: "upload".to_string(),
             blob: Some("my_blob".to_string()),
@@ -141,8 +131,8 @@ mod test {
     #[test]
     fn extract_from_url_without_blob() {
         let url = &Url::parse("https://fnhsfilesdevstu.blob.core.windows.net/upload").unwrap();
-        let actual: FileParts = url.try_into().unwrap();
-        let expected = FileParts {
+        let actual: BlobUrlParts = url.try_into().unwrap();
+        let expected = BlobUrlParts {
             account: "fnhsfilesdevstu".to_string(),
             container: "upload".to_string(),
             blob: None,

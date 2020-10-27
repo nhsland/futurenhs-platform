@@ -1,9 +1,7 @@
-use super::blob::FileParts;
 use super::Config;
 use anyhow::{anyhow, Result};
 use azure_sdk_storage_core::prelude::*;
 use chrono::*;
-use std::convert::TryInto;
 use url::Url;
 use uuid::Uuid;
 
@@ -16,20 +14,11 @@ pub fn create_download_sas(config: &Config, url: &Url) -> Result<Url> {
 }
 
 fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> Result<Url> {
-    let target: FileParts = (&config.upload_container_url).try_into()?;
-    let client = if target.account == "devstoreaccount1" {
-        client::with_emulator(
-            &Url::parse("http://127.0.0.1:10000").unwrap(),
-            &Url::parse("http://127.0.0.1:10001").unwrap(),
-        )
-    } else {
-        client::with_access_key(&target.account, &config.access_key)
-    };
-
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let token = client
+    let token = config
+        .client()
         .shared_access_signature()
         .with_start(start)
         .with_expiry(end)
@@ -50,20 +39,11 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
 }
 
 fn create_download_sas_impl(config: &Config, url: &Url, now: DateTime<Utc>) -> Result<Url> {
-    let target: FileParts = url.try_into()?;
-    let client = if target.account == "devstoreaccount1" {
-        client::with_emulator(
-            &Url::parse("http://127.0.0.1:10000").unwrap(),
-            &Url::parse("http://127.0.0.1:10001").unwrap(),
-        )
-    } else {
-        client::with_access_key(&target.account, &config.access_key)
-    };
-
     let start = now - Duration::minutes(15);
     let end = now + Duration::minutes(15);
 
-    let token = client
+    let token = config
+        .client()
         .shared_access_signature()
         .with_start(start)
         .with_expiry(end)
@@ -100,7 +80,8 @@ mod tests {
             ACCESS_KEY.to_string(),
             Url::parse(UPLOAD_CONTAINER_URL).unwrap(),
             Url::parse(FILES_CONTAINER_URL).unwrap(),
-        );
+        )
+        .unwrap();
         let actual = create_upload_sas_impl(&config, &uuid, now).unwrap();
 
         let sig = actual
@@ -141,7 +122,8 @@ mod tests {
             ACCESS_KEY.to_string(),
             Url::parse(UPLOAD_CONTAINER_URL).unwrap(),
             Url::parse(FILES_CONTAINER_URL).unwrap(),
-        );
+        )
+        .unwrap();
         let actual = create_download_sas_impl(&config, &url, now).unwrap();
 
         let sig = actual
