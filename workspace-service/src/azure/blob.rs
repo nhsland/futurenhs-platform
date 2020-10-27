@@ -87,8 +87,12 @@ pub async fn copy_blob_from_url(url: &Url, azure_config: &super::Config) -> Resu
     .await;
     let copy_status = match result {
         Ok(response) => Ok(response.copy_status),
+        // Azurite doesn't return a `x-ms-copy-status` header for synchronous blob copy, but the
+        // Azure SDK for Rust expects it. The operation does succeed, though. Since we don't care
+        // about the response properties, we can look for the exact error and ignore it.
+        // Upstream issue: https://github.com/Azure/Azurite/issues/603
         Err(AzureError::HeaderNotFound(header))
-            if azure_config.is_emulator() && header == "x-ms-copy-status" =>
+            if azure_config.is_local_emulator() && header == "x-ms-copy-status" =>
         {
             Ok(CopyStatus::Success)
         }
