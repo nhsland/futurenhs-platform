@@ -119,7 +119,6 @@ const FileHomepage = () => {
             >
               {file.data?.file.title || "Loading..."}
             </MainHeading>
-            <h2>Description</h2>
             <Description>
               {file.data?.file.description ?? "Loading..."}
             </Description>
