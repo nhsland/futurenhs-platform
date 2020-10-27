@@ -3,7 +3,6 @@ const { createClient } = require("urql");
 
 const { requireEnv } = require("./requireEnv");
 
-//todo: add email address in
 const getOrCreateUser = async ({ authId, name, emailAddress }) => {
   const client = createClient({
     url: requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT"),
