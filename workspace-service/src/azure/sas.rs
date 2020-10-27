@@ -25,7 +25,11 @@ fn create_upload_sas_impl(config: &Config, name: &Uuid, now: DateTime<Utc>) -> R
         .with_permissions(SasPermissions::Write)
         .with_resource(SasResource::Blob)
         .with_resource_type(SasResourceType::Object)
-        .with_protocol(SasProtocol::Https)
+        .with_protocol(if config.is_emulator() {
+            SasProtocol::HttpHttps
+        } else {
+            SasProtocol::Https
+        })
         .finalize()
         .token();
 
@@ -50,7 +54,11 @@ fn create_download_sas_impl(config: &Config, url: &Url, now: DateTime<Utc>) -> R
         .with_permissions(SasPermissions::Read)
         .with_resource(SasResource::Blob)
         .with_resource_type(SasResourceType::Object)
-        .with_protocol(SasProtocol::Https)
+        .with_protocol(if config.is_emulator() {
+            SasProtocol::HttpHttps
+        } else {
+            SasProtocol::Https
+        })
         .finalize()
         .token();
 
