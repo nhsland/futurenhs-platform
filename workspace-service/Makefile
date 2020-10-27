@@ -33,7 +33,7 @@ clippy: ## Run `cargo clippy`, the Rust linter.
 	cargo clippy
 
 .PHONY: fmt
-check: ## Run `cargo fmt` (convenience so that you can write `make fmt check test` in one command)
+fmt: ## Run `cargo fmt` (convenience so that you can write `make fmt check test clippy` in one command)
 	cargo fmt
 
 .PHONY: test
