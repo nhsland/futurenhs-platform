@@ -14,20 +14,28 @@ Strategy.prototype.authenticate = async function () {
     // Test value that's an auto generated V4 UUID
     const testAuthId = "feedface-0000-0000-0000-000000000000";
     const testName = "Local User";
+    const testEmail = "test@email.com";
 
     const response = await getOrCreateUser({
       authId: testAuthId,
       name: testName,
+      emailAddress: testEmail,
     });
 
-    const { id, name, authId, isPlatformAdmin } = response.getOrCreateUser;
+    const {
+      id,
+      name,
+      authId,
+      emailAddress,
+      isPlatformAdmin,
+    } = response.getOrCreateUser;
 
     this.success({
       id,
       authId,
       name,
       isPlatformAdmin,
-      emails: ["test@example.com"],
+      emails: [emailAddress],
     });
   } catch (err) {
     this.error(err);

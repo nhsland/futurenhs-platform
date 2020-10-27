@@ -118,6 +118,7 @@ async function main() {
               const response = await getOrCreateUser({
                 authId: profile.sub,
                 name: profile.displayName,
+                emailAddress: profile.emails,
               });
               const {
                 id,
