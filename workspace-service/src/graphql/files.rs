@@ -1,7 +1,9 @@
 use super::{azure, db, validation, RequestingUser};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
-use fnhs_event_models::{Event, EventClient, EventPublisher as _, FileCreatedData};
 use chrono::{DateTime, Utc};
+use fnhs_event_models::{
+    Event, EventClient, EventPublisher as _, FileCreatedData, FileUpdatedData,
+};
 use lazy_static::lazy_static;
 use mime_db::extensions2;
 use regex::Regex;
@@ -226,8 +228,16 @@ impl FilesMutation {
         let pool = context.data()?;
         let azure_config = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
+        let event_client: &EventClient = context.data()?;
 
-        create_file_version(new_version, pool, azure_config, requesting_user).await
+        create_file_version(
+            new_version,
+            pool,
+            azure_config,
+            requesting_user,
+            event_client,
+        )
+        .await
     }
 
     /// Deletes a file by id(returns delete file
@@ -280,21 +290,20 @@ async fn create_file(
     .into();
 
     event_client
-       .publish_events(&[Event::new(
-           file.id.clone(),
-           FileCreatedData {
-               file_id: file.id.to_string(),
-               created_at: file.created_at.to_rfc3339(),
-               file_description: file.description.clone(),
-               file_title: file.title.clone(),
-               file_type: file.file_type.clone(),
-               folder_id: folder_id.to_string(),
-               user_id: user.id.to_string(),
-               workspace_id: folder.workspace.to_string(),
-               version_id: file.latest_version.to_string(),
-
-           }
-       )])
+        .publish_events(&[Event::new(
+            file.id.clone(),
+            FileCreatedData {
+                file_id: file.id.to_string(),
+                created_at: file.created_at.to_rfc3339(),
+                file_description: file.description.clone(),
+                file_title: file.title.clone(),
+                file_type: file.file_type.clone(),
+                folder_id: folder_id.to_string(),
+                user_id: user.id.to_string(),
+                workspace_id: folder.workspace.to_string(),
+                version_id: file.latest_version.to_string(),
+            },
+        )])
         .await?;
 
     Ok(file)
@@ -305,6 +314,7 @@ async fn create_file_version(
     pool: &PgPool,
     azure_config: &azure::Config,
     requesting_user: &RequestingUser,
+    event_client: &EventClient,
 ) -> FieldResult<File> {
     new_version
         .validate()
@@ -323,10 +333,13 @@ async fn create_file_version(
     }
 
     let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-    let folder = match &new_version.folder {
-        Some(folder) => Uuid::parse_str(folder)?,
+    let folder_id = match &new_version.folder {
+        Some(folder_id) => Uuid::parse_str(folder_id)?,
         None => current_file.folder,
     };
+
+    let folder = db::Folder::find_by_id(folder_id, pool).await?;
+
     let destination = match &new_version.temporary_blob_storage_path {
         Some(temporary_blob_storage_path) => {
             azure::copy_blob_from_url(&Url::parse(temporary_blob_storage_path)?, azure_config)
@@ -335,12 +348,13 @@ async fn create_file_version(
         None => current_file.blob_storage_path,
     };
 
-    let file = db::FileWithVersion::create_version(
+    let version_number = current_file.version_number + 1;
+    let file: File = db::FileWithVersion::create_version(
         db::CreateFileVersionArgs {
             user_id: user.id,
             file_id: current_file_id,
             latest_version: current_latest_version_id,
-            folder_id: folder,
+            folder_id,
             title: new_version.title.as_ref().unwrap_or(&current_file.title),
             description: new_version
                 .description
@@ -355,15 +369,32 @@ async fn create_file_version(
                 .as_ref()
                 .unwrap_or(&current_file.file_type),
             blob_storage_path: &destination,
-            version_number: current_file.version_number + 1,
+            version_number,
         },
         pool,
     )
-    .await?;
+    .await?
+    .into();
 
-    // TODO: add event.
+    event_client
+        .publish_events(&[Event::new(
+            file.id.clone(),
+            FileUpdatedData {
+                file_id: file.id.to_string(),
+                file_description: file.description.clone(),
+                file_title: file.title.clone(),
+                file_type: file.file_type.clone(),
+                folder_id: folder_id.to_string(),
+                user_id: user.id.to_string(),
+                workspace_id: folder.workspace.to_string(),
+                version_id: new_version.latest_version.to_string(),
+                version_number: version_number.into(),
+                updated_at: file.modified_at.to_rfc3339(),
+            },
+        )])
+        .await?;
 
-    Ok(file.into())
+    Ok(file)
 }
 
 #[cfg(test)]
@@ -463,7 +494,9 @@ mod test {
         .await;
 
         assert_eq!(result.unwrap().title, "title");
-        assert!(events.try_iter().any(|e| matches!(e.data, EventData::FileCreated(_))));
+        assert!(events
+            .try_iter()
+            .any(|e| matches!(e.data, EventData::FileCreated(_))));
 
         Ok(())
     }
@@ -476,6 +509,7 @@ mod test {
 
         let file_id = Uuid::new_v4();
         let current_file = db::FileWithVersion::find_by_id(file_id, &pool).await?;
+        let (events, event_client) = mock_event_emitter();
 
         let result = create_file_version(
             NewFileVersion {
@@ -493,6 +527,7 @@ mod test {
             &pool,
             &azure_config,
             &requesting_user,
+            &event_client,
         )
         .await
         .unwrap();
@@ -502,6 +537,9 @@ mod test {
         assert_eq!(result.folder, "d890181d-6b17-428e-896b-f76add15b54a");
         assert_eq!(result.file_name, "file.txt");
         assert_eq!(result.file_type, "text/plain");
+        assert!(events
+            .try_iter()
+            .any(|e| matches!(e.data, EventData::FileUpdated(_))));
 
         Ok(())
     }
@@ -511,6 +549,7 @@ mod test {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
         let requesting_user = mock_unprivileged_requesting_user();
+        let (_, event_client) = mock_event_emitter();
 
         let file_id = Uuid::new_v4();
         let result = create_file_version(
@@ -527,6 +566,7 @@ mod test {
             &pool,
             &azure_config,
             &requesting_user,
+            &event_client,
         )
         .await;
 
