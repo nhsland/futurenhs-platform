@@ -14,13 +14,13 @@ import {
 import { uploadBlob } from "../../lib/uploadBlob";
 import { useMaxLengthHelper } from "../../lib/useMaxLengthHelper";
 import {
-  StyledInput,
-  StyledTag,
+  FormField,
   StyledButton,
   StyledFileInfoBox,
-  FormField,
-  StyledHeadingSection,
   StyledFileName,
+  StyledHeadingSection,
+  StyledInput,
+  StyledTag,
 } from "./styles";
 
 interface FormData {
@@ -28,18 +28,18 @@ interface FormData {
   fileData: Array<{ title: string; description: string }>;
 }
 interface Props {
-  workspaceId: string;
   folderId: string;
   urqlClient: Client;
+  workspaceId: string;
 }
 
 const CreateFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
   const {
-    register,
-    handleSubmit,
-    errors,
-    setError,
     control,
+    errors,
+    handleSubmit,
+    register,
+    setError,
     setValue,
   } = useForm<FormData>();
   const [, createFile] = useCreateFileMutation();

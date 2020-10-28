@@ -42,11 +42,10 @@ const StyledListItem = styled(ListItem)`
   }
 
   button {
-    background: ${({ theme }) => theme.colorNhsukWhite};
+    background: transparent;
     font-size: 19px;
     line-height: 28px;
     text-align: left;
-    border-radius: 4px;
     border: none;
     outline: 4px solid transparent;
   }
