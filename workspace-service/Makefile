@@ -29,6 +29,18 @@ run-local: migrate-local ## Run locally against Postgres and Azure running in Do
 	FILE_STORAGE_ACCESS_KEY=$(localazurekey) \
 		$(MAKE)
 
+.PHONY: check
+check: ## Run `cargo check` (because David keeps saying "make check" when he means "cargo check").
+	cargo check
+
+.PHONY: clippy
+clippy: ## Run `cargo clippy`, the Rust linter.
+	cargo clippy
+
+.PHONY: fmt
+fmt: ## Run `cargo fmt` (convenience so that you can write `make fmt check test clippy` in one command)
+	cargo fmt
+
 .PHONY: test
 test: ## Run tests [TEST=test_name (optional)]
 	cargo test $$TEST
@@ -86,9 +98,9 @@ default-folders-local: ## make folders locally (requires you to be running `make
 	./scripts/create-workspace-if-needed.sh local
 
 .PHONY: graphql-schema.json
-graphql-schema.json:
+graphql-schema.json: ## Regenerate the graphql-schema.json
 	cargo run -- --generate-schema-only >$@
 
 .PHONY: help
 help: ## Display this help screen
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
