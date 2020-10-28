@@ -47,7 +47,7 @@ const WorkspaceMembersPage: NextPage = () => {
         <ContentWrapper>
           <Navigation workspaceId={id} workspaceTitle={workspaceTitle} />
           <PageContent>
-            <MainHeading withBorder>Workspace members</MainHeading>
+            <MainHeading>Workspace members</MainHeading>
             <H2 title="This is a list of all workspace members." />
             {error && <p> Oh no... {error?.message} </p>}
           </PageContent>

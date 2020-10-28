@@ -18,7 +18,6 @@ const H1 = styled.h1`
 
 interface Props {
   children: string;
-  withBorder?: boolean;
   menu?: ReactNode;
 }
 
