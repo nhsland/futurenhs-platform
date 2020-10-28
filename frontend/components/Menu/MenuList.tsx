@@ -35,11 +35,13 @@ const Container = styled.div`
     margin: 0;
     width: 320px;
 
-    li:first-child a {
+    li:first-child a,
+    li:first-child button {
       border-radius: 4px 4px 0 0;
     }
 
-    li:last-child a {
+    li:last-child a,
+    li:last-child button {
       border-radius: 0 0 4px 4px;
     }
   }
