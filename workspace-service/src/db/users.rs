@@ -2,7 +2,9 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use anyhow::Result;
-use sqlx::{types::Uuid, PgPool};
+use sqlx::types::Uuid;
+#[cfg(not(test))]
+use sqlx::PgPool;
 
 #[derive(Clone)]
 pub struct User {
@@ -52,7 +54,7 @@ impl User {
 
 #[cfg(test)]
 impl User {
-    pub async fn find_by_auth_id(auth_id: &Uuid, _pool: &PgPool) -> Result<User> {
+    pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<User> {
         Ok(User {
             id: Uuid::new_v4(),
             auth_id: *auth_id,
@@ -66,7 +68,7 @@ impl User {
         auth_id: &Uuid,
         name: &str,
         email_address: &str,
-        _pool: &PgPool,
+        _pool: impl Sized,
     ) -> Result<User> {
         Ok(User {
             id: Uuid::new_v4(),
@@ -77,7 +79,11 @@ impl User {
         })
     }
 
-    pub async fn update(auth_id: &Uuid, is_platform_admin: bool, _pool: &PgPool) -> Result<User> {
+    pub async fn update(
+        auth_id: &Uuid,
+        is_platform_admin: bool,
+        _pool: impl Sized,
+    ) -> Result<User> {
         Ok(User {
             id: Uuid::new_v4(),
             auth_id: *auth_id,

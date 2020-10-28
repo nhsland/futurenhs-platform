@@ -54,7 +54,7 @@ impl UsersMutation {
         context: &Context<'_>,
         new_user: NewUser,
     ) -> FieldResult<User> {
-        let pool = context.data()?;
+        let pool: &PgPool = context.data()?;
         let auth_id = Uuid::parse_str(&new_user.auth_id)?;
 
         Ok(

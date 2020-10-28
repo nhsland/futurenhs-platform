@@ -50,7 +50,7 @@ describe(UploadFile, () => {
     ],
   ]);
 
-  test("renders matching snapshot", () => {
+  test("does not explode when rendered", () => {
     const container = render(
       <ThemeProvider theme={theme}>
         <UploadFile urqlClient={client} />
@@ -61,6 +61,6 @@ describe(UploadFile, () => {
         },
       }
     );
-    expect(container.asFragment()).toMatchSnapshot();
+    expect(container.asFragment()).toBeTruthy();
   });
 });

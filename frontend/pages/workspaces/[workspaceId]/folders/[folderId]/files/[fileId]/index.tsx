@@ -6,20 +6,20 @@ import styled from "styled-components";
 import {
   MobileFileList,
   FileTable,
-} from "../../../../../../components/FileTable";
-import { Head } from "../../../../../../components/Head";
-import { DeleteIcon } from "../../../../../../components/Icon";
-import { MainHeading } from "../../../../../../components/MainHeading";
-import { Menu } from "../../../../../../components/Menu";
-import { NavHeader } from "../../../../../../components/NavHeader";
-import { Navigation } from "../../../../../../components/Navigation";
-import { PageLayout } from "../../../../../../components/PageLayout";
+} from "../../../../../../../components/FileTable";
+import { Head } from "../../../../../../../components/Head";
+import { DeleteIcon, UploadIcon } from "../../../../../../../components/Icon";
+import { MainHeading } from "../../../../../../../components/MainHeading";
+import { Menu } from "../../../../../../../components/Menu";
+import { NavHeader } from "../../../../../../../components/NavHeader";
+import { Navigation } from "../../../../../../../components/Navigation";
+import { PageLayout } from "../../../../../../../components/PageLayout";
 import {
   useGetWorkspaceByIdQuery,
   useGetFileByIdQuery,
   useDeleteFileMutation,
-} from "../../../../../../lib/generated/graphql";
-import withUrqlClient from "../../../../../../lib/withUrqlClient";
+} from "../../../../../../../lib/generated/graphql";
+import withUrqlClient from "../../../../../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   flex-grow: 3;
@@ -102,6 +102,12 @@ const FileHomepage = () => {
                   dataCy="file-options"
                   items={[
                     {
+                      title: "Upload new version",
+                      icon: <UploadIcon />,
+                      handler: `/workspaces/${workspaceId}/folders/${folderId}/files/${fileId}/update-file`,
+                      dataCy: "update-file",
+                    },
+                    {
                       title: "Delete file",
                       icon: <DeleteIcon />,
                       handler: onClick,
@@ -114,7 +120,7 @@ const FileHomepage = () => {
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <Description>
-              {file.data?.file.description || "Loading..."}
+              {file.data?.file.description ?? "Loading..."}
             </Description>
             {file.error && <p> Oh no... {file.error?.message} </p>}
             {file.fetching || !file.data ? (

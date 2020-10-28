@@ -1,19 +1,48 @@
 use crate::db;
+use crate::graphql::users::User;
 use crate::graphql::RequestingUser;
-use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use async_graphql::{Context, FieldResult, InputObject, Object, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use sqlx::PgPool;
 use uuid::Uuid;
 
-/// A workspace
-#[derive(SimpleObject)]
 pub struct Workspace {
-    /// The id of the workspace
     id: ID,
-    /// The title of the workspace
     title: String,
-    /// The description of the workspace
     description: String,
+    admins: Uuid,
+    members: Uuid,
+}
+
+#[Object]
+/// A workspace
+impl Workspace {
+    /// The id of the workspace
+    async fn id(&self) -> ID {
+        self.id.clone()
+    }
+    /// The title of the workspace
+    async fn title(&self) -> String {
+        self.title.clone()
+    }
+    /// The description of the workspace
+    async fn description(&self) -> String {
+        self.description.clone()
+    }
+
+    /// List of users in the admin group
+    async fn admins(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
+        let pool = context.data()?;
+        let users = db::Group::group_members(self.admins, pool).await?;
+        Ok(users.into_iter().map(Into::into).collect())
+    }
+
+    /// List of all users who are members of this workspace
+    async fn members(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
+        let pool = context.data()?;
+        let users = db::Group::group_members(self.members, pool).await?;
+        Ok(users.into_iter().map(Into::into).collect())
+    }
 }
 
 impl From<db::Workspace> for Workspace {
@@ -22,6 +51,8 @@ impl From<db::Workspace> for Workspace {
             id: d.id.into(),
             title: d.title,
             description: d.description,
+            admins: d.admins,
+            members: d.members,
         }
     }
 }

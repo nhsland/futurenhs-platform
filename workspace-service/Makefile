@@ -1,8 +1,13 @@
 app := workspace-service
 image := fnhsproduction.azurecr.io/$(app)
 tag := latest
-localdb := postgres://postgres:postgres@localhost:5432
+
 db := $$(kubectl get secret -n workspace-service workspace-service -o jsonpath='{.data.url}' | base64 -D)
+localdb := postgres://postgres:postgres@localhost:5432
+
+# Azurite default storage account: https://github.com/Azure/Azurite#default-storage-account
+localazurekey := Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+localazure := 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=$(localazurekey);BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;'
 
 .PHONY: default
 default: ## Run locally
@@ -14,15 +19,27 @@ run: ## Fetch DB URL and run locally
 	UPLOAD_CONTAINER_URL=$$(kubectl get configmap -n workspace-service files-storage-account -o jsonpath='{.data.upload_container_id}') \
 	FILES_CONTAINER_URL=$$(kubectl get configmap -n workspace-service files-storage-account -o jsonpath='{.data.files_container_id}') \
 	FILE_STORAGE_ACCESS_KEY=$$(kubectl get secret -n workspace-service files-storage-account -o jsonpath='{.data.primary_access_key}' | base64 -D) \
-	$(MAKE)
+		$(MAKE)
 
 .PHONY: run-local
-run-local: migrate-local ## Fetch DB URL and run locally. Does not have file support yet.
-	UPLOAD_CONTAINER_URL=https://obviously.fake \
-	FILES_CONTAINER_URL=https://obviously.fake \
-	FILE_STORAGE_ACCESS_KEY=also-fake \
+run-local: migrate-local ## Run locally against Postgres and Azure running in Docker
 	DATABASE_URL=$(localdb) \
+	UPLOAD_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/upload \
+	FILES_CONTAINER_URL=http://127.0.0.1:10000/devstoreaccount1/files \
+	FILE_STORAGE_ACCESS_KEY=$(localazurekey) \
 		$(MAKE)
+
+.PHONY: check
+check: ## Run `cargo check` (because David keeps saying "make check" when he means "cargo check").
+	cargo check
+
+.PHONY: clippy
+clippy: ## Run `cargo clippy`, the Rust linter.
+	cargo clippy
+
+.PHONY: fmt
+fmt: ## Run `cargo fmt` (convenience so that you can write `make fmt check test clippy` in one command)
+	cargo fmt
 
 .PHONY: test
 test: ## Run tests [TEST=test_name (optional)]
@@ -58,9 +75,13 @@ reset-local: ## Resets local database
 	docker-compose down --volumes
 
 .PHONY: migrate-local
-migrate-local: ## Bring up local postgres and migrate it.
-	docker-compose up -d \
-	&& until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
+migrate-local: ## Bring up local dependencies, run DB migrations and setup storage account
+	docker-compose up -d
+	until DATABASE_URL=$(localdb) cargo sqlx migrate run; do sleep 1; done
+	az storage cors clear --connection-string=$(localazure) --services b
+	az storage cors add --connection-string=$(localazure) --services b --methods DELETE GET HEAD MERGE OPTIONS POST PUT --origins '*' --allowed-headers '*'
+	az storage container create --connection-string=$(localazure) -n upload -o none
+	az storage container create --connection-string=$(localazure) -n files -o none
 
 # You must have a version of sqlx that includes this patch
 # cargo install --git https://github.com/launchbadge/sqlx --rev 144dcceb445e804b16258d0dd9e580d6a484a01e sqlx-cli
@@ -82,4 +103,4 @@ graphql-schema.json: ## Regenerate the graphql-schema.json
 
 .PHONY: help
 help: ## Display this help screen
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

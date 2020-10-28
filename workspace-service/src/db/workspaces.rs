@@ -1,6 +1,8 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
+#[cfg(not(test))]
+use crate::db::Group;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
 
@@ -9,15 +11,29 @@ pub struct Workspace {
     pub id: Uuid,
     pub title: String,
     pub description: String,
+    pub admins: Uuid,
+    pub members: Uuid,
 }
 
 #[cfg(not(test))]
 impl Workspace {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
-        let workspace =
-            sqlx::query_file_as!(Workspace, "sql/workspaces/create.sql", title, description)
-                .fetch_one(pool)
-                .await?;
+        let mut tx = pool.begin().await?;
+
+        let admins = Group::create(&format!("{} Admins", title), &mut tx).await?;
+        let members = Group::create(&format!("{} Members", title), &mut tx).await?;
+
+        let workspace = sqlx::query_file_as!(
+            Workspace,
+            "sql/workspaces/create.sql",
+            title,
+            description,
+            admins.id,
+            members.id
+        )
+        .fetch_one(&mut tx)
+        .await?;
+        tx.commit().await?;
 
         Ok(workspace)
     }
@@ -75,6 +91,8 @@ impl Workspace {
             id: Uuid::new_v4(),
             title: title.to_string(),
             description: description.to_string(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
@@ -88,6 +106,8 @@ impl Workspace {
             id,
             title: "fake workspace".into(),
             description: "fake workspace for tests".into(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
@@ -102,6 +122,8 @@ impl Workspace {
             id,
             title: title.to_string(),
             description: description.to_string(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
@@ -111,6 +133,8 @@ impl Workspace {
             id,
             title: "fake deleted workspace".into(),
             description: "fake deleted workspace for tests".into(),
+            admins: Uuid::new_v4(),
+            members: Uuid::new_v4(),
         };
         Ok(workspace)
     }
