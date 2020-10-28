@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FileTable } from ".";
+import { Table } from ".";
 import { File } from "../../lib/generated/graphql";
 import { render } from "../../lib/test-helpers/render";
 
@@ -16,10 +16,10 @@ const fakeFile: File = {
   title: "My Fake File",
 };
 
-describe(FileTable, () => {
+describe(Table, () => {
   it("renders title with a surrounding <a> when given a correct function component", () => {
     const { getByText } = render(
-      <FileTable
+      <Table
         // eslint-disable-next-line react/display-name
         columns={[{ content: (f: File) => <a href={f.fileName}>{f.title}</a> }]}
         data={[fakeFile]}
@@ -30,7 +30,7 @@ describe(FileTable, () => {
 
   it("renders title without a surrounding <a> when the supplied function component has no link", () => {
     const { getByText } = render(
-      <FileTable
+      <Table
         // eslint-disable-next-line react/display-name
         columns={[{ content: (f: File) => <span>{f.title}</span> }]}
         data={[fakeFile]}
@@ -41,12 +41,7 @@ describe(FileTable, () => {
 
   it("displays the table heading if given", () => {
     const { getByText } = render(
-      <FileTable
-        data={[fakeFile]}
-        // eslint-disable-next-line react/display-name
-        columns={[]}
-        tableHeading="I am a table"
-      />
+      <Table data={[fakeFile]} columns={[]} tableHeading="I am a table" />
     );
     expect(getByText("I am a table"));
   });

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { Table } from "nhsuk-react-components";
+import { Table as NHSTable } from "nhsuk-react-components";
 import styled from "styled-components";
 
 const TableContainer = styled.div`
@@ -18,7 +18,7 @@ const TableContainer = styled.div`
   }
 `;
 
-const NHSTable = styled(Table)`
+const StyledTable = styled(NHSTable)`
   tbody tr:hover {
     background: ${({ theme }) => theme.colorNhsukWhite};
   }
@@ -40,31 +40,33 @@ interface Props<ItemType extends Item> {
   tableHeading?: string;
 }
 
-export const FileTable = <ItemType extends Item>({
+const TableComponent = <ItemType extends Item>({
   columns,
   data,
   tableHeading,
 }: Props<ItemType>) => (
   <TableContainer>
-    <Table.Panel heading={tableHeading}>
-      <NHSTable>
-        <Table.Head>
-          <Table.Row>
+    <NHSTable.Panel heading={tableHeading}>
+      <StyledTable>
+        <NHSTable.Head>
+          <NHSTable.Row>
             {columns.map((c, i) => (
-              <Table.Cell key={i}>{c.name}</Table.Cell>
+              <NHSTable.Cell key={i}>{c.name}</NHSTable.Cell>
             ))}
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
+          </NHSTable.Row>
+        </NHSTable.Head>
+        <NHSTable.Body>
           {data.map((x) => (
-            <Table.Row key={x.id}>
+            <NHSTable.Row key={x.id}>
               {columns.map(({ content }, i) => (
-                <Table.Cell key={i}>{content(x)}</Table.Cell>
+                <NHSTable.Cell key={i}>{content(x)}</NHSTable.Cell>
               ))}
-            </Table.Row>
+            </NHSTable.Row>
           ))}
-        </Table.Body>
-      </NHSTable>
-    </Table.Panel>
+        </NHSTable.Body>
+      </StyledTable>
+    </NHSTable.Panel>
   </TableContainer>
 );
+
+export { TableComponent as Table };

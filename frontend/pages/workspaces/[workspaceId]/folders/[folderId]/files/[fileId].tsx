@@ -1,14 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { parseISO, format } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import {
-  MobileFileList,
-  FileTable,
-} from "../../../../../../components/FileTable";
 import { Head } from "../../../../../../components/Head";
 import { DeleteIcon, FileIcon } from "../../../../../../components/Icon";
 import { MainHeading } from "../../../../../../components/MainHeading";
@@ -16,6 +12,7 @@ import { Menu } from "../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../components/PageLayout";
+import { MobileFileList, Table } from "../../../../../../components/Table";
 import {
   File,
   useGetWorkspaceByIdQuery,
@@ -51,15 +48,23 @@ const Description = styled.p`
   padding-bottom: 40px;
 `;
 
-const ModifiedDate = styled.span`
-  color: ${({ theme }) => theme.colorNhsukGrey1};
-`;
-
 const DownloadFile = styled.a`
   display: inline-block;
   padding-right: 8px;
   font-size: 16px;
 `;
+
+const iconCell: FC<File> = ({ fileType }) => <FileIcon fileType={fileType} />;
+
+const titleCell: FC<File> = ({ title }) => <>{title}</>;
+
+const ModifiedDate = styled.span`
+  color: ${({ theme }) => theme.colorNhsukGrey1};
+`;
+
+const modifiedAtCell: FC<File> = ({ modifiedAt }) => (
+  <ModifiedDate>{format(parseISO(modifiedAt), "LLL d, yyyy")}</ModifiedDate>
+);
 
 const FileHomepage = () => {
   const router = useRouter();
@@ -95,6 +100,12 @@ const FileHomepage = () => {
       await router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
     }
   };
+
+  const actionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <DownloadFile>Download file</DownloadFile>
+    </Link>
+  );
 
   return (
     <>
@@ -139,40 +150,12 @@ const FileHomepage = () => {
                   workspaceId={workspaceId}
                   titleLink={false}
                 />
-                <FileTable
+                <Table
                   columns={[
-                    {
-                      name: "Title",
-                      // eslint-disable-next-line react/display-name
-                      content: ({ fileType }: File) => (
-                        <FileIcon fileType={fileType} />
-                      ),
-                    },
-                    {
-                      // eslint-disable-next-line react/display-name
-                      content: ({ title }: File) => <span>{title}</span>,
-                    },
-                    {
-                      name: "Last modified",
-                      // eslint-disable-next-line react/display-name
-                      content: ({ modifiedAt }: File) => (
-                        <ModifiedDate>
-                          {format(parseISO(modifiedAt), "LLL d, yyyy")}
-                        </ModifiedDate>
-                      ),
-                    },
-                    {
-                      name: "Actions",
-                      // eslint-disable-next-line react/display-name
-                      content: ({ id }: File) => (
-                        <Link
-                          href={`/workspaces/${workspaceId}/download/${id}`}
-                          passHref
-                        >
-                          <DownloadFile>Download file</DownloadFile>
-                        </Link>
-                      ),
-                    },
+                    { name: "Title", content: iconCell },
+                    { content: titleCell },
+                    { name: "Last modified", content: modifiedAtCell },
+                    { name: "Actions", content: actionsCell },
                   ]}
                   data={[file.data.file as File]}
                 />

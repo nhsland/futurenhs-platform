@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { parseISO, format } from "date-fns";
 import { NextPage } from "next";
@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { MobileFileList, FileTable } from "../../../../../components/FileTable";
 import { Head } from "../../../../../components/Head";
 import {
   DeleteIcon,
@@ -21,6 +20,7 @@ import { Menu, MenuItem } from "../../../../../components/Menu";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
+import { MobileFileList, Table } from "../../../../../components/Table";
 import {
   File,
   useGetFolderByIdQuery,
@@ -52,9 +52,15 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
+const iconCell: FC<File> = ({ fileType }) => <FileIcon fileType={fileType} />;
+
 const ModifiedDate = styled.span`
   color: ${({ theme }) => theme.colorNhsukGrey1};
 `;
+
+const modifiedAtCell: FC<File> = ({ modifiedAt }) => (
+  <ModifiedDate>{format(parseISO(modifiedAt), "LLL d, yyyy")}</ModifiedDate>
+);
 
 const DownloadFile = styled.a`
   display: inline-block;
@@ -107,6 +113,23 @@ const FolderHomepage: NextPage = () => {
     },
   ];
 
+  const titleCell: FC<File> = ({ id, title }) => (
+    <Link
+      href={`/workspaces/${workspaceId}/folders/${folderId}/files/${id}`}
+      passHref
+    >
+      <a>
+        <span>{title}</span>
+      </a>
+    </Link>
+  );
+
+  const downloadCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <DownloadFile>Download file</DownloadFile>
+    </Link>
+  );
+
   return (
     <>
       <Head
@@ -148,49 +171,12 @@ const FolderHomepage: NextPage = () => {
                   titleLink={true}
                   tableHeading="Files"
                 ></MobileFileList>
-                <FileTable
+                <Table
                   columns={[
-                    {
-                      name: "Title",
-                      // eslint-disable-next-line react/display-name
-                      content: ({ fileType }: File) => (
-                        <FileIcon fileType={fileType} />
-                      ),
-                    },
-                    {
-                      // eslint-disable-next-line react/display-name
-                      content: ({ id, title }: File) => (
-                        <Link
-                          href={`/workspaces/${workspaceId}/folders/${folder.data?.folder.id}/files/${id}`}
-                          passHref
-                        >
-                          <a>
-                            <span>{title}</span>
-                          </a>
-                        </Link>
-                      ),
-                    },
-                    {
-                      name: "Last modified",
-                      // eslint-disable-next-line react/display-name
-                      content: ({ modifiedAt }: File) => (
-                        <ModifiedDate>
-                          {format(parseISO(modifiedAt), "LLL d, yyyy")}
-                        </ModifiedDate>
-                      ),
-                    },
-                    {
-                      name: "Actions",
-                      // eslint-disable-next-line react/display-name
-                      content: ({ id }: File) => (
-                        <Link
-                          href={`/workspaces/${workspaceId}/download/${id}`}
-                          passHref
-                        >
-                          <DownloadFile>Download file</DownloadFile>
-                        </Link>
-                      ),
-                    },
+                    { name: "Title", content: iconCell },
+                    { content: titleCell },
+                    { name: "Last modified", content: modifiedAtCell },
+                    { name: "Actions", content: downloadCell },
                   ]}
                   data={files.data.filesByFolder as File[]}
                   tableHeading="Files"
