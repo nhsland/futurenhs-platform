@@ -1,5 +1,6 @@
 use super::{azure, db, validation, RequestingUser};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use fnhs_event_models::{Event, EventClient, EventPublisher as _, FileCreatedData};
 use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
 use mime_db::extensions2;
@@ -205,8 +206,9 @@ impl FilesMutation {
         let pool = context.data()?;
         let azure_config = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
+        let event_client: &EventClient = context.data()?;
 
-        create_file(new_file, pool, azure_config, requesting_user).await
+        create_file(new_file, pool, azure_config, requesting_user, event_client).await
     }
 
     /// Create a new file version (returns the updated file)
@@ -246,12 +248,13 @@ async fn create_file(
     pool: &PgPool,
     azure_config: &azure::Config,
     requesting_user: &RequestingUser,
+    event_client: &EventClient,
 ) -> FieldResult<File> {
     new_file
         .validate()
         .map_err(validation::ValidationError::from)?;
 
-    let folder = Uuid::parse_str(&new_file.folder)?;
+    let folder_id = Uuid::parse_str(&new_file.folder)?;
     let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     let destination = azure::copy_blob_from_url(
         &Url::parse(&new_file.temporary_blob_storage_path)?,
@@ -259,10 +262,12 @@ async fn create_file(
     )
     .await?;
 
-    let file = db::FileWithVersion::create(
+    let folder = db::Folder::find_by_id(folder_id, pool).await?;
+
+    let file: File = db::FileWithVersion::create(
         db::CreateFileArgs {
             user_id: user.id,
-            folder_id: folder,
+            folder_id,
             title: &new_file.title,
             description: &new_file.description,
             file_name: &new_file.file_name,
@@ -271,11 +276,28 @@ async fn create_file(
         },
         pool,
     )
-    .await?;
+    .await?
+    .into();
 
-    // TODO: add event.
+    event_client
+       .publish_events(&[Event::new(
+           file.id.clone(),
+           FileCreatedData {
+               file_id: file.id.to_string(),
+               created_at: file.created_at.to_rfc3339(),
+               file_description: file.description.clone(),
+               file_title: file.title.clone(),
+               file_type: file.file_type.clone(),
+               folder_id: folder_id.to_string(),
+               user_id: user.id.to_string(),
+               workspace_id: folder.workspace.to_string(),
+               version_id: file.latest_version.to_string(),
 
-    Ok(file.into())
+           }
+       )])
+        .await?;
+
+    Ok(file)
 }
 
 async fn create_file_version(
