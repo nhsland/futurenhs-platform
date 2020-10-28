@@ -370,6 +370,7 @@ async fn create_file_version(
 mod test {
     use super::*;
     use crate::graphql::test_mocks::*;
+    use fnhs_event_models::EventData;
     use test_case::test_case;
 
     #[test_case("filename.doc", Some("application/msword") , None ; "good extension doc")]
@@ -442,6 +443,7 @@ mod test {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
         let requesting_user = mock_unprivileged_requesting_user();
+        let (events, event_client) = mock_event_emitter();
 
         let result = create_file(
             NewFile {
@@ -456,10 +458,12 @@ mod test {
             &pool,
             &azure_config,
             &requesting_user,
+            &event_client,
         )
         .await;
 
         assert_eq!(result.unwrap().title, "title");
+        assert!(events.try_iter().any(|e| matches!(e.data, EventData::FileCreated(_))));
 
         Ok(())
     }
