@@ -68,11 +68,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
           activeFolder={folderId}
         />
         <PageContent>
-          <MainHeading>
-            {folder.fetching
-              ? "Loading..."
-              : folder.data?.folder.title || "No title!"}
-          </MainHeading>
+          <MainHeading>Upload files</MainHeading>
           <H2 title="File details" />
           <p> Fields marked with * are mandatory.</p>
           <CreateFileForm
