@@ -63,6 +63,7 @@ const LinkList = styled.ul`
 
 const LinkListItem = styled.li`
   list-style-type: none;
+  font-size: 16px;
 `;
 
 interface Props {
