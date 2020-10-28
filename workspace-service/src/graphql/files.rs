@@ -549,7 +549,7 @@ mod test {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
         let requesting_user = mock_unprivileged_requesting_user();
-        let (_, event_client) = mock_event_emitter();
+        let (events, event_client) = mock_event_emitter();
 
         let file_id = Uuid::new_v4();
         let result = create_file_version(
@@ -575,6 +575,7 @@ mod test {
             "specified version is not the latest version of the file"
         );
 
+        assert_eq!(0, events.try_iter().count());
         Ok(())
     }
 }
