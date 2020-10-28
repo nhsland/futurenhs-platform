@@ -1663,6 +1663,54 @@
                 "ofType": null
               }
             }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "List of users in the admin group",
+            "isDeprecated": false,
+            "name": "admins",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "User",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "List of all users who are members of this workspace",
+            "isDeprecated": false,
+            "name": "members",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "User",
+                    "ofType": null
+                  }
+                }
+              }
+            }
           }
         ],
         "inputFields": null,

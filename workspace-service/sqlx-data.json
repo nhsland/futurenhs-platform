@@ -778,6 +778,44 @@
       ]
     }
   },
+  "c66d90fd25750d0d2094e60271dcd8e92d4ad0d110ee17d5d0e8465400461d95": {
+    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_groups ON users.id = user_groups.user_id\nWHERE\n\tuser_groups.group_id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "cba8c2bf445a8315bdc51b6b3e87629cb2cb05186240a7731157c4f6b34ca377": {
     "query": "UPDATE folders\nSET title = COALESCE($2, title),\n    description = COALESCE($3, description)\nWHERE id = $1\nRETURNING id, title, description, workspace\n",
     "describe": {

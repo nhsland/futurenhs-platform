@@ -1,6 +1,7 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
+use crate::db::User;
 use anyhow::Result;
 use sqlx::types::Uuid;
 use sqlx::{Executor, Postgres};
@@ -23,6 +24,16 @@ impl Group {
 
         Ok(group)
     }
+    pub async fn group_members<'c, E>(id: Uuid, executor: E) -> Result<Vec<User>>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let users = sqlx::query_file_as!(User, "sql/groups/group_members.sql", id)
+            .fetch_all(executor)
+            .await?;
+
+        Ok(users)
+    }
 }
 
 // Fake implementation for tests. If you want integration tests that exercise the database,
@@ -39,5 +50,14 @@ impl Group {
             title: title.to_string(),
         };
         Ok(group)
+    }
+
+    pub async fn group_members<'c, E>(id: Uuid, executor: E) -> Result<Vec<User>>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let users = vec![User::find_by_auth_id(&id, executor).await?];
+
+        Ok(users)
     }
 }
