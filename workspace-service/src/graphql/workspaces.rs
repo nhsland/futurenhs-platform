@@ -1,12 +1,11 @@
 use crate::db;
 use crate::graphql::RequestingUser;
-use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use async_graphql::{Context, FieldResult, InputObject, Object, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use sqlx::PgPool;
 use uuid::Uuid;
 
 /// A workspace
-#[derive(SimpleObject)]
 pub struct Workspace {
     /// The id of the workspace
     id: ID,
@@ -14,6 +13,21 @@ pub struct Workspace {
     title: String,
     /// The description of the workspace
     description: String,
+}
+
+#[Object]
+impl Workspace {
+    async fn id(&self) -> ID {
+        self.id.clone()
+    }
+
+    async fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    async fn description(&self) -> String {
+        self.description.clone()
+    }
 }
 
 impl From<db::Workspace> for Workspace {
