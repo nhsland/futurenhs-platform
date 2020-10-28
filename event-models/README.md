@@ -13,4 +13,4 @@ If you need to update the schema, e.g. to add a new event, follow these steps:
 
 1. Edit the [schema.json](./schema.json) file
 2. Update the TypeScript types by running `yarn generate` in the [`typescript`](./typescript) folder.
-3. Update the Rust types by adding a line to the `event_serialization!` macro invocation in [`lib.rs`](./rust/src/lib.rs).
+3. Update the Rust types by adding a line to the `event_serialization!` macro invocation in [`models.rs`](./rust/src/models.rs).

@@ -6,7 +6,13 @@
  */
 
 export type Event = BaseEvent &
-  (ContentViewed | FolderCreated | WorkspaceCreated);
+  (
+    | ContentViewed
+    | FileCreated
+    | FileUpdated
+    | FolderCreated
+    | WorkspaceCreated
+  );
 
 export interface BaseEvent {
   id: string;
@@ -23,6 +29,71 @@ export interface ContentViewed {
     contentType: "Folder" | "File";
     workspaceId: string;
     error?: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export interface FileCreated {
+  eventType: "FileCreated";
+  dataVersion: "1";
+  data: {
+    fileId: string;
+    /**
+     * The date at which the file has been created
+     */
+    createdAt: string;
+    /**
+     * The folder that the file is in
+     */
+    folderId: string;
+    /**
+     * The workspace that the file is in
+     */
+    workspaceId: string;
+    fileTitle: string;
+    fileDescription: string;
+    /**
+     * The MIME type of the file, e.g. text/csv for a CSV file
+     */
+    fileType: string;
+    versionId: string;
+    /**
+     * The user that created the file
+     */
+    userId: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export interface FileUpdated {
+  eventType: "FileUpdated";
+  dataVersion: "1";
+  data: {
+    fileId: string;
+    /**
+     * The date at which the file has been updated (= the new file version has been created)
+     */
+    updatedAt: string;
+    /**
+     * The folder that the file is in
+     */
+    folderId: string;
+    /**
+     * The workspace that the file is in
+     */
+    workspaceId: string;
+    fileTitle: string;
+    fileDescription: string;
+    /**
+     * The MIME type of the file, e.g. text/csv for a CSV file
+     */
+    fileType: string;
+    versionId: string;
+    versionNumber: number;
+    /**
+     * The user that created the file
+     */
+    userId: string;
     [k: string]: unknown;
   };
   [k: string]: unknown;
