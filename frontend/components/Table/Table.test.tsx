@@ -1,8 +1,10 @@
+import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 
 import { Table } from ".";
 import { File } from "../../lib/generated/graphql";
 import { render } from "../../lib/test-helpers/render";
+import { IconCell } from "../Files";
 
 const fakeFile: File = {
   id: "fake-file",
@@ -44,5 +46,20 @@ describe(Table, () => {
       <Table data={[fakeFile]} columns={[]} tableHeading="I am a table" />
     );
     expect(getByText("I am a table"));
+  });
+
+  it("displays an icon", () => {
+    const { getByText } = render(
+      <Table
+        icon={IconCell}
+        // eslint-disable-next-line react/display-name
+        columns={[{ content: (x: File) => <>{x.title}</> }]}
+        data={[fakeFile]}
+      />
+    );
+
+    expect(getByText(fakeFile.title)?.firstChild).toHaveClass(
+      "file-icon-wrapper"
+    );
   });
 });

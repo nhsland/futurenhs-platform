@@ -1,8 +1,10 @@
+import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 
 import { MobileList } from ".";
 import { File } from "../../lib/generated/graphql";
 import { render } from "../../lib/test-helpers/render";
+import { IconCell } from "../Files";
 
 const fakeFile: File = {
   id: "fake-file",
@@ -45,5 +47,20 @@ describe(MobileList, () => {
     );
 
     getByText("I am a table");
+  });
+
+  it("displays an icon", () => {
+    const { getByText } = render(
+      <MobileList
+        icon={IconCell}
+        // eslint-disable-next-line react/display-name
+        columns={[{ content: (x: File) => <>{x.title}</> }]}
+        data={[fakeFile]}
+      />
+    );
+
+    expect(getByText(fakeFile.title)?.closest("li")?.firstChild).toHaveClass(
+      "file-icon-wrapper"
+    );
   });
 });

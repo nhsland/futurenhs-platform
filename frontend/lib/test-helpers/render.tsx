@@ -10,7 +10,7 @@ import theme from "../../lib/fixtures/theme.json";
 export * from "@testing-library/react";
 
 // --------------------------------------------------
-// Override the default test render with our own, which inclues a router and
+// Override the default test render with our own, which includes a router and
 // theme mock.
 //
 // You can override the router mock like this:
