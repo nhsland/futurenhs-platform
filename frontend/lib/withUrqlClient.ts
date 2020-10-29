@@ -1,5 +1,10 @@
 import { devtoolsExchange } from "@urql/devtools";
-import { cacheExchange } from "@urql/exchange-graphcache";
+import {
+  cacheExchange,
+  Cache,
+  Data,
+  Variables,
+} from "@urql/exchange-graphcache";
 import { NextPage } from "next";
 import { withUrqlClient as withUrqlClientImpl } from "next-urql";
 import NextApp from "next/app";
@@ -8,11 +13,8 @@ import { dedupExchange, fetchExchange } from "urql";
 import { User } from "./auth";
 import {
   CreateFileMutation,
-  CreateFileVersionMutation,
   CreateFolderMutation,
   DeleteFileMutation,
-  GetFileByIdDocument,
-  GetFileByIdQuery,
   FilesByFolderDocument,
   FilesByFolderQuery,
   FoldersByWorkspaceDocument,
@@ -24,6 +26,29 @@ const isServerSide = typeof window === "undefined";
 const workspaceAPIServerUrl = isServerSide
   ? requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT")
   : "/api/graphql";
+
+/**
+ * Creates an UpdateResolver for a given Mutation type.
+ */
+const resolve = <T extends { __typename?: "Mutation" }>(
+  handler: (result: T, cache: Cache) => void
+) => (result: Data, _args: Variables, cache: Cache) =>
+  handler((result as unknown) as T, cache);
+
+/**
+ * Creates an updater for a given Query type.
+ */
+const updateWithNull = <T extends { __typename?: "Query" }>(
+  handler: (data: T | null) => T | null
+) => (data: Data | null) => handler(data as T | null) as Data | null;
+
+/**
+ * Creates an updater for a given Query type, which performs no update if the
+ * currently cached query result is null.
+ */
+const update = <T extends { __typename?: "Query" }>(
+  handler: (data: T) => T | null
+) => updateWithNull<T>((data) => (data === null ? null : handler(data)));
 
 export default function withUrqlClient(
   component: NextPage<any> | typeof NextApp
@@ -47,118 +72,37 @@ export default function withUrqlClient(
           keys: {},
           updates: {
             Mutation: {
-              createFolder: (result, _args, cache) => {
-                const folderMutation = result as CreateFolderMutation;
+              createFolder: resolve<CreateFolderMutation>((result, cache) => {
                 cache.updateQuery(
                   {
                     query: FoldersByWorkspaceDocument,
                     variables: {
-                      workspace: folderMutation.createFolder.workspace,
+                      workspace: result.createFolder.workspace,
                     },
                   },
-                  (data) => {
-                    const foldersByWorkspaceQuery = data as FoldersByWorkspaceQuery | null;
-                    if (foldersByWorkspaceQuery === null) {
-                      return null;
-                    }
-                    foldersByWorkspaceQuery.foldersByWorkspace.push(
-                      folderMutation.createFolder
-                    );
+                  update<FoldersByWorkspaceQuery>((data) => {
+                    data.foldersByWorkspace.push(result.createFolder);
                     return data;
-                  }
+                  })
                 );
-              },
-              deleteFile: (result, _args, cache) => {
-                const mutationResult = result as DeleteFileMutation;
+              }),
+              deleteFile: resolve<DeleteFileMutation>((result, cache) => {
+                cache.invalidate(result.deleteFile as Data);
+              }),
+              createFile: resolve<CreateFileMutation>((result, cache) => {
                 cache.updateQuery(
                   {
                     query: FilesByFolderDocument,
                     variables: {
-                      folder: mutationResult.deleteFile.folder,
+                      folder: result.createFile.folder,
                     },
                   },
-                  (data) => {
-                    const filesByFolderQuery = data as FilesByFolderQuery | null;
-                    if (filesByFolderQuery === null) {
-                      return null;
-                    }
-                    const arr = filesByFolderQuery.filesByFolder.filter(
-                      (file) => file.id !== mutationResult.deleteFile.id
-                    );
-
-                    filesByFolderQuery.filesByFolder = arr;
-
+                  update<FilesByFolderQuery>((data) => {
+                    data.filesByFolder.push(result.createFile);
                     return data;
-                  }
+                  })
                 );
-              },
-              createFile: (result, _args, cache) => {
-                const fileMutation = result as CreateFileMutation;
-                cache.updateQuery(
-                  {
-                    query: FilesByFolderDocument,
-                    variables: {
-                      folder: fileMutation.createFile.folder,
-                    },
-                  },
-                  (data) => {
-                    const filesByFolderQuery = data as FilesByFolderQuery | null;
-                    if (filesByFolderQuery === null) {
-                      return null;
-                    }
-                    filesByFolderQuery.filesByFolder.push(
-                      fileMutation.createFile
-                    );
-                    return data;
-                  }
-                );
-              },
-              createFileVersion: (result, _args, cache) => {
-                const fileMutation = result as CreateFileVersionMutation;
-                cache.updateQuery(
-                  {
-                    query: FilesByFolderDocument,
-                    variables: {
-                      folder: fileMutation.createFileVersion.folder,
-                    },
-                  },
-                  (data) => {
-                    const filesByFolderQuery = data as FilesByFolderQuery | null;
-                    if (filesByFolderQuery === null) {
-                      return null;
-                    }
-
-                    const arr = filesByFolderQuery.filesByFolder.filter(
-                      (file) => file.id !== fileMutation.createFileVersion.id
-                    );
-
-                    filesByFolderQuery.filesByFolder = arr;
-
-                    filesByFolderQuery.filesByFolder.push(
-                      fileMutation.createFileVersion
-                    );
-                    return data;
-                  }
-                );
-                cache.updateQuery(
-                  {
-                    query: GetFileByIdDocument,
-                    variables: {
-                      id: fileMutation.createFileVersion.id,
-                    },
-                  },
-                  (data) => {
-                    const getFileByIdQuery = data as GetFileByIdQuery | null;
-
-                    if (getFileByIdQuery === null) {
-                      return null;
-                    }
-
-                    getFileByIdQuery.file = fileMutation.createFileVersion;
-                    return data;
-                  }
-                );
-              },
+              }),
             },
           },
         }),
