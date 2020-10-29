@@ -20,20 +20,20 @@ describe("Browse files", () => {
         .within(() => {
           cy.get("td").eq(0).get(`svg[width="28"]`);
           cy.get("td")
-            .eq(1)
+            .eq(0)
             .contains("London Region NHS England Safeguarding Annual Review");
-          cy.get("td").eq(2).contains("Oct 6, 2020");
-          cy.get("td").eq(3).contains("a", "Download file");
+          cy.get("td").eq(1).contains("Oct 6, 2020");
+          cy.get("td").eq(2).contains("a", "Download file");
         });
       cy.get("tr")
         .eq(2)
         .within(() => {
           cy.get("td").eq(0).get(`svg[width="28"]`);
           cy.get("td")
-            .eq(1)
+            .eq(0)
             .contains("Midlands & East Region Safeguarding Annual Report");
-          cy.get("td").eq(2).contains("Oct 6, 2020");
-          cy.get("td").eq(3).contains("a", "Download file");
+          cy.get("td").eq(1).contains("Oct 6, 2020");
+          cy.get("td").eq(2).contains("a", "Download file");
         });
     });
   });
@@ -84,7 +84,7 @@ describe("Browse files", () => {
       .eq(1)
       .within(() => {
         cy.get("td")
-          .eq(1)
+          .eq(0)
           .contains("London Region NHS England Safeguarding Annual Review")
           .click();
       });
@@ -99,10 +99,10 @@ describe("Browse files", () => {
       .within(() => {
         cy.get("td").eq(0).get(`svg[width="28"]`);
         cy.get("td")
-          .eq(1)
+          .eq(0)
           .contains("London Region NHS England Safeguarding Annual Review");
-        cy.get("td").eq(2).contains("Oct 6, 2020");
-        cy.get("td").eq(3).contains("a", "Download file");
+        cy.get("td").eq(1).contains("Oct 6, 2020");
+        cy.get("td").eq(2).contains("a", "Download file");
       });
 
     cy.get("tr").should("have.length", 2);
