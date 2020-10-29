@@ -4,12 +4,29 @@ import styled from "styled-components";
 
 import { MinusIcon, PlusIcon } from "../Icon";
 
-const IconClickTarget = styled.div`
+const IconClickTarget = styled.button`
   width: 44px;
   height: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  background-color: inherit;
+
+  color: ${({ theme }) => theme.colorNhsukBlue};
+
+  :hover {
+    opacity: 1;
+    color: ${({ theme }) => theme.colorShadeNhsukBlue35};
+  }
+
+  :active,
+  :focus {
+    /* FIXME: make the + black */
+    opacity: 1;
+    color: ${({ theme }) => theme.colorNhsukYellow};
+    outline: none;
+  }
 `;
 
 const ExpandIcon: FC<{ expanded: boolean; onClick: () => void }> = ({
