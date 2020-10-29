@@ -19,8 +19,11 @@ const TableContainer = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  /* TODO: find the figma for this and make the spacing correct */
   display: flex;
+  .file-icon-wrapper {
+    flex-shrink: 0;
+    padding-right: 8px;
+  }
 `;
 
 const StyledTable = styled(NHSTable)`
