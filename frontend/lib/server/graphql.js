@@ -3,22 +3,27 @@ const { createClient } = require("urql");
 
 const { requireEnv } = require("./requireEnv");
 
-const getOrCreateUser = async ({ authId, name }) => {
+const getOrCreateUser = async ({ authId, name, emailAddress }) => {
   const client = createClient({
     url: requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT"),
   });
   const query = gql`
-    mutation($authId: ID!, $name: String!) {
-      getOrCreateUser(newUser: { authId: $authId, name: $name }) {
+    mutation($authId: ID!, $name: String!, $emailAddress: String!) {
+      getOrCreateUser(
+        newUser: { authId: $authId, name: $name, emailAddress: $emailAddress }
+      ) {
         id
         name
         authId
+        emailAddress
         isPlatformAdmin
       }
     }
   `;
 
-  const result = await client.mutation(query, { authId, name }).toPromise();
+  const result = await client
+    .mutation(query, { authId, name, emailAddress })
+    .toPromise();
   if (result.error) {
     throw result.error;
   } else {

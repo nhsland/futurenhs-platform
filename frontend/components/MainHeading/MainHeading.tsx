@@ -4,19 +4,20 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
 `;
 
 const H1 = styled.h1`
-  padding-top: 24px;
+  flex-grow: 1;
   font-size: 40px;
   line-height: 1.25;
+  overflow-wrap: break-word;
+  padding-top: 24px;
+  width: 0px;
 `;
 
 interface Props {
   children: string;
-  withBorder?: boolean;
   menu?: ReactNode;
 }
 

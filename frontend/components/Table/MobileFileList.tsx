@@ -35,7 +35,10 @@ const RHContainer = styled.div`
   }
 `;
 
-const MobileTitle = styled.p`
+const MobileTitle = styled.h3`
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
   padding-bottom: 20px;
 `;
 

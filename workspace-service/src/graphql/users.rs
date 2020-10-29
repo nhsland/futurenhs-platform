@@ -12,6 +12,8 @@ pub struct User {
     pub auth_id: ID,
     /// The name of the user
     pub name: String,
+    /// The email of the user
+    pub email_address: String,
     /// If true, user has full platform access
     pub is_platform_admin: bool,
 }
@@ -20,6 +22,7 @@ pub struct User {
 pub struct NewUser {
     pub auth_id: ID,
     pub name: String,
+    pub email_address: String,
 }
 
 #[derive(InputObject)]
@@ -34,6 +37,7 @@ impl From<db::User> for User {
             id: d.id.into(),
             name: d.name,
             auth_id: d.auth_id.into(),
+            email_address: d.email_address,
             is_platform_admin: d.is_platform_admin,
         }
     }
@@ -50,12 +54,14 @@ impl UsersMutation {
         context: &Context<'_>,
         new_user: NewUser,
     ) -> FieldResult<User> {
-        let pool = context.data()?;
+        let pool: &PgPool = context.data()?;
         let auth_id = Uuid::parse_str(&new_user.auth_id)?;
 
-        Ok(db::User::get_or_create(&auth_id, &new_user.name, pool)
-            .await?
-            .into())
+        Ok(
+            db::User::get_or_create(&auth_id, &new_user.name, &new_user.email_address, pool)
+                .await?
+                .into(),
+        )
     }
 
     /// Update a user (returns the user)

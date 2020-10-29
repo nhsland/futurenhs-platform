@@ -1019,6 +1019,20 @@
                 "ofType": null
               }
             }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "emailAddress",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
           }
         ],
         "interfaces": null,
@@ -1592,6 +1606,22 @@
           {
             "args": [],
             "deprecationReason": null,
+            "description": "The email of the user",
+            "isDeprecated": false,
+            "name": "emailAddress",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
             "description": "If true, user has full platform access",
             "isDeprecated": false,
             "name": "isPlatformAdmin",
@@ -1661,6 +1691,54 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "List of users in the admin group",
+            "isDeprecated": false,
+            "name": "admins",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "User",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "List of all users who are members of this workspace",
+            "isDeprecated": false,
+            "name": "members",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "User",
+                    "ofType": null
+                  }
+                }
               }
             }
           }

@@ -148,6 +148,8 @@ event_serialization!(
     ("ContentViewed", "1") => ContentViewed(ContentViewedData),
     ("FolderCreated", "1") => FolderCreated(FolderCreatedData),
     ("WorkspaceCreated", "1") => WorkspaceCreated(WorkspaceCreatedData),
+    ("FileCreated", "1") => FileCreated(FileCreatedData),
+    ("FileUpdated", "1") => FileUpdated(FileUpdatedData),
 );
 
 #[cfg(test)]

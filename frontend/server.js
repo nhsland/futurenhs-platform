@@ -118,19 +118,21 @@ async function main() {
               const response = await getOrCreateUser({
                 authId: profile.sub,
                 name: profile.displayName,
+                emailAddress: profile.emails[0],
               });
               const {
                 id,
                 name,
                 authId,
                 isPlatformAdmin,
+                emailAddress,
               } = response.getOrCreateUser;
               done(null, {
                 id,
                 authId,
                 name,
                 isPlatformAdmin,
-                emails: profile.emails,
+                emails: emailAddress,
               });
             } catch (err) {
               done(err);

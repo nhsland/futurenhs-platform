@@ -7,10 +7,6 @@ exports[`takes a snapshot of the component 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
   -webkit-align-items: baseline;
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
@@ -18,9 +14,15 @@ exports[`takes a snapshot of the component 1`] = `
 }
 
 .c1 {
-  padding-top: 24px;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
   font-size: 40px;
   line-height: 1.25;
+  overflow-wrap: break-word;
+  padding-top: 24px;
+  width: 0px;
 }
 
 <div
@@ -43,10 +45,6 @@ exports[`takes a snapshot with the prop 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
   -webkit-align-items: baseline;
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
@@ -54,9 +52,15 @@ exports[`takes a snapshot with the prop 1`] = `
 }
 
 .c1 {
-  padding-top: 24px;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
   font-size: 40px;
   line-height: 1.25;
+  overflow-wrap: break-word;
+  padding-top: 24px;
+  width: 0px;
 }
 
 <div

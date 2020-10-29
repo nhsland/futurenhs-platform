@@ -251,45 +251,6 @@
       ]
     }
   },
-  "3588b04670ed16bc2dc9ddb7d791336923afaee153fdcce2bee466c8c8c390b2": {
-    "query": "INSERT INTO users (auth_id, name, is_platform_admin)\nVALUES ($1, $2, FALSE)\nON CONFLICT (auth_id) DO UPDATE\n-- Noop; sql syntax to allow return without use of Option type\n    SET name = users.name\nRETURNING *;\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "auth_id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 2,
-          "name": "name",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "is_platform_admin",
-          "type_info": "Bool"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid",
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
   "394f0934d95043c252988e7d90476223a7b1ad35c4366f60c4c81d676d3f0109": {
     "query": "SELECT * FROM users WHERE auth_id = $1;\n",
     "describe": {
@@ -313,6 +274,11 @@
           "ordinal": 3,
           "name": "is_platform_admin",
           "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
         }
       ],
       "parameters": {
@@ -321,6 +287,7 @@
         ]
       },
       "nullable": [
+        false,
         false,
         false,
         false,
@@ -778,6 +745,50 @@
       ]
     }
   },
+  "c66d90fd25750d0d2094e60271dcd8e92d4ad0d110ee17d5d0e8465400461d95": {
+    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_groups ON users.id = user_groups.user_id\nWHERE\n\tuser_groups.group_id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "cba8c2bf445a8315bdc51b6b3e87629cb2cb05186240a7731157c4f6b34ca377": {
     "query": "UPDATE folders\nSET title = COALESCE($2, title),\n    description = COALESCE($3, description)\nWHERE id = $1\nRETURNING id, title, description, workspace\n",
     "describe": {
@@ -811,6 +822,52 @@
         ]
       },
       "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "d295e86db5c3efdb73a506f1c6482653f5636ae5e82449cb967c44dbbeadb218": {
+    "query": "INSERT INTO users (auth_id, name, email_address, is_platform_admin)\nVALUES ($1, $2, $3, FALSE)\nON CONFLICT (auth_id) DO UPDATE\n-- Noop; sql syntax to allow return without use of Option type\n    SET name = users.name\nRETURNING *;\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
         false,
         false,
         false,
@@ -1011,6 +1068,11 @@
           "ordinal": 3,
           "name": "is_platform_admin",
           "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
         }
       ],
       "parameters": {
@@ -1020,6 +1082,7 @@
         ]
       },
       "nullable": [
+        false,
         false,
         false,
         false,

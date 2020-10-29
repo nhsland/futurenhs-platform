@@ -87,7 +87,7 @@ const FolderHomepage: NextPage = () => {
 
   const items: MenuItem[] = [
     {
-      title: "Upload file to this folder",
+      title: "Upload files to this folder",
       icon: <UploadIcon />,
       handler: `/workspaces/${workspaceId}/folders/${folderId}/upload-file`,
     },

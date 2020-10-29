@@ -1,25 +1,29 @@
 import React, { FC } from "react";
 
-import { parseISO, format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { Head } from "../../../../../../components/Head";
-import { DeleteIcon, FileIcon } from "../../../../../../components/Icon";
-import { MainHeading } from "../../../../../../components/MainHeading";
-import { Menu } from "../../../../../../components/Menu";
-import { NavHeader } from "../../../../../../components/NavHeader";
-import { Navigation } from "../../../../../../components/Navigation";
-import { PageLayout } from "../../../../../../components/PageLayout";
-import { MobileFileList, Table } from "../../../../../../components/Table";
+import { Head } from "../../../../../../../components/Head";
+import {
+  DeleteIcon,
+  FileIcon,
+  UploadIcon,
+} from "../../../../../../../components/Icon";
+import { MainHeading } from "../../../../../../../components/MainHeading";
+import { Menu } from "../../../../../../../components/Menu";
+import { NavHeader } from "../../../../../../../components/NavHeader";
+import { Navigation } from "../../../../../../../components/Navigation";
+import { PageLayout } from "../../../../../../../components/PageLayout";
+import { MobileFileList, Table } from "../../../../../../../components/Table";
 import {
   File,
-  useGetWorkspaceByIdQuery,
-  useGetFileByIdQuery,
   useDeleteFileMutation,
-} from "../../../../../../lib/generated/graphql";
-import withUrqlClient from "../../../../../../lib/withUrqlClient";
+  useGetFileByIdQuery,
+  useGetWorkspaceByIdQuery,
+} from "../../../../../../../lib/generated/graphql";
+import withUrqlClient from "../../../../../../../lib/withUrqlClient";
 
 const PageContent = styled.section`
   flex-grow: 3;
@@ -126,6 +130,12 @@ const FileHomepage = () => {
                   dataCy="file-options"
                   items={[
                     {
+                      title: "Upload new version",
+                      icon: <UploadIcon />,
+                      handler: `/workspaces/${workspaceId}/folders/${folderId}/files/${fileId}/update-file`,
+                      dataCy: "update-file",
+                    },
+                    {
                       title: "Delete file",
                       icon: <DeleteIcon />,
                       handler: onClick,
@@ -138,7 +148,7 @@ const FileHomepage = () => {
               {file.data?.file.title || "Loading..."}
             </MainHeading>
             <Description>
-              {file.data?.file.description || "Loading..."}
+              {file.data?.file.description ?? "Loading..."}
             </Description>
             {file.error && <p> Oh no... {file.error?.message} </p>}
             {file.fetching || !file.data ? (
