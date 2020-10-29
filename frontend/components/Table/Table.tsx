@@ -70,7 +70,7 @@ const TableComponent = <ItemType extends Item>({
             <NHSTable.Row key={x.id}>
               {columns.map(({ content }, i) => (
                 <NHSTable.Cell key={i}>
-                  {i == 0 && icon ? (
+                  {i === 0 && icon ? (
                     <IconWrapper>
                       {icon(x)}
                       {content(x)}
