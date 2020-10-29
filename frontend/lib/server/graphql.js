@@ -36,7 +36,7 @@ const getFileDownloadUrl = async ({ fileId }) => {
     url: requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT"),
   });
   const query = gql`
-    query GetFileToDownload($id: ID!) {
+    mutation CreateFileDownloadUrl($id: ID!) {
       fileDownloadUrl(id: $id)
     }
   `;

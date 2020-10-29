@@ -431,99 +431,6 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "newFile",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "NewFile",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": "Create a new file (returns the created file)",
-            "isDeprecated": false,
-            "name": "createFile",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "File",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "newVersion",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "NewFileVersion",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": "Create a new file version (returns the updated file)\n\nThis will update the specified properties only and will take unspecified properties from\nthe latest version.\n\nBoth file and latest version are required. The operation will fail if the specified latest\nversion is no longer the latest version of the file.",
-            "isDeprecated": false,
-            "name": "createFileVersion",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "File",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": "Deletes a file by id(returns delete file",
-            "isDeprecated": false,
-            "name": "deleteFile",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "File",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
                 "name": "newWorkspace",
                 "type": {
                   "kind": "NON_NULL",
@@ -729,6 +636,169 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Folder",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "newFile",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "NewFile",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Create a new file (returns the created file)",
+            "isDeprecated": false,
+            "name": "createFile",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "File",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "newVersion",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "NewFileVersion",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Create a new file version (returns the updated file)\n\nThis will update the specified properties only and will take unspecified properties from\nthe latest version.\n\nBoth file and latest version are required. The operation will fail if the specified latest\nversion is no longer the latest version of the file.",
+            "isDeprecated": false,
+            "name": "createFileVersion",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "File",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Deletes a file by id(returns delete file",
+            "isDeprecated": false,
+            "name": "deleteFile",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "File",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "count",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Get URLs for uploading files",
+            "isDeprecated": false,
+            "name": "fileUploadUrls",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Url",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Get a file download URL",
+            "isDeprecated": false,
+            "name": "fileDownloadUrl",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Url",
                 "ofType": null
               }
             }
@@ -1083,76 +1153,6 @@
         "description": null,
         "enumValues": null,
         "fields": [
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "count",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": "Get URLs for uploading files",
-            "isDeprecated": false,
-            "name": "fileUploadUrls",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Url",
-                    "ofType": null
-                  }
-                }
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": "Get a file download URL",
-            "isDeprecated": false,
-            "name": "fileDownloadUrl",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Url",
-                "ofType": null
-              }
-            }
-          },
           {
             "args": [],
             "deprecationReason": null,
@@ -1770,17 +1770,17 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
+            "name": "Workspace",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "File",
             "ofType": null
           },
           {
             "kind": "OBJECT",
             "name": "Folder",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "Workspace",
             "ofType": null
           }
         ]

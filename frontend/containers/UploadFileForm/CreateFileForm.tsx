@@ -3,13 +3,12 @@ import React, { FC, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { Input, Form, Button } from "nhsuk-react-components";
 import { useForm, useFieldArray } from "react-hook-form/dist/index.ie11";
-import { Client } from "urql";
 
 import { StatusTag } from "../../components/StatusTag";
 import { Textarea } from "../../components/Textarea";
 import {
-  FileUploadUrlsDocument,
   useCreateFileMutation,
+  useFileUploadUrlsMutation,
 } from "../../lib/generated/graphql";
 import { uploadBlob } from "../../lib/uploadBlob";
 import { useMaxLengthHelper } from "../../lib/useMaxLengthHelper";
@@ -29,11 +28,10 @@ interface FormData {
 }
 interface Props {
   folderId: string;
-  urqlClient: Client;
   workspaceId: string;
 }
 
-const CreateFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
+const CreateFileForm: FC<Props> = ({ workspaceId, folderId }) => {
   const {
     control,
     errors,
@@ -43,6 +41,7 @@ const CreateFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
     setValue,
   } = useForm<FormData>();
   const [, createFile] = useCreateFileMutation();
+  const [, fileUploadUrls] = useFileUploadUrlsMutation();
 
   const router = useRouter();
   const backToPreviousPage = () => router.back();
@@ -77,9 +76,9 @@ const CreateFileForm: FC<Props> = ({ workspaceId, folderId, urqlClient }) => {
   const onSubmit = async (formData: FormData) => {
     disableButton(true);
     try {
-      const { error, data } = await urqlClient
-        .query(FileUploadUrlsDocument, { count: formData.files.length })
-        .toPromise();
+      const { error, data } = await fileUploadUrls({
+        count: formData.files.length,
+      });
       if (error) {
         throw new Error(`Failed to get upload URL: ${error.toString()}`);
       }

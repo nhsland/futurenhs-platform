@@ -44,15 +44,15 @@ struct Query(
     files::FilesQuery,
     folders::FoldersQuery,
     workspaces::WorkspacesQuery,
-    file_download_urls::FileDownloadUrlsQuery,
-    file_upload_urls::FileUploadUrlsQuery,
 );
 
 #[derive(MergedObject, Default)]
 struct Mutation(
+    file_download_urls::FileDownloadUrlsMutation,
+    file_upload_urls::FileUploadUrlsMutation,
+    files::FilesMutation,
     folders::FoldersMutation,
     workspaces::WorkspacesMutation,
-    files::FilesMutation,
     users::UsersMutation,
 );
 
