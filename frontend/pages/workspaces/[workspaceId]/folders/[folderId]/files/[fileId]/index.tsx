@@ -1,22 +1,23 @@
 import React, { FC } from "react";
 
-import { format, parseISO } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { Head } from "../../../../../../../components/Head";
 import {
-  DeleteIcon,
-  FileIcon,
-  UploadIcon,
-} from "../../../../../../../components/Icon";
+  IconCell,
+  MobileModifiedAtCell,
+  ModifiedAtCell,
+  TitleCell,
+} from "../../../../../../../components/Files";
+import { Head } from "../../../../../../../components/Head";
+import { DeleteIcon, UploadIcon } from "../../../../../../../components/Icon";
 import { MainHeading } from "../../../../../../../components/MainHeading";
 import { Menu } from "../../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../../components/PageLayout";
-import { MobileFileList, Table } from "../../../../../../../components/Table";
+import { MobileList, Table } from "../../../../../../../components/Table";
 import {
   File,
   useDeleteFileMutation,
@@ -58,17 +59,12 @@ const DownloadFile = styled.a`
   font-size: 16px;
 `;
 
-const iconCell: FC<File> = ({ fileType }) => <FileIcon fileType={fileType} />;
-
-const titleCell: FC<File> = ({ title }) => <>{title}</>;
-
-const ModifiedDate = styled.span`
-  color: ${({ theme }) => theme.colorNhsukGrey1};
+const MobileTitle = styled.h3`
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 20px;
 `;
-
-const modifiedAtCell: FC<File> = ({ modifiedAt }) => (
-  <ModifiedDate>{format(parseISO(modifiedAt), "LLL d, yyyy")}</ModifiedDate>
-);
 
 const FileHomepage = () => {
   const router = useRouter();
@@ -109,6 +105,20 @@ const FileHomepage = () => {
     <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
       <DownloadFile>Download file</DownloadFile>
     </Link>
+  );
+
+  const mobileActionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <a>Download file</a>
+    </Link>
+  );
+
+  const mobileTitleCell: FC<File> = ({ id, title }) => (
+    <MobileTitle>
+      <Link href={`/workspaces/${workspaceId}/folders/${folderId}/files/${id}`}>
+        <a>{title}</a>
+      </Link>
+    </MobileTitle>
   );
 
   return (
@@ -155,16 +165,20 @@ const FileHomepage = () => {
               "Loading..."
             ) : (
               <>
-                <MobileFileList
-                  files={[file.data.file]}
-                  workspaceId={workspaceId}
-                  titleLink={false}
+                <MobileList
+                  columns={[
+                    { content: IconCell },
+                    { content: mobileTitleCell },
+                    { content: MobileModifiedAtCell },
+                    { content: mobileActionsCell },
+                  ]}
+                  data={[file.data.file as File]}
                 />
                 <Table
                   columns={[
-                    { name: "Title", content: iconCell },
-                    { content: titleCell },
-                    { name: "Last modified", content: modifiedAtCell },
+                    { name: "Title", content: IconCell },
+                    { content: TitleCell },
+                    { name: "Last modified", content: ModifiedAtCell },
                     { name: "Actions", content: actionsCell },
                   ]}
                   data={[file.data.file as File]}

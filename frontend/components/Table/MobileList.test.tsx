@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Table } from ".";
+import { MobileList } from ".";
 import { File } from "../../lib/generated/graphql";
 import { render } from "../../lib/test-helpers/render";
 
@@ -16,10 +16,10 @@ const fakeFile: File = {
   title: "My Fake File",
 };
 
-describe(Table, () => {
+describe(MobileList, () => {
   it("renders title with a surrounding <a> when given a function component with a link", () => {
     const { getByText } = render(
-      <Table
+      <MobileList
         // eslint-disable-next-line react/display-name
         columns={[{ content: (f: File) => <a href={f.fileName}>{f.title}</a> }]}
         data={[fakeFile]}
@@ -30,7 +30,7 @@ describe(Table, () => {
 
   it("renders title without a surrounding <a> when given a function component without a link", () => {
     const { getByText } = render(
-      <Table
+      <MobileList
         // eslint-disable-next-line react/display-name
         columns={[{ content: (f: File) => <span>{f.title}</span> }]}
         data={[fakeFile]}
@@ -41,8 +41,9 @@ describe(Table, () => {
 
   it("displays the table heading if given", () => {
     const { getByText } = render(
-      <Table data={[fakeFile]} columns={[]} tableHeading="I am a table" />
+      <MobileList data={[fakeFile]} columns={[]} tableHeading="I am a table" />
     );
-    expect(getByText("I am a table"));
+
+    getByText("I am a table");
   });
 });
