@@ -68,6 +68,8 @@ const StyledMenuButton = styled(MenuButton)`
       color: ${({ theme }) => theme.colorNhsukBlack};
     }
     background-color: ${({ theme }) => theme.colorNhsukYellow};
+    outline: none;
+    border-bottom: 2px solid black;
   }
 
   border-radius: 4px;
