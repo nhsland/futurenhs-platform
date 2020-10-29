@@ -805,7 +805,6 @@ exports[`withUrql renders matching snapshot 1`] = `
               </div>
               <div>
                 <a
-                  class="c16"
                   href="/workspaces/workspace-1/download/f1"
                 >
                   Download file
