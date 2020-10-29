@@ -76,7 +76,6 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
   if (workspace.error || file.error)
     return (
       <p>
-        {" "}
         Oh no... {workspace.error?.message} {file.error?.message}{" "}
       </p>
     );
@@ -114,9 +113,9 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             {file.data && (
               <Table
                 tableHeading="Current file"
+                icon={IconCell}
                 columns={[
-                  { name: "Title", content: IconCell },
-                  { content: TitleCell },
+                  { name: "Title", content: TitleCell },
                   { name: "Last modified", content: ModifiedAtCell },
                   { name: "Actions", content: actionsCell },
                 ]}
@@ -127,8 +126,8 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             {file.data && (
               <MobileList
                 tableHeading="Current file"
+                icon={IconCell}
                 columns={[
-                  { content: IconCell },
                   { content: TitleCell },
                   { content: MobileModifiedAtCell },
                   { content: mobileActionsCell },

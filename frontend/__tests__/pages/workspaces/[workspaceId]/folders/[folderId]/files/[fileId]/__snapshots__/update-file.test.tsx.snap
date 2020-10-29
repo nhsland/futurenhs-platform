@@ -2,7 +2,7 @@
 
 exports[`withUrql renders matching snapshot 1`] = `
 <DocumentFragment>
-  .c15 {
+  .c16 {
   color: rgb(76,98,114);
 }
 
@@ -235,7 +235,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin: 0px auto;
 }
 
-.c19 {
+.c20 {
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
@@ -249,7 +249,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   border-bottom: 1px solid rgb(216,221,224);
 }
 
-.c20 {
+.c21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -260,32 +260,32 @@ exports[`withUrql renders matching snapshot 1`] = `
   padding-left: 12px;
 }
 
-.c20 > div {
+.c21 > div {
   padding-bottom: 10px;
 }
 
-.c20 p,
-.c20 h4 {
+.c21 p,
+.c21 h4 {
   margin-bottom: 0;
   font-size: 16px;
 }
 
-.c20 p {
+.c21 p {
   color: rgb(76,98,114);
 }
 
-.c20 a {
+.c21 a {
   font-size: 16px;
 }
 
-.c18 {
+.c19 {
   padding-top: 20px;
   padding-left: 12px;
   padding-right: 16px;
   background: rgb(240,244,245);
 }
 
-.c17 {
+.c18 {
   background-color: #005eb8;
   color: rgb(255,255,255);
   display: inline-block;
@@ -305,6 +305,20 @@ exports[`withUrql renders matching snapshot 1`] = `
   background: rgb(240,244,245);
 }
 
+.c15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c15 .file-icon-wrapper {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  padding-right: 8px;
+}
+
 .c14 tbody tr:hover {
   background: rgb(255,255,255);
 }
@@ -313,16 +327,16 @@ exports[`withUrql renders matching snapshot 1`] = `
   font-size: 16px;
 }
 
-.c21 {
+.c22 {
   border: none;
   margin-bottom: 16px;
 }
 
-.c22 {
+.c23 {
   margin-bottom: 40px;
 }
 
-.c23 {
+.c24 {
   margin-left: 12px;
 }
 
@@ -345,7 +359,7 @@ exports[`withUrql renders matching snapshot 1`] = `
   margin-bottom: 8px;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding-right: 8px;
   font-size: 16px;
@@ -414,13 +428,13 @@ exports[`withUrql renders matching snapshot 1`] = `
 }
 
 @media (min-width:641px) {
-  .c18 {
+  .c19 {
     display: none;
   }
 }
 
 @media (min-width:641px) {
-  .c17 {
+  .c18 {
     display: none;
   }
 }
@@ -689,10 +703,6 @@ exports[`withUrql renders matching snapshot 1`] = `
                     <th
                       class="nhsuk-table__header"
                       scope="col"
-                    />
-                    <th
-                      class="nhsuk-table__header"
-                      scope="col"
                     >
                       Last modified
                     </th>
@@ -714,36 +724,36 @@ exports[`withUrql renders matching snapshot 1`] = `
                       class="nhsuk-table__cell"
                     >
                       <div
-                        class="icon-wrapper file-icon-wrapper "
+                        class="c15"
                       >
-                        <svg
-                          fill="none"
-                          height="28"
-                          viewBox="0 0 28 28"
-                          width="28"
-                          xmlns="http://www.w3.org/2000/svg"
+                        <div
+                          class="icon-wrapper file-icon-wrapper "
                         >
-                          <path
-                            d="M5.41329 25.6666H22.5866C22.999 25.6666 23.3333 25.3324 23.3333 24.92V7.48998H19.0801C18.5811 7.48998 18.1766 7.08548 18.1766 6.58651V2.33331H5.41329C5.00092 2.33331 4.66663 2.66761 4.66663 3.07998V24.92C4.66663 25.3324 5.00092 25.6666 5.41329 25.6666Z"
-                            fill="#4C6272"
-                          />
-                          <path
-                            d="M18.6666 2.33331V6.25331C18.6666 6.66569 19.0009 6.99998 19.4133 6.99998H23.3333L18.6666 2.33331Z"
-                            fill="#4C6272"
-                          />
-                        </svg>
+                          <svg
+                            fill="none"
+                            height="28"
+                            viewBox="0 0 28 28"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M5.41329 25.6666H22.5866C22.999 25.6666 23.3333 25.3324 23.3333 24.92V7.48998H19.0801C18.5811 7.48998 18.1766 7.08548 18.1766 6.58651V2.33331H5.41329C5.00092 2.33331 4.66663 2.66761 4.66663 3.07998V24.92C4.66663 25.3324 5.00092 25.6666 5.41329 25.6666Z"
+                              fill="#4C6272"
+                            />
+                            <path
+                              d="M18.6666 2.33331V6.25331C18.6666 6.66569 19.0009 6.99998 19.4133 6.99998H23.3333L18.6666 2.33331Z"
+                              fill="#4C6272"
+                            />
+                          </svg>
+                        </div>
+                        file title
                       </div>
                     </td>
                     <td
                       class="nhsuk-table__cell"
                     >
-                      file title
-                    </td>
-                    <td
-                      class="nhsuk-table__cell"
-                    >
                       <span
-                        class="c15"
+                        class="c16"
                       >
                         Oct 6, 2020
                       </span>
@@ -752,7 +762,7 @@ exports[`withUrql renders matching snapshot 1`] = `
                       class="nhsuk-table__cell"
                     >
                       <a
-                        class="c16"
+                        class="c17"
                         href="/workspaces/workspace-1/download/f1"
                       >
                         Download file
@@ -765,41 +775,39 @@ exports[`withUrql renders matching snapshot 1`] = `
           </div>
         </div>
         <h3
-          class="c17"
+          class="c18"
         >
           Current file
         </h3>
         <ul
-          class="c18"
+          class="c19"
         >
           <li
-            class="c19"
+            class="c20"
           >
             <div
-              class="c20"
+              class="icon-wrapper file-icon-wrapper "
             >
-              <div>
-                <div
-                  class="icon-wrapper file-icon-wrapper "
-                >
-                  <svg
-                    fill="none"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    width="28"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M5.41329 25.6666H22.5866C22.999 25.6666 23.3333 25.3324 23.3333 24.92V7.48998H19.0801C18.5811 7.48998 18.1766 7.08548 18.1766 6.58651V2.33331H5.41329C5.00092 2.33331 4.66663 2.66761 4.66663 3.07998V24.92C4.66663 25.3324 5.00092 25.6666 5.41329 25.6666Z"
-                      fill="#4C6272"
-                    />
-                    <path
-                      d="M18.6666 2.33331V6.25331C18.6666 6.66569 19.0009 6.99998 19.4133 6.99998H23.3333L18.6666 2.33331Z"
-                      fill="#4C6272"
-                    />
-                  </svg>
-                </div>
-              </div>
+              <svg
+                fill="none"
+                height="28"
+                viewBox="0 0 28 28"
+                width="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.41329 25.6666H22.5866C22.999 25.6666 23.3333 25.3324 23.3333 24.92V7.48998H19.0801C18.5811 7.48998 18.1766 7.08548 18.1766 6.58651V2.33331H5.41329C5.00092 2.33331 4.66663 2.66761 4.66663 3.07998V24.92C4.66663 25.3324 5.00092 25.6666 5.41329 25.6666Z"
+                  fill="#4C6272"
+                />
+                <path
+                  d="M18.6666 2.33331V6.25331C18.6666 6.66569 19.0009 6.99998 19.4133 6.99998H23.3333L18.6666 2.33331Z"
+                  fill="#4C6272"
+                />
+              </svg>
+            </div>
+            <div
+              class="c21"
+            >
               <div>
                 file title
               </div>
@@ -849,14 +857,14 @@ exports[`withUrql renders matching snapshot 1`] = `
               aria-describedby="files--hint"
               aria-invalid="false"
               aria-labelledby="files--label"
-              class="nhsuk-input c21"
+              class="nhsuk-input c22"
               id="files"
               name="files"
               type="file"
             />
           </div>
           <p
-            class="c22"
+            class="c23"
           >
             All uploaded content must conform to the platform's 
             <a
@@ -876,7 +884,7 @@ exports[`withUrql renders matching snapshot 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary c23"
+            class="nhsuk-button nhsuk-button--secondary c24"
             type="button"
           >
             Discard

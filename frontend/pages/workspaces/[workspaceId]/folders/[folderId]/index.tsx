@@ -180,6 +180,7 @@ const FolderHomepage: NextPage = () => {
             {files.data && files.data.filesByFolder.length > 0 && (
               <>
                 <MobileList
+                  tableHeading="Files"
                   icon={IconCell}
                   columns={[
                     { content: mobileTitleCell },
@@ -187,9 +188,9 @@ const FolderHomepage: NextPage = () => {
                     { content: mobileActionsCell },
                   ]}
                   data={files.data.filesByFolder as File[]}
-                  tableHeading="Files"
                 />
                 <Table
+                  tableHeading="Files"
                   icon={IconCell}
                   columns={[
                     { name: "Title", content: titleCell },
@@ -197,7 +198,6 @@ const FolderHomepage: NextPage = () => {
                     { name: "Actions", content: downloadCell },
                   ]}
                   data={files.data.filesByFolder as File[]}
-                  tableHeading="Files"
                 />
               </>
             )}

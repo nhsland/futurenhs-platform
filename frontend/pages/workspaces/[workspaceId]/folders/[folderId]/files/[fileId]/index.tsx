@@ -166,8 +166,8 @@ const FileHomepage = () => {
             ) : (
               <>
                 <MobileList
+                  icon={IconCell}
                   columns={[
-                    { content: IconCell },
                     { content: mobileTitleCell },
                     { content: MobileModifiedAtCell },
                     { content: mobileActionsCell },
@@ -175,9 +175,9 @@ const FileHomepage = () => {
                   data={[file.data.file as File]}
                 />
                 <Table
+                  icon={IconCell}
                   columns={[
-                    { name: "Title", content: IconCell },
-                    { content: TitleCell },
+                    { name: "Title", content: TitleCell },
                     { name: "Last modified", content: ModifiedAtCell },
                     { name: "Actions", content: actionsCell },
                   ]}
