@@ -64,6 +64,7 @@ interface Item {
 
 interface Props<ItemType extends Item> {
   columns: Array<{
+    name?: string;
     content: (x: ItemType) => ReactNode;
   }>;
   data: ItemType[];
@@ -85,7 +86,10 @@ export const MobileList = <ItemType extends Item>({
           {icon && icon(x)}
           <RHContainer>
             {columns.map((c, i) => (
-              <div key={i}>{c.content(x)}</div>
+              <>
+                {c.name && <h4>{c.name}</h4>}
+                <div key={i}>{c.content(x)}</div>
+              </>
             ))}
           </RHContainer>
         </ListItem>

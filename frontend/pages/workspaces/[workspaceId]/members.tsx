@@ -11,7 +11,7 @@ import { MainHeading } from "../../../components/MainHeading";
 import { NavHeader } from "../../../components/NavHeader";
 import { Navigation } from "../../../components/Navigation";
 import { PageLayout } from "../../../components/PageLayout";
-import { Table } from "../../../components/Table";
+import { ResponsiveTable } from "../../../components/Table";
 import {
   User,
   useGetWorkspaceWithMembersQuery,
@@ -59,18 +59,8 @@ const WorkspaceMembersPage: NextPage = () => {
             <H2 title="This is a list of all workspace members." />
             {error && <p> Oh no... {error?.message} </p>}
             <>
-              {/* <MobileList
-                tableHeading="Files"
-                icon={IconCell}
-                columns={[
-                  { content: mobileTitleCell },
-                  { content: MobileModifiedAtCell },
-                  { content: mobileActionsCell },
-                ]}
-                data={data?.workspace.admins as User[]}
-              /> */}
               {data && (
-                <Table
+                <ResponsiveTable
                   tableHeading="Admins"
                   columns={[
                     { name: "Name of user", content: nameCell },
@@ -80,7 +70,7 @@ const WorkspaceMembersPage: NextPage = () => {
                 />
               )}
               {data && (
-                <Table
+                <ResponsiveTable
                   tableHeading="Members"
                   columns={[
                     { name: "Name of User", content: nameCell },
