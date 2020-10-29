@@ -5,6 +5,7 @@ import { Input, Form, Button } from "nhsuk-react-components";
 import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
+import { Footer } from "../../components/Footer";
 import { H2 } from "../../components/H2";
 import { Head } from "../../components/Head";
 import { MainHeading } from "../../components/MainHeading";
@@ -120,6 +121,7 @@ export const CreateWorkspace: NextPage<InitialProps> = ({
             </>
           )}
         </PageContent>
+        <Footer />
       </PageLayout>
     </>
   );

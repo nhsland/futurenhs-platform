@@ -9,6 +9,7 @@ import {
   FileTable,
   MobileFileList,
 } from "../../../../../../../components/FileTable";
+import { Footer } from "../../../../../../../components/Footer";
 import { Head } from "../../../../../../../components/Head";
 import { MainHeading } from "../../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../../components/NavHeader";
@@ -120,6 +121,7 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             )}
           </PageContent>
         </ContentWrapper>
+        <Footer />
       </PageLayout>
     </>
   );

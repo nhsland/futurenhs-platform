@@ -7,6 +7,7 @@ import {
   MobileFileList,
   FileTable,
 } from "../../../../../../../components/FileTable";
+import { Footer } from "../../../../../../../components/Footer";
 import { Head } from "../../../../../../../components/Head";
 import { DeleteIcon, UploadIcon } from "../../../../../../../components/Icon";
 import { MainHeading } from "../../../../../../../components/MainHeading";
@@ -141,6 +142,7 @@ const FileHomepage = () => {
             )}
           </PageContent>
         </ContentWrapper>
+        <Footer />
       </PageLayout>
     </>
   );
