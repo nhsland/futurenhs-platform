@@ -47,6 +47,7 @@ const WorkspaceTitleLink = styled.a`
 
 const List = styled.ul`
   padding-left: 0px;
+  margin-bottom: 40px;
   .nav-list-item {
     div {
       font-weight: 700;
