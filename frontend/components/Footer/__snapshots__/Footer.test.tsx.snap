@@ -69,21 +69,6 @@ exports[`Footer renders correctly 1`] = `
 </DocumentFragment>
 `;
 
-exports[`FooterListItem renders correctly 1`] = `
-<DocumentFragment>
-  <li
-    class="nhsuk-footer__list-item"
-  >
-    <a
-      class="nhsuk-footer__list-item-link"
-      href="/testHref"
-    >
-      test
-    </a>
-  </li>
-</DocumentFragment>
-`;
-
 exports[`FooterListItem renders correctly with props 1`] = `
 <DocumentFragment>
   <li
