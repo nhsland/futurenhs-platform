@@ -34,7 +34,9 @@ const ContentWrapper = styled.div`
 `;
 
 const nameCell: FC<User> = ({ name }) => <div>{name}</div>;
-const emailAddressCell: FC<User> = ({ emailAddress }) => <a>{emailAddress}</a>;
+const emailAddressCell: FC<User> = ({ emailAddress }) => (
+  <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+);
 
 const WorkspaceMembersPage: NextPage = () => {
   const router = useRouter();
@@ -56,28 +58,34 @@ const WorkspaceMembersPage: NextPage = () => {
           <Navigation workspaceId={id} workspaceTitle={workspaceTitle} />
           <PageContent>
             <MainHeading>Workspace members</MainHeading>
-            <H2 title="This is a list of all workspace members." />
+            <p>This is a list of all workspace members.</p>
             {error && <p> Oh no... {error?.message} </p>}
             <>
               {data && (
-                <ResponsiveTable
-                  tableHeading="Admins"
-                  columns={[
-                    { name: "Name of user", content: nameCell },
-                    { name: "Email", content: emailAddressCell },
-                  ]}
-                  data={data.workspace.admins as User[]}
-                />
-              )}
-              {data && (
-                <ResponsiveTable
-                  tableHeading="Members"
-                  columns={[
-                    { name: "Name of User", content: nameCell },
-                    { name: "Email", content: emailAddressCell },
-                  ]}
-                  data={data.workspace.members as User[]}
-                />
+                <>
+                  <p>
+                    Showing all administrators ({data.workspace.admins.length})
+                    {/* FIXME: think about the huge void caused by position:34 in the table below */}
+                  </p>
+                  <ResponsiveTable
+                    tableHeading="Administrators"
+                    columns={[
+                      { name: "Name of user", content: nameCell },
+                      { name: "Email", content: emailAddressCell },
+                    ]}
+                    data={data.workspace.admins as User[]}
+                  />
+
+                  <p>Showing all members ({data.workspace.members.length})</p>
+                  <ResponsiveTable
+                    tableHeading="Members"
+                    columns={[
+                      { name: "Name of User", content: nameCell },
+                      { name: "Email", content: emailAddressCell },
+                    ]}
+                    data={data.workspace.members as User[]}
+                  />
+                </>
               )}
             </>
           </PageContent>
