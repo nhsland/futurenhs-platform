@@ -13,6 +13,10 @@ interface Props<ItemType extends Item> {
     name?: string;
     content: (x: ItemType) => ReactNode;
   }>;
+  extraDetails: Array<{
+    name?: string;
+    content: (x: ItemType) => ReactNode;
+  }>;
   data: ItemType[];
   tableHeading?: string;
   icon?: (x: ItemType) => ReactNode;
@@ -22,6 +26,7 @@ export const ResponsiveTable = <ItemType extends Item>({
   columns,
   data,
   tableHeading,
+  extraDetails,
   icon,
 }: Props<ItemType>) => (
   <>
@@ -30,12 +35,14 @@ export const ResponsiveTable = <ItemType extends Item>({
       data={data}
       tableHeading={tableHeading}
       icon={icon}
+      extraDetails={extraDetails}
     />
     <Table
       columns={columns}
       data={data}
       tableHeading={tableHeading}
       icon={icon}
+      extraDetails={extraDetails}
     />
   </>
 );

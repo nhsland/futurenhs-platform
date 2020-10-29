@@ -1,6 +1,25 @@
-import React, { ReactNode } from "react";
+import React, { FC, ReactNode, useState } from "react";
 
 import styled from "styled-components";
+
+import { MinusIcon, PlusIcon } from "../Icon";
+
+const IconClickTarget = styled.div`
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ExpandIcon: FC<{ expanded: boolean; onClick: () => void }> = ({
+  expanded,
+  onClick,
+}) => (
+  <IconClickTarget onClick={onClick}>
+    {expanded ? <MinusIcon /> : <PlusIcon />}
+  </IconClickTarget>
+);
 
 const ListItem = styled.li`
   align-items: flex-start;
@@ -10,7 +29,8 @@ const ListItem = styled.li`
   border-bottom: 1px solid ${({ theme }) => theme.colorNhsukGrey4};
 `;
 
-const RHContainer = styled.div`
+const DetailsContainer = styled.div`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding-left: 12px;
@@ -67,6 +87,10 @@ interface Props<ItemType extends Item> {
     name?: string;
     content: (x: ItemType) => ReactNode;
   }>;
+  extraDetails?: Array<{
+    name?: string;
+    content: (x: ItemType) => ReactNode;
+  }>;
   data: ItemType[];
   tableHeading?: string;
   icon?: (x: ItemType) => ReactNode;
@@ -77,23 +101,45 @@ export const MobileList = <ItemType extends Item>({
   data,
   tableHeading,
   icon,
-}: Props<ItemType>) => (
-  <>
-    {tableHeading && <Heading>{tableHeading}</Heading>}
-    <List>
-      {data.map((x) => (
-        <ListItem key={x.id}>
-          {icon && icon(x)}
-          <RHContainer>
-            {columns.map((c, i) => (
-              <>
-                {c.name && <h4>{c.name}</h4>}
-                <div key={i}>{c.content(x)}</div>
-              </>
-            ))}
-          </RHContainer>
-        </ListItem>
-      ))}
-    </List>
-  </>
-);
+  extraDetails,
+}: Props<ItemType>) => {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  return (
+    <>
+      {tableHeading && <Heading>{tableHeading}</Heading>}
+      <List>
+        {data.map((x) => {
+          const expanded = x.id === expandedId;
+          return (
+            <ListItem key={x.id}>
+              {icon && icon(x)}
+              <DetailsContainer>
+                {columns.map((c, i) => (
+                  <>
+                    {c.name && <h4>{c.name}</h4>}
+                    <div key={i}>{c.content(x)}</div>
+                  </>
+                ))}
+                {extraDetails &&
+                  expanded &&
+                  extraDetails.map((c, i) => (
+                    <>
+                      {c.name && <h4>{c.name}</h4>}
+                      <div key={i}>{c.content(x)}</div>
+                    </>
+                  ))}
+              </DetailsContainer>
+              {extraDetails && (
+                <ExpandIcon
+                  expanded={expanded}
+                  onClick={() => setExpandedId(expanded ? null : x.id)}
+                />
+              )}
+            </ListItem>
+          );
+        })}
+      </List>
+    </>
+  );
+};

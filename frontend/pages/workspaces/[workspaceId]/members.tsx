@@ -73,6 +73,14 @@ const WorkspaceMembersPage: NextPage = () => {
                       { name: "Name of user", content: nameCell },
                       { name: "Email", content: emailAddressCell },
                     ]}
+                    extraDetails={[
+                      // FIXME: rename name to heading
+                      {
+                        name: "Permissions",
+                        // eslint-disable-next-line react/display-name
+                        content: () => <>Administrator</>,
+                      },
+                    ]}
                     data={data.workspace.admins as User[]}
                   />
 
@@ -82,6 +90,13 @@ const WorkspaceMembersPage: NextPage = () => {
                     columns={[
                       { name: "Name of User", content: nameCell },
                       { name: "Email", content: emailAddressCell },
+                    ]}
+                    extraDetails={[
+                      {
+                        name: "Permissions",
+                        // eslint-disable-next-line react/display-name
+                        content: () => <>Member</>,
+                      },
                     ]}
                     data={data.workspace.members as User[]}
                   />
