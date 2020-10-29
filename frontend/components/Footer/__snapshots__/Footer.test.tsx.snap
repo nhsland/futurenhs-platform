@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders correctly 1`] = `
+<DocumentFragment>
+  <footer>
+    <div
+      class="nhsuk-footer"
+    >
+      <div
+        class="nhsuk-width-container"
+      >
+        <h2
+          class="nhsuk-u-visually-hidden"
+        >
+          Support links
+        </h2>
+        <ul
+          class="nhsuk-footer__list"
+        >
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              About
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              Terms and Conditions
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              Accessibility Statement
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              Privacy Policy
+            </a>
+          </li>
+        </ul>
+        <p
+          class="nhsuk-footer__copyright"
+        >
+          © All content is available under the Open Government Licence v3.0, except where otherwise stated.
+        </p>
+      </div>
+    </div>
+  </footer>
+</DocumentFragment>
+`;
+
+exports[`FooterListItem renders correctly 1`] = `
+<DocumentFragment>
+  <li
+    class="nhsuk-footer__list-item"
+  >
+    <a
+      class="nhsuk-footer__list-item-link"
+      href="/testHref"
+    >
+      test
+    </a>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`FooterListItem renders correctly with props 1`] = `
+<DocumentFragment>
+  <li
+    class="nhsuk-footer__list-item"
+  >
+    <a
+      class="nhsuk-footer__list-item-link"
+      href="/testHref"
+    >
+      testTitle
+    </a>
+  </li>
+</DocumentFragment>
+`;
