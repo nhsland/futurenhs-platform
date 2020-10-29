@@ -11,20 +11,13 @@ interface Props {
   href: string;
 }
 
-const OGLDiv = styled.div`
-  display: flex;
-  /* align-items: center; */
+const TextContainer = styled.div`
   clear: both;
   padding-top: 16px;
 `;
 
-const BetaDiv = styled.div`
-  display: flex;
-  padding-top: 32px;
-  clear: both;
-`;
-
 const StyledP = styled.p`
+  padding-top: 16px;
   margin-bottom: 0;
   font-size: 14px;
   ${({ theme }) => `
@@ -36,6 +29,9 @@ const StyledP = styled.p`
 `;
 
 const StyledBetaIcon = styled(BetaIcon)`
+  display: inline;
+  position: relative;
+  top: 5px;
   margin-right: 8px;
   ${({ theme }) => `
     color: ${theme.colorNhsukGrey1};
@@ -43,8 +39,9 @@ const StyledBetaIcon = styled(BetaIcon)`
 `;
 
 const StyledOGLIcon = styled(OGLIcon)`
-  display: flex;
-  justify-content: center;
+  display: inline;
+  position: relative;
+  top: 2px;
   margin-right: 8px;
   width: 50px;
   ${({ theme }) => `
@@ -70,15 +67,13 @@ const Footer = () => {
         <FooterListItem title="Privacy Policy" href="#" />
       </NhsFooter.List>
       <NhsFooter.Copyright>&copy; Crown copyright</NhsFooter.Copyright>
-      <BetaDiv>
-        <StyledBetaIcon />
+      <TextContainer>
         <StyledP>
+          <StyledBetaIcon />
           This is a new platform. Your feedback will help us to improve it.
         </StyledP>
-      </BetaDiv>
-      <OGLDiv>
-        <StyledOGLIcon />
         <StyledP>
+          <StyledOGLIcon />
           All content is available under the{" "}
           <a
             className="nhsuk-footer__list-item-link"
@@ -89,7 +84,7 @@ const Footer = () => {
           </a>
           , except where otherwise stated.
         </StyledP>
-      </OGLDiv>
+      </TextContainer>
     </NhsFooter>
   );
 };
