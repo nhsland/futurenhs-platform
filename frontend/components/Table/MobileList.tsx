@@ -68,21 +68,23 @@ interface Props<ItemType extends Item> {
   }>;
   data: ItemType[];
   tableHeading?: string;
+  icon?: (x: ItemType) => ReactNode;
 }
 
 export const MobileList = <ItemType extends Item>({
-  columns: [columnsHead, ...columnsTail],
+  columns,
   data,
   tableHeading,
+  icon,
 }: Props<ItemType>) => (
   <>
     {tableHeading && <Heading>{tableHeading}</Heading>}
     <List>
       {data.map((x) => (
         <ListItem key={x.id}>
-          {columnsHead?.content(x)}
+          {icon && icon(x)}
           <RHContainer>
-            {columnsTail?.map((c, i) => (
+            {columns.map((c, i) => (
               <div key={i}>{c.content(x)}</div>
             ))}
           </RHContainer>

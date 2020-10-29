@@ -180,8 +180,8 @@ const FolderHomepage: NextPage = () => {
             {files.data && files.data.filesByFolder.length > 0 && (
               <>
                 <MobileList
+                  icon={IconCell}
                   columns={[
-                    { content: IconCell },
                     { content: mobileTitleCell },
                     { content: MobileModifiedAtCell },
                     { content: mobileActionsCell },
