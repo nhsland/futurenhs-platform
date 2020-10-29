@@ -40,6 +40,7 @@ const StyledCloseIconWrapper = styled.button`
 const StyledNavMenuContainer = styled.nav`
   width: 100%;
   right: 0;
+  z-index: 10;
 
   ${({ theme }) => `
     @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
