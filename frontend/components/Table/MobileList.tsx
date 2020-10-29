@@ -22,10 +22,12 @@ const IconClickTarget = styled.button`
 
   :active,
   :focus {
-    /* FIXME: make the + black */
     opacity: 1;
     color: ${({ theme }) => theme.colorNhsukYellow};
     outline: none;
+    svg circle {
+      fill: black;
+    }
   }
 `;
 
