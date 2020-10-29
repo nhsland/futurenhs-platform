@@ -18,6 +18,11 @@ const TableContainer = styled.div`
   }
 `;
 
+const IconWrapper = styled.div`
+  /* TODO: find the figma for this and make the spacing correct */
+  display: flex;
+`;
+
 const StyledTable = styled(NHSTable)`
   tbody tr:hover {
     background: ${({ theme }) => theme.colorNhsukWhite};
@@ -38,12 +43,14 @@ interface Props<ItemType extends Item> {
   }>;
   data: ItemType[];
   tableHeading?: string;
+  icon?: (x: ItemType) => ReactNode;
 }
 
 const TableComponent = <ItemType extends Item>({
   columns,
   data,
   tableHeading,
+  icon,
 }: Props<ItemType>) => (
   <TableContainer>
     <NHSTable.Panel heading={tableHeading}>
@@ -59,7 +66,16 @@ const TableComponent = <ItemType extends Item>({
           {data.map((x) => (
             <NHSTable.Row key={x.id}>
               {columns.map(({ content }, i) => (
-                <NHSTable.Cell key={i}>{content(x)}</NHSTable.Cell>
+                <NHSTable.Cell key={i}>
+                  {i == 0 && icon ? (
+                    <IconWrapper>
+                      {icon(x)}
+                      {content(x)}
+                    </IconWrapper>
+                  ) : (
+                    content(x)
+                  )}
+                </NHSTable.Cell>
               ))}
             </NHSTable.Row>
           ))}

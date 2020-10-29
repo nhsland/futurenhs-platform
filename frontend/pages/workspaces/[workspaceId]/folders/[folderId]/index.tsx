@@ -190,9 +190,9 @@ const FolderHomepage: NextPage = () => {
                   tableHeading="Files"
                 />
                 <Table
+                  icon={IconCell}
                   columns={[
-                    { name: "Title", content: IconCell },
-                    { content: titleCell },
+                    { name: "Title", content: titleCell },
                     { name: "Last modified", content: ModifiedAtCell },
                     { name: "Actions", content: downloadCell },
                   ]}
