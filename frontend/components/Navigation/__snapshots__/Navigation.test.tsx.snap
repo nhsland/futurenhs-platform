@@ -91,6 +91,8 @@ exports[`<Navigation/> renders correctly 1`] = `
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
+  outline: none;
+  border-bottom: 2px solid black;
 }
 
 .c12.open.hidden,

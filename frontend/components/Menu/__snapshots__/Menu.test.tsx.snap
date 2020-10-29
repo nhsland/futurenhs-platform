@@ -75,6 +75,8 @@ exports[`Menu takes a snapshot, as used in a page 1`] = `
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
+  outline: none;
+  border-bottom: 2px solid black;
 }
 
 .c3.open.hidden,
@@ -240,6 +242,8 @@ exports[`Menu takes a snapshot, as used in the nav 1`] = `
   opacity: 1;
   color: rgb(33,43,50);
   background-color: rgb(255,235,59);
+  outline: none;
+  border-bottom: 2px solid black;
 }
 
 .c3.open.hidden,
