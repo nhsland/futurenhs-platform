@@ -9,10 +9,12 @@ import HelpIcon from "./HelpIcon";
 import LockIcon from "./LockIcon";
 import LogOutIcon from "./LogOutIcon";
 import MeatballIcon from "./MeatballIcon";
+import MinusIcon from "./MinusIcon";
 import MoveIcon from "./MoveIcon";
 import NhsukLogoIcon from "./NhsukLogoIcon";
 import NotificationsIcon from "./NotificationsIcon";
 import OGLIcon from "./OGLIcon";
+import PlusIcon from "./PlusIcon";
 import TickIcon from "./TickIcon";
 import UploadIcon from "./UploadIcon";
 import UserIcon from "./UserIcon";
@@ -30,10 +32,12 @@ export {
   LockIcon,
   LogOutIcon,
   MeatballIcon,
+  MinusIcon,
   MoveIcon,
   NhsukLogoIcon,
   NotificationsIcon,
   OGLIcon,
+  PlusIcon,
   TickIcon,
   UploadIcon,
   UserIcon,
