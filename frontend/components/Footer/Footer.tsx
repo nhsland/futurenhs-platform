@@ -11,12 +11,12 @@ interface Props {
   href: string;
 }
 
-const TextContainer = styled.div`
+const Container = styled.div`
   clear: both;
   padding-top: 16px;
 `;
 
-const StyledP = styled.p`
+const TextContainer = styled.div`
   padding-top: 16px;
   margin-bottom: 0;
   font-size: 14px;
@@ -29,7 +29,7 @@ const StyledP = styled.p`
 `;
 
 const StyledBetaIcon = styled(BetaIcon)`
-  display: inline;
+  display: inline-block;
   position: relative;
   top: 5px;
   margin-right: 8px;
@@ -39,9 +39,10 @@ const StyledBetaIcon = styled(BetaIcon)`
 `;
 
 const StyledOGLIcon = styled(OGLIcon)`
-  display: inline;
+  display: inline-block;
   position: relative;
   top: 2px;
+  left: 4px;
   margin-right: 8px;
   width: 50px;
   ${({ theme }) => `
@@ -67,12 +68,12 @@ const Footer = () => {
         <FooterListItem title="Privacy Policy" href="#" />
       </NhsFooter.List>
       <NhsFooter.Copyright>&copy; Crown copyright</NhsFooter.Copyright>
-      <TextContainer>
-        <StyledP>
+      <Container>
+        <TextContainer>
           <StyledBetaIcon />
           This is a new platform. Your feedback will help us to improve it.
-        </StyledP>
-        <StyledP>
+        </TextContainer>
+        <TextContainer>
           <StyledOGLIcon />
           All content is available under the{" "}
           <a
@@ -83,8 +84,8 @@ const Footer = () => {
             Open Government Licence v3.0
           </a>
           , except where otherwise stated.
-        </StyledP>
-      </TextContainer>
+        </TextContainer>
+      </Container>
     </NhsFooter>
   );
 };

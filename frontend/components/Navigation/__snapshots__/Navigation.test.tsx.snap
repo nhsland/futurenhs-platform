@@ -254,6 +254,7 @@ exports[`<Navigation/> renders correctly 1`] = `
 
 .c6 {
   padding-left: 0px;
+  margin-bottom: 40px;
 }
 
 .c6 .nav-list-item div {
