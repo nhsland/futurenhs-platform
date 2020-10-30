@@ -13,8 +13,6 @@ import { dedupExchange, fetchExchange } from "urql";
 
 import { User } from "./auth";
 import {
-  Folder,
-  File,
   FilesByFolderDocument,
   FilesByFolderQuery,
   FoldersByWorkspaceDocument,
@@ -32,15 +30,15 @@ const workspaceAPIServerUrl = isServerSide
  * Creates an updater for a given Query type.
  */
 const updateWithNull = <T extends { __typename?: "Query" }>(
-  handler: (data: T | null) => T | null
-) => (data: Data | null) => handler(data as T | null) as Data | null;
+  handler: (data: (Data & T) | null) => (Data & T) | null
+) => (data: Data | null) => handler(data as (Data & T) | null) as Data | null;
 
 /**
  * Creates an updater for a given Query type, which performs no update if the
  * currently cached query result is null.
  */
 const update = <T extends { __typename?: "Query" }>(
-  handler: (data: T) => T | null
+  handler: (data: Data & T) => (Data & T) | null
 ) => updateWithNull<T>((data) => (data === null ? null : handler(data)));
 
 type PartialChildren<T> = {
@@ -73,32 +71,62 @@ export default function withUrqlClient(
 
       const mutationUpdateResolvers: MutationUpdatesConfig = {
         createFolder: (result, _args, cache) => {
+          const { __typename, id, title, workspace } = result.createFolder;
+          if (!workspace) return;
           cache.updateQuery(
             {
               query: FoldersByWorkspaceDocument,
-              variables: {
-                workspace: result.createFolder.workspace!,
-              },
+              variables: { workspace },
             },
             update<FoldersByWorkspaceQuery>((data) => {
-              data.foldersByWorkspace.push(result.createFolder as Folder);
+              if (!id || !title) return null;
+              data.foldersByWorkspace.push({ __typename, id, title });
               return data;
             })
           );
         },
         deleteFile: (result, _args, cache) => {
-          cache.invalidate(result.deleteFile as Data);
+          const { __typename, id } = result.deleteFile;
+          if (!__typename || !id) return;
+          cache.invalidate({ __typename, id });
         },
         createFile: (result, _args, cache) => {
+          const {
+            __typename,
+            id,
+            folder,
+            title,
+            description,
+            fileName,
+            fileType,
+            modifiedAt,
+          } = result.createFile;
+          if (!folder) return;
           cache.updateQuery(
             {
               query: FilesByFolderDocument,
-              variables: {
-                folder: result.createFile.folder!,
-              },
+              variables: { folder },
             },
             update<FilesByFolderQuery>((data) => {
-              data.filesByFolder.push(result.createFile as File);
+              if (
+                !id ||
+                !title ||
+                !description ||
+                !fileName ||
+                !fileType ||
+                !modifiedAt
+              )
+                return null;
+              data.filesByFolder.push({
+                __typename,
+                id,
+                folder,
+                title,
+                description,
+                fileName,
+                fileType,
+                modifiedAt,
+              });
               return data;
             })
           );
