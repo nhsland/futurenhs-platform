@@ -5,6 +5,7 @@ import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import { Client } from "urql";
 
+import { Footer } from "../../../../../components/Footer";
 import { H2 } from "../../../../../components/H2";
 import { MainHeading } from "../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../components/NavHeader";
@@ -78,6 +79,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
           />
         </PageContent>
       </ContentWrapper>
+      <Footer />
     </PageLayout>
   );
 };

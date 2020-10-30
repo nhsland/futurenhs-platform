@@ -6,6 +6,7 @@ import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
+import { Footer } from "../../../../components/Footer";
 import { H2 } from "../../../../components/H2";
 import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
@@ -138,6 +139,7 @@ const CreateFolder: NextPage = () => {
           </Form>
         </PageContent>
       </ContentWrapper>
+      <Footer />
     </PageLayout>
   );
 };

@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders correctly 1`] = `
+<DocumentFragment>
+  .c0 {
+  clear: both;
+  padding-top: 16px;
+}
+
+.c1 {
+  padding-top: 16px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: rgb(76,98,114);
+}
+
+.c2 {
+  display: inline-block;
+  position: relative;
+  top: 5px;
+  margin-right: 8px;
+  color: rgb(76,98,114);
+}
+
+.c3 {
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  left: 4px;
+  margin-right: 8px;
+  width: 50px;
+  color: rgb(76,98,114);
+}
+
+@media (min-width:641px) {
+  .c1 {
+    font-size: 16px;
+  }
+}
+
+<footer>
+    <div
+      class="nhsuk-footer"
+    >
+      <div
+        class="nhsuk-width-container"
+      >
+        <h2
+          class="nhsuk-u-visually-hidden"
+        >
+          Support links
+        </h2>
+        <ul
+          class="nhsuk-footer__list"
+        >
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              About
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              Terms and Conditions
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              Accessibility Statement
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              href="/#"
+            >
+              Privacy Policy
+            </a>
+          </li>
+        </ul>
+        <p
+          class="nhsuk-footer__copyright"
+        >
+          © Crown copyright
+        </p>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          >
+            <div
+              class="icon-wrapper c2"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 50 24"
+                width="50"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M2 0C0.895431 0 0 0.89543 0 2V22C0 23.1046 0.895432 24 2 24H48C49.1046 24 50 23.1046 50 22V2C50 0.895431 49.1046 0 48 0H2ZM9.13477 6.66211V16H11.9648C12.5573 16 13.0426 15.9749 13.4209 15.9248C13.8037 15.8747 14.1706 15.7448 14.5215 15.5352C14.7767 15.3848 14.9954 15.2025 15.1777 14.9883C15.36 14.7695 15.4967 14.5257 15.5879 14.2568C15.679 13.988 15.7246 13.71 15.7246 13.4229C15.7246 13.0856 15.6722 12.7871 15.5674 12.5273C15.4626 12.263 15.3122 12.0329 15.1162 11.8369C14.9202 11.6364 14.6855 11.4769 14.4121 11.3584C14.1432 11.2354 13.8584 11.1579 13.5576 11.126C14.1637 10.9984 14.6195 10.766 14.9248 10.4287C15.2347 10.0869 15.3896 9.61523 15.3896 9.01367C15.3896 8.13411 15.0752 7.52344 14.4463 7.18164C13.8174 6.83529 13.0404 6.66211 12.1152 6.66211H9.13477ZM11.9307 14.5713H11.0215V11.8438H12.0605C12.571 11.8438 12.9971 11.9531 13.3389 12.1719C13.6807 12.3861 13.8516 12.7324 13.8516 13.2109C13.8516 13.7031 13.6647 14.054 13.291 14.2637C12.9219 14.4688 12.4684 14.5713 11.9307 14.5713ZM11.917 10.4424H11.0215V8.10449H11.9785C12.4388 8.10449 12.8102 8.19564 13.0928 8.37793C13.3753 8.55566 13.5166 8.861 13.5166 9.29395C13.5166 9.71322 13.3639 10.0094 13.0586 10.1826C12.7578 10.3558 12.3773 10.4424 11.917 10.4424ZM23.1416 16V14.4756H19.4434V11.9805H22.7793V10.4561H19.4434V8.2002H23.0869V6.66211H17.5566V16H23.1416ZM28.6309 16H26.7441V8.2002H24.0781V6.66211H31.3174V8.2002H28.6309V16ZM39.0215 16H41.0791L37.3398 6.66211H35.2412L31.5977 16H33.5459L34.3457 13.874H38.208L39.0215 16ZM36.4307 9.04102L37.6338 12.3428H34.9199L36.041 9.19824C36.0684 9.11165 36.1003 8.99772 36.1367 8.85645C36.1732 8.71061 36.2096 8.56706 36.2461 8.42578C36.3418 8.76302 36.4033 8.9681 36.4307 9.04102Z"
+                  fill="#4C6272"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </div>
+            This is a new platform. Your feedback will help us to improve it.
+          </div>
+          <div
+            class="c1"
+          >
+            <div
+              class="icon-wrapper c3"
+            >
+              <svg
+                fill="currentColor"
+                focusable="false"
+                height="17"
+                role="presentation"
+                viewBox="0 0 483.2 195.7"
+                width="41"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            All content is available under the 
+            <a
+              class="nhsuk-footer__list-item-link"
+              data-cy="license"
+              href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+            >
+              Open Government Licence v3.0
+            </a>
+            , except where otherwise stated.
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</DocumentFragment>
+`;
+
+exports[`FooterListItem renders correctly with props 1`] = `
+<DocumentFragment>
+  <li
+    class="nhsuk-footer__list-item"
+  >
+    <a
+      class="nhsuk-footer__list-item-link"
+      href="/testHref"
+    >
+      testTitle
+    </a>
+  </li>
+</DocumentFragment>
+`;
