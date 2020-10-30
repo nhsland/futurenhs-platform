@@ -55,6 +55,70 @@ type MutationUpdatesConfig = {
   ) => void;
 };
 
+const mutationUpdateResolvers: MutationUpdatesConfig = {
+  createFolder: (result, _args, cache) => {
+    const { __typename, id, title, workspace } = result.createFolder;
+    if (!workspace) return;
+    cache.updateQuery(
+      {
+        query: FoldersByWorkspaceDocument,
+        variables: { workspace },
+      },
+      update<FoldersByWorkspaceQuery>((data) => {
+        if (!id || !title) return null;
+        data.foldersByWorkspace.push({ __typename, id, title });
+        return data;
+      })
+    );
+  },
+  deleteFile: (result, _args, cache) => {
+    const { __typename, id } = result.deleteFile;
+    if (!__typename || !id) return;
+    cache.invalidate({ __typename, id });
+  },
+  createFile: (result, _args, cache) => {
+    const {
+      __typename,
+      id,
+      folder,
+      title,
+      description,
+      fileName,
+      fileType,
+      modifiedAt,
+    } = result.createFile;
+    if (!folder) return;
+    cache.updateQuery(
+      {
+        query: FilesByFolderDocument,
+        variables: { folder },
+      },
+      update<FilesByFolderQuery>((data) => {
+        if (
+          !id ||
+          !title ||
+          !description ||
+          !fileName ||
+          !fileType ||
+          !modifiedAt
+        )
+          return null;
+        data.filesByFolder.push({
+          __typename,
+          id,
+          folder,
+          title,
+          description,
+          fileName,
+          fileType,
+          modifiedAt,
+        });
+        return data;
+      })
+    );
+  },
+};
+
 export default function withUrqlClient(
   component: NextPage<any> | typeof NextApp
 ) {
@@ -70,70 +134,6 @@ export default function withUrqlClient(
           ctx.res.end();
         }
       }
-
-      const mutationUpdateResolvers: MutationUpdatesConfig = {
-        createFolder: (result, _args, cache) => {
-          const { __typename, id, title, workspace } = result.createFolder;
-          if (!workspace) return;
-          cache.updateQuery(
-            {
-              query: FoldersByWorkspaceDocument,
-              variables: { workspace },
-            },
-            update<FoldersByWorkspaceQuery>((data) => {
-              if (!id || !title) return null;
-              data.foldersByWorkspace.push({ __typename, id, title });
-              return data;
-            })
-          );
-        },
-        deleteFile: (result, _args, cache) => {
-          const { __typename, id } = result.deleteFile;
-          if (!__typename || !id) return;
-          cache.invalidate({ __typename, id });
-        },
-        createFile: (result, _args, cache) => {
-          const {
-            __typename,
-            id,
-            folder,
-            title,
-            description,
-            fileName,
-            fileType,
-            modifiedAt,
-          } = result.createFile;
-          if (!folder) return;
-          cache.updateQuery(
-            {
-              query: FilesByFolderDocument,
-              variables: { folder },
-            },
-            update<FilesByFolderQuery>((data) => {
-              if (
-                !id ||
-                !title ||
-                !description ||
-                !fileName ||
-                !fileType ||
-                !modifiedAt
-              )
-                return null;
-              data.filesByFolder.push({
-                __typename,
-                id,
-                folder,
-                title,
-                description,
-                fileName,
-                fileType,
-                modifiedAt,
-              });
-              return data;
-            })
-          );
-        },
-      };
 
       const exchanges = [
         dedupExchange,
