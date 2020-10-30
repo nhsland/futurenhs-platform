@@ -69,7 +69,9 @@ const mutationUpdateResolvers: MutationUpdatesConfig = {
   createFolder: (result, args: CreateFolderMutationVariables, cache) => {
     const { __typename, id, title } = result.createFolder;
     if (id === undefined || title === undefined) {
-      cache.invalidate("Query", "createFolder", { workspace: args.workspace });
+      cache.invalidate("Query", "foldersByWorkspace", {
+        workspace: args.workspace,
+      });
     } else {
       cache.updateQuery(
         {
