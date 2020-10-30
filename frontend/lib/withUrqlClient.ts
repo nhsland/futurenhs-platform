@@ -50,7 +50,7 @@ type PartialChildren<T> = {
 };
 
 type MutationUpdatesConfig = {
-  [K in keyof Exclude<Mutation, "__typename">]?: (
+  [K in keyof Omit<Mutation, "__typename">]?: (
     result: Data & PartialChildren<Pick<Mutation, K>>,
     // TODO: Ideally the typescript-urql generator could generate a map with
     // the same keys as `Mutation` where the values are the corresponding
