@@ -7,8 +7,12 @@ describe("Footer", () => {
       .and("contain", "Accessibility Statement")
       .and("contain", "Privacy Policy");
 
-    cy.get(".nhsuk-footer__copyright").contains(
-      "© All content is available under the Open Government Licence v3.0, except where otherwise stated."
-    );
+    cy.get(".nhsuk-footer__copyright").should("contain", "© Crown copyright");
+    cy.get('[data-cy="license"]')
+      .should("have.attr", "href")
+      .and(
+        "contain",
+        "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      );
   });
 });

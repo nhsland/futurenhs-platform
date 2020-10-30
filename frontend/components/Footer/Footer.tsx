@@ -78,8 +78,8 @@ const Footer = () => {
           All content is available under the{" "}
           <a
             className="nhsuk-footer__list-item-link"
+            data-cy="license"
             href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
-            rel="license"
           >
             Open Government Licence v3.0
           </a>
