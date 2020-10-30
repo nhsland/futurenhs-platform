@@ -28,10 +28,12 @@ const workspaceAPIServerUrl = isServerSide
 
 /**
  * Creates an updater for a given Query type.
+ *
+ * This doesn't change any behaviour. It's purely a type cast.
  */
 const updateWithNull = <T extends { __typename?: "Query" }>(
   handler: (data: (Data & T) | null) => (Data & T) | null
-) => (data: Data | null) => handler(data as (Data & T) | null) as Data | null;
+): ((data: Data | null) => Data | null) => handler as any;
 
 /**
  * Creates an updater for a given Query type, which performs no update if the
