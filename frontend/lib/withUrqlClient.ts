@@ -3,6 +3,7 @@ import {
   cacheExchange,
   Cache,
   Data,
+  UpdatesConfig,
   Variables,
 } from "@urql/exchange-graphcache";
 import { NextPage } from "next";
@@ -12,13 +13,13 @@ import { dedupExchange, fetchExchange } from "urql";
 
 import { User } from "./auth";
 import {
-  CreateFileMutation,
-  CreateFolderMutation,
-  DeleteFileMutation,
+  Folder,
+  File,
   FilesByFolderDocument,
   FilesByFolderQuery,
   FoldersByWorkspaceDocument,
   FoldersByWorkspaceQuery,
+  Mutation,
 } from "./generated/graphql";
 import { requireEnv } from "./server/requireEnv";
 
@@ -26,14 +27,6 @@ const isServerSide = typeof window === "undefined";
 const workspaceAPIServerUrl = isServerSide
   ? requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT")
   : "/api/graphql";
-
-/**
- * Creates an UpdateResolver for a given Mutation type.
- */
-const resolve = <T extends { __typename?: "Mutation" }>(
-  handler: (result: T, cache: Cache) => void
-) => (result: Data, _args: Variables, cache: Cache) =>
-  handler((result as unknown) as T, cache);
 
 /**
  * Creates an updater for a given Query type.
@@ -49,6 +42,18 @@ const updateWithNull = <T extends { __typename?: "Query" }>(
 const update = <T extends { __typename?: "Query" }>(
   handler: (data: T) => T | null
 ) => updateWithNull<T>((data) => (data === null ? null : handler(data)));
+
+type PartialChildren<T> = {
+  [P in keyof T]: Partial<T[P]>;
+};
+
+type MutationUpdatesConfig = {
+  [K in keyof Exclude<Mutation, "__typename">]?: (
+    result: Data & PartialChildren<Pick<Mutation, K>>,
+    args: Variables,
+    cache: Cache
+  ) => void;
+};
 
 export default function withUrqlClient(
   component: NextPage<any> | typeof NextApp
@@ -66,44 +71,46 @@ export default function withUrqlClient(
         }
       }
 
+      const mutationUpdateResolvers: MutationUpdatesConfig = {
+        createFolder: (result, _args, cache) => {
+          cache.updateQuery(
+            {
+              query: FoldersByWorkspaceDocument,
+              variables: {
+                workspace: result.createFolder.workspace!,
+              },
+            },
+            update<FoldersByWorkspaceQuery>((data) => {
+              data.foldersByWorkspace.push(result.createFolder as Folder);
+              return data;
+            })
+          );
+        },
+        deleteFile: (result, _args, cache) => {
+          cache.invalidate(result.deleteFile as Data);
+        },
+        createFile: (result, _args, cache) => {
+          cache.updateQuery(
+            {
+              query: FilesByFolderDocument,
+              variables: {
+                folder: result.createFile.folder!,
+              },
+            },
+            update<FilesByFolderQuery>((data) => {
+              data.filesByFolder.push(result.createFile as File);
+              return data;
+            })
+          );
+        },
+      };
+
       const exchanges = [
         dedupExchange,
         cacheExchange({
           keys: {},
           updates: {
-            Mutation: {
-              createFolder: resolve<CreateFolderMutation>((result, cache) => {
-                cache.updateQuery(
-                  {
-                    query: FoldersByWorkspaceDocument,
-                    variables: {
-                      workspace: result.createFolder.workspace,
-                    },
-                  },
-                  update<FoldersByWorkspaceQuery>((data) => {
-                    data.foldersByWorkspace.push(result.createFolder);
-                    return data;
-                  })
-                );
-              }),
-              deleteFile: resolve<DeleteFileMutation>((result, cache) => {
-                cache.invalidate(result.deleteFile as Data);
-              }),
-              createFile: resolve<CreateFileMutation>((result, cache) => {
-                cache.updateQuery(
-                  {
-                    query: FilesByFolderDocument,
-                    variables: {
-                      folder: result.createFile.folder,
-                    },
-                  },
-                  update<FilesByFolderQuery>((data) => {
-                    data.filesByFolder.push(result.createFile);
-                    return data;
-                  })
-                );
-              }),
-            },
+            Mutation: mutationUpdateResolvers as UpdatesConfig["Mutation"],
           },
         }),
         ssrExchange,
