@@ -108,10 +108,6 @@ export interface FolderCreated {
      * The workspace that the folder is in
      */
     workspaceId: string;
-    /**
-     * The date at which the folder has been created
-     */
-    createdAt: string;
     title: string;
     description: string;
     /**
@@ -126,10 +122,6 @@ export interface WorkspaceCreated {
   eventType: "WorkspaceCreated";
   dataVersion: "1";
   data: {
-    /**
-     * The date at which the workspace has been created
-     */
-    createdAt?: string;
     workspaceId: string;
     title: string;
     /**

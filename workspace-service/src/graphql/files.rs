@@ -304,6 +304,7 @@ async fn create_file(
                 user_id: user.id.to_string(),
                 workspace_id: folder.workspace.to_string(),
                 version_id: file.latest_version.to_string(),
+                version_number: 1,
             },
         )])
         .await?;
