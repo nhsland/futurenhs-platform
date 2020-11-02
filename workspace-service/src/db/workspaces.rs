@@ -1,7 +1,6 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
-#[cfg(not(test))]
 use crate::db::Team;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
@@ -15,8 +14,11 @@ pub struct Workspace {
     pub members: Uuid,
 }
 
-#[cfg(not(test))]
-impl Workspace {
+#[cfg_attr(test, allow(dead_code))]
+pub struct WorkspaceRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl WorkspaceRepo {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
         let mut tx = pool.begin().await?;
 
@@ -85,7 +87,10 @@ impl Workspace {
 // Fake implementation for tests. If you want integration tests that exercise the database,
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
 #[cfg(test)]
-impl Workspace {
+pub struct WorkspaceRepoFake {}
+
+#[cfg(test)]
+impl WorkspaceRepoFake {
     pub async fn create(title: &str, description: &str, _pool: &PgPool) -> Result<Workspace> {
         let workspace = Workspace {
             id: Uuid::new_v4(),
