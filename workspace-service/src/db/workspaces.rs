@@ -2,7 +2,7 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 #[cfg(not(test))]
-use crate::db::Group;
+use crate::db::Team;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
 
@@ -20,8 +20,8 @@ impl Workspace {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
         let mut tx = pool.begin().await?;
 
-        let admins = Group::create(&format!("{} Admins", title), &mut tx).await?;
-        let members = Group::create(&format!("{} Members", title), &mut tx).await?;
+        let admins = Team::create(&format!("{} Admins", title), &mut tx).await?;
+        let members = Team::create(&format!("{} Members", title), &mut tx).await?;
 
         let workspace = sqlx::query_file_as!(
             Workspace,

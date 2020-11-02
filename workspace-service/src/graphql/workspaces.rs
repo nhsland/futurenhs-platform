@@ -30,17 +30,17 @@ impl Workspace {
         self.description.clone()
     }
 
-    /// List of users in the admin group
+    /// List of users in the admin team
     async fn admins(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
         let pool = context.data()?;
-        let users = db::Group::group_members(self.admins, pool).await?;
+        let users = db::Team::members(self.admins, pool).await?;
         Ok(users.into_iter().map(Into::into).collect())
     }
 
     /// List of all users who are members of this workspace
     async fn members(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
         let pool = context.data()?;
-        let users = db::Group::group_members(self.members, pool).await?;
+        let users = db::Team::members(self.members, pool).await?;
         Ok(users.into_iter().map(Into::into).collect())
     }
 }
