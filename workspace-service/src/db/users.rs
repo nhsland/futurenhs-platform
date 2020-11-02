@@ -3,7 +3,6 @@
 
 use anyhow::Result;
 use sqlx::types::Uuid;
-#[cfg(not(test))]
 use sqlx::PgPool;
 
 #[derive(Clone)]
@@ -15,8 +14,11 @@ pub struct User {
     pub email_address: String,
 }
 
-#[cfg(not(test))]
-impl User {
+#[cfg_attr(test, allow(dead_code))]
+pub struct UserRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl UserRepo {
     pub async fn find_by_auth_id(auth_id: &Uuid, pool: &PgPool) -> Result<User> {
         let user = sqlx::query_file_as!(User, "sql/users/find_by_auth_id.sql", auth_id)
             .fetch_one(pool)
@@ -53,7 +55,12 @@ impl User {
 }
 
 #[cfg(test)]
-impl User {
+pub struct UserRepoFake {}
+
+// Fake implementation for tests. If you want integration tests that exercise the database,
+// see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
+#[cfg(test)]
+impl UserRepoFake {
     pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<User> {
         Ok(User {
             id: Uuid::new_v4(),

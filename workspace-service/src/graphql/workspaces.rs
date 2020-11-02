@@ -157,7 +157,7 @@ async fn create_workspace(
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
-    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     if !user.is_platform_admin {
         return Err(anyhow::anyhow!(
             "User with auth_id {} does not have permission to create a workspace.",

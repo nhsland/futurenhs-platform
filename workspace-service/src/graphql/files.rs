@@ -246,7 +246,7 @@ impl FilesMutation {
     async fn delete_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
-        let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+        let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let file: File = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool)
             .await?
             .into();
@@ -267,7 +267,7 @@ async fn create_file(
         .map_err(validation::ValidationError::from)?;
 
     let folder_id = Uuid::parse_str(&new_file.folder)?;
-    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     let destination = azure::copy_blob_from_url(
         &Url::parse(&new_file.temporary_blob_storage_path)?,
         azure_config,
@@ -334,7 +334,7 @@ async fn create_file_version(
         return Err("specified version is not the latest version of the file".into());
     }
 
-    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     let folder_id = match &new_version.folder {
         Some(folder_id) => Uuid::parse_str(folder_id)?,
         None => current_file.folder,

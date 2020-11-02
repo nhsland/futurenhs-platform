@@ -62,7 +62,7 @@ impl TeamRepoFake {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let users = vec![User::find_by_auth_id(&id, executor).await?];
+        let users = vec![crate::db::UserRepo::find_by_auth_id(&id, executor).await?];
 
         Ok(users)
     }
