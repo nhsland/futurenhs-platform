@@ -1,7 +1,7 @@
 // sqlx::query_file_as!() causes spurious errors with this lint enabled
 #![allow(clippy::suspicious_else_formatting)]
 
-use crate::db::Team;
+use crate::db;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
 
@@ -22,8 +22,8 @@ impl WorkspaceRepo {
     pub async fn create(title: &str, description: &str, pool: &PgPool) -> Result<Workspace> {
         let mut tx = pool.begin().await?;
 
-        let admins = Team::create(&format!("{} Admins", title), &mut tx).await?;
-        let members = Team::create(&format!("{} Members", title), &mut tx).await?;
+        let admins = db::TeamRepo::create(&format!("{} Admins", title), &mut tx).await?;
+        let members = db::TeamRepo::create(&format!("{} Members", title), &mut tx).await?;
 
         let workspace = sqlx::query_file_as!(
             Workspace,
