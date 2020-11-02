@@ -274,7 +274,7 @@ async fn create_file(
     )
     .await?;
 
-    let folder = db::Folder::find_by_id(folder_id, pool).await?;
+    let folder = db::FolderRepo::find_by_id(folder_id, pool).await?;
 
     let file: File = db::FileWithVersionRepo::create(
         db::CreateFileArgs {
@@ -340,7 +340,7 @@ async fn create_file_version(
         None => current_file.folder,
     };
 
-    let folder = db::Folder::find_by_id(folder_id, pool).await?;
+    let folder = db::FolderRepo::find_by_id(folder_id, pool).await?;
 
     let destination = match &new_version.temporary_blob_storage_path {
         Some(temporary_blob_storage_path) => {
