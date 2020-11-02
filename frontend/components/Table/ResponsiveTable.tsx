@@ -10,11 +10,11 @@ interface Item {
 
 interface Props<ItemType extends Item> {
   columns: Array<{
-    name?: string;
+    heading?: string;
     content: (x: ItemType) => ReactNode;
   }>;
   extraDetails: Array<{
-    name?: string;
+    heading?: string;
     content: (x: ItemType) => ReactNode;
   }>;
   data: ItemType[];
@@ -23,25 +23,25 @@ interface Props<ItemType extends Item> {
 }
 
 export const ResponsiveTable = <ItemType extends Item>({
+  tableHeading,
+  icon,
   columns,
   data,
-  tableHeading,
   extraDetails,
-  icon,
 }: Props<ItemType>) => (
   <>
     <MobileList
-      columns={columns}
-      data={data}
       tableHeading={tableHeading}
       icon={icon}
+      columns={columns}
+      data={data}
       extraDetails={extraDetails}
     />
     <Table
-      columns={columns}
-      data={data}
       tableHeading={tableHeading}
       icon={icon}
+      columns={columns}
+      data={data}
       extraDetails={extraDetails}
     />
   </>

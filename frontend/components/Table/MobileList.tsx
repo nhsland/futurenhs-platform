@@ -102,24 +102,24 @@ interface Item {
 }
 
 interface Props<ItemType extends Item> {
+  tableHeading?: string;
+  icon?: (x: ItemType) => ReactNode;
   columns: Array<{
-    name?: string;
-    content: (x: ItemType) => ReactNode;
-  }>;
-  extraDetails?: Array<{
-    name?: string;
+    heading?: string;
     content: (x: ItemType) => ReactNode;
   }>;
   data: ItemType[];
-  tableHeading?: string;
-  icon?: (x: ItemType) => ReactNode;
+  extraDetails?: Array<{
+    heading?: string;
+    content: (x: ItemType) => ReactNode;
+  }>;
 }
 
 export const MobileList = <ItemType extends Item>({
-  columns,
-  data,
   tableHeading,
   icon,
+  columns,
+  data,
   extraDetails,
 }: Props<ItemType>) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -136,7 +136,7 @@ export const MobileList = <ItemType extends Item>({
               <DetailsContainer>
                 {columns.map((c, i) => (
                   <>
-                    {c.name && <h4>{c.name}</h4>}
+                    {c.heading && <h4>{c.heading}</h4>}
                     <div key={i}>{c.content(x)}</div>
                   </>
                 ))}
@@ -144,7 +144,7 @@ export const MobileList = <ItemType extends Item>({
                   expanded &&
                   extraDetails.map((c, i) => (
                     <>
-                      {c.name && <h4>{c.name}</h4>}
+                      {c.heading && <h4>{c.heading}</h4>}
                       <div key={i}>{c.content(x)}</div>
                     </>
                   ))}

@@ -40,24 +40,24 @@ interface Item {
 }
 
 interface Props<ItemType extends Item> {
+  tableHeading?: string;
+  icon?: (x: ItemType) => ReactNode;
   columns: Array<{
-    name?: string;
-    content: (x: ItemType) => ReactNode;
-  }>;
-  extraDetails: Array<{
-    name?: string;
+    heading?: string;
     content: (x: ItemType) => ReactNode;
   }>;
   data: ItemType[];
-  tableHeading?: string;
-  icon?: (x: ItemType) => ReactNode;
+  extraDetails?: Array<{
+    heading?: string;
+    content: (x: ItemType) => ReactNode;
+  }>;
 }
 
 const TableComponent = <ItemType extends Item>({
-  columns,
-  data,
   tableHeading,
   icon,
+  columns,
+  data,
 }: Props<ItemType>) => (
   <TableContainer>
     <NHSTable.Panel heading={tableHeading}>
@@ -65,7 +65,7 @@ const TableComponent = <ItemType extends Item>({
         <NHSTable.Head>
           <NHSTable.Row>
             {columns.map((c, i) => (
-              <NHSTable.Cell key={i}>{c.name}</NHSTable.Cell>
+              <NHSTable.Cell key={i}>{c.heading}</NHSTable.Cell>
             ))}
           </NHSTable.Row>
         </NHSTable.Head>

@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { Footer } from "../../../components/Footer";
-import { H2 } from "../../../components/H2";
 import { Head } from "../../../components/Head";
 import { MainHeading } from "../../../components/MainHeading";
 import { NavHeader } from "../../../components/NavHeader";
@@ -70,13 +69,12 @@ const WorkspaceMembersPage: NextPage = () => {
                   <ResponsiveTable
                     tableHeading="Administrators"
                     columns={[
-                      { name: "Name of user", content: nameCell },
-                      { name: "Email", content: emailAddressCell },
+                      { heading: "Name of user", content: nameCell },
+                      { heading: "Email", content: emailAddressCell },
                     ]}
                     extraDetails={[
-                      // FIXME: rename name to heading
                       {
-                        name: "Permissions",
+                        heading: "Permissions",
                         // eslint-disable-next-line react/display-name
                         content: () => <>Administrator</>,
                       },
@@ -88,12 +86,12 @@ const WorkspaceMembersPage: NextPage = () => {
                   <ResponsiveTable
                     tableHeading="Members"
                     columns={[
-                      { name: "Name of User", content: nameCell },
-                      { name: "Email", content: emailAddressCell },
+                      { heading: "Name of User", content: nameCell },
+                      { heading: "Email", content: emailAddressCell },
                     ]}
                     extraDetails={[
                       {
-                        name: "Permissions",
+                        heading: "Permissions",
                         // eslint-disable-next-line react/display-name
                         content: () => <>Member</>,
                       },
