@@ -3,7 +3,6 @@
 
 use chrono::{DateTime, Utc};
 use sqlx::types::Uuid;
-#[cfg(not(test))]
 use {
     anyhow::Result,
     sqlx::{Executor, Postgres},
@@ -25,8 +24,11 @@ pub struct FileVersion {
     pub version_label: String,
 }
 
-#[cfg(not(test))]
-impl FileVersion {
+#[cfg_attr(test, allow(dead_code))]
+pub struct FileVersionRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl FileVersionRepo {
     #[allow(clippy::too_many_arguments)]
     pub async fn create<'c, E>(
         id: Uuid,

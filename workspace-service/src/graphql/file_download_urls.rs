@@ -14,7 +14,7 @@ impl FileDownloadUrlsMutation {
         let pool = context.data()?;
         let config = context.data()?;
         let id = Uuid::parse_str(&id)?;
-        let file = db::FileWithVersion::find_by_id(id, pool).await?;
+        let file = db::FileWithVersionRepo::find_by_id(id, pool).await?;
 
         Ok(azure::create_download_sas(
             config,

@@ -181,7 +181,7 @@ impl FilesQuery {
     async fn files_by_folder(&self, context: &Context<'_>, folder: ID) -> FieldResult<Vec<File>> {
         let pool = context.data()?;
         let folder = Uuid::parse_str(&folder)?;
-        let files = db::FileWithVersion::find_by_folder(folder, pool).await?;
+        let files = db::FileWithVersionRepo::find_by_folder(folder, pool).await?;
 
         Ok(files.into_iter().map(Into::into).collect())
     }
@@ -195,7 +195,7 @@ impl FilesQuery {
     async fn get_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
-        let file = db::FileWithVersion::find_by_id(id, pool).await?;
+        let file = db::FileWithVersionRepo::find_by_id(id, pool).await?;
         Ok(file.into())
     }
 }
@@ -247,7 +247,7 @@ impl FilesMutation {
         let pool = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
         let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-        let file: File = db::FileWithVersion::delete(Uuid::parse_str(&id)?, user.id, pool)
+        let file: File = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool)
             .await?
             .into();
 
@@ -276,7 +276,7 @@ async fn create_file(
 
     let folder = db::Folder::find_by_id(folder_id, pool).await?;
 
-    let file: File = db::FileWithVersion::create(
+    let file: File = db::FileWithVersionRepo::create(
         db::CreateFileArgs {
             user_id: user.id,
             folder_id,
@@ -325,7 +325,7 @@ async fn create_file_version(
     let current_file_id = Uuid::parse_str(&new_version.file)?;
     let current_latest_version_id = Uuid::parse_str(&new_version.latest_version)?;
 
-    let current_file = db::FileWithVersion::find_by_id(current_file_id, pool).await?;
+    let current_file = db::FileWithVersionRepo::find_by_id(current_file_id, pool).await?;
     if current_file.version != current_latest_version_id {
         // Early check to see if the latest version matches to avoid potentially copying the
         // file unnecessarily. There is still a chance someone else creates a new version in
@@ -351,7 +351,7 @@ async fn create_file_version(
     };
 
     let version_number = current_file.version_number + 1;
-    let file: File = db::FileWithVersion::create_version(
+    let file: File = db::FileWithVersionRepo::create_version(
         db::CreateFileVersionArgs {
             user_id: user.id,
             file_id: current_file_id,
@@ -510,7 +510,7 @@ mod test {
         let requesting_user = mock_unprivileged_requesting_user();
 
         let file_id = Uuid::new_v4();
-        let current_file = db::FileWithVersion::find_by_id(file_id, &pool).await?;
+        let current_file = db::FileWithVersionRepo::find_by_id(file_id, &pool).await?;
         let (events, event_client) = mock_event_emitter();
 
         let result = create_file_version(
