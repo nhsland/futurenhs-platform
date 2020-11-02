@@ -12,14 +12,14 @@ import { dedupExchange, fetchExchange } from "urql";
 
 import { User } from "./auth";
 import {
-  CreateFileMutationVariables,
-  CreateFolderMutationVariables,
-  DeleteFileMutationVariables,
   FilesByFolderDocument,
   FilesByFolderQuery,
   FoldersByWorkspaceDocument,
   FoldersByWorkspaceQuery,
   Mutation,
+  MutationCreateFileArgs,
+  MutationDeleteFileArgs,
+  MutationCreateFolderArgs,
 } from "./generated/graphql";
 import { requireEnv } from "./server/requireEnv";
 
@@ -52,31 +52,36 @@ type PartialChildren<T> = {
 type MutationUpdatesConfig = {
   [K in keyof Omit<Mutation, "__typename">]?: (
     result: Data & PartialChildren<Pick<Mutation, K>>,
-    // TODO: Ideally the typescript-urql generator could generate a map with
-    // the same keys as `Mutation` where the values are the corresponding
-    // argument type, e.g.:
-    // ```ts
+    // TODO: Ideally the typescript generator could generate a map with the
+    // same keys as `Mutation` where the values are the corresponding argument
+    // type, e.g.:
+    //
+    // ```
     // type MutationArgs = {
-    //   createFile: CreateFileMutationVariables
+    //   createFile: MutationCreateFileArgs,
+    //   createFolder: MutationCreateFolderArgs,
     // };
     // ```
+    //
+    // As long as it doesn't we type this as `any`, which lets us add a type
+    // to the function parameter.
     args: any,
     cache: Cache
   ) => void;
 };
 
 const mutationUpdateResolvers: MutationUpdatesConfig = {
-  createFolder: (result, args: CreateFolderMutationVariables, cache) => {
+  createFolder: (result, args: MutationCreateFolderArgs, cache) => {
     const { __typename, id, title } = result.createFolder;
     if (id === undefined || title === undefined) {
       cache.invalidate("Query", "foldersByWorkspace", {
-        workspace: args.workspace,
+        workspace: args.newFolder.workspace,
       });
     } else {
       cache.updateQuery(
         {
           query: FoldersByWorkspaceDocument,
-          variables: { workspace: args.workspace },
+          variables: { workspace: args.newFolder.workspace },
         },
         update<FoldersByWorkspaceQuery>((data) => {
           data.foldersByWorkspace.push({ __typename, id, title });
@@ -85,10 +90,10 @@ const mutationUpdateResolvers: MutationUpdatesConfig = {
       );
     }
   },
-  deleteFile: (_result, args: DeleteFileMutationVariables, cache) => {
+  deleteFile: (_result, args: MutationDeleteFileArgs, cache) => {
     cache.invalidate({ __typename: "File", id: args.id });
   },
-  createFile: (result, args: CreateFileMutationVariables, cache) => {
+  createFile: (result, args: MutationCreateFileArgs, cache) => {
     const {
       __typename,
       id,
