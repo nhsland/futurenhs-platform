@@ -1,3 +1,3 @@
-query FileUploadUrls($count: Int!) {
+mutation FileUploadUrls($count: Int!) {
   fileUploadUrls(count: $count)
 }

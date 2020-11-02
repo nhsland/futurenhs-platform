@@ -3,7 +3,6 @@ import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
-import { Client } from "urql";
 
 import { Footer } from "../../../../../components/Footer";
 import { H2 } from "../../../../../components/H2";
@@ -35,7 +34,7 @@ const PageContent = styled.div`
   `}
 `;
 
-const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
+const UploadFile: NextPage<any> = () => {
   const router = useRouter();
   const workspaceId = (router.query.workspaceId || "unknown").toString();
   const folderId = (router.query.folderId || "unknown").toString();
@@ -72,11 +71,7 @@ const UploadFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
           <MainHeading>Upload files</MainHeading>
           <H2 title="File details" />
           <p> Fields marked with * are mandatory.</p>
-          <CreateFileForm
-            urqlClient={urqlClient}
-            workspaceId={workspaceId}
-            folderId={folderId}
-          />
+          <CreateFileForm workspaceId={workspaceId} folderId={folderId} />
         </PageContent>
       </ContentWrapper>
       <Footer />

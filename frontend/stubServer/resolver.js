@@ -29,7 +29,7 @@ const fileMutation = {
   deleteFile: async () => deleteFileResponse.data.deleteFile,
 };
 
-const fileUploadUrlsResolver = {
+const fileUploadUrlsMutation = {
   fileUploadUrls: async () => fileUploadUrlsResponse.data.fileUploadUrls,
 };
 
@@ -58,14 +58,14 @@ module.exports = (schema) => {
 
   return {
     Query: {
-      ...workspacesResolver,
-      ...folderResolver,
-      ...fileResolver,
-      ...fileUploadUrlsResolver,
       ...federationResolver,
+      ...fileResolver,
+      ...folderResolver,
+      ...workspacesResolver,
     },
     Mutation: {
       ...fileMutation,
+      ...fileUploadUrlsMutation,
       ...folderMutation,
       ...userMutation,
       ...workspaceMutation,

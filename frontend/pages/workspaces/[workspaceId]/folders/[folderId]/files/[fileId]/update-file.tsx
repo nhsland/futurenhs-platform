@@ -3,7 +3,6 @@ import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
-import { Client } from "urql";
 
 import {
   FileTable,
@@ -39,7 +38,7 @@ const PageContent = styled.div`
   `}
 `;
 
-const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
+const UpdateFile: NextPage<any> = () => {
   const router = useRouter();
   const { fileId, workspaceId, folderId } = router.query;
 
@@ -110,7 +109,6 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             <p> Fields marked with * are mandatory.</p>
             {file.data && (
               <UpdateFileForm
-                urqlClient={urqlClient}
                 workspaceId={workspaceId}
                 folderId={folderId}
                 fileDescription={file.data?.file.description}

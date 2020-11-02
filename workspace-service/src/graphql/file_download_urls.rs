@@ -5,10 +5,10 @@ use url::Url;
 use uuid::Uuid;
 
 #[derive(Default)]
-pub struct FileDownloadUrlsQuery;
+pub struct FileDownloadUrlsMutation;
 
 #[Object]
-impl FileDownloadUrlsQuery {
+impl FileDownloadUrlsMutation {
     /// Get a file download URL
     async fn file_download_url(&self, context: &Context<'_>, id: ID) -> FieldResult<Url> {
         let pool = context.data()?;
