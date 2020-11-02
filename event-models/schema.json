@@ -109,6 +109,9 @@
             "versionId": {
               "type": "string"
             },
+            "versionNumber": {
+              "type": "integer"
+            },
             "userId": {
               "description": "The user that created the file",
               "type": "string"
@@ -123,6 +126,7 @@
             "fileDescription",
             "fileType",
             "versionId",
+            "versionNumber",
             "userId"
           ]
         }
@@ -196,6 +200,104 @@
       },
       "required": ["eventType", "dataVersion", "data"]
     },
+    "FileDeleted": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FileDeleted"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "createdAt": {
+              "description": "The date at which the file has been deleted",
+              "type": "string",
+              "format": "date-time"
+            },
+            "fileId": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that deleted the file",
+              "type": "string"
+            },
+            "versionId": {
+              "type": "string"
+            },
+            "versionNumber": {
+              "type": "integer"
+            },
+            "workspaceId": {
+              "description": "The workspace that the file is in",
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "fileId",
+            "userId",
+            "versionId",
+            "versionNumber",
+            "workspaceId"
+          ]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "FileDownloaded": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FileDownloaded"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "createdAt": {
+              "description": "The date at which the file has been downloaded",
+              "type": "string",
+              "format": "date-time"
+            },
+            "fileId": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that downloaded the file",
+              "type": "string"
+            },
+            "versionId": {
+              "type": "string"
+            },
+            "versionNumber": {
+              "type": "integer"
+            },
+            "workspaceId": {
+              "description": "The workspace that the file is in",
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "fileId",
+            "userId",
+            "versionId",
+            "versionNumber",
+            "workspaceId"
+          ]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
     "FolderCreated": {
       "type": "object",
       "properties": {
@@ -217,7 +319,15 @@
               "description": "The workspace that the folder is in",
               "type": "string"
             },
+            "createdAt": {
+              "description": "The date at which the folder has been created",
+              "type": "string",
+              "format": "date-time"
+            },
             "title": {
+              "type": "string"
+            },
+            "description": {
               "type": "string"
             },
             "userId": {
@@ -225,7 +335,63 @@
               "type": "string"
             }
           },
-          "required": ["userId", "title", "workspaceId", "folderId"]
+          "required": [
+            "createdAt",
+            "description",
+            "userId",
+            "title",
+            "workspaceId",
+            "folderId"
+          ]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "FolderEdited": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FolderEdited"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "folderId": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "description": "The workspace that the folder is in",
+              "type": "string"
+            },
+            "createdAt": {
+              "description": "The date at which the folder has been edited",
+              "type": "string",
+              "format": "date-time"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that edited the folder",
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "description",
+            "userId",
+            "title",
+            "workspaceId",
+            "folderId"
+          ]
         }
       },
       "required": ["eventType", "dataVersion", "data"]
@@ -244,6 +410,11 @@
         "data": {
           "type": "object",
           "properties": {
+            "createdAt": {
+              "description": "The date at which the workspace has been created",
+              "type": "string",
+              "format": "date-time"
+            },
             "workspaceId": {
               "type": "string"
             },
