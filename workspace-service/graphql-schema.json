@@ -1697,7 +1697,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": "List of users in the admin group",
+            "description": "List of users in the admin team",
             "isDeprecated": false,
             "name": "admins",
             "type": {
