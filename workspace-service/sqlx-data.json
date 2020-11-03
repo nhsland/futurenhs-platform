@@ -638,6 +638,51 @@
       ]
     }
   },
+  "7aad6ccc9ad6fe5b20bddb1ac668cebaa026842c880daefd73cd25ff931143a7": {
+    "query": "WITH user_ids as (\n    SELECT user_id FROM link_users_teams WHERE team_id = $1\n    EXCEPT\n    SELECT user_id FROM link_users_teams WHERE team_id = $2\n)\nSELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_ids ON users.id = user_ids.user_id\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "93c4976d0825c426eec25dd14c201e8ba4bbf4df8fa17280c583cf20f3dbbe64": {
     "query": "DELETE FROM workspaces\nWHERE id = $1\nRETURNING *\n",
     "describe": {
