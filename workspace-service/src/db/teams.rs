@@ -49,6 +49,17 @@ impl TeamRepo {
 
         Ok(users)
     }
+
+    pub async fn is_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<bool>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let found = sqlx::query_file!("sql/teams/is_member.sql", user_id, team_id)
+            .fetch_optional(executor)
+            .await?;
+
+        Ok(found.is_some())
+    }
 }
 
 #[cfg(test)]

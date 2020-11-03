@@ -22,6 +22,16 @@ pub enum RoleFilter {
     NonAdmin,
 }
 
+#[derive(Enum, Copy, Clone, Eq, PartialEq)]
+pub enum NewRole {
+    /// Promote to admin.
+    Admin,
+    /// Add as a non-admin member or demote an admin.
+    NonAdmin,
+    /// Remove member.
+    NonMember,
+}
+
 #[Object]
 /// A workspace
 impl Workspace {
@@ -76,11 +86,17 @@ struct NewWorkspace {
     title: String,
     description: String,
 }
-
 #[derive(InputObject)]
 struct UpdateWorkspace {
     title: String,
     description: String,
+}
+
+#[derive(InputObject)]
+struct MembershipChange {
+    workspace: ID,
+    user: ID,
+    new_role: NewRole,
 }
 
 #[derive(Default)]
@@ -156,6 +172,32 @@ impl WorkspacesMutation {
 
     /// Delete workspace(returns deleted workspace
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
+        // TODO: Add event
+        let pool = context.data()?;
+        let workspace = db::WorkspaceRepo::delete(Uuid::parse_str(id.as_str())?, pool).await?;
+
+        Ok(workspace.into())
+    }
+
+    /// Delete workspace(returns deleted workspace
+    async fn change_workspace_membership(
+        &self,
+        context: &Context<'_>,
+        input: MembershipChange,
+    ) -> FieldResult<Workspace> {
+        // ? What do we do if the user is trying to remove themselves from the admin group?
+
+        let requesting_user = context.data::<super::RequestingUser>()?;
+        if !WorkspaceRepo::is_admin(workspace_id, requesting_user).await? {
+            bail!("sod off")
+        }
+
+        // * Start a transaction
+        // * Check that the requesting user is a site admin, or is in the workspace admins group.
+        // * Do requested adds.
+        // * Do requested removes.
+        // * end transaction
+
         // TODO: Add event
         let pool = context.data()?;
         let workspace = db::WorkspaceRepo::delete(Uuid::parse_str(id.as_str())?, pool).await?;
