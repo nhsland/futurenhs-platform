@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermissionsRadio renders matching snapshot 1`] = `
+<DocumentFragment>
+  .c0 .nhsuk-radios__label,
+.c0 .nhsuk-radios__hint {
+  padding-left: 28px;
+  padding-top: 0px;
+}
+
+<div
+    class="nhsuk-form-group"
+  >
+    <div
+      class="nhsuk-form-group"
+    >
+      <div
+        class="nhsuk-radios c0"
+        id="permissions"
+        role="radiogroup"
+      >
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-describedby="permissions-1--hint"
+            aria-labelledby="permissions-1--label"
+            class="nhsuk-radios__input"
+            id="permissions-1"
+            name="permissions"
+            type="radio"
+            value="all-members"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="permissions-1"
+            id="permissions-1--label"
+          >
+            Make visible to all FutureNHS members
+          </label>
+          <span
+            class="nhsuk-hint nhsuk-radios__hint"
+            id="permissions-1--hint"
+          >
+            This will make the folder and its contents visible to all members of FutureNHS
+          </span>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-describedby="permissions-2--hint"
+            aria-labelledby="permissions-2--label"
+            class="nhsuk-radios__input"
+            id="permissions-2"
+            name="permissions"
+            type="radio"
+            value="workspace-members"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="permissions-2"
+            id="permissions-2--label"
+          >
+            Make visible to all members of this workspace
+          </label>
+          <span
+            class="nhsuk-hint nhsuk-radios__hint"
+            id="permissions-2--hint"
+          >
+            This will make the folder and its contents visible to members of your workspace.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,4 +1,6 @@
 import BetaIcon from "./BetaIcon";
+import ChevronBottomIcon from "./ChevronBottomIcon";
+import ChevronTopIcon from "./ChevronTopIcon";
 import CrossIcon from "./CrossIcon";
 import DashboardIcon from "./DashboardIcon";
 import DeleteIcon from "./DeleteIcon";
@@ -20,6 +22,8 @@ import WorkspacesIcon from "./WorkspacesIcon";
 
 export {
   BetaIcon,
+  ChevronBottomIcon,
+  ChevronTopIcon,
   CrossIcon,
   DashboardIcon,
   DeleteIcon,
