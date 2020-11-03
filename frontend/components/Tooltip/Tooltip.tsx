@@ -18,7 +18,7 @@ const Inner = styled.span`
   }
   opacity: 0;
   position: absolute;
-  z-index: 2000;
+  z-index: 5;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colorNhsukGrey1};
   padding: 5px;
