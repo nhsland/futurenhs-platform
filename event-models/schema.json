@@ -9,6 +9,7 @@
         { "$ref": "#/definitions/FileCreated" },
         { "$ref": "#/definitions/FileUpdated" },
         { "$ref": "#/definitions/FileDeleted" },
+        { "$ref": "#/definitions/FileDownloaded" },
         { "$ref": "#/definitions/FolderCreated" },
         { "$ref": "#/definitions/WorkspaceCreated" }
       ]
@@ -258,11 +259,6 @@
         "data": {
           "type": "object",
           "properties": {
-            "createdAt": {
-              "description": "The date at which the file has been downloaded",
-              "type": "string",
-              "format": "date-time"
-            },
             "fileId": {
               "type": "string"
             },

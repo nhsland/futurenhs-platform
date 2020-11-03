@@ -11,6 +11,7 @@ export type Event = BaseEvent &
     | FileCreated
     | FileUpdated
     | FileDeleted
+    | FileDownloaded
     | FolderCreated
     | WorkspaceCreated
   );
@@ -107,6 +108,25 @@ export interface FileDeleted {
     fileId: string;
     /**
      * The user that deleted the file
+     */
+    userId: string;
+    versionId: string;
+    versionNumber: number;
+    /**
+     * The workspace that the file is in
+     */
+    workspaceId: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export interface FileDownloaded {
+  eventType: "FileDownloaded";
+  dataVersion: "1";
+  data: {
+    fileId: string;
+    /**
+     * The user that downloaded the file
      */
     userId: string;
     versionId: string;

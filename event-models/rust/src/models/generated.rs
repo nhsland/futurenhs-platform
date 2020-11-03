@@ -143,6 +143,30 @@ pub struct FileDeletedData {
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FileDownloadedData {
+    ///
+    #[serde(rename = "fileId")]
+    pub file_id: String,
+
+    /// The user that downloaded the file
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    ///
+    #[serde(rename = "versionId")]
+    pub version_id: String,
+
+    ///
+    #[serde(rename = "versionNumber")]
+    pub version_number: i64,
+
+    /// The workspace that the file is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct FolderCreatedData {
     ///
     #[serde(rename = "folderId")]
@@ -187,6 +211,7 @@ pub enum EventData {
     FileCreated(FileCreatedData),
     FileUpdated(FileUpdatedData),
     FileDeleted(FileDeletedData),
+    FileDownloaded(FileDownloadedData),
     FolderCreated(FolderCreatedData),
     WorkspaceCreated(WorkspaceCreatedData),
 }
@@ -212,6 +237,12 @@ impl From<FileUpdatedData> for EventData {
 impl From<FileDeletedData> for EventData {
     fn from(data: FileDeletedData) -> Self {
         Self::FileDeleted(data)
+    }
+}
+
+impl From<FileDownloadedData> for EventData {
+    fn from(data: FileDownloadedData) -> Self {
+        Self::FileDownloaded(data)
     }
 }
 
@@ -255,6 +286,10 @@ impl EventData {
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
+            ("FileDownloaded", "1") => Ok(Self::FileDownloaded(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
             ("FolderCreated", "1") => Ok(Self::FolderCreated(
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
@@ -278,6 +313,8 @@ impl EventData {
             Self::FileUpdated(data) => ("FileUpdated", "1", serde_json::to_value(data)?),
 
             Self::FileDeleted(data) => ("FileDeleted", "1", serde_json::to_value(data)?),
+
+            Self::FileDownloaded(data) => ("FileDownloaded", "1", serde_json::to_value(data)?),
 
             Self::FolderCreated(data) => ("FolderCreated", "1", serde_json::to_value(data)?),
 

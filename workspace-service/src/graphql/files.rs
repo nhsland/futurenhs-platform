@@ -535,7 +535,10 @@ mod test {
 
         let result = delete_file(id, &pool, &requesting_user, &event_client).await;
 
-        assert_eq!(result.unwrap().id, ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec"));
+        assert_eq!(
+            result.unwrap().id,
+            ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec")
+        );
         assert!(events
             .try_iter()
             .any(|e| matches!(e.data, EventData::FileDeleted(_))));
