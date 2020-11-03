@@ -1,7 +1,7 @@
 use crate::db;
 use crate::graphql::users::User;
 use crate::graphql::RequestingUser;
-use async_graphql::{Context, FieldResult, InputObject, Object, ID};
+use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use sqlx::PgPool;
 use uuid::Uuid;
@@ -12,6 +12,14 @@ pub struct Workspace {
     description: String,
     admins: Uuid,
     members: Uuid,
+}
+
+#[derive(Enum, Copy, Clone, Eq, PartialEq)]
+pub enum MemberFilter {
+    /// Only return Admins
+    AdminsOnly,
+    /// Only return Non-Admins
+    WithoutAdmins,
 }
 
 #[Object]
@@ -38,9 +46,19 @@ impl Workspace {
     }
 
     /// List of all users who are members of this workspace
-    async fn members(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
+    async fn members(
+        &self,
+        context: &Context<'_>,
+        filter: Option<MemberFilter>,
+    ) -> FieldResult<Vec<User>> {
         let pool = context.data()?;
-        let users = db::TeamRepo::members(self.members, pool).await?;
+        let users = match filter {
+            Some(MemberFilter::AdminsOnly) => db::TeamRepo::members(self.admins, pool).await?,
+            Some(MemberFilter::WithoutAdmins) => {
+                db::TeamRepo::members_difference(self.members, self.admins, pool).await?
+            }
+            None => db::TeamRepo::members(self.members, pool).await?,
+        };
         Ok(users.into_iter().map(Into::into).collect())
     }
 }

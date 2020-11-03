@@ -27,11 +27,23 @@ impl TeamRepo {
 
         Ok(group)
     }
+
     pub async fn members<'c, E>(id: Uuid, executor: E) -> Result<Vec<User>>
     where
         E: Executor<'c, Database = Postgres>,
     {
         let users = sqlx::query_file_as!(User, "sql/teams/members.sql", id)
+            .fetch_all(executor)
+            .await?;
+
+        Ok(users)
+    }
+
+    pub async fn members_difference<'c, E>(id_a: Uuid, id_b: Uuid, executor: E) -> Result<Vec<User>>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let users = sqlx::query_file_as!(User, "sql/teams/members_difference.sql", id_a, id_b)
             .fetch_all(executor)
             .await?;
 
@@ -63,6 +75,18 @@ impl TeamRepoFake {
         E: Executor<'c, Database = Postgres>,
     {
         let users = vec![crate::db::UserRepo::find_by_auth_id(&id, executor).await?];
+
+        Ok(users)
+    }
+    pub async fn members_difference<'c, E>(
+        id_a: Uuid,
+        _id_b: Uuid,
+        executor: E,
+    ) -> Result<Vec<User>>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        let users = vec![crate::db::UserRepo::find_by_auth_id(&id_a, executor).await?];
 
         Ok(users)
     }

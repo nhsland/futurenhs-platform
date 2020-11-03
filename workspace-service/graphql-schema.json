@@ -362,6 +362,29 @@
       },
       {
         "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": "Only return Admins",
+            "isDeprecated": false,
+            "name": "ADMINS_ONLY"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Only return Non-Admins",
+            "isDeprecated": false,
+            "name": "WITHOUT_ADMINS"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "MemberFilter",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
         "enumValues": null,
         "fields": [
           {
@@ -1719,7 +1742,18 @@
             }
           },
           {
-            "args": [],
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "filter",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "MemberFilter",
+                  "ofType": null
+                }
+              }
+            ],
             "deprecationReason": null,
             "description": "List of all users who are members of this workspace",
             "isDeprecated": false,
