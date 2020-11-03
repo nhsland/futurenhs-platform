@@ -80,12 +80,12 @@ impl UserRepoFake {
         })
     }
 
-    pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<User> {
+    pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<User> {
         Ok(User {
             id: *id,
             auth_id: Uuid::new_v4(),
             name: "Test".to_string(),
-            is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
+            is_platform_admin: false,
             email_address: "testuser@example.com".to_string(),
         })
     }

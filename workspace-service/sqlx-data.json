@@ -1,5 +1,18 @@
 {
   "db": "PostgreSQL",
+  "0767749f22a524b9c487890d564010db70aa73009e110463a4571ff62252527f": {
+    "query": "DELETE FROM link_users_teams\nWHERE team_id = $1 AND user_id = $2\n",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "0ccd2b33326bb27bb182abad240df798cf875cb624ad3e5b95c366fe1123ce11": {
     "query": "SELECT *\nFROM workspaces\nORDER BY id\n",
     "describe": {
@@ -727,6 +740,63 @@
       ]
     }
   },
+  "9e85a6a29f2031bc0b69f409813511ad821d4499869579ee90a6fbc9fdd54200": {
+    "query": "INSERT INTO link_users_teams (team_id, user_id)\nVALUES ($1, $2)\n",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "ad5d23d2bf1c098767d2bf876251aa2837f5dddd4739b6ba7c0e8c685c7bceb2": {
+    "query": "SELECT * FROM users WHERE id = $1;\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "b3973f7ae3ca5e3e1e5b6c0767f18eb3b4885faea01905855d3663781420ad8b": {
     "query": "INSERT INTO files (created_by, created_at, latest_version)\nVALUES ($1, NOW(), $2) \nRETURNING *\n",
     "describe": {
@@ -1043,6 +1113,27 @@
         true,
         false,
         false
+      ]
+    }
+  },
+  "f1506d656916f75ed0ea484985e81eb2ebfa8656ed6e4e7e204501f03ee9594f": {
+    "query": "SELECT\n\tTRUE\nFROM\n    link_users_teams\nWHERE\n\tteam_id = $1 AND user_id = $2\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "bool",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        null
       ]
     }
   },

@@ -131,4 +131,18 @@ impl TeamRepoFake {
     {
         Ok(true)
     }
+
+    pub async fn add_member<'c, E>(_user_id: Uuid, _team_id: Uuid, _executor: E) -> Result<()>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        Ok(())
+    }
+
+    pub async fn remove_member<'c, E>(_user_id: Uuid, _team_id: Uuid, _executor: E) -> Result<()>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        Ok(())
+    }
 }

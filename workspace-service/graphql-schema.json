@@ -363,6 +363,59 @@
       {
         "description": null,
         "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "workspace",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "user",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "newRole",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "NewRole",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "interfaces": null,
+        "kind": "INPUT_OBJECT",
+        "name": "MembershipChange",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
         "fields": [
           {
             "args": [
@@ -523,6 +576,37 @@
             "description": "Delete workspace(returns deleted workspace",
             "isDeprecated": false,
             "name": "deleteWorkspace",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Workspace",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "MembershipChange",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Delete workspace(returns deleted workspace",
+            "isDeprecated": false,
+            "name": "changeWorkspaceMembership",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1055,6 +1139,35 @@
         "interfaces": null,
         "kind": "INPUT_OBJECT",
         "name": "NewFolder",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": "Promote to admin.",
+            "isDeprecated": false,
+            "name": "ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Add as a non-admin member or demote an admin.",
+            "isDeprecated": false,
+            "name": "NON_ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Remove member.",
+            "isDeprecated": false,
+            "name": "NON_MEMBER"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "NewRole",
         "possibleTypes": null
       },
       {

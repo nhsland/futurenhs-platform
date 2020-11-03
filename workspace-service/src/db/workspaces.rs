@@ -193,13 +193,12 @@ impl WorkspaceRepoFake {
 
     pub async fn change_workspace_membership(
         workspace_id: Uuid,
-        user_id: Uuid,
-        new_role: NewRole,
+        _user_id: Uuid,
+        _new_role: NewRole,
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
 
         Ok(workspace)
-        // * TODO: commit transaction
     }
 }
