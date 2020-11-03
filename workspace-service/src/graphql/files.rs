@@ -2,7 +2,7 @@ use super::{azure, db, validation, RequestingUser};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use fnhs_event_models::{
-    Event, EventClient, EventPublisher as _, FileCreatedData, FileUpdatedData, FileDeletedData,
+    Event, EventClient, EventPublisher as _, FileCreatedData, FileDeletedData, FileUpdatedData,
 };
 use lazy_static::lazy_static;
 use mime_db::extensions2;
@@ -274,7 +274,6 @@ async fn create_file(
     let folder = db::FolderRepo::find_by_id(folder_id, pool).await?;
 
     let file = db::FileWithVersionRepo::create(
-
         db::CreateFileArgs {
             user_id: user.id,
             folder_id,
@@ -403,10 +402,8 @@ async fn delete_file(
     requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<File> {
-            
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-    let file = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool)
-        .await?;
+    let file = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool).await?;
 
     let folder = db::FolderRepo::find_by_id(file.folder, pool).await?;
 
@@ -525,6 +522,23 @@ mod test {
         assert!(events
             .try_iter()
             .any(|e| matches!(e.data, EventData::FileCreated(_))));
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn delete_file_works() -> anyhow::Result<()> {
+        let pool = mock_connection_pool()?;
+        let requesting_user = mock_unprivileged_requesting_user();
+        let (events, event_client) = mock_event_emitter();
+        let id: ID = ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec");
+
+        let result = delete_file(id, &pool, &requesting_user, &event_client).await;
+
+        assert_eq!(result.unwrap().id, ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec"));
+        assert!(events
+            .try_iter()
+            .any(|e| matches!(e.data, EventData::FileDeleted(_))));
 
         Ok(())
     }
