@@ -7,7 +7,6 @@ edition = "2018"
 [dependencies]
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
-schemafy = "0.5"
 serde = "1"
 serde_json = "1"
 surf = "2"

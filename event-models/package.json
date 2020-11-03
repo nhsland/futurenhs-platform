@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "json-schema-to-typescript": "^9.1.1"
+  },
+  "scripts": {
+    "generate": "yarn generate:rust && yarn generate:typescript",
+    "generate:rust": "node generate-rust.js && cargo fmt --manifest-path rust/Cargo.toml",
+    "generate:typescript": "node generate-typescript.js && prettier --write typescript/src/schema.ts"
+  }
+}

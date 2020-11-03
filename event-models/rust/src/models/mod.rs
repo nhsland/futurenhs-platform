@@ -1,14 +1,11 @@
+mod generated;
+
 use chrono::{DateTime, Utc};
+pub use generated::*;
 use serde::de;
 use serde::ser::{self, Error as _, SerializeStruct};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-
-mod gen {
-    use serde::{Deserialize, Serialize};
-
-    schemafy::schemafy!("../schema.json");
-}
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Event {
@@ -90,68 +87,6 @@ impl Serialize for Event {
     }
 }
 
-macro_rules! event_serialization {
-    ($(( $event_type:literal, $data_version:literal) => $enum_variant:ident ( $data_type:ident ),)*) => {
-        pub use gen::{
-            $(
-                $data_type,
-            )*
-        };
-
-        $(impl From<$data_type> for EventData {
-            fn from(data: $data_type) -> Self {
-                Self::$enum_variant(data)
-            }
-        })*
-
-        #[derive(Debug, PartialEq, Clone)]
-        pub enum EventData {
-            $(
-                $enum_variant($data_type),
-            )*
-        }
-
-        enum EventDataDeserializationError {
-            Json(serde_json::Error),
-            UnknownVariant,
-        }
-
-        impl EventData {
-            fn deserialize(event_type: &str, data_version: &str, data: serde_json::Value) -> Result<Self, EventDataDeserializationError> {
-                match (event_type, data_version) {
-                    $(
-                        ($event_type, $data_version) => Ok(Self::$enum_variant(
-                            serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
-                        )),
-                    )*
-                    (_, _) => {
-                        Err(EventDataDeserializationError::UnknownVariant)
-                    }
-                }
-            }
-
-            fn serialize(&self) -> Result<(&'static str, &'static str, serde_json::Value), serde_json::Error> {
-                Ok(match self {
-                    $(
-                        Self::$enum_variant(data) => {
-                            ($event_type, $data_version, serde_json::to_value(data)?)
-                        }
-                    )*
-                })
-            }
-        }
-    }
-}
-
-// Generate EventData enum and serialization logic
-event_serialization!(
-    ("ContentViewed", "1") => ContentViewed(ContentViewedData),
-    ("FolderCreated", "1") => FolderCreated(FolderCreatedData),
-    ("WorkspaceCreated", "1") => WorkspaceCreated(WorkspaceCreatedData),
-    ("FileCreated", "1") => FileCreated(FileCreatedData),
-    ("FileUpdated", "1") => FileUpdated(FileUpdatedData),
-);
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -170,19 +105,20 @@ mod tests {
                 content_type: "Folder".into(),
                 workspace_id: "workspace".into(),
                 error: None,
-            }.into(),
+            }
+            .into(),
         })
         .unwrap();
         assert_eq!(
             s,
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         );
     }
 
     #[test]
     fn deserialize() {
         let event: Event = serde_json::from_str(
-            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","error":null,"userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
+            r#"{"id":"id","subject":"subj","eventTime":"2020-09-09T10:22:42.235679Z","eventType":"ContentViewed","data":{"contentId":"content","contentType":"Folder","userId":"user","workspaceId":"workspace"},"dataVersion":"1"}"#
         ).unwrap();
         assert_eq!(
             event,
@@ -198,7 +134,8 @@ mod tests {
                     content_type: "Folder".into(),
                     workspace_id: "workspace".into(),
                     error: None,
-                }.into()
+                }
+                .into()
             }
         );
     }

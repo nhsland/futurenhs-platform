@@ -296,7 +296,7 @@ async fn create_file(
             file.id.clone(),
             FileCreatedData {
                 file_id: file.id.to_string(),
-                created_at: file.created_at.to_rfc3339(),
+                created_at: file.created_at,
                 file_description: file.description.clone(),
                 file_title: file.title.clone(),
                 file_type: file.file_type.clone(),
@@ -391,7 +391,7 @@ async fn create_file_version(
                 workspace_id: folder.workspace.to_string(),
                 version_id: new_version.latest_version.to_string(),
                 version_number: version_number.into(),
-                updated_at: file.modified_at.to_rfc3339(),
+                updated_at: file.modified_at,
             },
         )])
         .await?;
