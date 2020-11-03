@@ -214,11 +214,6 @@
         "data": {
           "type": "object",
           "properties": {
-            "createdAt": {
-              "description": "The date at which the file has been deleted",
-              "type": "string",
-              "format": "date-time"
-            },
             "fileId": {
               "type": "string"
             },
@@ -238,7 +233,6 @@
             }
           },
           "required": [
-            "createdAt",
             "fileId",
             "userId",
             "versionId",
@@ -362,11 +356,6 @@
               "description": "The workspace that the folder is in",
               "type": "string"
             },
-            "createdAt": {
-              "description": "The date at which the folder has been edited",
-              "type": "string",
-              "format": "date-time"
-            },
             "title": {
               "type": "string"
             },
@@ -379,7 +368,6 @@
             }
           },
           "required": [
-            "createdAt",
             "description",
             "userId",
             "title",
