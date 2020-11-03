@@ -15,6 +15,7 @@ export const mockUrqlClient: MockUrqlClient = (queries) => {
       const operation: Operation = {
         context: {} as any,
         key: 1,
+        kind: "query",
         operationName: "query",
         query,
       };
