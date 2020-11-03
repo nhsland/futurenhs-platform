@@ -54,7 +54,7 @@ const createStruct = (name, definition) => {
 
 const generateRustModels = (schema) => {
   // This code generation has a very limited understanding of JSON schema. It
-  // assumes it to be in a very specific structure. We do a view quick
+  // assumes it to be in a very specific structure. We do a few quick
   // assertions here to catch if anything big has changed.
   if (
     schema.title !== "Event" ||
