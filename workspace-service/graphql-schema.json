@@ -362,29 +362,6 @@
       },
       {
         "description": null,
-        "enumValues": [
-          {
-            "deprecationReason": null,
-            "description": "Only return Admins",
-            "isDeprecated": false,
-            "name": "ADMINS_ONLY"
-          },
-          {
-            "deprecationReason": null,
-            "description": "Only return Non-Admins",
-            "isDeprecated": false,
-            "name": "WITHOUT_ADMINS"
-          }
-        ],
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "ENUM",
-        "name": "MemberFilter",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
         "enumValues": null,
         "fields": [
           {
@@ -1438,6 +1415,29 @@
         "possibleTypes": null
       },
       {
+        "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": "Only return Admins",
+            "isDeprecated": false,
+            "name": "ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Only return Non-Admins",
+            "isDeprecated": false,
+            "name": "NON_ADMIN"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "RoleFilter",
+        "possibleTypes": null
+      },
+      {
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
         "enumValues": null,
         "fields": null,
@@ -1725,7 +1725,7 @@
                 "name": "filter",
                 "type": {
                   "kind": "ENUM",
-                  "name": "MemberFilter",
+                  "name": "RoleFilter",
                   "ofType": null
                 }
               }

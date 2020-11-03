@@ -15,11 +15,11 @@ pub struct Workspace {
 }
 
 #[derive(Enum, Copy, Clone, Eq, PartialEq)]
-pub enum MemberFilter {
+pub enum RoleFilter {
     /// Only return Admins
-    AdminsOnly,
+    Admin,
     /// Only return Non-Admins
-    WithoutAdmins,
+    NonAdmin,
 }
 
 #[Object]
@@ -45,12 +45,12 @@ impl Workspace {
     async fn members(
         &self,
         context: &Context<'_>,
-        filter: Option<MemberFilter>,
+        filter: Option<RoleFilter>,
     ) -> FieldResult<Vec<User>> {
         let pool = context.data()?;
         let users = match filter {
-            Some(MemberFilter::AdminsOnly) => db::TeamRepo::members(self.admins, pool).await?,
-            Some(MemberFilter::WithoutAdmins) => {
+            Some(RoleFilter::Admin) => db::TeamRepo::members(self.admins, pool).await?,
+            Some(RoleFilter::NonAdmin) => {
                 db::TeamRepo::members_difference(self.members, self.admins, pool).await?
             }
             None => db::TeamRepo::members(self.members, pool).await?,
