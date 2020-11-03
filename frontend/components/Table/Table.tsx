@@ -1,7 +1,9 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 
 import { Table as NHSTable } from "nhsuk-react-components";
 import styled from "styled-components";
+
+import Expander from "../Expander/Expander";
 
 const TableContainer = styled.div`
   display: none;
@@ -58,38 +60,65 @@ const TableComponent = <ItemType extends Item>({
   icon,
   columns,
   data,
-}: Props<ItemType>) => (
-  <TableContainer>
-    <NHSTable.Panel heading={tableHeading}>
-      <StyledTable>
-        <NHSTable.Head>
-          <NHSTable.Row>
-            {columns.map((c, i) => (
-              <NHSTable.Cell key={i}>{c.heading}</NHSTable.Cell>
-            ))}
-          </NHSTable.Row>
-        </NHSTable.Head>
-        <NHSTable.Body>
-          {data.map((x) => (
-            <NHSTable.Row key={x.id}>
-              {columns.map(({ content }, i) => (
-                <NHSTable.Cell key={i}>
-                  {i === 0 && icon ? (
-                    <IconWrapper>
-                      {icon(x)}
-                      {content(x)}
-                    </IconWrapper>
-                  ) : (
-                    content(x)
-                  )}
-                </NHSTable.Cell>
+  extraDetails,
+}: Props<ItemType>) => {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  return (
+    <TableContainer>
+      <NHSTable.Panel heading={tableHeading}>
+        <StyledTable>
+          <NHSTable.Head>
+            <NHSTable.Row>
+              {columns.map((c, i) => (
+                <NHSTable.Cell key={i}>{c.heading}</NHSTable.Cell>
               ))}
             </NHSTable.Row>
-          ))}
-        </NHSTable.Body>
-      </StyledTable>
-    </NHSTable.Panel>
-  </TableContainer>
-);
+          </NHSTable.Head>
+          <NHSTable.Body>
+            {data.map((x) => {
+              const expanded = x.id === expandedId;
+              return (
+                <>
+                  <NHSTable.Row key={x.id}>
+                    {columns.map(({ content }, i) => (
+                      <NHSTable.Cell key={i}>
+                        {i === 0 && icon ? (
+                          <IconWrapper>
+                            {icon(x)}
+                            {content(x)}
+                          </IconWrapper>
+                        ) : (
+                          content(x)
+                        )}
+                      </NHSTable.Cell>
+                    ))}
+                    {extraDetails && (
+                      <Expander
+                        expanded={expanded}
+                        onClick={() => setExpandedId(expanded ? null : x.id)}
+                      />
+                    )}
+                  </NHSTable.Row>
+                  <NHSTable.Row>
+                    {extraDetails &&
+                      expanded &&
+                      extraDetails.map((c, i) => (
+                        <>
+                          {c.heading && (
+                            <NHSTable.Cell key={i}>{c.heading}</NHSTable.Cell>
+                          )}
+                          <NHSTable.Cell key={i}>{c.content(x)}</NHSTable.Cell>
+                        </>
+                      ))}
+                  </NHSTable.Row>
+                </>
+              );
+            })}
+          </NHSTable.Body>
+        </StyledTable>
+      </NHSTable.Panel>
+    </TableContainer>
+  );
+};
 
 export { TableComponent as Table };

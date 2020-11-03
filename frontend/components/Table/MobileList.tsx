@@ -1,44 +1,8 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 
 import styled from "styled-components";
 
-import { MinusIcon, PlusIcon } from "../Icon";
-
-const IconClickTarget = styled.button`
-  width: 44px;
-  height: 44px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background-color: inherit;
-
-  color: ${({ theme }) => theme.colorNhsukBlue};
-
-  :hover {
-    opacity: 1;
-    color: ${({ theme }) => theme.colorShadeNhsukBlue35};
-  }
-
-  :active,
-  :focus {
-    opacity: 1;
-    color: ${({ theme }) => theme.colorNhsukYellow};
-    outline: none;
-    svg circle {
-      fill: black;
-    }
-  }
-`;
-
-const ExpandIcon: FC<{ expanded: boolean; onClick: () => void }> = ({
-  expanded,
-  onClick,
-}) => (
-  <IconClickTarget onClick={onClick}>
-    {expanded ? <MinusIcon /> : <PlusIcon />}
-  </IconClickTarget>
-);
+import Expander from "../Expander/Expander";
 
 const ListItem = styled.li`
   align-items: flex-start;
@@ -150,7 +114,7 @@ export const MobileList = <ItemType extends Item>({
                   ))}
               </DetailsContainer>
               {extraDetails && (
-                <ExpandIcon
+                <Expander
                   expanded={expanded}
                   onClick={() => setExpandedId(expanded ? null : x.id)}
                 />
