@@ -42,6 +42,50 @@
       ]
     }
   },
+  "0d37e1a94f7fbbfa6758722565300aff5430e6ea9fc1fe8b4060bf5befc7e3d7": {
+    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN link_users_teams ON users.id = link_users_teams.user_id\nWHERE\n\tlink_users_teams.team_id = $1\nORDER BY\n\tusers.name\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "12fa7fc1483550592cb56dc2b229c19546632bdb6d005ffcf1d312adc611c077": {
     "query": "INSERT INTO workspaces (title, description, admins, members)\nVALUES ($1, $2, $3, $4)\nRETURNING *\n",
     "describe": {
@@ -272,50 +316,6 @@
         ]
       },
       "nullable": [
-        false,
-        false
-      ]
-    }
-  },
-  "30ca906859817bb8fe8e85b4029315fa6366ab50ce91b0ed0bf36c48ebd788e9": {
-    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN link_users_teams ON users.id = link_users_teams.user_id\nWHERE\n\tlink_users_teams.team_id = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "auth_id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 2,
-          "name": "name",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "is_platform_admin",
-          "type_info": "Bool"
-        },
-        {
-          "ordinal": 4,
-          "name": "email_address",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
         false,
         false
       ]
@@ -638,8 +638,8 @@
       ]
     }
   },
-  "7aad6ccc9ad6fe5b20bddb1ac668cebaa026842c880daefd73cd25ff931143a7": {
-    "query": "WITH user_ids as (\n    SELECT user_id FROM link_users_teams WHERE team_id = $1\n    EXCEPT\n    SELECT user_id FROM link_users_teams WHERE team_id = $2\n)\nSELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_ids ON users.id = user_ids.user_id\n",
+  "7c2eb4c370b448dcaab3585cf7a3526df946c1e8677bd80bb8eaeb8938528a85": {
+    "query": "WITH user_ids as (\n    SELECT user_id FROM link_users_teams WHERE team_id = $1\n    EXCEPT\n    SELECT user_id FROM link_users_teams WHERE team_id = $2\n)\nSELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_ids ON users.id = user_ids.user_id\nORDER BY\n\tusers.name\n",
     "describe": {
       "columns": [
         {

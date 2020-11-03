@@ -8,3 +8,5 @@ SELECT
 FROM
 	users
 	JOIN user_ids ON users.id = user_ids.user_id
+ORDER BY
+	users.name
