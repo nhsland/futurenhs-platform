@@ -147,6 +147,7 @@ async fn create_folder(
                 // TODO: Fill this in when we have users in the db.
                 user_id: "".into(),
                 title: folder.title.clone(),
+                description: folder.description.clone(),
             },
         )])
         .await?;

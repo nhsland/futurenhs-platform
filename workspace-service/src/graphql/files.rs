@@ -2,7 +2,7 @@ use super::{azure, db, validation, RequestingUser};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
 use chrono::{DateTime, Utc};
 use fnhs_event_models::{
-    Event, EventClient, EventPublisher as _, FileCreatedData, FileUpdatedData,
+    Event, EventClient, EventPublisher as _, FileCreatedData, FileUpdatedData, FileDeletedData,
 };
 use lazy_static::lazy_static;
 use mime_db::extensions2;
@@ -246,12 +246,9 @@ impl FilesMutation {
     async fn delete_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
-        let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-        let file: File = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool)
-            .await?
-            .into();
+        let event_client: &EventClient = context.data()?;
 
-        Ok(file)
+        delete_file(id, pool, requesting_user, event_client).await
     }
 }
 
@@ -276,7 +273,8 @@ async fn create_file(
 
     let folder = db::FolderRepo::find_by_id(folder_id, pool).await?;
 
-    let file: File = db::FileWithVersionRepo::create(
+    let file = db::FileWithVersionRepo::create(
+
         db::CreateFileArgs {
             user_id: user.id,
             folder_id,
@@ -288,12 +286,11 @@ async fn create_file(
         },
         pool,
     )
-    .await?
-    .into();
+    .await?;
 
     event_client
         .publish_events(&[Event::new(
-            file.id.clone(),
+            file.id.to_string(),
             FileCreatedData {
                 file_id: file.id.to_string(),
                 created_at: file.created_at,
@@ -303,13 +300,13 @@ async fn create_file(
                 folder_id: folder_id.to_string(),
                 user_id: user.id.to_string(),
                 workspace_id: folder.workspace.to_string(),
-                version_id: file.latest_version.to_string(),
-                version_number: 1,
+                version_id: file.version.to_string(),
+                version_number: file.version_number.into(),
             },
         )])
         .await?;
 
-    Ok(file)
+    Ok(file.into())
 }
 
 async fn create_file_version(
@@ -400,6 +397,34 @@ async fn create_file_version(
     Ok(file)
 }
 
+async fn delete_file(
+    id: ID,
+    pool: &PgPool,
+    requesting_user: &RequestingUser,
+    event_client: &EventClient,
+) -> FieldResult<File> {
+            
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let file = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool)
+        .await?;
+
+    let folder = db::FolderRepo::find_by_id(file.folder, pool).await?;
+
+    event_client
+        .publish_events(&[Event::new(
+            file.id.to_string(),
+            FileDeletedData {
+                file_id: file.id.to_string(),
+                user_id: user.id.to_string(),
+                version_id: file.version.to_string(),
+                workspace_id: folder.workspace.to_string(),
+                version_number: file.version_number.into(),
+            },
+        )])
+        .await?;
+
+    Ok(file.into())
+}
 #[cfg(test)]
 mod test {
     use super::*;
