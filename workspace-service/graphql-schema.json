@@ -1718,30 +1718,6 @@
             }
           },
           {
-            "args": [],
-            "deprecationReason": null,
-            "description": "List of users in the admin team",
-            "isDeprecated": false,
-            "name": "admins",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "User",
-                    "ofType": null
-                  }
-                }
-              }
-            }
-          },
-          {
             "args": [
               {
                 "defaultValue": null,
@@ -1755,7 +1731,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "List of all users who are members of this workspace",
+            "description": "List of users who are members of this workspace.\n\nPass filter: ADMINS_ONLY or WITHOUT_ADMINS for finer control over\nwhich members are returned.",
             "isDeprecated": false,
             "name": "members",
             "type": {

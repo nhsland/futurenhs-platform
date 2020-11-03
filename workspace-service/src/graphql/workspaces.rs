@@ -38,14 +38,10 @@ impl Workspace {
         self.description.clone()
     }
 
-    /// List of users in the admin team
-    async fn admins(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
-        let pool = context.data()?;
-        let users = db::TeamRepo::members(self.admins, pool).await?;
-        Ok(users.into_iter().map(Into::into).collect())
-    }
-
-    /// List of all users who are members of this workspace
+    /// List of users who are members of this workspace.
+    ///
+    /// Pass filter: ADMINS_ONLY or WITHOUT_ADMINS for finer control over
+    /// which members are returned.
     async fn members(
         &self,
         context: &Context<'_>,
