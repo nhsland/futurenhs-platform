@@ -82,6 +82,16 @@ impl WorkspaceRepo {
 
         Ok(workspace)
     }
+
+    pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
+        let user = db::UserRepo::find_by_auth_id(&user_auth_id, pool).await?;
+        if user.is_platform_admin {
+            return Ok(true);
+        }
+        let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
+
+        db::TeamRepo::is_member(workspace.admins, user.id, pool).await
+    }
 }
 
 // Fake implementation for tests. If you want integration tests that exercise the database,
@@ -142,5 +152,13 @@ impl WorkspaceRepoFake {
             members: Uuid::new_v4(),
         };
         Ok(workspace)
+    }
+
+    pub async fn is_admin(
+        _workspace_id: Uuid,
+        _user_auth_id: Uuid,
+        _pool: &PgPool,
+    ) -> Result<bool> {
+        Ok(true)
     }
 }

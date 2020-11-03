@@ -1,4 +1,5 @@
 use crate::db;
+use crate::db::WorkspaceRepo;
 use crate::graphql::users::User;
 use crate::graphql::RequestingUser;
 use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
@@ -186,10 +187,18 @@ impl WorkspacesMutation {
         input: MembershipChange,
     ) -> FieldResult<Workspace> {
         // ? What do we do if the user is trying to remove themselves from the admin group?
+        let pool = context.data()?;
 
         let requesting_user = context.data::<super::RequestingUser>()?;
-        if !WorkspaceRepo::is_admin(workspace_id, requesting_user).await? {
-            bail!("sod off")
+
+        if !WorkspaceRepo::is_admin(
+            Uuid::parse_str(input.workspace.as_str())?,
+            requesting_user.auth_id,
+            pool,
+        )
+        .await?
+        {
+            return Err(anyhow::anyhow!("Only admins can edit workspace membership").into());
         }
 
         // * Start a transaction
@@ -199,8 +208,6 @@ impl WorkspacesMutation {
         // * end transaction
 
         // TODO: Add event
-        let pool = context.data()?;
-        let workspace = db::WorkspaceRepo::delete(Uuid::parse_str(id.as_str())?, pool).await?;
 
         Ok(workspace.into())
     }

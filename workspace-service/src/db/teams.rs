@@ -101,4 +101,11 @@ impl TeamRepoFake {
 
         Ok(users)
     }
+
+    pub async fn is_member<'c, E>(_user_id: Uuid, _team_id: Uuid, _executor: E) -> Result<bool>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        Ok(true)
+    }
 }
