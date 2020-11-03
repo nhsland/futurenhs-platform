@@ -33,14 +33,14 @@ impl Workspace {
     /// List of users in the admin team
     async fn admins(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
         let pool = context.data()?;
-        let users = db::Team::members(self.admins, pool).await?;
+        let users = db::TeamRepo::members(self.admins, pool).await?;
         Ok(users.into_iter().map(Into::into).collect())
     }
 
     /// List of all users who are members of this workspace
     async fn members(&self, context: &Context<'_>) -> FieldResult<Vec<User>> {
         let pool = context.data()?;
-        let users = db::Team::members(self.members, pool).await?;
+        let users = db::TeamRepo::members(self.members, pool).await?;
         Ok(users.into_iter().map(Into::into).collect())
     }
 }
@@ -77,7 +77,7 @@ impl WorkspacesQuery {
     /// Get all Workspaces
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
-        let workspaces = db::Workspace::find_all(pool).await?;
+        let workspaces = db::WorkspaceRepo::find_all(pool).await?;
         Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
@@ -90,7 +90,7 @@ impl WorkspacesQuery {
     async fn get_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
-        let workspace = db::Workspace::find_by_id(id, pool).await?;
+        let workspace = db::WorkspaceRepo::find_by_id(id, pool).await?;
         Ok(workspace.into())
     }
 }
@@ -129,7 +129,7 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         // TODO: Add event
         let pool = context.data()?;
-        let workspace = db::Workspace::update(
+        let workspace = db::WorkspaceRepo::update(
             Uuid::parse_str(id.as_str())?,
             &workspace.title,
             &workspace.description,
@@ -144,7 +144,7 @@ impl WorkspacesMutation {
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         // TODO: Add event
         let pool = context.data()?;
-        let workspace = db::Workspace::delete(Uuid::parse_str(id.as_str())?, pool).await?;
+        let workspace = db::WorkspaceRepo::delete(Uuid::parse_str(id.as_str())?, pool).await?;
 
         Ok(workspace.into())
     }
@@ -157,7 +157,7 @@ async fn create_workspace(
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
-    let user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     if !user.is_platform_admin {
         return Err(anyhow::anyhow!(
             "User with auth_id {} does not have permission to create a workspace.",
@@ -166,7 +166,7 @@ async fn create_workspace(
         .into());
     }
 
-    let workspace: Workspace = db::Workspace::create(title, description, pool)
+    let workspace: Workspace = db::WorkspaceRepo::create(title, description, pool)
         .await?
         .into();
 

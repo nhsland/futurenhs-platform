@@ -12,8 +12,11 @@ pub struct Team {
     pub title: String,
 }
 
-#[cfg(not(test))]
-impl Team {
+#[cfg_attr(test, allow(dead_code))]
+pub struct TeamRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl TeamRepo {
     pub async fn create<'c, E>(title: &str, executor: E) -> Result<Team>
     where
         E: Executor<'c, Database = Postgres>,
@@ -36,10 +39,13 @@ impl Team {
     }
 }
 
+#[cfg(test)]
+pub struct TeamRepoFake {}
+
 // Fake implementation for tests. If you want integration tests that exercise the database,
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
 #[cfg(test)]
-impl Team {
+impl TeamRepoFake {
     #[allow(dead_code)]
     pub async fn create<'c, E>(title: &str, _executor: E) -> Result<Team>
     where
@@ -56,7 +62,7 @@ impl Team {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let users = vec![User::find_by_auth_id(&id, executor).await?];
+        let users = vec![crate::db::UserRepo::find_by_auth_id(&id, executor).await?];
 
         Ok(users)
     }

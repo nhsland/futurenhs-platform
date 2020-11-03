@@ -58,7 +58,7 @@ impl UsersMutation {
         let auth_id = Uuid::parse_str(&new_user.auth_id)?;
 
         Ok(
-            db::User::get_or_create(&auth_id, &new_user.name, &new_user.email_address, pool)
+            db::UserRepo::get_or_create(&auth_id, &new_user.name, &new_user.email_address, pool)
                 .await?
                 .into(),
         )
@@ -82,7 +82,7 @@ async fn update_user_impl(
     requesting_user: &RequestingUser,
     update_user: UpdateUser,
 ) -> FieldResult<User> {
-    let requesting_user = db::User::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let requesting_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
     if !requesting_user.is_platform_admin {
         return Err(anyhow::anyhow!(
             "User with auth_id {} is not a platform admin.",
@@ -93,7 +93,7 @@ async fn update_user_impl(
 
     let auth_id = Uuid::parse_str(&update_user.auth_id)?;
     Ok(
-        db::User::update(&auth_id, update_user.is_platform_admin, pool)
+        db::UserRepo::update(&auth_id, update_user.is_platform_admin, pool)
             .await?
             .into(),
     )

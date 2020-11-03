@@ -4,7 +4,6 @@
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use sqlx::{types::Uuid, PgPool};
-#[cfg(not(test))]
 use sqlx::{Executor, Postgres};
 
 #[derive(Clone)]
@@ -17,8 +16,11 @@ pub struct File {
     pub latest_version: Uuid,
 }
 
-#[cfg(not(test))]
-impl File {
+#[cfg_attr(test, allow(dead_code))]
+pub struct FileRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl FileRepo {
     async fn create<'c, E>(created_by: Uuid, latest_version: Uuid, executor: E) -> Result<File>
     where
         E: Executor<'c, Database = Postgres>,
@@ -114,15 +116,18 @@ pub struct CreateFileVersionArgs<'a> {
     pub version_number: i16,
 }
 
-#[cfg(not(test))]
-impl FileWithVersion {
+#[cfg_attr(test, allow(dead_code))]
+pub struct FileWithVersionRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl FileWithVersionRepo {
     pub async fn create(args: CreateFileArgs<'_>, pool: &PgPool) -> Result<FileWithVersion> {
         let version_id = Uuid::new_v4();
 
         let mut tx = pool.begin().await?;
         super::defer_all_constraints(&mut tx).await?;
-        let file = File::create(args.user_id, version_id, &mut tx).await?;
-        let file_version = super::FileVersion::create(
+        let file = FileRepo::create(args.user_id, version_id, &mut tx).await?;
+        let file_version = super::FileVersionRepo::create(
             version_id,
             args.folder_id,
             file.id,
@@ -147,7 +152,7 @@ impl FileWithVersion {
         pool: &PgPool,
     ) -> Result<FileWithVersion> {
         let mut tx = pool.begin().await?;
-        let file_version = super::FileVersion::create(
+        let file_version = super::FileVersionRepo::create(
             Uuid::new_v4(),
             args.folder_id,
             args.file_id,
@@ -162,7 +167,7 @@ impl FileWithVersion {
             &mut tx,
         )
         .await?;
-        let file = File::update_latest_version(
+        let file = FileRepo::update_latest_version(
             args.file_id,
             args.latest_version,
             file_version.id,
@@ -199,10 +204,13 @@ impl FileWithVersion {
     }
 }
 
+#[allow(dead_code)]
+pub struct FileWithVersionRepoFake {}
+
+#[allow(dead_code)]
 // Fake implementation for tests. If you want integration tests that exercise the database,
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
-#[cfg(test)]
-impl FileWithVersion {
+impl FileWithVersionRepoFake {
     pub async fn create(args: CreateFileArgs<'_>, _pool: &PgPool) -> Result<FileWithVersion> {
         let file = FileWithVersion {
             id: Uuid::new_v4(),
