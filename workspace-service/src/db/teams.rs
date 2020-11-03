@@ -50,6 +50,7 @@ impl TeamRepo {
         Ok(users)
     }
 
+    // FIXME: argument order is inconsistent
     pub async fn is_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<bool>
     where
         E: Executor<'c, Database = Postgres>,
@@ -59,6 +60,28 @@ impl TeamRepo {
             .await?;
 
         Ok(found.is_some())
+    }
+
+    pub async fn add_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<()>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        sqlx::query_file!("sql/teams/add_member.sql", user_id, team_id)
+            .execute(executor)
+            .await?;
+
+        Ok(())
+    }
+
+    pub async fn remove_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<()>
+    where
+        E: Executor<'c, Database = Postgres>,
+    {
+        sqlx::query_file!("sql/teams/remove_member.sql", user_id, team_id)
+            .execute(executor)
+            .await?;
+
+        Ok(())
     }
 }
 

@@ -5,6 +5,7 @@ use crate::graphql::RequestingUser;
 use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
 use sqlx::PgPool;
+use std::convert::TryInto;
 use uuid::Uuid;
 
 pub struct Workspace {
@@ -190,16 +191,20 @@ impl WorkspacesMutation {
         let pool = context.data()?;
 
         let requesting_user = context.data::<super::RequestingUser>()?;
+        let workspace_id = input.workspace.try_into()?;
+        let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
 
-        if !WorkspaceRepo::is_admin(
-            Uuid::parse_str(input.workspace.as_str())?,
-            requesting_user.auth_id,
-            pool,
-        )
-        .await?
-        {
+        if !WorkspaceRepo::is_admin(workspace_id, user.id, pool).await? {
             return Err(anyhow::anyhow!("Only admins can edit workspace membership").into());
         }
+
+        let workspace = WorkspaceRepo::change_workspace_membership(
+            workspace_id,
+            input.user.try_into()?,
+            input.new_role,
+            pool,
+        )
+        .await?;
 
         // * Start a transaction
         // * Check that the requesting user is a site admin, or is in the workspace admins group.

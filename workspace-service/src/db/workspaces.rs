@@ -2,6 +2,7 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use crate::db;
+use crate::graphql::workspaces::NewRole;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
 
@@ -83,14 +84,42 @@ impl WorkspaceRepo {
         Ok(workspace)
     }
 
-    pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
-        let user = db::UserRepo::find_by_auth_id(&user_auth_id, pool).await?;
+    pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {
+        let user = db::UserRepo::find_by_id(&user_id, pool).await?;
         if user.is_platform_admin {
             return Ok(true);
         }
         let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
 
         db::TeamRepo::is_member(workspace.admins, user.id, pool).await
+    }
+
+    pub async fn change_workspace_membership(
+        workspace_id: Uuid,
+        user_id: Uuid,
+        new_role: NewRole,
+        pool: &PgPool,
+    ) -> Result<Workspace> {
+        let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
+        // * TODO: Start a transaction
+
+        match new_role {
+            NewRole::Admin => {
+                db::TeamRepo::add_member(workspace.admins, user_id, pool).await?;
+                db::TeamRepo::add_member(workspace.members, user_id, pool).await?;
+            }
+            NewRole::NonAdmin => {
+                db::TeamRepo::remove_member(workspace.admins, user_id, pool).await?;
+                db::TeamRepo::add_member(workspace.members, user_id, pool).await?;
+            }
+            NewRole::NonMember => {
+                db::TeamRepo::remove_member(workspace.admins, user_id, pool).await?;
+                db::TeamRepo::remove_member(workspace.members, user_id, pool).await?;
+            }
+        }
+
+        Ok(workspace)
+        // * TODO: commit transaction
     }
 }
 
@@ -160,5 +189,17 @@ impl WorkspaceRepoFake {
         _pool: &PgPool,
     ) -> Result<bool> {
         Ok(true)
+    }
+
+    pub async fn change_workspace_membership(
+        workspace_id: Uuid,
+        user_id: Uuid,
+        new_role: NewRole,
+        pool: &PgPool,
+    ) -> Result<Workspace> {
+        let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+
+        Ok(workspace)
+        // * TODO: commit transaction
     }
 }

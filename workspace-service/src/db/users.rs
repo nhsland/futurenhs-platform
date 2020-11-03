@@ -26,6 +26,15 @@ impl UserRepo {
 
         Ok(user)
     }
+
+    pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<User> {
+        let user = sqlx::query_file_as!(User, "sql/users/find_by_id.sql", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(user)
+    }
+
     pub async fn get_or_create(
         auth_id: &Uuid,
         name: &str,
@@ -65,6 +74,16 @@ impl UserRepoFake {
         Ok(User {
             id: Uuid::new_v4(),
             auth_id: *auth_id,
+            name: "Test".to_string(),
+            is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
+            email_address: "testuser@example.com".to_string(),
+        })
+    }
+
+    pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<User> {
+        Ok(User {
+            id: *id,
+            auth_id: Uuid::new_v4(),
             name: "Test".to_string(),
             is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
             email_address: "testuser@example.com".to_string(),
