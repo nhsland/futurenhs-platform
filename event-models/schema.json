@@ -8,6 +8,7 @@
         { "$ref": "#/definitions/ContentViewed" },
         { "$ref": "#/definitions/FileCreated" },
         { "$ref": "#/definitions/FileUpdated" },
+        { "$ref": "#/definitions/FileDeleted" },
         { "$ref": "#/definitions/FolderCreated" },
         { "$ref": "#/definitions/WorkspaceCreated" }
       ]

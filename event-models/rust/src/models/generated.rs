@@ -64,6 +64,10 @@ pub struct FileCreatedData {
     #[serde(rename = "versionId")]
     pub version_id: String,
 
+    ///
+    #[serde(rename = "versionNumber")]
+    pub version_number: i64,
+
     /// The user that created the file
     #[serde(rename = "userId")]
     pub user_id: String,
@@ -115,6 +119,30 @@ pub struct FileUpdatedData {
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FileDeletedData {
+    ///
+    #[serde(rename = "fileId")]
+    pub file_id: String,
+
+    /// The user that deleted the file
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    ///
+    #[serde(rename = "versionId")]
+    pub version_id: String,
+
+    ///
+    #[serde(rename = "versionNumber")]
+    pub version_number: i64,
+
+    /// The workspace that the file is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct FolderCreatedData {
     ///
     #[serde(rename = "folderId")]
@@ -127,6 +155,10 @@ pub struct FolderCreatedData {
     ///
     #[serde(rename = "title")]
     pub title: String,
+
+    ///
+    #[serde(rename = "description")]
+    pub description: String,
 
     /// The user that created the folder
     #[serde(rename = "userId")]
@@ -154,6 +186,7 @@ pub enum EventData {
     ContentViewed(ContentViewedData),
     FileCreated(FileCreatedData),
     FileUpdated(FileUpdatedData),
+    FileDeleted(FileDeletedData),
     FolderCreated(FolderCreatedData),
     WorkspaceCreated(WorkspaceCreatedData),
 }
@@ -173,6 +206,12 @@ impl From<FileCreatedData> for EventData {
 impl From<FileUpdatedData> for EventData {
     fn from(data: FileUpdatedData) -> Self {
         Self::FileUpdated(data)
+    }
+}
+
+impl From<FileDeletedData> for EventData {
+    fn from(data: FileDeletedData) -> Self {
+        Self::FileDeleted(data)
     }
 }
 
@@ -212,6 +251,10 @@ impl EventData {
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
+            ("FileDeleted", "1") => Ok(Self::FileDeleted(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
             ("FolderCreated", "1") => Ok(Self::FolderCreated(
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
@@ -233,6 +276,8 @@ impl EventData {
             Self::FileCreated(data) => ("FileCreated", "1", serde_json::to_value(data)?),
 
             Self::FileUpdated(data) => ("FileUpdated", "1", serde_json::to_value(data)?),
+
+            Self::FileDeleted(data) => ("FileDeleted", "1", serde_json::to_value(data)?),
 
             Self::FolderCreated(data) => ("FolderCreated", "1", serde_json::to_value(data)?),
 
