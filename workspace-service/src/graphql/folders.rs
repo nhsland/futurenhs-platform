@@ -54,7 +54,7 @@ impl FoldersQuery {
     ) -> FieldResult<Vec<Folder>> {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(&workspace)?;
-        let folders = db::Folder::find_by_workspace(workspace, pool).await?;
+        let folders = db::FolderRepo::find_by_workspace(workspace, pool).await?;
         Ok(folders.into_iter().map(Into::into).collect())
     }
 
@@ -67,7 +67,7 @@ impl FoldersQuery {
     async fn get_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
-        let folder = db::Folder::find_by_id(id, pool).await?;
+        let folder = db::FolderRepo::find_by_id(id, pool).await?;
         Ok(folder.into())
     }
 }
@@ -106,7 +106,7 @@ impl FoldersMutation {
     ) -> FieldResult<Folder> {
         // TODO: Add event
         let pool = context.data()?;
-        let folder = db::Folder::update(
+        let folder = db::FolderRepo::update(
             Uuid::parse_str(&id)?,
             &folder.title,
             &folder.description,
@@ -121,7 +121,7 @@ impl FoldersMutation {
     async fn delete_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         // TODO: Add event
         let pool = context.data()?;
-        let folder = db::Folder::delete(Uuid::parse_str(&id)?, pool).await?;
+        let folder = db::FolderRepo::delete(Uuid::parse_str(&id)?, pool).await?;
 
         Ok(folder.into())
     }
@@ -134,7 +134,7 @@ async fn create_folder(
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
-    let folder: Folder = db::Folder::create(&title, &description, workspace, pool)
+    let folder: Folder = db::FolderRepo::create(&title, &description, workspace, pool)
         .await?
         .into();
 

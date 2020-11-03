@@ -5,10 +5,10 @@ use url::Url;
 use uuid::Uuid;
 
 #[derive(Default)]
-pub struct FileUploadUrlsQuery;
+pub struct FileUploadUrlsMutation;
 
 #[Object]
-impl FileUploadUrlsQuery {
+impl FileUploadUrlsMutation {
     /// Get URLs for uploading files
     async fn file_upload_urls(&self, context: &Context<'_>, count: u8) -> FieldResult<Vec<Url>> {
         let config = context.data()?;

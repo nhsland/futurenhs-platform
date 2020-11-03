@@ -251,6 +251,76 @@
       ]
     }
   },
+  "2f057012b2ccd0571b02a7442f8f58e2af231e709f2b400e38646ed7587bbfe6": {
+    "query": "INSERT INTO teams (title)\nVALUES ($1)\nRETURNING id, title\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "title",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "30ca906859817bb8fe8e85b4029315fa6366ab50ce91b0ed0bf36c48ebd788e9": {
+    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN link_users_teams ON users.id = link_users_teams.user_id\nWHERE\n\tlink_users_teams.team_id = $1\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
   "394f0934d95043c252988e7d90476223a7b1ad35c4366f60c4c81d676d3f0109": {
     "query": "SELECT * FROM users WHERE auth_id = $1;\n",
     "describe": {
@@ -568,32 +638,6 @@
       ]
     }
   },
-  "7f370d618ab06ac5ed68d1b77f493af2bbfd3b6f6ad606711896f66fcbac926b": {
-    "query": "INSERT INTO groups (title)\nVALUES ($1)\nRETURNING id, title\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
-    }
-  },
   "93c4976d0825c426eec25dd14c201e8ba4bbf4df8fa17280c583cf20f3dbbe64": {
     "query": "DELETE FROM workspaces\nWHERE id = $1\nRETURNING *\n",
     "describe": {
@@ -734,50 +778,6 @@
           "Uuid",
           "Text",
           "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
-  "c66d90fd25750d0d2094e60271dcd8e92d4ad0d110ee17d5d0e8465400461d95": {
-    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_groups ON users.id = user_groups.user_id\nWHERE\n\tuser_groups.group_id = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "auth_id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 2,
-          "name": "name",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "is_platform_admin",
-          "type_info": "Bool"
-        },
-        {
-          "ordinal": 4,
-          "name": "email_address",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
         ]
       },
       "nullable": [

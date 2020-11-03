@@ -3,6 +3,7 @@ import React from "react";
 import { NextPage } from "next";
 import styled from "styled-components";
 
+import { Footer } from "../../components/Footer";
 import { MainHeading } from "../../components/MainHeading";
 import { NavHeader } from "../../components/NavHeader";
 import { PageLayout } from "../../components/PageLayout";
@@ -40,6 +41,7 @@ const WorkspaceDirectory: NextPage = () => {
           );
         })}
       </PageContent>
+      <Footer />
     </PageLayout>
   );
 };

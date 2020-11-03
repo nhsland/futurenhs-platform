@@ -10,6 +10,7 @@ import {
   MobileModifiedAtCell,
   ModifiedAtCell,
 } from "../../../../../components/Files";
+import { Footer } from "../../../../../components/Footer";
 import { Head } from "../../../../../components/Head";
 import {
   DeleteIcon,
@@ -203,6 +204,7 @@ const FolderHomepage: NextPage = () => {
             )}
           </PageContent>
         </ContentWrapper>
+        <Footer />
       </PageLayout>
     </>
   );

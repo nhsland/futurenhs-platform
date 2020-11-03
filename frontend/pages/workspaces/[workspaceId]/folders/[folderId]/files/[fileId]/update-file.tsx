@@ -4,7 +4,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import styled from "styled-components";
-import { Client } from "urql";
 
 import {
   IconCell,
@@ -12,6 +11,7 @@ import {
   ModifiedAtCell,
   TitleCell,
 } from "../../../../../../../components/Files";
+import { Footer } from "../../../../../../../components/Footer";
 import { Head } from "../../../../../../../components/Head";
 import { MainHeading } from "../../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../../components/NavHeader";
@@ -49,7 +49,7 @@ const DownloadFile = styled.a`
   font-size: 16px;
 `;
 
-const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
+const UpdateFile: NextPage<any> = () => {
   const router = useRouter();
   const { fileId, workspaceId, folderId } = router.query;
 
@@ -139,7 +139,6 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             <p> Fields marked with * are mandatory.</p>
             {file.data && (
               <UpdateFileForm
-                urqlClient={urqlClient}
                 workspaceId={workspaceId}
                 folderId={folderId}
                 fileDescription={file.data?.file.description}
@@ -150,6 +149,7 @@ const UpdateFile: NextPage<any> = ({ urqlClient }: { urqlClient: Client }) => {
             )}
           </PageContent>
         </ContentWrapper>
+        <Footer />
       </PageLayout>
     </>
   );

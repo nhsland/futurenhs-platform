@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { Footer } from "../../../components/Footer";
 import { H2 } from "../../../components/H2";
 import { Head } from "../../../components/Head";
 import { MainHeading } from "../../../components/MainHeading";
@@ -52,6 +53,7 @@ const WorkspaceMembersPage: NextPage = () => {
             {error && <p> Oh no... {error?.message} </p>}
           </PageContent>
         </ContentWrapper>
+        <Footer />
       </PageLayout>
     </>
   );

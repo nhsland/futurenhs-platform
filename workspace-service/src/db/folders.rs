@@ -12,8 +12,11 @@ pub struct Folder {
     pub workspace: Uuid,
 }
 
-#[cfg(not(test))]
-impl Folder {
+#[cfg_attr(test, allow(dead_code))]
+pub struct FolderRepo {}
+
+#[cfg_attr(test, allow(dead_code))]
+impl FolderRepo {
     pub async fn create(
         title: &str,
         description: &str,
@@ -67,7 +70,10 @@ impl Folder {
 }
 
 #[cfg(test)]
-impl Folder {
+pub struct FolderRepoFake {}
+
+#[cfg(test)]
+impl FolderRepoFake {
     pub async fn create(
         title: &str,
         description: &str,

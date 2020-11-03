@@ -5,16 +5,16 @@ use url::Url;
 use uuid::Uuid;
 
 #[derive(Default)]
-pub struct FileDownloadUrlsQuery;
+pub struct FileDownloadUrlsMutation;
 
 #[Object]
-impl FileDownloadUrlsQuery {
+impl FileDownloadUrlsMutation {
     /// Get a file download URL
     async fn file_download_url(&self, context: &Context<'_>, id: ID) -> FieldResult<Url> {
         let pool = context.data()?;
         let config = context.data()?;
         let id = Uuid::parse_str(&id)?;
-        let file = db::FileWithVersion::find_by_id(id, pool).await?;
+        let file = db::FileWithVersionRepo::find_by_id(id, pool).await?;
 
         Ok(azure::create_download_sas(
             config,

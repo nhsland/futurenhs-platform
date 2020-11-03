@@ -3,9 +3,8 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 
-import { Login } from "../../components/Login";
-import { Gradient } from "../../components/Login";
-import { LoginPanel } from "../../components/Login";
+import { Footer } from "../../components/Footer";
+import { Gradient, Login, LoginPanel } from "../../components/Login";
 import { LoginHeader } from "../../components/LoginHeader";
 import { PageLayout } from "../../components/PageLayout";
 
@@ -27,18 +26,21 @@ export const StyledPageWrapper = styled.div`
 
 const LoginPage = () => {
   return (
-    <StyledPageWrapper>
-      <PageLayout>
-        <LoginHeader />
-        <Gradient>
-          <Login />
-          <LoginPanel
-            label="Welcome to FutureNHS"
-            text="FutureNHS connects people and helps build relationships across the health and social care sector."
-          />
-        </Gradient>
-      </PageLayout>
-    </StyledPageWrapper>
+    <div>
+      <StyledPageWrapper>
+        <PageLayout>
+          <LoginHeader />
+          <Gradient>
+            <Login />
+            <LoginPanel
+              label="Welcome to FutureNHS"
+              text="FutureNHS connects people and helps build relationships across the health and social care sector."
+            />
+          </Gradient>
+        </PageLayout>
+      </StyledPageWrapper>
+      <Footer />
+    </div>
   );
 };
 
