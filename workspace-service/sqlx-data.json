@@ -555,6 +555,19 @@
       ]
     }
   },
+  "610a15ffc6c469717430534b2f94ee3f63dd64939b3228cb1c04c170088cce2b": {
+    "query": "INSERT INTO link_users_teams (team_id, user_id)\nVALUES ($1, $2)\nON CONFLICT DO NOTHING\n",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "6838012c47967c14881d876ed76d001c68b4f95ae423f35ebc3c49adcaf2b3da": {
     "query": "INSERT INTO file_versions (\n    id,\n    folder,\n    file,\n    file_title,\n    file_description,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    created_by,\n    version_number,\n    version_label\n)\nVALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10, $11)\nRETURNING *\n",
     "describe": {
@@ -738,19 +751,6 @@
         false,
         false
       ]
-    }
-  },
-  "9e85a6a29f2031bc0b69f409813511ad821d4499869579ee90a6fbc9fdd54200": {
-    "query": "INSERT INTO link_users_teams (team_id, user_id)\nVALUES ($1, $2)\n",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Uuid",
-          "Uuid"
-        ]
-      },
-      "nullable": []
     }
   },
   "ad5d23d2bf1c098767d2bf876251aa2837f5dddd4739b6ba7c0e8c685c7bceb2": {
