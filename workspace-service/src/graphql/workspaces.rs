@@ -52,7 +52,7 @@ impl Workspace {
 
     /// List of users who are members of this workspace.
     ///
-    /// Pass filter: ADMINS_ONLY or WITHOUT_ADMINS for finer control over
+    /// Pass RoleFilter: Admin or NonAdmin for finer control over
     /// which members are returned.
     async fn members(
         &self,

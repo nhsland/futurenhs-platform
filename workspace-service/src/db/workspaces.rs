@@ -101,25 +101,26 @@ impl WorkspaceRepo {
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
-        // * TODO: Start a transaction
+        let mut tx = pool.begin().await?;
 
         match new_role {
             NewRole::Admin => {
-                db::TeamRepo::add_member(workspace.admins, user_id, pool).await?;
-                db::TeamRepo::add_member(workspace.members, user_id, pool).await?;
+                db::TeamRepo::add_member(workspace.admins, user_id, &mut tx).await?;
+                db::TeamRepo::add_member(workspace.members, user_id, &mut tx).await?;
             }
             NewRole::NonAdmin => {
-                db::TeamRepo::remove_member(workspace.admins, user_id, pool).await?;
-                db::TeamRepo::add_member(workspace.members, user_id, pool).await?;
+                db::TeamRepo::remove_member(workspace.admins, user_id, &mut tx).await?;
+                db::TeamRepo::add_member(workspace.members, user_id, &mut tx).await?;
             }
             NewRole::NonMember => {
-                db::TeamRepo::remove_member(workspace.admins, user_id, pool).await?;
-                db::TeamRepo::remove_member(workspace.members, user_id, pool).await?;
+                db::TeamRepo::remove_member(workspace.admins, user_id, &mut tx).await?;
+                db::TeamRepo::remove_member(workspace.members, user_id, &mut tx).await?;
             }
         }
 
+        tx.commit().await?;
+
         Ok(workspace)
-        // * TODO: commit transaction
     }
 }
 
