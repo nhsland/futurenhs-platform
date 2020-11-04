@@ -2,43 +2,36 @@
 
 ## How to use
 
-The frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the workspace service when doing server-side rendering, and also runs a graphql federation proxy at `/hapi/graphql` that proxies to `$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT`.
+The frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the workspace service when doing server-side rendering, and also runs a GraphQL federation proxy at `/hapi/graphql` that proxies to `$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT`.
 
-It is possible to either run your frontend;
+It is possible to either run your frontend:
 
-- **locally**, using a stub server for graphQL requests,
-- or against the **workspace service**, using port forwarding.
+- Against a stub server for GraphQL requests. This is useful if you don't care about server-side validation logic, etc.
+- Against the actual workspace service.
 
-### Running locally
+### Stub server
 
-by not setting the environment variable `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` in your `env.local` or `.env` files, the service will default to the value in `.env.development`, which points to the local stub server.
+By not setting the environment variable `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` in your `.env.local` or `.env` files, the service will default to the value in `.env.development`, which points to the local stub server:
 
 ```
 WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://localhost:3001/graphql
 ```
 
-When running `yarn dev` (which starts up both the frontend service and the stub server), you will be making requests against the workspace service stubbed graphQL server, meaning there are no external dependencies for local development.
+When running `yarn dev` (which starts up both the frontend service and the stub server), you will be making requests against the workspace service stubbed GraphQL server, meaning there are no external dependencies for local development.
 
-### Running against your cluster workspace service
+### Actual workspace service
 
-In order to set up a development cluster, see [infrastructure docs](../infrastructure/README.md). Once your development cluster is set up, install `kubefwd` in order to port-forward the workspace service from your cluster and run it;
-
-```bash
-brew install txn2/tap/kubefwd
-sudo kubefwd services -n workspace-service
-```
-
-Set the environment variable for the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` to the following value in your `.env.local` file;
+Start the workspace service locally. Then set the environment variable for the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` to the following value in your `.env.local` file:
 
 ```
-WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://workspace-service.workspace-service/graphql
+WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://localhost:3030/graphql
 ```
 
-Now, when running `yarn dev` the frontend will call the `workspace-service` in your cluster rather than the local stub server.
+Now, when running `yarn dev` the frontend will call the local `workspace-service` rather than the local stub server.
 
 ### Using Azure Active Directory login
 
-By default, when running `yarn dev` your service will mock login, rather than communicating with Azure, in order to reduce dependencies. It is, however, possible to replicate production locally and login normally.
+By default, when running `yarn dev` your service will mock login, rather than communicating with Azure Active Directory B2C, in order to reduce dependencies. It is, however, possible to replicate production locally and login normally.
 
 In order to login you will also need to add our shared OAuth 2 client secret to your local environment variables. Fetch it from your dev cluster with `kubectl get secret -n frontend sessions -o jsonpath={.data.AAD_B2C_CLIENT_SECRET} | base64 -D | fmt`, then create a file called `.env.local` with the following content:
 
@@ -61,11 +54,11 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 By default the system is installed with a single platform admin. This has auth_id="feedface-0000-0000-0000-000000000000" and is_platform_admin set to true. This is the user that `yarn dev` uses by default.
 
-All other users are created when you log in using azure, and are not platform admin.
+All other users are created when you log in using Azure Active Directory B2C and are not platform admin.
 
 If you go to https://fnhs-dev-\$FNHSNAME.westeurope.cloudapp.azure.com/auth/login?next=/api/graphql and attempt to do something that requires auth, like this then you will get an error:
 
-```
+```graphql
 mutation {
   updateUser(
     updateUser: {
@@ -78,30 +71,29 @@ mutation {
 }
 ```
 
-- To find your auth id, go to https://portal.azure.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/AllUsers and select the user you log in with, of `User Type` 'Member'. On the Profile page you are taken to, copy the `Object ID`.
+To give yourself admin permissions in your development cluster:
 
-- You can then go to http://workspace-service.workspace-service/graphiql and give yourself admin like this:
+- Find your auth id. Go to https://portal.azure.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/AllUsers and select the user you log in with, of `User Type` 'Member'. On the Profile page you are taken to, copy the `Object ID`.
 
-In the query box, type:
+- Port-forward to your workspace service (examples assume forward using `kubefwd svc -n workspace-service`).
 
-```
-mutation {
-  updateUser(
-    updateUser: {
-      authId: YOUR_OBJECT_ID
-      isPlatformAdmin: true
+- Go to http://workspace-service.workspace-service/graphiql and give yourself admin like this:
+
+  In the query box, type:
+
+  ```graphql
+  mutation {
+    updateUser(updateUser: { authId: YOUR_OBJECT_ID, isPlatformAdmin: true }) {
+      isPlatformAdmin
     }
-  ) {
-    isPlatformAdmin
   }
-}
-```
+  ```
 
 - In the "HTTP HEADERS" box at the bottom, put:
 
-```
-{"x-user-auth-id": "feedface-0000-0000-0000-000000000000"}
-```
+  ```json
+  { "x-user-auth-id": "feedface-0000-0000-0000-000000000000" }
+  ```
 
 - Submit the request.
 
