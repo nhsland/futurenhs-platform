@@ -106,12 +106,19 @@ impl FoldersMutation {
         id: ID,
         folder: UpdateFolder,
     ) -> FieldResult<Folder> {
-        // TODO: Add event
         let pool = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
         let event_client: &EventClient = context.data()?;
 
-        update_folder(id, folder, pool, requesting_user, event_client).await
+        update_folder(
+            id,
+            &folder.title,
+            &folder.description,
+            pool,
+            requesting_user,
+            event_client,
+        )
+        .await
     }
 
     /// Delete folder (returns deleted folder
@@ -144,7 +151,6 @@ async fn create_folder(
             FolderCreatedData {
                 folder_id: folder.id.clone().into(),
                 workspace_id: folder.workspace.clone().into(),
-                // TODO: Fill this in when we have users in the db.
                 user_id: user.id.to_string(),
                 title: folder.title.clone(),
                 description: folder.description.clone(),
@@ -156,18 +162,13 @@ async fn create_folder(
 
 async fn update_folder(
     id: ID,
-    folder: UpdateFolder,
+    title: &str,
+    description: &str,
     pool: &PgPool,
     requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
-    let folder = db::FolderRepo::update(
-        Uuid::parse_str(&id)?,
-        &folder.title,
-        &folder.description,
-        pool,
-    )
-    .await?;
+    let folder = db::FolderRepo::update(Uuid::parse_str(&id)?, &title, &description, pool).await?;
 
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
 
@@ -216,6 +217,32 @@ mod test {
         assert!(events
             .try_iter()
             .any(|e| matches!(e.data, EventData::FolderCreated(_))));
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn update_folder_emits_an_event() -> anyhow::Result<()> {
+        let pool = mock_connection_pool()?;
+        let (events, event_client) = mock_event_emitter();
+        let requesting_user = mock_unprivileged_requesting_user();
+
+        let folder = update_folder(
+            "d890181d-6b17-428e-896b-f76add15b54a".into(),
+            "title",
+            "description",
+            &pool,
+            &requesting_user,
+            &event_client,
+        )
+        .await
+        .unwrap();
+
+        assert_eq!(folder.title, "title");
+        assert_eq!(folder.description, "description");
+        assert!(events
+            .try_iter()
+            .any(|e| matches!(e.data, EventData::FolderUpdated(_))));
 
         Ok(())
     }
