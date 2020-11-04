@@ -1844,7 +1844,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "List of users who are members of this workspace.\n\nPass filter: ADMINS_ONLY or WITHOUT_ADMINS for finer control over\nwhich members are returned.",
+            "description": "List of users who are members of this workspace.\n\nPass RoleFilter: Admin or NonAdmin for finer control over\nwhich members are returned.",
             "isDeprecated": false,
             "name": "members",
             "type": {
