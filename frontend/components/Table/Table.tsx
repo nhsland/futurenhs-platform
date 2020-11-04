@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react";
 
+import classNames from "classnames";
 import { Table as NHSTable } from "nhsuk-react-components";
 import styled from "styled-components";
 
@@ -37,6 +38,25 @@ const StyledTable = styled(NHSTable)`
   }
 `;
 
+const ContentCell = styled(NHSTable.Cell)`
+  &.withoutBottomBorder {
+    border-bottom: none;
+  }
+`;
+
+const ExpanderCell = styled(ContentCell)`
+  padding: 10px 0;
+`;
+
+const ExtraDetailCell = styled(ContentCell)`
+  padding: 8px;
+`;
+
+const StyledHeading = styled.h4`
+  margin-bottom: 0;
+  font-size: 16px;
+`;
+
 interface Item {
   id: string;
 }
@@ -72,6 +92,7 @@ const TableComponent = <ItemType extends Item>({
               {columns.map((c, i) => (
                 <NHSTable.Cell key={i}>{c.heading}</NHSTable.Cell>
               ))}
+              {extraDetails && <NHSTable.Cell></NHSTable.Cell>}
             </NHSTable.Row>
           </NHSTable.Head>
           <NHSTable.Body>
@@ -81,7 +102,12 @@ const TableComponent = <ItemType extends Item>({
                 <>
                   <NHSTable.Row key={x.id}>
                     {columns.map(({ content }, i) => (
-                      <NHSTable.Cell key={i}>
+                      <ContentCell
+                        key={i}
+                        className={classNames({
+                          withoutBottomBorder: expanded,
+                        })}
+                      >
                         {i === 0 && icon ? (
                           <IconWrapper>
                             {icon(x)}
@@ -90,27 +116,52 @@ const TableComponent = <ItemType extends Item>({
                         ) : (
                           content(x)
                         )}
-                      </NHSTable.Cell>
+                      </ContentCell>
                     ))}
                     {extraDetails && (
-                      <Expander
-                        expanded={expanded}
-                        onClick={() => setExpandedId(expanded ? null : x.id)}
-                      />
+                      <ExpanderCell
+                        className={classNames({
+                          withoutBottomBorder: expanded,
+                        })}
+                      >
+                        <Expander
+                          expanded={expanded}
+                          onClick={() => setExpandedId(expanded ? null : x.id)}
+                        />
+                      </ExpanderCell>
                     )}
                   </NHSTable.Row>
-                  <NHSTable.Row>
-                    {extraDetails &&
-                      expanded &&
-                      extraDetails.map((c, i) => (
-                        <>
+
+                  {extraDetails &&
+                    expanded &&
+                    extraDetails.map((c, i) => {
+                      const withoutBottomBorder = i < extraDetails.length - 1;
+                      return (
+                        <NHSTable.Row key={i}>
                           {c.heading && (
-                            <NHSTable.Cell key={i}>{c.heading}</NHSTable.Cell>
+                            <ExtraDetailCell
+                              className={classNames({
+                                withoutBottomBorder,
+                              })}
+                            >
+                              <StyledHeading>{c.heading}</StyledHeading>
+                            </ExtraDetailCell>
                           )}
-                          <NHSTable.Cell key={i}>{c.content(x)}</NHSTable.Cell>
-                        </>
-                      ))}
-                  </NHSTable.Row>
+                          <ExtraDetailCell
+                            className={classNames({
+                              withoutBottomBorder,
+                            })}
+                          >
+                            {c.content(x)}
+                          </ExtraDetailCell>
+                          <ExtraDetailCell
+                            className={classNames({
+                              withoutBottomBorder,
+                            })}
+                          ></ExtraDetailCell>
+                        </NHSTable.Row>
+                      );
+                    })}
                 </>
               );
             })}

@@ -95,6 +95,11 @@ const WorkspaceMembersPage: NextPage = () => {
                         // eslint-disable-next-line react/display-name
                         content: () => <>Member</>,
                       },
+                      {
+                        heading: "Job Title",
+                        // eslint-disable-next-line react/display-name
+                        content: () => <>Member</>,
+                      },
                     ]}
                     data={data.workspace.members as User[]}
                   />
