@@ -36,7 +36,8 @@ pub fn mock_unprivileged_requesting_user() -> RequestingUser {
 
 pub fn mock_azure_config() -> anyhow::Result<azure::Config> {
     azure::Config::new(
-        "fake key".into(),
+        "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+            .into(),
         Url::parse("http://localhost:10000/devstoreaccount1/upload")?,
         Url::parse("http://localhost:10000/devstoreaccount1/files")?,
     )
