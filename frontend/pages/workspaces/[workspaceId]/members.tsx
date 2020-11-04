@@ -39,7 +39,13 @@ const CountSentence = styled.p`
 
 const nameCell: FC<User> = ({ name }) => <div>{name}</div>;
 const emailAddressCell: FC<User> = ({ emailAddress }) => (
-  <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+  <a
+    href={`mailto:${encodeURI(emailAddress)}`}
+    target="_blank"
+    rel="noreferrer"
+  >
+    {emailAddress}
+  </a>
 );
 
 const WorkspaceMembersPage: NextPage = () => {
