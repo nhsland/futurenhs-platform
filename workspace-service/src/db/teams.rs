@@ -50,34 +50,33 @@ impl TeamRepo {
         Ok(users)
     }
 
-    // FIXME: argument order is inconsistent
-    pub async fn is_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<bool>
+    pub async fn is_member<'c, E>(team_id: Uuid, user_id: Uuid, executor: E) -> Result<bool>
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let found = sqlx::query_file!("sql/teams/is_member.sql", user_id, team_id)
+        let found = sqlx::query_file!("sql/teams/is_member.sql", team_id, user_id)
             .fetch_optional(executor)
             .await?;
 
         Ok(found.is_some())
     }
 
-    pub async fn add_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<()>
+    pub async fn add_member<'c, E>(team_id: Uuid, user_id: Uuid, executor: E) -> Result<()>
     where
         E: Executor<'c, Database = Postgres>,
     {
-        sqlx::query_file!("sql/teams/add_member.sql", user_id, team_id)
+        sqlx::query_file!("sql/teams/add_member.sql", team_id, user_id)
             .execute(executor)
             .await?;
 
         Ok(())
     }
 
-    pub async fn remove_member<'c, E>(user_id: Uuid, team_id: Uuid, executor: E) -> Result<()>
+    pub async fn remove_member<'c, E>(team_id: Uuid, user_id: Uuid, executor: E) -> Result<()>
     where
         E: Executor<'c, Database = Postgres>,
     {
-        sqlx::query_file!("sql/teams/remove_member.sql", user_id, team_id)
+        sqlx::query_file!("sql/teams/remove_member.sql", team_id, user_id)
             .execute(executor)
             .await?;
 
@@ -125,21 +124,21 @@ impl TeamRepoFake {
         Ok(users)
     }
 
-    pub async fn is_member<'c, E>(_user_id: Uuid, _team_id: Uuid, _executor: E) -> Result<bool>
+    pub async fn is_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<bool>
     where
         E: Executor<'c, Database = Postgres>,
     {
         Ok(true)
     }
 
-    pub async fn add_member<'c, E>(_user_id: Uuid, _team_id: Uuid, _executor: E) -> Result<()>
+    pub async fn add_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<()>
     where
         E: Executor<'c, Database = Postgres>,
     {
         Ok(())
     }
 
-    pub async fn remove_member<'c, E>(_user_id: Uuid, _team_id: Uuid, _executor: E) -> Result<()>
+    pub async fn remove_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<()>
     where
         E: Executor<'c, Database = Postgres>,
     {
