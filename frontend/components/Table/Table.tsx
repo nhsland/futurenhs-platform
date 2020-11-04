@@ -45,11 +45,17 @@ const ContentCell = styled(NHSTable.Cell)`
 `;
 
 const ExpanderCell = styled(ContentCell)`
-  padding: 10px 0;
+  padding: 0px 0;
+  vertical-align: middle;
 `;
 
-const ExtraDetailCell = styled(ContentCell)`
-  padding: 8px;
+const ExtraDetailCell = styled(NHSTable.Cell)`
+  padding-top: 8px;
+  padding-bottom: 16px;
+  &.withoutBottomBorder {
+    border-bottom: none;
+    padding-bottom: 12px;
+  }
 `;
 
 const StyledHeading = styled.h4`
