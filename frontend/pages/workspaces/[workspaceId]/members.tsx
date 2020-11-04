@@ -32,6 +32,11 @@ const ContentWrapper = styled.div`
   display: flex;
 `;
 
+const CountSentence = styled.p`
+  margin: 0;
+  padding-top: 16px;
+`;
+
 const nameCell: FC<User> = ({ name }) => <div>{name}</div>;
 const emailAddressCell: FC<User> = ({ emailAddress }) => (
   <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
@@ -62,10 +67,10 @@ const WorkspaceMembersPage: NextPage = () => {
             <>
               {data && (
                 <>
-                  <p>
+                  <CountSentence>
                     Showing all administrators ({data.workspace.admins.length})
                     {/* FIXME: think about the huge void caused by position:34 in the table below */}
-                  </p>
+                  </CountSentence>
                   <ResponsiveTable
                     tableHeading="Administrators"
                     columns={[
@@ -82,7 +87,9 @@ const WorkspaceMembersPage: NextPage = () => {
                     data={data.workspace.admins as User[]}
                   />
 
-                  <p>Showing all members ({data.workspace.members.length})</p>
+                  <CountSentence>
+                    Showing all members ({data.workspace.members.length})
+                  </CountSentence>
                   <ResponsiveTable
                     tableHeading="Members"
                     columns={[
@@ -92,11 +99,6 @@ const WorkspaceMembersPage: NextPage = () => {
                     extraDetails={[
                       {
                         heading: "Permissions",
-                        // eslint-disable-next-line react/display-name
-                        content: () => <>Member</>,
-                      },
-                      {
-                        heading: "Job Title",
                         // eslint-disable-next-line react/display-name
                         content: () => <>Member</>,
                       },
