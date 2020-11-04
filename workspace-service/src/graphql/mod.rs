@@ -7,8 +7,7 @@ mod schema;
 mod test_mocks;
 mod users;
 mod validation;
-// FIXME: db should not be reaching into this module.
-pub mod workspaces;
+mod workspaces;
 
 use super::azure;
 use super::db;

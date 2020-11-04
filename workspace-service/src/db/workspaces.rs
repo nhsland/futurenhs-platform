@@ -2,7 +2,6 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use crate::db;
-use crate::graphql::workspaces::NewRole;
 use anyhow::Result;
 use sqlx::{types::Uuid, PgPool};
 
@@ -13,6 +12,15 @@ pub struct Workspace {
     pub description: String,
     pub admins: Uuid,
     pub members: Uuid,
+}
+
+pub enum Role {
+    /// Promote to admin.
+    Admin,
+    /// Add as a non-admin member or demote an admin.
+    NonAdmin,
+    /// Remove member.
+    NonMember,
 }
 
 #[cfg_attr(test, allow(dead_code))]
@@ -97,22 +105,22 @@ impl WorkspaceRepo {
     pub async fn change_workspace_membership(
         workspace_id: Uuid,
         user_id: Uuid,
-        new_role: NewRole,
+        new_role: Role,
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
         let mut tx = pool.begin().await?;
 
         match new_role {
-            NewRole::Admin => {
+            Role::Admin => {
                 db::TeamRepo::add_member(workspace.admins, user_id, &mut tx).await?;
                 db::TeamRepo::add_member(workspace.members, user_id, &mut tx).await?;
             }
-            NewRole::NonAdmin => {
+            Role::NonAdmin => {
                 db::TeamRepo::remove_member(workspace.admins, user_id, &mut tx).await?;
                 db::TeamRepo::add_member(workspace.members, user_id, &mut tx).await?;
             }
-            NewRole::NonMember => {
+            Role::NonMember => {
                 db::TeamRepo::remove_member(workspace.admins, user_id, &mut tx).await?;
                 db::TeamRepo::remove_member(workspace.members, user_id, &mut tx).await?;
             }
@@ -195,7 +203,7 @@ impl WorkspaceRepoFake {
     pub async fn change_workspace_membership(
         workspace_id: Uuid,
         _user_id: Uuid,
-        _new_role: NewRole,
+        _new_role: Role,
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;

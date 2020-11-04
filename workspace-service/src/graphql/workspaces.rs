@@ -1,5 +1,5 @@
 use crate::db;
-use crate::db::WorkspaceRepo;
+use crate::db::{Role, WorkspaceRepo};
 use crate::graphql::users::User;
 use crate::graphql::RequestingUser;
 use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
@@ -32,6 +32,16 @@ pub enum NewRole {
     NonAdmin,
     /// Remove member.
     NonMember,
+}
+
+impl From<NewRole> for Role {
+    fn from(role: NewRole) -> Self {
+        match role {
+            NewRole::Admin => Role::Admin,
+            NewRole::NonAdmin => Role::NonAdmin,
+            NewRole::NonMember => Role::NonMember,
+        }
+    }
 }
 
 #[Object]
@@ -109,7 +119,7 @@ impl WorkspacesQuery {
     /// Get all Workspaces
     async fn workspaces(&self, context: &Context<'_>) -> FieldResult<Vec<Workspace>> {
         let pool = context.data()?;
-        let workspaces = db::WorkspaceRepo::find_all(pool).await?;
+        let workspaces = WorkspaceRepo::find_all(pool).await?;
         Ok(workspaces.into_iter().map(Into::into).collect())
     }
 
@@ -122,7 +132,7 @@ impl WorkspacesQuery {
     async fn get_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let id = Uuid::parse_str(id.as_str())?;
-        let workspace = db::WorkspaceRepo::find_by_id(id, pool).await?;
+        let workspace = WorkspaceRepo::find_by_id(id, pool).await?;
         Ok(workspace.into())
     }
 }
@@ -161,7 +171,7 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         // TODO: Add event
         let pool = context.data()?;
-        let workspace = db::WorkspaceRepo::update(
+        let workspace = WorkspaceRepo::update(
             Uuid::parse_str(id.as_str())?,
             &workspace.title,
             &workspace.description,
@@ -176,7 +186,7 @@ impl WorkspacesMutation {
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         // TODO: Add event
         let pool = context.data()?;
-        let workspace = db::WorkspaceRepo::delete(Uuid::parse_str(id.as_str())?, pool).await?;
+        let workspace = WorkspaceRepo::delete(Uuid::parse_str(id.as_str())?, pool).await?;
 
         Ok(workspace.into())
     }
@@ -201,16 +211,10 @@ impl WorkspacesMutation {
         let workspace = WorkspaceRepo::change_workspace_membership(
             workspace_id,
             input.user.try_into()?,
-            input.new_role,
+            input.new_role.into(),
             pool,
         )
         .await?;
-
-        // * Start a transaction
-        // * Check that the requesting user is a site admin, or is in the workspace admins group.
-        // * Do requested adds.
-        // * Do requested removes.
-        // * end transaction
 
         // TODO: Add event
 
@@ -234,7 +238,7 @@ async fn create_workspace(
         .into());
     }
 
-    let workspace: Workspace = db::WorkspaceRepo::create(title, description, pool)
+    let workspace: Workspace = WorkspaceRepo::create(title, description, pool)
         .await?
         .into();
 
