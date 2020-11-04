@@ -1,33 +1,33 @@
 # Frontend
 
+The website is built in [TypeScript](https://typescriptlang.org), using [Next.js](https://nextjs.org).
+
 ## How to use
 
-The frontend development server relies on some services that are available in the development cluster. Specifically, it calls out to the workspace service when doing server-side rendering, and also runs a GraphQL federation proxy at `/hapi/graphql` that proxies to `$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT`.
+The frontend development server relies on the following external services, which are called during server-side rendering and through a GraphQL federation proxy at `/api/graphql`.
+
+- workspace service: configured through the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` environment variable
 
 It is possible to either run your frontend:
 
-- Against a stub server for GraphQL requests. This is useful if you don't care about server-side validation logic, etc.
+- Against a stub server. This is useful if you don't care about server-side validation logic, etc.
 - Against the actual workspace service.
 
 ### Stub server
 
-By not setting the environment variable `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` in your `.env.local` or `.env` files, the service will default to the value in `.env.development`, which points to the local stub server:
-
-```
-WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://localhost:3001/graphql
-```
+By default the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` will be read from `.env.development` and point to the stub server at `http://localhost:3001/graphql`.
 
 When running `yarn dev` (which starts up both the frontend service and the stub server), you will be making requests against the workspace service stubbed GraphQL server, meaning there are no external dependencies for local development.
 
 ### Actual workspace service
 
-Start the workspace service locally. Then set the environment variable for the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` to the following value in your `.env.local` file:
+To work against the real thing, start the workspace service locally. Then set the environment variable for the `WORKSPACE_SERVICE_GRAPHQL_ENDPOINT` to the following value in your `.env.development.local` file:
 
 ```
 WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://localhost:3030/graphql
 ```
 
-Now, when running `yarn dev` the frontend will call the local `workspace-service` rather than the local stub server.
+Now, when running `yarn dev` the frontend will call the local `workspace-service` rather than the stub server.
 
 ### Using Azure Active Directory login
 
@@ -52,34 +52,17 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 ### Permissions
 
-By default the system is installed with a single platform admin. This has auth_id="feedface-0000-0000-0000-000000000000" and is_platform_admin set to true. This is the user that `yarn dev` uses by default.
+Parts of the application rely on permissions, such as the platform admin permission. By default the system is installed with a single platform admin. This has `auth_id="feedface-0000-0000-0000-000000000000"` and `is_platform_admin` set to `true.` This is the user that `yarn dev` uses by default.
 
 All other users are created when you log in using Azure Active Directory B2C and are not platform admin.
 
-If you go to https://fnhs-dev-\$FNHSNAME.westeurope.cloudapp.azure.com/auth/login?next=/api/graphql and attempt to do something that requires auth, like this then you will get an error:
-
-```graphql
-mutation {
-  updateUser(
-    updateUser: {
-      authId: "feedface-0000-0000-0000-000000000000"
-      isPlatformAdmin: true
-    }
-  ) {
-    isPlatformAdmin
-  }
-}
-```
-
-To give yourself admin permissions in your development cluster:
+If you need to make another user platform admin in your development cluster, follow these steps:
 
 - Find your auth id. Go to https://portal.azure.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/AllUsers and select the user you log in with, of `User Type` 'Member'. On the Profile page you are taken to, copy the `Object ID`.
 
-- Port-forward to your workspace service (examples assume forward using `kubefwd svc -n workspace-service`).
+- Port-forward to your workspace service (the examples below assume you forwarded using `kubefwd svc -n workspace-service`).
 
-- Go to http://workspace-service.workspace-service/graphiql and give yourself admin like this:
-
-  In the query box, type:
+- Go to <http://workspace-service.workspace-service/graphiql>. In the query box, type:
 
   ```graphql
   mutation {
@@ -96,6 +79,8 @@ To give yourself admin permissions in your development cluster:
   ```
 
 - Submit the request.
+
+From now on you can go to https://fnhs-dev-\$FNHSNAME.westeurope.cloudapp.azure.com/auth/login?next=/api/graphql on your dev cluster, login, and make any GraphQL query as a platform admin.
 
 ## Testing
 

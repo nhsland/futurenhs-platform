@@ -1,8 +1,8 @@
 # Workspace Service
 
-## How to use
+The API is built with [Rust](https://www.rust-lang.org/), using a web server crate called [tide](https://github.com/http-rs/tide).
 
-The API is built with [Rust](https://www.rust-lang.org/), using a web server crate called [tide](https://github.com/http-rs/tide). To get started:
+## How to use
 
 1. Install the Rust toolchain
 1. Install the [SQLx CLI](https://github.com/launchbadge/sqlx/tree/master/sqlx-cli). We use it to run DB migrations and create a cached version of the type-checked SQL queries using the `prepare` command.
