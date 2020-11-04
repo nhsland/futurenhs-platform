@@ -9,7 +9,7 @@
 
 See [CONTRIBUTING](./CONTRIBUTING.md) for the contribution process.
 
-See READMEs of the individual components to get started:
+See READMEs of the individual components for details about the development process:
 
 - Go to [infrastructure](./infrastructure) to make changes to the infrastructure components in Azure, such as the Kubernetes cluster, PostgreSQL server or Azure Storage. The README shows how to setup your own development environment, so you can test your changes before applying them to production.
 - Go to [frontend](./frontend) to make changes to the website.
@@ -17,7 +17,7 @@ See READMEs of the individual components to get started:
 - Go to [event-models](./event-models) to add new event models or extend existing ones.
 - Go to [test](./test) to make changes to Selenium tests for Internet Explorer.
 
-To start an instance of the platform locally, open 2 terminals and run:
+You already have Docker, Rust and Node.js installed and just want to see something? Open 2 terminals and run:
 
 ```console
 cd workspace-service && make run-local
