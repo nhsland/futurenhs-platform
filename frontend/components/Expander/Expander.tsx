@@ -38,7 +38,7 @@ interface Props {
 
 const Expander: FC<Props> = ({ expanded, onClick }) => {
   return (
-    <IconClickTarget onClick={onClick}>
+    <IconClickTarget onClick={onClick} aria-label="Expand for more details">
       {expanded ? <MinusIcon /> : <PlusIcon />}
     </IconClickTarget>
   );

@@ -24,4 +24,4 @@ const MinusIcon = ({ className }: Props) => (
   </div>
 );
 
-export default PlusIcon;
+export default MinusIcon;
