@@ -215,6 +215,22 @@ pub struct FolderUpdatedData {
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FolderDeletedData {
+    ///
+    #[serde(rename = "folderId")]
+    pub folder_id: String,
+
+    /// The workspace that the folder is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+
+    /// The user that deleted the folder
+    #[serde(rename = "userId")]
+    pub user_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct WorkspaceCreatedData {
     ///
     #[serde(rename = "workspaceId")]
@@ -238,6 +254,7 @@ pub enum EventData {
     FileDownloaded(FileDownloadedData),
     FolderCreated(FolderCreatedData),
     FolderUpdated(FolderUpdatedData),
+    FolderDeleted(FolderDeletedData),
     WorkspaceCreated(WorkspaceCreatedData),
 }
 
@@ -280,6 +297,12 @@ impl From<FolderCreatedData> for EventData {
 impl From<FolderUpdatedData> for EventData {
     fn from(data: FolderUpdatedData) -> Self {
         Self::FolderUpdated(data)
+    }
+}
+
+impl From<FolderDeletedData> for EventData {
+    fn from(data: FolderDeletedData) -> Self {
+        Self::FolderDeleted(data)
     }
 }
 
@@ -329,6 +352,10 @@ impl EventData {
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
+            ("FolderDeleted", "1") => Ok(Self::FolderDeleted(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
             ("WorkspaceCreated", "1") => Ok(Self::WorkspaceCreated(
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
@@ -354,6 +381,8 @@ impl EventData {
             Self::FolderCreated(data) => ("FolderCreated", "1", serde_json::to_value(data)?),
 
             Self::FolderUpdated(data) => ("FolderUpdated", "1", serde_json::to_value(data)?),
+
+            Self::FolderDeleted(data) => ("FolderDeleted", "1", serde_json::to_value(data)?),
 
             Self::WorkspaceCreated(data) => ("WorkspaceCreated", "1", serde_json::to_value(data)?),
         })

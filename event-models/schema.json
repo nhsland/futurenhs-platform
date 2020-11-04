@@ -12,6 +12,7 @@
         { "$ref": "#/definitions/FileDownloaded" },
         { "$ref": "#/definitions/FolderCreated" },
         { "$ref": "#/definitions/FolderUpdated" },
+        { "$ref": "#/definitions/FolderDeleted" },
         { "$ref": "#/definitions/WorkspaceCreated" }
       ]
     }
@@ -372,6 +373,37 @@
             "workspaceId",
             "folderId"
           ]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "FolderDeleted": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["FolderDeleted"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "folderId": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "description": "The workspace that the folder is in",
+              "type": "string"
+            },
+            "userId": {
+              "description": "The user that deleted the folder",
+              "type": "string"
+            }
+          },
+          "required": ["userId", "workspaceId", "folderId"]
         }
       },
       "required": ["eventType", "dataVersion", "data"]
