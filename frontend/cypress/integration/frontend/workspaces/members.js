@@ -5,6 +5,6 @@ describe("Workspace Members page", () => {
 
     cy.get("a").contains("View members").click();
     cy.contains("h1", "Workspace members");
-    cy.contains("h2", "This is a list of all workspace members.");
+    cy.contains("p", "This is a list of all workspace members.");
   });
 });
