@@ -99,18 +99,18 @@ export const MobileList = <ItemType extends Item>({
               {icon && icon(x)}
               <DetailsContainer>
                 {columns.map((c, i) => (
-                  <>
+                  <React.Fragment key={i}>
                     {c.heading && <h4>{c.heading}</h4>}
-                    <div key={i}>{c.content(x)}</div>
-                  </>
+                    <div>{c.content(x)}</div>
+                  </React.Fragment>
                 ))}
                 {extraDetails &&
                   expanded &&
                   extraDetails.map((c, i) => (
-                    <>
+                    <React.Fragment key={i}>
                       {c.heading && <h4>{c.heading}</h4>}
-                      <div key={i}>{c.content(x)}</div>
-                    </>
+                      <div>{c.content(x)}</div>
+                    </React.Fragment>
                   ))}
               </DetailsContainer>
               {extraDetails && (

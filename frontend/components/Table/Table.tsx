@@ -105,8 +105,8 @@ const TableComponent = <ItemType extends Item>({
             {data.map((x) => {
               const expanded = x.id === expandedId;
               return (
-                <>
-                  <NHSTable.Row key={x.id}>
+                <React.Fragment key={x.id}>
+                  <NHSTable.Row>
                     {columns.map(({ content }, i) => (
                       <ContentCell
                         key={i}
@@ -168,7 +168,7 @@ const TableComponent = <ItemType extends Item>({
                         </NHSTable.Row>
                       );
                     })}
-                </>
+                </React.Fragment>
               );
             })}
           </NHSTable.Body>
