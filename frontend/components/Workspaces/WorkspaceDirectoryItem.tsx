@@ -25,10 +25,8 @@ const StyledLink = styled.a`
   }
 
   &:active {
-    ${({ theme }) => `
-        color: ${theme.colorNhsukBlack};
-        background-color: ${theme.colorNhsukYellow};
-      `}
+    color: ${({ theme }) => theme.colorNhsukBlack};
+    background-color: ${({ theme }) => theme.colorNhsukYellow};
     text-decoration: none;
   }
 
