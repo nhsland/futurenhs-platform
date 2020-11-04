@@ -112,15 +112,7 @@ impl FoldersMutation {
         let requesting_user = context.data()?;
         let event_client = context.data()?;
 
-        update_folder(
-            id,
-            &folder.title,
-            &folder.description,
-            pool,
-            requesting_user,
-            event_client,
-        )
-        .await
+        update_folder(id, folder, pool, requesting_user, event_client).await
     }
 
     /// Delete folder (returns deleted folder
@@ -164,13 +156,18 @@ async fn create_folder(
 
 async fn update_folder(
     id: ID,
-    title: &str,
-    description: &str,
+    folder: UpdateFolder,
     pool: &PgPool,
     requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
-    let folder = db::FolderRepo::update(Uuid::parse_str(&id)?, &title, &description, pool).await?;
+    let updated_folder = db::FolderRepo::update(
+        Uuid::parse_str(&id)?,
+        &folder.title,
+        &folder.description,
+        pool,
+    )
+    .await?;
 
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
 
@@ -178,16 +175,16 @@ async fn update_folder(
         .publish_events(&[Event::new(
             id,
             FolderUpdatedData {
-                folder_id: folder.id.to_string(),
-                workspace_id: folder.workspace.to_string(),
-                title: folder.title.to_string(),
-                description: folder.description.to_string(),
+                folder_id: updated_folder.id.to_string(),
+                workspace_id: updated_folder.workspace.to_string(),
+                title: updated_folder.title.to_string(),
+                description: updated_folder.description.to_string(),
                 user_id: user.id.to_string(),
             },
         )])
         .await?;
 
-    Ok(folder.into())
+    Ok(updated_folder.into())
 }
 
 async fn delete_folder(
@@ -272,11 +269,14 @@ mod test {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
         let requesting_user = mock_unprivileged_requesting_user();
+        let current_folder = UpdateFolder {
+            title: "title".to_string(),
+            description: "description".to_string(),
+        };
 
         let folder = update_folder(
             "d890181d-6b17-428e-896b-f76add15b54a".into(),
-            "title",
-            "description",
+            current_folder,
             &pool,
             &requesting_user,
             &event_client,
