@@ -4,7 +4,7 @@ interface Props {
   className?: string;
 }
 
-const PlusIcon = ({ className }: Props) => (
+const MinusIcon = ({ className }: Props) => (
   <div className={`icon-wrapper ${className || ""}`}>
     <svg
       width="24"
