@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { Table as NHSTable } from "nhsuk-react-components";
 import styled from "styled-components";
 
-import Expander from "../Expander/Expander";
+import { Expander } from "../Expander";
 
 const TableContainer = styled.div`
   display: none;

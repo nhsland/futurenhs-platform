@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from "react";
 
 import styled from "styled-components";
 
-import Expander from "../Expander/Expander";
+import { Expander } from "../Expander";
 
 const ListItem = styled.li`
   align-items: flex-start;
@@ -23,6 +23,7 @@ const DetailsContainer = styled.div`
   p,
   h4 {
     margin-bottom: 0;
+
     font-size: 16px;
   }
   p {
