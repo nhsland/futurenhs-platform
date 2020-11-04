@@ -1,6 +1,6 @@
-use super::db;
+use super::{db, RequestingUser};
 use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
-use fnhs_event_models::{Event, EventClient, EventPublisher, FolderCreatedData};
+use fnhs_event_models::{Event, EventClient, EventPublisher, FolderCreatedData, FolderUpdatedData};
 use sqlx::PgPool;
 use uuid::Uuid;
 
@@ -86,12 +86,14 @@ impl FoldersMutation {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(&new_folder.workspace)?;
         let event_client: &EventClient = context.data()?;
+        let requesting_user = context.data::<super::RequestingUser>()?;
 
         create_folder(
             &new_folder.title,
             &new_folder.description,
             workspace,
             pool,
+            requesting_user,
             event_client,
         )
         .await
@@ -106,15 +108,10 @@ impl FoldersMutation {
     ) -> FieldResult<Folder> {
         // TODO: Add event
         let pool = context.data()?;
-        let folder = db::FolderRepo::update(
-            Uuid::parse_str(&id)?,
-            &folder.title,
-            &folder.description,
-            pool,
-        )
-        .await?;
+        let requesting_user = context.data::<super::RequestingUser>()?;
+        let event_client: &EventClient = context.data()?;
 
-        Ok(folder.into())
+        update_folder(id, folder, pool, requesting_user, event_client).await
     }
 
     /// Delete folder (returns deleted folder
@@ -132,11 +129,14 @@ async fn create_folder(
     description: &str,
     workspace: Uuid,
     pool: &PgPool,
+    requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
     let folder: Folder = db::FolderRepo::create(&title, &description, workspace, pool)
         .await?
         .into();
+
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
 
     event_client
         .publish_events(&[Event::new(
@@ -145,13 +145,46 @@ async fn create_folder(
                 folder_id: folder.id.clone().into(),
                 workspace_id: folder.workspace.clone().into(),
                 // TODO: Fill this in when we have users in the db.
-                user_id: "".into(),
+                user_id: user.id.to_string(),
                 title: folder.title.clone(),
                 description: folder.description.clone(),
             },
         )])
         .await?;
     Ok(folder)
+}
+
+async fn update_folder(
+    id: ID,
+    folder: UpdateFolder,
+    pool: &PgPool,
+    requesting_user: &RequestingUser,
+    event_client: &EventClient,
+) -> FieldResult<Folder> {
+    let folder = db::FolderRepo::update(
+        Uuid::parse_str(&id)?,
+        &folder.title,
+        &folder.description,
+        pool,
+    )
+    .await?;
+
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+
+    event_client
+        .publish_events(&[Event::new(
+            id,
+            FolderUpdatedData {
+                folder_id: folder.id.to_string(),
+                workspace_id: folder.workspace.to_string(),
+                title: folder.title.to_string(),
+                description: folder.description.to_string(),
+                user_id: user.id.to_string(),
+            },
+        )])
+        .await?;
+
+    Ok(folder.into())
 }
 
 #[cfg(test)]
@@ -164,10 +197,18 @@ mod test {
     async fn creating_folder_emits_an_event() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
+        let requesting_user = mock_unprivileged_requesting_user();
 
-        let folder = create_folder("title", "description", Uuid::new_v4(), &pool, &event_client)
-            .await
-            .unwrap();
+        let folder = create_folder(
+            "title",
+            "description",
+            Uuid::new_v4(),
+            &pool,
+            &requesting_user,
+            &event_client,
+        )
+        .await
+        .unwrap();
 
         assert_eq!(folder.title, "title");
         assert_eq!(folder.description, "description");

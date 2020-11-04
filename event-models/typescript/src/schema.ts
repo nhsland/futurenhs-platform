@@ -13,6 +13,7 @@ export type Event = BaseEvent &
     | FileDeleted
     | FileDownloaded
     | FolderCreated
+    | FolderUpdated
     | WorkspaceCreated
   );
 
@@ -152,6 +153,25 @@ export interface FolderCreated {
     description: string;
     /**
      * The user that created the folder
+     */
+    userId: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export interface FolderUpdated {
+  eventType: "FolderUpdated";
+  dataVersion: "1";
+  data: {
+    folderId: string;
+    /**
+     * The workspace that the folder is in
+     */
+    workspaceId: string;
+    title: string;
+    description: string;
+    /**
+     * The user that updated the folder
      */
     userId: string;
     [k: string]: unknown;

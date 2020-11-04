@@ -191,6 +191,30 @@ pub struct FolderCreatedData {
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FolderUpdatedData {
+    ///
+    #[serde(rename = "folderId")]
+    pub folder_id: String,
+
+    /// The workspace that the folder is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+
+    ///
+    #[serde(rename = "title")]
+    pub title: String,
+
+    ///
+    #[serde(rename = "description")]
+    pub description: String,
+
+    /// The user that updated the folder
+    #[serde(rename = "userId")]
+    pub user_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct WorkspaceCreatedData {
     ///
     #[serde(rename = "workspaceId")]
@@ -213,6 +237,7 @@ pub enum EventData {
     FileDeleted(FileDeletedData),
     FileDownloaded(FileDownloadedData),
     FolderCreated(FolderCreatedData),
+    FolderUpdated(FolderUpdatedData),
     WorkspaceCreated(WorkspaceCreatedData),
 }
 
@@ -249,6 +274,12 @@ impl From<FileDownloadedData> for EventData {
 impl From<FolderCreatedData> for EventData {
     fn from(data: FolderCreatedData) -> Self {
         Self::FolderCreated(data)
+    }
+}
+
+impl From<FolderUpdatedData> for EventData {
+    fn from(data: FolderUpdatedData) -> Self {
+        Self::FolderUpdated(data)
     }
 }
 
@@ -294,6 +325,10 @@ impl EventData {
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
+            ("FolderUpdated", "1") => Ok(Self::FolderUpdated(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
             ("WorkspaceCreated", "1") => Ok(Self::WorkspaceCreated(
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
@@ -317,6 +352,8 @@ impl EventData {
             Self::FileDownloaded(data) => ("FileDownloaded", "1", serde_json::to_value(data)?),
 
             Self::FolderCreated(data) => ("FolderCreated", "1", serde_json::to_value(data)?),
+
+            Self::FolderUpdated(data) => ("FolderUpdated", "1", serde_json::to_value(data)?),
 
             Self::WorkspaceCreated(data) => ("WorkspaceCreated", "1", serde_json::to_value(data)?),
         })

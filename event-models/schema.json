@@ -11,6 +11,7 @@
         { "$ref": "#/definitions/FileDeleted" },
         { "$ref": "#/definitions/FileDownloaded" },
         { "$ref": "#/definitions/FolderCreated" },
+        { "$ref": "#/definitions/FolderUpdated" },
         { "$ref": "#/definitions/WorkspaceCreated" }
       ]
     }
@@ -332,12 +333,12 @@
       },
       "required": ["eventType", "dataVersion", "data"]
     },
-    "FolderEdited": {
+    "FolderUpdated": {
       "type": "object",
       "properties": {
         "eventType": {
           "type": "string",
-          "enum": ["FolderEdited"]
+          "enum": ["FolderUpdated"]
         },
         "dataVersion": {
           "type": "string",
@@ -360,7 +361,7 @@
               "type": "string"
             },
             "userId": {
-              "description": "The user that edited the folder",
+              "description": "The user that updated the folder",
               "type": "string"
             }
           },
