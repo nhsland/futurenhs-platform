@@ -87,8 +87,8 @@ impl FoldersMutation {
     ) -> FieldResult<Folder> {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(&new_folder.workspace)?;
-        let event_client: &EventClient = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
+        let event_client = context.data()?;
+        let requesting_user = context.data()?;
 
         create_folder(
             &new_folder.title,
@@ -109,8 +109,8 @@ impl FoldersMutation {
         folder: UpdateFolder,
     ) -> FieldResult<Folder> {
         let pool = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
-        let event_client: &EventClient = context.data()?;
+        let requesting_user = context.data()?;
+        let event_client = context.data()?;
 
         update_folder(
             id,
@@ -125,10 +125,9 @@ impl FoldersMutation {
 
     /// Delete folder (returns deleted folder
     async fn delete_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
-        // TODO: Add event
         let pool = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
-        let event_client: &EventClient = context.data()?;
+        let requesting_user = context.data()?;
+        let event_client = context.data()?;
 
         delete_folder(id, pool, requesting_user, event_client).await
     }

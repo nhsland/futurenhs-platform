@@ -15,7 +15,7 @@ impl FileDownloadUrlsMutation {
         let pool = context.data()?;
         let config = context.data()?;
         let event_client: &EventClient = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
+        let requesting_user: &super::RequestingUser = context.data()?;
         let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
         let id = Uuid::parse_str(&id)?;
         let file = db::FileWithVersionRepo::find_by_id(id, pool).await?;

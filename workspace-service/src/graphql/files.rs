@@ -209,8 +209,8 @@ impl FilesMutation {
     async fn create_file(&self, context: &Context<'_>, new_file: NewFile) -> FieldResult<File> {
         let pool = context.data()?;
         let azure_config = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
-        let event_client: &EventClient = context.data()?;
+        let requesting_user = context.data()?;
+        let event_client = context.data()?;
 
         create_file(new_file, pool, azure_config, requesting_user, event_client).await
     }
@@ -229,8 +229,8 @@ impl FilesMutation {
     ) -> FieldResult<File> {
         let pool = context.data()?;
         let azure_config = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
-        let event_client: &EventClient = context.data()?;
+        let requesting_user = context.data()?;
+        let event_client = context.data()?;
 
         create_file_version(
             new_version,
@@ -245,8 +245,8 @@ impl FilesMutation {
     /// Deletes a file by id(returns delete file
     async fn delete_file(&self, context: &Context<'_>, id: ID) -> FieldResult<File> {
         let pool = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
-        let event_client: &EventClient = context.data()?;
+        let requesting_user = context.data()?;
+        let event_client = context.data()?;
 
         delete_file(id, pool, requesting_user, event_client).await
     }
