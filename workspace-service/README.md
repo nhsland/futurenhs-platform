@@ -5,9 +5,19 @@ The API is built with [Rust](https://www.rust-lang.org/), using a web server cra
 ## How to use
 
 1. Install the Rust toolchain
+
 1. Install the [SQLx CLI](https://github.com/launchbadge/sqlx/tree/master/sqlx-cli). We use it to run DB migrations and create a cached version of the type-checked SQL queries using the `prepare` command.
+
+   **Note:** Until version 0.4 is officially released on crates.io, we use a version from master:
+
+   ```console
+   cargo install --git https://github.com/launchbadge/sqlx --rev 144dcceb445e804b16258d0dd9e580d6a484a01e sqlx-cli
+   ```
+
 1. Run the tests to make sure everything is set up correctly: `cargo test`
+
 1. Start Docker for Desktop
+
 1. Run locally: `make run-local`
 
 After you changed the database schema:
