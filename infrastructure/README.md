@@ -1,30 +1,16 @@
 # Infrastructure
 
-We use [Terraform](https://www.terraform.io/) to build our environments.
+This folder contains shell scripts and [Terraform](https://www.terraform.io) code, which creates our infrastructure in Azure. Have a look at the [architecture diagram](../docs/architecture/README.md) to see how the infrastructure looks like.
 
 ## Prerequisites
 
-1. Install Terraform:
+1. Install version 0.13.4 of Terraform.
 
    ```bash
    brew install terraform
    ```
 
-1. Install a Terraform version switcher: ([Terraform Switcher](https://github.com/warrensbox/terraform-switcher) or [chtf](https://github.com/Yleisradio/homebrew-terraforms)):
-
-   ```bash
-   brew install warrensbox/tap/tfswitch
-   # or
-   brew install chtf
-   ```
-
-1. Select version 0.13.4:
-
-   ```bash
-   tfswitch 0.13.4
-   # or
-   chtf 0.13.4
-   ```
+   We try to keep on the latest version. But you may find it useful to use a Terraform version switcher, such as ([Terraform Switcher](https://github.com/warrensbox/terraform-switcher) or [chtf](https://github.com/Yleisradio/homebrew-terraforms)).
 
 1. Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and login to Azure:
 
@@ -47,18 +33,17 @@ We use [Terraform](https://www.terraform.io/) to build our environments.
 
 ## Development Environment
 
-### Setup
+Infrastructure is set up so that each developer can create their own instance of the environment in Azure, as opposed to sharing a staging environment. This allows everyone to work and test their changes independently before they go into production.
 
-Infrastructure is set up so that each developer can create their own instance of the environment in Azure,
-as opposed to sharing a staging environment.
+The development environment is meant for testing infrastructure changes. If you're working on the applications (e.g. frontend or workspace-service), prefer to test them locally and use feature flags when deploying changes to production.
+
+### Setup
 
 1. Clone the FutureNHS Platform repository.
 
 1. Add your name in `infrastructure/dev-overlay-variables.json` and create a pull request.
 
-1. Set **your name** as a variable in your terminal, because we'll need to use it several times
-
-   If your name is **John**, your commands might be as follows:
+1. Set **your name** as a variable in your terminal, because we'll need to use it several times. If your name is **John**, your commands might be as follows:
 
    ```bash
    FNHSNAME=john
@@ -70,9 +55,9 @@ as opposed to sharing a staging environment.
    ./infrastructure/scripts/install-everything.sh dev-$FNHSNAME
    ```
 
-1. To be able to login on your dev cluster, you need to add it's URL as a approved redirect URL to the Azure Active Directory B2C tenant. Please ask a colleague to get access (see "Create admin user" in [Azure Active Directory B2C docs](../docs/aad-b2c.md)), then go to "Azure AD B2C / App registrations / Development / Authentication" in the Azure Portal and add your cluster URL to the list of redirect URIs.
+1. To be able to login on your dev cluster, you need to add it's URL as an approved redirect URL to the Azure Active Directory B2C tenant. Please ask a colleague to get access (see "Create admin user" in [Azure Active Directory B2C docs](../docs/aad-b2c.md)), then go to "Azure AD B2C / App registrations / Development / Authentication" in the Azure Portal and add your cluster URL to the list of redirect URIs.
 
-To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
+Note: To reduce infrastructure costs for the NHS, please destroy your environment when you no longer need it.
 
 ```bash
 ./infrastructure/scripts/destroy-dev-environment.sh
@@ -82,7 +67,7 @@ To reduce infrastructure costs for the NHS, please destroy your environment when
 
 The installation script will install the Argo CD command line utility `argocd` for you.
 
-The `argocd` command can connect to your Kubernetes cluster, but doesn't do this by default. This is quite annoying, so you will probably want to set this environment variable (run this once, and add it to your ~/.profile)
+The `argocd` command can connect to your Kubernetes cluster, but doesn't do this by default. This is quite annoying, so you will probably want to set this environment variable (run this once, and add it to your ~/.profile):
 
 ```bash
 export ARGOCD_OPTS='--port-forward --port-forward-namespace argocd'
@@ -109,7 +94,7 @@ sudo kubefwd services -n argocd
 
 If you want to see the frontend app browse to <https://fnhs-dev-$FNHSNAME.westeurope.cloudapp.azure.com>.
 
-If you want to switch branches in argocd, run install-argo-cd.sh specifying the branch name of the branch in the FutureNHS Deployments repository, or MINE.
+If you want to switch branches in Argo CD, run install-argo-cd.sh specifying the branch name of the branch in the FutureNHS Deployments repository, or MINE.
 
 ```bash
 ./infrastructure/scripts/install-argo-cd.sh dev-$FNHSNAME MINE
@@ -134,39 +119,36 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    ip_whitelist_analytics = { "yourname" = "your.public.ip.adddress" }
    ```
 
-1. Run Terraform Init using the vars file you just created:
+1. Run `terraform init` using the vars file you just created:
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform init
    ```
 
-1. After verifying the plan above, apply changes. The infrastructure will be created in Azure.
+1. Apply your changes. Because of dependencies between our Terraform modules, you have to do this in a few steps. First apply changes to the platform module:
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply -target module.platform
    ```
 
-1. After verifying the plan above, apply changes. The infrastructure will be created in Azure.
+1. Then apply changes to the everything else:
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply
    ```
 
-1. Set `ip_whitelist_postgresql = {}` in `terraform.tfvars` and re-run terraform apply, to remove yourself from the postgresql ip whitelist.
+1. Last but not least remove your IP from the PostgreSQL firewall. Set `ip_whitelist_postgresql = {}` in `terraform.tfvars` and re-run terraform apply.
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply -target module.platform
    ```
 
-1. Install Linkerd, Argo CD, and Sealed Secrets in the same way as it works for development environments.
+1. Install software to the Kubernetes cluster.
 
    Change `kubectl` to point to the production cluster.
 
    ```bash
    az aks get-credentials --subscription=75173371-c161-447a-9731-f042213a19da --resource-group=platform-production --name=production
-   ```
-
-   ```bash
    kubectl config use-context production
    ```
 

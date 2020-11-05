@@ -7,7 +7,7 @@ import { MenuListItem } from ".";
 import { MenuItem } from "./MenuListItem";
 
 const Container = styled.div`
-  z-index: 1000;
+  z-index: 10;
   width: 320px;
   border-radius: 4px;
 

@@ -5,32 +5,41 @@
 - [General](./docs)
 - [Infrastructure](./infrastructure)
 
-## Recommended tools for developers
+## Contributing
 
-NOTE: You can find information on setting up the cluster and relevent tooling [here](infrastructure/README.md).
+See [CONTRIBUTING](./CONTRIBUTING.md) for the contribution process.
 
-### Connecting to databases in your cluster
+See READMEs of the individual components for details about the development process:
 
-[TablePlus](https://www.tableplus.io/download) might be useful.
+- Go to [infrastructure](./infrastructure) to make changes to the infrastructure components in Azure, such as the Kubernetes cluster, PostgreSQL server or Azure Storage. The README shows how to setup your own development environment, so you can test your changes before applying them to production.
+- Go to [frontend](./frontend) to make changes to the website.
+- Go to [workspace-service](./workspace-service) to make changes to the backend and GraphQL API for workspaces.
+- Go to [event-models](./event-models) to add new event models or extend existing ones.
+- Go to [test](./test) to make changes to Selenium tests for Internet Explorer.
 
-### Linting
+You already have Docker, Rust and Node.js installed and just want to see something? Open 2 terminals and run:
 
-The following are used within CI to verify formatting. You may find it useful to use locally too.
+```console
+cd workspace-service && make run-local
+cd frontend && WORKSPACE_SERVICE_GRAPHQL_ENDPOINT=http://localhost:3030/graphql yarn dev
+```
+
+## Linting
+
+The following tools are used within CI to verify formatting. You may find it useful to use them locally, too.
 
 - [shfmt](https://github.com/mvdan/sh)
 - [rustfmt](https://github.com/rust-lang/rustfmt)
 - [prettier](https://prettier.io)
-- [eslint](https://eslint.org/)
+- [eslint](https://eslint.org)
 
 Note: Prettier formats all relevent code in this repo, and therefore is installed at the top level. Run `yarn` to install.
 
 ## Licence
 
-Unless stated otherwise, the codebase is released under [the MIT License][mit].
-This covers both the codebase and any sample code in the documentation.
+Unless stated otherwise, the codebase is released under [the MIT License][mit]. This covers both the codebase and any sample code in the documentation.
 
-The documentation is [© Crown copyright][copyright] and available under the terms
-of the [Open Government 3.0][ogl] licence.
+The documentation is [© Crown copyright][copyright] and available under the terms of the [Open Government 3.0][ogl] licence.
 
 [mit]: LICENCE
 [copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
