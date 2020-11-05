@@ -32,16 +32,29 @@ const Header = styled.header`
 
 const WorkspaceTitleLink = styled.a`
   text-decoration: none;
-  color: inherit;
-
-  &:hover {
-    color: inherit;
+  h3 {
+    width: fit-content;
+    margin-bottom: 8px;
+    border-bottom: 4px solid transparent;
+    ${({ theme }) => `
+      color: ${theme.colorNhsukBlue};
+    `}
+  }
+  &:focus > h3 {
+    ${({ theme }) => `
+      color: ${theme.colorNhsukBlack};
+      background-color: ${theme.colorNhsukYellow};
+      border-bottom: 4px solid ${theme.colorNhsukBlack};
+    `}
+  }
+  &:hover:not(:focus) > h3 {
+    ${({ theme }) => `
+      color: ${theme.colorNhsukPurple};
+      text-decoration: underline;
+    `}
   }
   &:visited {
     color: inherit;
-  }
-  h3 {
-    margin-bottom: 12px;
   }
 `;
 
@@ -65,6 +78,19 @@ const LinkList = styled.ul`
 const LinkListItem = styled.li`
   list-style-type: none;
   font-size: 16px;
+
+  a {
+    :hover:not(:focus) {
+      ${({ theme }) => `
+        color: ${theme.colorNhsukPurple};
+        text-decoration: underline;
+      `}
+    }
+    ${({ theme }) => `
+      text-decoration: none;
+      color: ${theme.colorNhsukBlue}
+    `}
+  }
 `;
 
 interface Props {
