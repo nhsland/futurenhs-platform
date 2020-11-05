@@ -3,8 +3,8 @@
 const {
   AzureMonitorTraceExporter,
 } = require("@azure/monitor-opentelemetry-exporter");
+const { B3Propagator } = require("@opentelemetry/core");
 const { NodeTracerProvider } = require("@opentelemetry/node");
-const { B3Propagator } = require("@opentelemetry/propagator-b3");
 const {
   BatchSpanProcessor,
   ConsoleSpanExporter,
