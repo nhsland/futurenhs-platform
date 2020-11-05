@@ -33,7 +33,9 @@ This folder contains shell scripts and [Terraform](https://www.terraform.io) cod
 
 ## Development Environment
 
-Infrastructure is set up so that each developer can create their own instance of the environment in Azure, as opposed to sharing a staging environment.
+Infrastructure is set up so that each developer can create their own instance of the environment in Azure, as opposed to sharing a staging environment. This allows everyone to work and test their changes independently before they go into production.
+
+The development environment is meant for testing infrastructure changes. If you're working on the applications (e.g. frontend or workspace-service), prefer to test them locally and use feature flags when deploying changes to production.
 
 ### Setup
 
