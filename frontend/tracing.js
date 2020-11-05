@@ -4,6 +4,7 @@ const {
   AzureMonitorTraceExporter,
 } = require("@azure/monitor-opentelemetry-exporter");
 const { NodeTracerProvider } = require("@opentelemetry/node");
+const { B3Propagator } = require("@opentelemetry/propagator-b3");
 const {
   BatchSpanProcessor,
   ConsoleSpanExporter,
@@ -17,7 +18,6 @@ const provider = new NodeTracerProvider({
     },
   },
 });
-
 const exporter = process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY
   ? new AzureMonitorTraceExporter({
       logger: provider.logger,
@@ -25,7 +25,9 @@ const exporter = process.env.NEXT_PUBLIC_INSTRUMENTATION_KEY
     })
   : new ConsoleSpanExporter();
 
-provider.register();
+provider.register({
+  propagator: new B3Propagator(),
+});
 
 provider.addSpanProcessor(
   new BatchSpanProcessor(exporter, {
