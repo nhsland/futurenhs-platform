@@ -125,7 +125,7 @@ The `ARM_SUBSCRIPTION_ID` environment variable is needed if you're using Azure C
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform init
    ```
 
-1. Apply your changes. Because if dependencies between our Terraform modules, you have to do this in a few steps. First apply changes to the platform module:
+1. Apply your changes. Because of dependencies between our Terraform modules, you have to do this in a few steps. First apply changes to the platform module:
 
    ```bash
    ARM_SUBSCRIPTION_ID=75173371-c161-447a-9731-f042213a19da terraform apply -target module.platform
