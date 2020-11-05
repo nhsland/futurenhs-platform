@@ -1,6 +1,10 @@
 use anyhow::{anyhow, Result};
 use fnhs_event_models::EventClient;
-use opentelemetry::{api::Provider, sdk, sdk::BatchSpanProcessor};
+use opentelemetry::{
+    api::{self, Provider},
+    global, sdk,
+    sdk::BatchSpanProcessor,
+};
 use sqlx::PgPool;
 use structopt::StructOpt;
 use tracing_subscriber::layer::SubscriberExt;
@@ -43,6 +47,8 @@ async fn main() -> Result<()> {
     let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber)?;
+    let propagator = api::B3Propagator::new();
+    global::set_http_text_propagator(propagator);
 
     let connection_pool = PgPool::connect(config.database_url.expect("required").as_str()).await?;
     sqlx::migrate!("./migrations").run(&connection_pool).await?;
