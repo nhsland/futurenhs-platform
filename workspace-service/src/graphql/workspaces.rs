@@ -162,7 +162,7 @@ impl WorkspacesMutation {
         .await
     }
 
-    /// Update workspace (returns updated workspace
+    /// Update workspace (returns updated workspace)
     async fn update_workspace(
         &self,
         context: &Context<'_>,
@@ -182,7 +182,7 @@ impl WorkspacesMutation {
         Ok(workspace.into())
     }
 
-    /// Delete workspace(returns deleted workspace
+    /// Delete workspace (returns deleted workspace)
     async fn delete_workspace(&self, context: &Context<'_>, id: ID) -> FieldResult<Workspace> {
         // TODO: Add event
         let pool = context.data()?;
@@ -191,7 +191,7 @@ impl WorkspacesMutation {
         Ok(workspace.into())
     }
 
-    /// Delete workspace(returns deleted workspace
+    /// Changes workspace permissions for a user (Admin/NonAdmin/NonMember)
     async fn change_workspace_membership(
         &self,
         context: &Context<'_>,
@@ -199,26 +199,17 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         // ? What do we do if the user is trying to remove themselves from the admin group?
         let pool = context.data()?;
-
         let requesting_user = context.data::<super::RequestingUser>()?;
-        let workspace_id = input.workspace.try_into()?;
-        let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
-
-        if !WorkspaceRepo::is_admin(workspace_id, user.id, pool).await? {
-            return Err(anyhow::anyhow!("Only admins can edit workspace membership").into());
-        }
-
-        let workspace = WorkspaceRepo::change_workspace_membership(
-            workspace_id,
+        let event_client: &EventClient = context.data()?;
+        change_workspace_membership(
+            input.workspace.try_into()?,
             input.user.try_into()?,
             input.new_role.into(),
+            requesting_user,
             pool,
+            event_client,
         )
-        .await?;
-
-        // TODO: Add event
-
-        Ok(workspace.into())
+        .await
     }
 }
 
@@ -255,6 +246,33 @@ async fn create_workspace(
         .await?;
 
     Ok(workspace)
+}
+
+async fn change_workspace_membership(
+    workspace_id: Uuid,
+    user_id: Uuid,
+    role: Role,
+    requesting_user: &RequestingUser,
+    pool: &PgPool,
+    _event_client: &EventClient,
+) -> FieldResult<Workspace> {
+    // ? What do we do if the user is trying to remove themselves from the admin group?
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+
+    if !WorkspaceRepo::is_admin(workspace_id, user.id, pool).await? {
+        return Err(anyhow::anyhow!(
+            "User with auth_id {} does not have permission to create a workspace.",
+            requesting_user.auth_id,
+        )
+        .into());
+    }
+
+    let workspace =
+        WorkspaceRepo::change_workspace_membership(workspace_id, user_id, role, pool).await?;
+
+    // TODO: Add event
+
+    Ok(workspace.into())
 }
 
 #[cfg(test)]
@@ -303,6 +321,38 @@ mod test {
         .await;
 
         assert_eq!(result.err().unwrap().message, "User with auth_id deadbeef-0000-0000-0000-000000000000 does not have permission to create a workspace.");
+
+        assert_eq!(events.try_iter().count(), 0);
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn changing_workspace_membership_as_non_admin_fails() -> anyhow::Result<()> {
+        const WORKSPACE: &str = "84229709-0239-458b-8224-52b4a04e18f9";
+        const NON_ADMIN_USER: &str = "1a9e9d0d-ee1f-4ea1-8f90-36ed0f479a72";
+        const NON_ADMIN_AUTH_ID: &str = "deadbeef-0000-0000-0000-000000000000";
+
+        let pool = mock_connection_pool()?;
+        let (events, event_client) = mock_event_emitter();
+
+        let result = change_workspace_membership(
+            Uuid::parse_str(WORKSPACE).unwrap(),
+            Uuid::parse_str(NON_ADMIN_USER).unwrap(),
+            Role::NonAdmin,
+            &mock_unprivileged_requesting_user(),
+            &pool,
+            &event_client,
+        )
+        .await;
+
+        assert_eq!(
+            result.err().unwrap().message,
+            format!(
+                "User with auth_id {} does not have permission to create a workspace.",
+                NON_ADMIN_AUTH_ID
+            )
+        );
 
         assert_eq!(events.try_iter().count(), 0);
 

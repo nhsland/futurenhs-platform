@@ -155,12 +155,14 @@ impl WorkspaceRepoFake {
     }
 
     pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<Workspace> {
+        const ADMIN_TEAM: &str = "762d9c70-9e51-41dc-b326-8c1d652b792a";
+        const MEMBER_TEAM: &str = "406e3f05-1894-4d11-a7aa-aa3a4641b863";
         let workspace = Workspace {
             id,
             title: "fake workspace".into(),
             description: "fake workspace for tests".into(),
-            admins: Uuid::new_v4(),
-            members: Uuid::new_v4(),
+            admins: Uuid::parse_str(ADMIN_TEAM).unwrap(),
+            members: Uuid::parse_str(MEMBER_TEAM).unwrap(),
         };
         Ok(workspace)
     }
@@ -192,12 +194,14 @@ impl WorkspaceRepoFake {
         Ok(workspace)
     }
 
-    pub async fn is_admin(
-        _workspace_id: Uuid,
-        _user_auth_id: Uuid,
-        _pool: &PgPool,
-    ) -> Result<bool> {
-        Ok(true)
+    pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
+        let user = db::UserRepo::find_by_auth_id(&user_auth_id, pool).await?;
+        if user.is_platform_admin {
+            return Ok(true);
+        }
+        let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+
+        super::TeamRepo::is_member(workspace.admins, user.id, pool).await
     }
 
     pub async fn change_workspace_membership(

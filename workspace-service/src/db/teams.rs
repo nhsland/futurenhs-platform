@@ -124,11 +124,17 @@ impl TeamRepoFake {
         Ok(users)
     }
 
-    pub async fn is_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<bool>
+    pub async fn is_member<'c, E>(team_id: Uuid, user_id: Uuid, _executor: E) -> Result<bool>
     where
         E: Executor<'c, Database = Postgres>,
     {
-        Ok(true)
+        const ADMIN_TEAM: &str = "443babad-3d50-4a3b-85e2-c14c87395240";
+        const ADMIN_USER: &str = "0d56faa1-4e81-486d-ad25-b8cc53c69cf3";
+        if team_id.to_string() == ADMIN_TEAM && user_id.to_string() == ADMIN_USER {
+            Ok(true)
+        } else {
+            Ok(false)
+        }
     }
 
     pub async fn add_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<()>

@@ -71,11 +71,12 @@ pub struct UserRepoFake {}
 #[cfg(test)]
 impl UserRepoFake {
     pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<User> {
+        const ADMIN_AUTH_ID: &str = "feedface-0000-0000-0000-000000000000";
         Ok(User {
             id: Uuid::new_v4(),
             auth_id: *auth_id,
             name: "Test".to_string(),
-            is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
+            is_platform_admin: auth_id.to_string() == ADMIN_AUTH_ID,
             email_address: "testuser@example.com".to_string(),
         })
     }
@@ -96,11 +97,12 @@ impl UserRepoFake {
         email_address: &str,
         _pool: impl Sized,
     ) -> Result<User> {
+        const ADMIN_AUTH_ID: &str = "feedface-0000-0000-0000-000000000000";
         Ok(User {
             id: Uuid::new_v4(),
             auth_id: *auth_id,
             name: name.to_string(),
-            is_platform_admin: auth_id.to_string() == "feedface-0000-0000-0000-000000000000",
+            is_platform_admin: auth_id.to_string() == ADMIN_AUTH_ID,
             email_address: email_address.to_string(),
         })
     }

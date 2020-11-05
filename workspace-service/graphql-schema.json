@@ -542,7 +542,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Update workspace (returns updated workspace",
+            "description": "Update workspace (returns updated workspace)",
             "isDeprecated": false,
             "name": "updateWorkspace",
             "type": {
@@ -573,7 +573,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Delete workspace(returns deleted workspace",
+            "description": "Delete workspace (returns deleted workspace)",
             "isDeprecated": false,
             "name": "deleteWorkspace",
             "type": {
@@ -604,7 +604,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Delete workspace(returns deleted workspace",
+            "description": "Changes workspace permissions for a user (Admin/NonAdmin/NonMember)",
             "isDeprecated": false,
             "name": "changeWorkspaceMembership",
             "type": {
