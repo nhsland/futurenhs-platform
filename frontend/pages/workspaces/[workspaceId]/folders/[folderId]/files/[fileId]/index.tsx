@@ -178,9 +178,9 @@ const FileHomepage = () => {
                 <Table
                   icon={IconCell}
                   columns={[
-                    { name: "Title", content: TitleCell },
-                    { name: "Last modified", content: ModifiedAtCell },
-                    { name: "Actions", content: actionsCell },
+                    { heading: "Title", content: TitleCell },
+                    { heading: "Last modified", content: ModifiedAtCell },
+                    { heading: "Actions", content: actionsCell },
                   ]}
                   data={[file.data.file as File]}
                 />

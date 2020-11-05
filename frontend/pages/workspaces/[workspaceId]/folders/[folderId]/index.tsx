@@ -194,9 +194,9 @@ const FolderHomepage: NextPage = () => {
                   tableHeading="Files"
                   icon={IconCell}
                   columns={[
-                    { name: "Title", content: titleCell },
-                    { name: "Last modified", content: ModifiedAtCell },
-                    { name: "Actions", content: downloadCell },
+                    { heading: "Title", content: titleCell },
+                    { heading: "Last modified", content: ModifiedAtCell },
+                    { heading: "Actions", content: downloadCell },
                   ]}
                   data={files.data.filesByFolder as File[]}
                 />
