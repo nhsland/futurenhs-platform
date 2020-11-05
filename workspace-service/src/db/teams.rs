@@ -86,6 +86,15 @@ impl TeamRepo {
 
 #[cfg(test)]
 pub struct TeamRepoFake {}
+#[cfg(test)]
+use std::collections::HashSet;
+#[cfg(test)]
+use std::sync::{Arc, Mutex};
+
+#[cfg(test)]
+lazy_static::lazy_static! {
+    static ref TEAM_MEMBERS: Arc<Mutex<HashSet<(Uuid, Uuid)>>> = Arc::new(Mutex::new(HashSet::new()));
+}
 
 // Fake implementation for tests. If you want integration tests that exercise the database,
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
@@ -96,11 +105,11 @@ impl TeamRepoFake {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let group = Team {
+        let team = Team {
             id: Uuid::new_v4(),
             title: title.to_string(),
         };
-        Ok(group)
+        Ok(team)
     }
 
     pub async fn members<'c, E>(id: Uuid, executor: E) -> Result<Vec<User>>
@@ -128,26 +137,28 @@ impl TeamRepoFake {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        const ADMIN_TEAM: &str = "443babad-3d50-4a3b-85e2-c14c87395240";
-        const ADMIN_USER: &str = "0d56faa1-4e81-486d-ad25-b8cc53c69cf3";
-        if team_id.to_string() == ADMIN_TEAM && user_id.to_string() == ADMIN_USER {
-            Ok(true)
-        } else {
-            Ok(false)
-        }
+        let teams = TEAM_MEMBERS.clone();
+        let teams = teams.lock().unwrap();
+        Ok(teams.contains(&(team_id, user_id)))
     }
 
-    pub async fn add_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<()>
+    pub async fn add_member<'c, E>(team_id: Uuid, user_id: Uuid, _executor: E) -> Result<()>
     where
         E: Executor<'c, Database = Postgres>,
     {
+        let teams = TEAM_MEMBERS.clone();
+        let mut teams = teams.lock().unwrap();
+        teams.replace((team_id, user_id));
         Ok(())
     }
 
-    pub async fn remove_member<'c, E>(_team_id: Uuid, _user_id: Uuid, _executor: E) -> Result<()>
+    pub async fn remove_member<'c, E>(team_id: Uuid, user_id: Uuid, _executor: E) -> Result<()>
     where
         E: Executor<'c, Database = Postgres>,
     {
+        let teams = TEAM_MEMBERS.clone();
+        let mut teams = teams.lock().unwrap();
+        teams.remove(&(team_id, user_id));
         Ok(())
     }
 }

@@ -138,6 +138,16 @@ impl WorkspaceRepo {
 pub struct WorkspaceRepoFake {}
 
 #[cfg(test)]
+use std::collections::HashMap;
+#[cfg(test)]
+use std::sync::{Arc, Mutex};
+
+#[cfg(test)]
+lazy_static::lazy_static! {
+    static ref TEAM_MEMBERS: Arc<Mutex<HashMap<Uuid, Workspace>>> = Arc::new(Mutex::new(HashMap::new()));
+}
+
+#[cfg(test)]
 impl WorkspaceRepoFake {
     pub async fn create(title: &str, description: &str, _pool: &PgPool) -> Result<Workspace> {
         let workspace = Workspace {
@@ -147,6 +157,9 @@ impl WorkspaceRepoFake {
             admins: Uuid::new_v4(),
             members: Uuid::new_v4(),
         };
+        let teams = TEAM_MEMBERS.clone();
+        let mut teams = teams.lock().unwrap();
+        teams.insert(workspace.id, workspace.clone());
         Ok(workspace)
     }
 
@@ -155,16 +168,9 @@ impl WorkspaceRepoFake {
     }
 
     pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<Workspace> {
-        const ADMIN_TEAM: &str = "762d9c70-9e51-41dc-b326-8c1d652b792a";
-        const MEMBER_TEAM: &str = "406e3f05-1894-4d11-a7aa-aa3a4641b863";
-        let workspace = Workspace {
-            id,
-            title: "fake workspace".into(),
-            description: "fake workspace for tests".into(),
-            admins: Uuid::parse_str(ADMIN_TEAM).unwrap(),
-            members: Uuid::parse_str(MEMBER_TEAM).unwrap(),
-        };
-        Ok(workspace)
+        let teams = TEAM_MEMBERS.clone();
+        let teams = teams.lock().unwrap();
+        Ok(teams.get(&id).unwrap().clone())
     }
 
     pub async fn update(
@@ -201,16 +207,30 @@ impl WorkspaceRepoFake {
         }
         let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
 
-        super::TeamRepo::is_member(workspace.admins, user.id, pool).await
+        db::TeamRepo::is_member(workspace.admins, user.id, pool).await
     }
 
     pub async fn change_workspace_membership(
         workspace_id: Uuid,
-        _user_id: Uuid,
-        _new_role: Role,
+        user_id: Uuid,
+        new_role: Role,
         pool: &PgPool,
     ) -> Result<Workspace> {
         let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+        match new_role {
+            Role::Admin => {
+                db::TeamRepo::add_member(workspace.admins, user_id, pool).await?;
+                db::TeamRepo::add_member(workspace.members, user_id, pool).await?;
+            }
+            Role::NonAdmin => {
+                db::TeamRepo::remove_member(workspace.admins, user_id, pool).await?;
+                db::TeamRepo::add_member(workspace.members, user_id, pool).await?;
+            }
+            Role::NonMember => {
+                db::TeamRepo::remove_member(workspace.admins, user_id, pool).await?;
+                db::TeamRepo::remove_member(workspace.members, user_id, pool).await?;
+            }
+        }
 
         Ok(workspace)
     }
