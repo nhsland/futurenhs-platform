@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -euxo pipefail
 
 COMPONENT=${1:?"Require components as first argument, e.g. frontend or workspace-service"}
 
