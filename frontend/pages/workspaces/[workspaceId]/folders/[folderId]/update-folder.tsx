@@ -15,6 +15,8 @@ import { PageLayout } from "../../../../../components/PageLayout";
 import { Permissions } from "../../../../../components/Permissions";
 import { Textarea } from "../../../../../components/Textarea";
 import {
+  Folder,
+  useUpdateFolderMutation,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
 } from "../../../../../lib/generated/graphql";
@@ -72,10 +74,12 @@ const UpdateFolder: NextPage = () => {
     variables: { id: folderId },
   });
 
+  const [, updateFolder] = useUpdateFolderMutation();
+
   const titleMaxLength = useMaxLengthHelper("Title", 100);
   const descriptionMaxLength = useMaxLengthHelper("Description", 250);
 
-  const { errors, handleSubmit, register, reset } = useForm<Inputs>({
+  const { errors, handleSubmit, register, reset, setError } = useForm<Inputs>({
     defaultValues: {
       title: folder.data?.folder.title,
       description: folder.data?.folder.description,
@@ -98,8 +102,22 @@ const UpdateFolder: NextPage = () => {
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async (result: any) => {
-    console.log(result);
+  const onSubmit = async (folder: Folder) => {
+    folder.id = folderId;
+    if (!folder.roleRequired) folder.roleRequired = "ALL_MEMBERS";
+    updateFolder({ ...folder }).then((result) => {
+      if (result.data) {
+        console.log(result);
+        router.push(
+          `/workspaces/${workspaceId}/folders/${result.data.updateFolder.id}`
+        );
+      } else {
+        setError("form", {
+          type: "server",
+          message: "Error updating folder",
+        });
+      }
+    });
   };
 
   return (

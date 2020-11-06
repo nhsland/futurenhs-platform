@@ -12,6 +12,7 @@ import { MainHeading } from "../../../../components/MainHeading";
 import { NavHeader } from "../../../../components/NavHeader";
 import { Navigation } from "../../../../components/Navigation";
 import { PageLayout } from "../../../../components/PageLayout";
+import { Permissions } from "../../../../components/Permissions";
 import { Textarea } from "../../../../components/Textarea";
 import {
   Folder,
@@ -70,6 +71,7 @@ const CreateFolder: NextPage = () => {
   const backToPreviousPage = () => router.back();
 
   const onSubmit = async (newFolder: Folder) => {
+    if (!newFolder.roleRequired) newFolder.roleRequired = "ALL_MEMBERS";
     createFolder({ ...newFolder, workspace: workspaceId }).then((result) => {
       if (result.data) {
         router.push(
@@ -128,6 +130,9 @@ const CreateFolder: NextPage = () => {
                 inputRef={register(descriptionMaxLength.validation)}
               />
               {descriptionMaxLength.remainingText("description")}
+            </FormField>
+            <FormField>
+              <Permissions inputRef={register()} />
             </FormField>
             <Button type="submit" name="submitButton">
               Save and complete

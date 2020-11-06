@@ -15,6 +15,8 @@ pub struct Folder {
     title: String,
     /// The description of the folder
     description: String,
+    /// The group that can access the folder
+    role_required: String,
     /// The workspace that this folder is in
     workspace: ID,
 }
@@ -25,6 +27,7 @@ impl From<db::Folder> for Folder {
             id: d.id.into(),
             title: d.title,
             description: d.description,
+            role_required: d.role_required,
             workspace: d.workspace.into(),
         }
     }
@@ -34,13 +37,16 @@ impl From<db::Folder> for Folder {
 struct NewFolder {
     title: String,
     description: String,
+    role_required: String,
     workspace: ID,
 }
 
 #[derive(InputObject)]
 struct UpdateFolder {
+    id: ID,
     title: String,
     description: String,
+    role_required: String,
 }
 
 #[derive(Default)]
@@ -89,10 +95,10 @@ impl FoldersMutation {
         let workspace = Uuid::parse_str(&new_folder.workspace)?;
         let event_client = context.data()?;
         let requesting_user = context.data()?;
-
         create_folder(
             &new_folder.title,
             &new_folder.description,
+            &new_folder.role_required,
             workspace,
             pool,
             requesting_user,
@@ -101,21 +107,20 @@ impl FoldersMutation {
         .await
     }
 
-    /// Update folder (returns updated folder
+    /// Update folder (returns updated folder)
     async fn update_folder(
         &self,
         context: &Context<'_>,
-        id: ID,
         folder: UpdateFolder,
     ) -> FieldResult<Folder> {
         let pool = context.data()?;
         let requesting_user = context.data()?;
         let event_client = context.data()?;
 
-        update_folder(id, folder, pool, requesting_user, event_client).await
+        update_folder(folder, pool, requesting_user, event_client).await
     }
 
-    /// Delete folder (returns deleted folder
+    /// Delete folder (returns deleted folder)
     async fn delete_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         let pool = context.data()?;
         let requesting_user = context.data()?;
@@ -128,14 +133,16 @@ impl FoldersMutation {
 async fn create_folder(
     title: &str,
     description: &str,
+    role_required: &str,
     workspace: Uuid,
     pool: &PgPool,
     requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
-    let folder: Folder = db::FolderRepo::create(&title, &description, workspace, pool)
-        .await?
-        .into();
+    let folder: Folder =
+        db::FolderRepo::create(&title, &description, &role_required, workspace, pool)
+            .await?
+            .into();
 
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
 
@@ -155,16 +162,16 @@ async fn create_folder(
 }
 
 async fn update_folder(
-    id: ID,
     folder: UpdateFolder,
     pool: &PgPool,
     requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
     let updated_folder = db::FolderRepo::update(
-        Uuid::parse_str(&id)?,
+        Uuid::parse_str(&folder.id)?,
         &folder.title,
         &folder.description,
+        &folder.role_required,
         pool,
     )
     .await?;
@@ -173,7 +180,7 @@ async fn update_folder(
 
     event_client
         .publish_events(&[Event::new(
-            id,
+            folder.id,
             FolderUpdatedData {
                 folder_id: updated_folder.id.to_string(),
                 workspace_id: updated_folder.workspace.to_string(),
@@ -246,6 +253,7 @@ mod test {
         let folder = create_folder(
             "title",
             "description",
+            "all-members",
             Uuid::new_v4(),
             &pool,
             &requesting_user,
@@ -270,19 +278,15 @@ mod test {
         let (events, event_client) = mock_event_emitter();
         let requesting_user = mock_unprivileged_requesting_user();
         let current_folder = UpdateFolder {
+            id: "d890181d-6b17-428e-896b-f76add15b54a".into(),
             title: "title".to_string(),
             description: "description".to_string(),
+            role_required: "all-members".to_string(),
         };
 
-        let folder = update_folder(
-            "d890181d-6b17-428e-896b-f76add15b54a".into(),
-            current_folder,
-            &pool,
-            &requesting_user,
-            &event_client,
-        )
-        .await
-        .unwrap();
+        let folder = update_folder(current_folder, &pool, &requesting_user, &event_client)
+            .await
+            .unwrap();
 
         assert_eq!(folder.title, "title");
         assert_eq!(folder.description, "description");
