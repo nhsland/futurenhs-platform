@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
+import { ChevronBottomIcon, ChevronTopIcon } from "../Icon";
+
 const Section = styled.section`
   padding-top: 20px;
   div {
@@ -13,6 +15,14 @@ const Section = styled.section`
   button {
     border: none;
     background: inherit;
+    outline: inherit;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    cursor: pointer;
+    :focus {
+      background-color: ${({ theme }) => theme.colorNhsukYellow};
+      border-bottom: 4px solid ${({ theme }) => theme.colorNhsukBlack};
+    }
   }
 `;
 
@@ -27,17 +37,15 @@ const NavSection = ({
 }) => {
   const [open, setOpen] = useState(initiallyOpen);
 
-  const openChevron = require("../../public/chevronOpen.svg");
-  const closedChevron = require("../../public/chevronClosed.svg");
   return (
     <Section>
       <div>
         <h4>{title}</h4>
         <button onClick={() => setOpen(!open)}>
           {open ? (
-            <img src={openChevron} alt={`Hide ${title}`} />
+            <ChevronTopIcon title={`Hide ${title}`} />
           ) : (
-            <img src={closedChevron} alt={`Show ${title}`} />
+            <ChevronBottomIcon title={`Show ${title}`} />
           )}
         </button>
       </div>
