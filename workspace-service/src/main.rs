@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use fnhs_event_models::EventClient;
 use opentelemetry::{
-    api::{self, Provider},
+    api::{trace::b3_propagator::B3Encoding, B3Propagator, Provider},
     global, sdk,
     sdk::BatchSpanProcessor,
 };
@@ -47,7 +47,8 @@ async fn main() -> Result<()> {
     let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
     let subscriber = Registry::default().with(telemetry);
     tracing::subscriber::set_global_default(subscriber)?;
-    let propagator = api::B3Propagator::new();
+
+    let propagator = B3Propagator::with_encoding(B3Encoding::SingleAndMultiHeader);
     global::set_http_text_propagator(propagator);
 
     let connection_pool = PgPool::connect(config.database_url.expect("required").as_str()).await?;
