@@ -14,6 +14,7 @@ pub struct Workspace {
     pub members: Uuid,
 }
 
+#[derive(Copy, Clone)]
 pub enum Role {
     /// Promote to admin.
     Admin,
@@ -21,6 +22,17 @@ pub enum Role {
     NonAdmin,
     /// Remove member.
     NonMember,
+}
+
+impl ToString for Role {
+    fn to_string(&self) -> String {
+        match self {
+            Role::Admin => "Admin",
+            Role::NonAdmin => "NonAdmin",
+            Role::NonMember => "NonMember",
+        }
+        .to_string()
+    }
 }
 
 #[cfg_attr(test, allow(dead_code))]

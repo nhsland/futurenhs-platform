@@ -3,7 +3,9 @@ use crate::db::{Role, WorkspaceRepo};
 use crate::graphql::users::User;
 use crate::graphql::RequestingUser;
 use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
-use fnhs_event_models::{Event, EventClient, EventPublisher as _, WorkspaceCreatedData};
+use fnhs_event_models::{
+    Event, EventClient, EventPublisher as _, WorkspaceCreatedData, WorkspaceMembershipChangedData,
+};
 use sqlx::PgPool;
 use std::convert::TryInto;
 use uuid::Uuid;
@@ -201,6 +203,7 @@ impl WorkspacesMutation {
         let pool = context.data()?;
         let requesting_user = context.data::<super::RequestingUser>()?;
         let event_client: &EventClient = context.data()?;
+
         change_workspace_membership(
             input.workspace.try_into()?,
             input.user.try_into()?,
@@ -254,7 +257,7 @@ async fn change_workspace_membership(
     role: Role,
     requesting_user: &RequestingUser,
     pool: &PgPool,
-    _event_client: &EventClient,
+    event_client: &EventClient,
 ) -> FieldResult<Workspace> {
     // ? What do we do if the user is trying to remove themselves from the admin group?
     if !WorkspaceRepo::is_admin(workspace_id, requesting_user.auth_id, pool).await? {
@@ -265,12 +268,24 @@ async fn change_workspace_membership(
         .into());
     }
 
-    let workspace =
-        WorkspaceRepo::change_workspace_membership(workspace_id, user_id, role, pool).await?;
+    let workspace: Workspace =
+        WorkspaceRepo::change_workspace_membership(workspace_id, user_id, role, pool)
+            .await?
+            .into();
 
-    // TODO: Add event
+    event_client
+        .publish_events(&[Event::new(
+            workspace.id.clone(),
+            WorkspaceMembershipChangedData {
+                requesting_user_id: requesting_user.auth_id.to_string(),
+                affected_workspace_id: workspace.id.clone().into(),
+                affected_user_id: user_id.to_string(),
+                affected_role: role.to_string(),
+            },
+        )])
+        .await?;
 
-    Ok(workspace.into())
+    Ok(workspace)
 }
 
 #[cfg(test)]
@@ -426,7 +441,7 @@ mod test {
 
         assert_eq!(is_admin, false, "should not be an admin");
         assert_eq!(is_member, true, "should be a member");
-        assert_eq!(events.try_iter().count(), 0);
+        assert_eq!(events.try_iter().count(), 1);
 
         Ok(())
     }
@@ -466,7 +481,7 @@ mod test {
 
         assert_eq!(is_admin, true, "should be an admin");
         assert_eq!(is_member, true, "should be a member");
-        assert_eq!(events.try_iter().count(), 0);
+        assert_eq!(events.try_iter().count(), 1);
 
         Ok(())
     }
@@ -504,7 +519,7 @@ mod test {
 
         assert_eq!(is_admin, false, "should not be an admin");
         assert_eq!(is_member, true, "should be a member");
-        assert_eq!(events.try_iter().count(), 0);
+        assert_eq!(events.try_iter().count(), 1);
 
         Ok(())
     }
@@ -542,7 +557,7 @@ mod test {
 
         assert_eq!(is_admin, true, "should be an admin");
         assert_eq!(is_member, true, "should be a member");
-        assert_eq!(events.try_iter().count(), 0);
+        assert_eq!(events.try_iter().count(), 1);
 
         Ok(())
     }

@@ -13,7 +13,8 @@
         { "$ref": "#/definitions/FolderCreated" },
         { "$ref": "#/definitions/FolderUpdated" },
         { "$ref": "#/definitions/FolderDeleted" },
-        { "$ref": "#/definitions/WorkspaceCreated" }
+        { "$ref": "#/definitions/WorkspaceCreated" },
+        { "$ref": "#/definitions/WorkspaceMembershipChanged" }
       ]
     }
   ],
@@ -433,6 +434,47 @@
             }
           },
           "required": ["title", "userId", "workspaceId"]
+        }
+      },
+      "required": ["eventType", "dataVersion", "data"]
+    },
+    "WorkspaceMembershipChanged": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": ["WorkspaceMembershipChanged"]
+        },
+        "dataVersion": {
+          "type": "string",
+          "enum": ["1"]
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "requestingUserId": {
+              "description": "The id of the user that requested this change",
+              "type": "string"
+            },
+            "affectedWorkspaceId": {
+              "description": "The id of the workspace affected by this change",
+              "type": "string"
+            },
+            "affectedUserId": {
+              "description": "The id of the user affected by this change",
+              "type": "string"
+            },
+            "affectedRole": {
+              "description": "The role assigned to the affected user",
+              "type": "string"
+            }
+          },
+          "required": [
+            "requestingUserId",
+            "affectedWorkspaceId",
+            "affectedUserId",
+            "affectedRole"
+          ]
         }
       },
       "required": ["eventType", "dataVersion", "data"]
