@@ -532,6 +532,8 @@ mod test {
     async fn delete_file_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let requesting_user = mock_unprivileged_requesting_user();
+        db::UserRepo::get_or_create(&requesting_user.auth_id, "name", "email_address", &pool)
+            .await?;
         let (events, event_client) = mock_event_emitter();
         let id: ID = ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec");
 
