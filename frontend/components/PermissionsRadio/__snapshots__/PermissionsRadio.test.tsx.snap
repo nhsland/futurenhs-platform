@@ -23,24 +23,24 @@ exports[`PermissionsRadio renders matching snapshot 1`] = `
           class="nhsuk-radios__item"
         >
           <input
-            aria-describedby="permissions-1--hint"
-            aria-labelledby="permissions-1--label"
+            aria-describedby="all-members--hint"
+            aria-labelledby="all-members--label"
             class="nhsuk-radios__input"
-            id="permissions-1"
+            id="all-members"
             name="permissions"
             type="radio"
             value="all-members"
           />
           <label
             class="nhsuk-label nhsuk-radios__label"
-            for="permissions-1"
-            id="permissions-1--label"
+            for="all-members"
+            id="all-members--label"
           >
             Make visible to all FutureNHS members
           </label>
           <span
             class="nhsuk-hint nhsuk-radios__hint"
-            id="permissions-1--hint"
+            id="all-members--hint"
           >
             This will make the folder and its contents visible to all members of FutureNHS
           </span>
@@ -49,24 +49,24 @@ exports[`PermissionsRadio renders matching snapshot 1`] = `
           class="nhsuk-radios__item"
         >
           <input
-            aria-describedby="permissions-2--hint"
-            aria-labelledby="permissions-2--label"
+            aria-describedby="workspace-members--hint"
+            aria-labelledby="workspace-members--label"
             class="nhsuk-radios__input"
-            id="permissions-2"
+            id="workspace-members"
             name="permissions"
             type="radio"
             value="workspace-members"
           />
           <label
             class="nhsuk-label nhsuk-radios__label"
-            for="permissions-2"
-            id="permissions-2--label"
+            for="workspace-members"
+            id="workspace-members--label"
           >
             Make visible to all members of this workspace
           </label>
           <span
             class="nhsuk-hint nhsuk-radios__hint"
-            id="permissions-2--hint"
+            id="workspace-members--hint"
           >
             This will make the folder and its contents visible to members of your workspace.
           </span>
