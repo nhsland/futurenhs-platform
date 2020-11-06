@@ -15,7 +15,6 @@ import { Head } from "../../../../../components/Head";
 import {
   DeleteIcon,
   EditIcon,
-  LockIcon,
   MoveIcon,
   UploadIcon,
 } from "../../../../../components/Icon";
@@ -95,16 +94,11 @@ const FolderHomepage: NextPage = () => {
     {
       title: "Edit folder details",
       icon: <EditIcon />,
-      handler: "#",
+      handler: `/workspaces/${workspaceId}/folders/${folderId}/update-folder`,
     },
     {
       title: "Move folder",
       icon: <MoveIcon />,
-      handler: "#",
-    },
-    {
-      title: "View folder permissions",
-      icon: <LockIcon />,
       handler: "#",
     },
     {

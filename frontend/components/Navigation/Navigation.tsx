@@ -4,7 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { useFoldersByWorkspaceQuery } from "../../lib/generated/graphql";
-import { DeleteIcon, EditIcon, LockIcon, MoveIcon, UploadIcon } from "../Icon";
+import { DeleteIcon, EditIcon, MoveIcon, UploadIcon } from "../Icon";
 import { Menu, MenuItem } from "../Menu";
 import { NavListItem } from "../NavListItem";
 import { NavSection } from "../NavSection";
@@ -168,16 +168,11 @@ const Navigation: FC<Props> = ({
               {
                 title: "Edit folder details",
                 icon: <EditIcon />,
-                handler: "#",
+                handler: `/workspaces/${workspaceId}/folders/${folder.id}/update-folder`,
               },
               {
                 title: "Move folder",
                 icon: <MoveIcon />,
-                handler: "#",
-              },
-              {
-                title: "View folder permissions",
-                icon: <LockIcon />,
                 handler: "#",
               },
               {
