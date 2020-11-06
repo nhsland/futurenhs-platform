@@ -9,10 +9,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ContentViewedData {
     ///
-    #[serde(rename = "userId")]
-    pub user_id: String,
-
-    ///
     #[serde(rename = "contentId")]
     pub content_id: String,
 
@@ -21,73 +17,29 @@ pub struct ContentViewedData {
     pub content_type: String,
 
     ///
-    #[serde(rename = "workspaceId")]
-    pub workspace_id: String,
-
-    ///
     #[serde(rename = "error", skip_serializing_if = "Option::is_none")]
     pub error: Option<String>,
+
+    ///
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    ///
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
 }
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct FileCreatedData {
-    ///
-    #[serde(rename = "fileId")]
-    pub file_id: String,
-
     /// The date at which the file has been created
     #[serde(rename = "createdAt")]
     pub created_at: DateTime<Utc>,
 
-    /// The folder that the file is in
-    #[serde(rename = "folderId")]
-    pub folder_id: String,
-
-    /// The workspace that the file is in
-    #[serde(rename = "workspaceId")]
-    pub workspace_id: String,
-
-    ///
-    #[serde(rename = "fileTitle")]
-    pub file_title: String,
-
-    ///
-    #[serde(rename = "fileDescription")]
-    pub file_description: String,
-
-    /// The MIME type of the file, e.g. text/csv for a CSV file
-    #[serde(rename = "fileType")]
-    pub file_type: String,
-
-    ///
-    #[serde(rename = "versionId")]
-    pub version_id: String,
-
-    /// The user that created the file
-    #[serde(rename = "userId")]
-    pub user_id: String,
-}
-
-///
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct FileUpdatedData {
     ///
     #[serde(rename = "fileId")]
     pub file_id: String,
 
-    /// The date at which the file has been updated (= the new file version has been created)
-    #[serde(rename = "updatedAt")]
-    pub updated_at: DateTime<Utc>,
-
-    /// The folder that the file is in
-    #[serde(rename = "folderId")]
-    pub folder_id: String,
-
-    /// The workspace that the file is in
-    #[serde(rename = "workspaceId")]
-    pub workspace_id: String,
-
     ///
     #[serde(rename = "fileTitle")]
     pub file_title: String,
@@ -99,6 +51,14 @@ pub struct FileUpdatedData {
     /// The MIME type of the file, e.g. text/csv for a CSV file
     #[serde(rename = "fileType")]
     pub file_type: String,
+
+    /// The folder that the file is in
+    #[serde(rename = "folderId")]
+    pub folder_id: String,
+
+    /// The user that created the file
+    #[serde(rename = "userId")]
+    pub user_id: String,
 
     ///
     #[serde(rename = "versionId")]
@@ -108,14 +68,130 @@ pub struct FileUpdatedData {
     #[serde(rename = "versionNumber")]
     pub version_number: i64,
 
+    /// The workspace that the file is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FileUpdatedData {
+    ///
+    #[serde(rename = "fileId")]
+    pub file_id: String,
+
+    ///
+    #[serde(rename = "fileTitle")]
+    pub file_title: String,
+
+    ///
+    #[serde(rename = "fileDescription")]
+    pub file_description: String,
+
+    /// The MIME type of the file, e.g. text/csv for a CSV file
+    #[serde(rename = "fileType")]
+    pub file_type: String,
+
+    /// The folder that the file is in
+    #[serde(rename = "folderId")]
+    pub folder_id: String,
+
+    /// The date at which the file has been updated (= the new file version has been created)
+    #[serde(rename = "updatedAt")]
+    pub updated_at: DateTime<Utc>,
+
     /// The user that created the file
     #[serde(rename = "userId")]
     pub user_id: String,
+
+    ///
+    #[serde(rename = "versionId")]
+    pub version_id: String,
+
+    ///
+    #[serde(rename = "versionNumber")]
+    pub version_number: i64,
+
+    /// The workspace that the file is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FileDeletedData {
+    ///
+    #[serde(rename = "fileId")]
+    pub file_id: String,
+
+    /// The user that deleted the file
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    ///
+    #[serde(rename = "versionId")]
+    pub version_id: String,
+
+    ///
+    #[serde(rename = "versionNumber")]
+    pub version_number: i64,
+
+    /// The workspace that the file is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FileDownloadedData {
+    ///
+    #[serde(rename = "fileId")]
+    pub file_id: String,
+
+    /// The user that downloaded the file
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    ///
+    #[serde(rename = "versionId")]
+    pub version_id: String,
+
+    ///
+    #[serde(rename = "versionNumber")]
+    pub version_number: i64,
+
+    /// The workspace that the file is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
 }
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct FolderCreatedData {
+    ///
+    #[serde(rename = "description")]
+    pub description: String,
+
+    ///
+    #[serde(rename = "folderId")]
+    pub folder_id: String,
+
+    ///
+    #[serde(rename = "title")]
+    pub title: String,
+
+    /// The user that created the folder
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    /// The workspace that the folder is in
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
+}
+
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FolderUpdatedData {
     ///
     #[serde(rename = "folderId")]
     pub folder_id: String,
@@ -128,18 +204,34 @@ pub struct FolderCreatedData {
     #[serde(rename = "title")]
     pub title: String,
 
-    /// The user that created the folder
+    ///
+    #[serde(rename = "description")]
+    pub description: String,
+
+    /// The user that updated the folder
     #[serde(rename = "userId")]
     pub user_id: String,
 }
 
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct WorkspaceCreatedData {
+pub struct FolderDeletedData {
     ///
+    #[serde(rename = "folderId")]
+    pub folder_id: String,
+
+    /// The user that deleted the folder
+    #[serde(rename = "userId")]
+    pub user_id: String,
+
+    /// The workspace that the folder is in
     #[serde(rename = "workspaceId")]
     pub workspace_id: String,
+}
 
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct WorkspaceCreatedData {
     ///
     #[serde(rename = "title")]
     pub title: String,
@@ -147,6 +239,10 @@ pub struct WorkspaceCreatedData {
     /// The id of the user that created the workspace
     #[serde(rename = "userId")]
     pub user_id: String,
+
+    ///
+    #[serde(rename = "workspaceId")]
+    pub workspace_id: String,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -154,7 +250,11 @@ pub enum EventData {
     ContentViewed(ContentViewedData),
     FileCreated(FileCreatedData),
     FileUpdated(FileUpdatedData),
+    FileDeleted(FileDeletedData),
+    FileDownloaded(FileDownloadedData),
     FolderCreated(FolderCreatedData),
+    FolderUpdated(FolderUpdatedData),
+    FolderDeleted(FolderDeletedData),
     WorkspaceCreated(WorkspaceCreatedData),
 }
 
@@ -176,9 +276,33 @@ impl From<FileUpdatedData> for EventData {
     }
 }
 
+impl From<FileDeletedData> for EventData {
+    fn from(data: FileDeletedData) -> Self {
+        Self::FileDeleted(data)
+    }
+}
+
+impl From<FileDownloadedData> for EventData {
+    fn from(data: FileDownloadedData) -> Self {
+        Self::FileDownloaded(data)
+    }
+}
+
 impl From<FolderCreatedData> for EventData {
     fn from(data: FolderCreatedData) -> Self {
         Self::FolderCreated(data)
+    }
+}
+
+impl From<FolderUpdatedData> for EventData {
+    fn from(data: FolderUpdatedData) -> Self {
+        Self::FolderUpdated(data)
+    }
+}
+
+impl From<FolderDeletedData> for EventData {
+    fn from(data: FolderDeletedData) -> Self {
+        Self::FolderDeleted(data)
     }
 }
 
@@ -212,7 +336,23 @@ impl EventData {
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
+            ("FileDeleted", "1") => Ok(Self::FileDeleted(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
+            ("FileDownloaded", "1") => Ok(Self::FileDownloaded(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
             ("FolderCreated", "1") => Ok(Self::FolderCreated(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
+            ("FolderUpdated", "1") => Ok(Self::FolderUpdated(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
+            ("FolderDeleted", "1") => Ok(Self::FolderDeleted(
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
@@ -234,7 +374,15 @@ impl EventData {
 
             Self::FileUpdated(data) => ("FileUpdated", "1", serde_json::to_value(data)?),
 
+            Self::FileDeleted(data) => ("FileDeleted", "1", serde_json::to_value(data)?),
+
+            Self::FileDownloaded(data) => ("FileDownloaded", "1", serde_json::to_value(data)?),
+
             Self::FolderCreated(data) => ("FolderCreated", "1", serde_json::to_value(data)?),
+
+            Self::FolderUpdated(data) => ("FolderUpdated", "1", serde_json::to_value(data)?),
+
+            Self::FolderDeleted(data) => ("FolderDeleted", "1", serde_json::to_value(data)?),
 
             Self::WorkspaceCreated(data) => ("WorkspaceCreated", "1", serde_json::to_value(data)?),
         })

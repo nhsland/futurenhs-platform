@@ -1,6 +1,8 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 
 import styled from "styled-components";
+
+import { Expander } from "../Expander";
 
 const ListItem = styled.li`
   align-items: flex-start;
@@ -10,7 +12,8 @@ const ListItem = styled.li`
   border-bottom: 1px solid ${({ theme }) => theme.colorNhsukGrey4};
 `;
 
-const RHContainer = styled.div`
+const DetailsContainer = styled.div`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding-left: 12px;
@@ -20,6 +23,7 @@ const RHContainer = styled.div`
   p,
   h4 {
     margin-bottom: 0;
+
     font-size: 16px;
   }
   p {
@@ -63,33 +67,63 @@ interface Item {
 }
 
 interface Props<ItemType extends Item> {
+  tableHeading?: string;
+  icon?: (x: ItemType) => ReactNode;
   columns: Array<{
+    heading?: string;
     content: (x: ItemType) => ReactNode;
   }>;
   data: ItemType[];
-  tableHeading?: string;
-  icon?: (x: ItemType) => ReactNode;
+  extraDetails?: Array<{
+    heading?: string;
+    content: (x: ItemType) => ReactNode;
+  }>;
 }
 
 export const MobileList = <ItemType extends Item>({
-  columns,
-  data,
   tableHeading,
   icon,
-}: Props<ItemType>) => (
-  <>
-    {tableHeading && <Heading>{tableHeading}</Heading>}
-    <List>
-      {data.map((x) => (
-        <ListItem key={x.id}>
-          {icon && icon(x)}
-          <RHContainer>
-            {columns.map((c, i) => (
-              <div key={i}>{c.content(x)}</div>
-            ))}
-          </RHContainer>
-        </ListItem>
-      ))}
-    </List>
-  </>
-);
+  columns,
+  data,
+  extraDetails,
+}: Props<ItemType>) => {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  return (
+    <>
+      {tableHeading && <Heading>{tableHeading}</Heading>}
+      <List>
+        {data.map((x) => {
+          const expanded = x.id === expandedId;
+          return (
+            <ListItem key={x.id}>
+              {icon && icon(x)}
+              <DetailsContainer>
+                {columns.map((c, i) => (
+                  <React.Fragment key={i}>
+                    {c.heading && <h4>{c.heading}</h4>}
+                    <div>{c.content(x)}</div>
+                  </React.Fragment>
+                ))}
+                {extraDetails &&
+                  expanded &&
+                  extraDetails.map((c, i) => (
+                    <React.Fragment key={i}>
+                      {c.heading && <h4>{c.heading}</h4>}
+                      <div>{c.content(x)}</div>
+                    </React.Fragment>
+                  ))}
+              </DetailsContainer>
+              {extraDetails && (
+                <Expander
+                  expanded={expanded}
+                  onClick={() => setExpandedId(expanded ? null : x.id)}
+                />
+              )}
+            </ListItem>
+          );
+        })}
+      </List>
+    </>
+  );
+};

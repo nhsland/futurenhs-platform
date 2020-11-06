@@ -1,0 +1,18 @@
+query GetWorkspaceWithMembers($id: ID!) {
+  workspace(id: $id) {
+    id
+    title
+    members {
+      id
+      authId
+      name
+      emailAddress
+    }
+    admins {
+      id
+      authId
+      name
+      emailAddress
+    }
+  }
+}
