@@ -446,11 +446,11 @@ mod test {
         file_type: Option<&'static str>,
         expected: Option<&'static str>,
     ) {
-        validate_newfile_filename(file_name, file_type, expected);
-        validate_newfileversion_filename(file_name, file_type, expected);
+        validate_new_file_filename(file_name, file_type, expected);
+        validate_new_file_version_filename(file_name, file_type, expected);
     }
 
-    fn validate_newfile_filename(
+    fn validate_new_file_filename(
         file_name: &'static str,
         file_type: Option<&'static str>,
         expected: Option<&'static str>,
@@ -471,7 +471,7 @@ mod test {
         assert_eq!(actual.as_deref(), expected);
     }
 
-    fn validate_newfileversion_filename(
+    fn validate_new_file_version_filename(
         file_name: &'static str,
         file_type: Option<&'static str>,
         expected: Option<&'static str>,
@@ -498,9 +498,7 @@ mod test {
     async fn create_file_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
-        db::UserRepo::get_or_create(&requesting_user.auth_id, "name", "email_address", &pool)
-            .await?;
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let (events, event_client) = mock_event_emitter();
 
         let result = create_file(
@@ -531,9 +529,7 @@ mod test {
     #[async_std::test]
     async fn delete_file_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
-        let requesting_user = mock_unprivileged_requesting_user();
-        db::UserRepo::get_or_create(&requesting_user.auth_id, "name", "email_address", &pool)
-            .await?;
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let (events, event_client) = mock_event_emitter();
         let id: ID = ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec");
 
@@ -554,7 +550,7 @@ mod test {
     async fn create_file_version_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
 
         let file_id = Uuid::new_v4();
         let current_file = db::FileWithVersionRepo::find_by_id(file_id, &pool).await?;
@@ -597,7 +593,7 @@ mod test {
     async fn create_file_version_fails_if_latest_version_mismatch() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let (events, event_client) = mock_event_emitter();
 
         let file_id = Uuid::new_v4();

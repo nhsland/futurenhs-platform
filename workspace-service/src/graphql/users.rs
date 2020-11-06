@@ -107,9 +107,7 @@ mod test {
     #[async_std::test]
     async fn update_user_succeeds_if_admin() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
-        let requesting_user = mock_admin_requesting_user();
-        db::UserRepo::get_or_create(&requesting_user.auth_id, "name", "email_address", &pool)
-            .await?;
+        let requesting_user = mock_admin_requesting_user().await?;
 
         update_user_impl(
             &pool,
@@ -129,7 +127,7 @@ mod test {
     async fn update_user_fails_if_not_admin() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
 
-        let user = mock_unprivileged_requesting_user();
+        let user = mock_unprivileged_requesting_user().await?;
 
         let result = update_user_impl(
             &pool,

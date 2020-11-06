@@ -62,7 +62,9 @@ mod test {
     async fn file_download_url_emits_event() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+
+        let requesting_user = mock_unprivileged_requesting_user().await?;
+
         let (events, event_client) = mock_event_emitter();
 
         file_download_url(

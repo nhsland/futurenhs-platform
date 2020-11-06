@@ -287,7 +287,7 @@ mod test {
         let workspace = create_workspace(
             "title",
             "description",
-            &mock_admin_requesting_user(),
+            &mock_admin_requesting_user().await?,
             &pool,
             &event_client,
         )
@@ -312,7 +312,7 @@ mod test {
         let result = create_workspace(
             "title",
             "description",
-            &mock_unprivileged_requesting_user(),
+            &mock_unprivileged_requesting_user().await?,
             &pool,
             &event_client,
         )
@@ -326,10 +326,11 @@ mod test {
     }
 
     #[async_std::test]
-    async fn changing_workspace_membership_as_non_site_admin_fails() -> anyhow::Result<()> {
+    async fn a_user_cannot_add_another_if_they_are_neither_site_nor_workspace_admin(
+    ) -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
 
         let workspace = WorkspaceRepo::create("", "", &pool).await?;
         let result = change_workspace_membership(
@@ -356,12 +357,12 @@ mod test {
     }
 
     #[async_std::test]
-    async fn changing_workspace_membership_as_non_workspace_admin_fails() -> anyhow::Result<()> {
+    async fn a_user_cannot_add_another_if_they_are_just_a_workspace_member() -> anyhow::Result<()> {
         use db::TeamRepo;
 
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool).await?;
 
         let workspace = WorkspaceRepo::create("", "", &pool).await?;
@@ -396,7 +397,7 @@ mod test {
 
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let requesting_user_user =
             db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool).await?;
 
@@ -436,7 +437,7 @@ mod test {
 
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let requesting_user_user =
             db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool).await?;
 
@@ -471,14 +472,51 @@ mod test {
     }
 
     #[async_std::test]
-    async fn make_user_a_workspace_admin_when_requesting_user_is_site_admin() -> anyhow::Result<()>
-    {
+    async fn a_site_admin_can_add_a_member() -> anyhow::Result<()> {
         use db::TeamRepo;
         const NON_ADMIN_USER: &str = "1be12ec1-41bd-4384-b86f-de10fa754c12";
 
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_admin_requesting_user();
+        let requesting_user = mock_admin_requesting_user().await?;
+        let user_id = Uuid::parse_str(NON_ADMIN_USER).unwrap();
+
+        let workspace = WorkspaceRepo::create("", "", &pool).await?;
+        TeamRepo::remove_member(workspace.admins, user_id, &pool).await?;
+        TeamRepo::add_member(workspace.members, user_id, &pool).await?;
+        change_workspace_membership(
+            workspace.id,
+            user_id,
+            Role::NonAdmin,
+            &requesting_user,
+            &pool,
+            &event_client,
+        )
+        .await
+        .unwrap();
+
+        let is_admin = TeamRepo::is_member(workspace.admins, user_id, &pool)
+            .await
+            .unwrap();
+        let is_member = TeamRepo::is_member(workspace.members, user_id, &pool)
+            .await
+            .unwrap();
+
+        assert_eq!(is_admin, false, "should not be an admin");
+        assert_eq!(is_member, true, "should be a member");
+        assert_eq!(events.try_iter().count(), 0);
+
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn a_site_admin_can_add_an_admin() -> anyhow::Result<()> {
+        use db::TeamRepo;
+        const NON_ADMIN_USER: &str = "1be12ec1-41bd-4384-b86f-de10fa754c12";
+
+        let pool = mock_connection_pool()?;
+        let (events, event_client) = mock_event_emitter();
+        let requesting_user = mock_admin_requesting_user().await?;
         let user_id = Uuid::parse_str(NON_ADMIN_USER).unwrap();
 
         let workspace = WorkspaceRepo::create("", "", &pool).await?;

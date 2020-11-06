@@ -218,7 +218,7 @@ mod test {
     async fn deleting_folder_emits_an_event() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
 
         let folder = delete_folder(
             "d890181d-6b17-428e-896b-f76add15b54a".into(),
@@ -241,7 +241,7 @@ mod test {
     async fn creating_folder_emits_an_event() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
 
         let folder = create_folder(
             "title",
@@ -268,7 +268,7 @@ mod test {
     async fn update_folder_emits_an_event() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let current_folder = UpdateFolder {
             title: "title".to_string(),
             description: "description".to_string(),
