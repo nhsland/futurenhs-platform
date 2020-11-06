@@ -1,4 +1,4 @@
-describe("Workspace Directory", () => {
+describe("Create Workspace", () => {
   it("Shows title, renders form and submits", () => {
     cy.visit(`/admin/create-workspace`);
     cy.contains("h1", "Create a workspace");
