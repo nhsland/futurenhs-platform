@@ -16,27 +16,25 @@ const StyledContainer = styled.div`
 `;
 
 const StyledLink = styled.a`
-  ${({ theme }) => `
   display: flex;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &:active {
+    color: ${({ theme }) => theme.colorNhsukBlack};
+    background-color: ${({ theme }) => theme.colorNhsukYellow};
+    text-decoration: none;
+  }
 
   div {
     margin-bottom: 0px;
     font-size: 22px;
     font-weight: 600;
-
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-      }
-
-    &:active {
-      color: ${theme.colorNhsukBlack};
-      text-decoration: none;
-      background-color: ${theme.colorNhsukYellow};
-      }
-    }
- `}
+  }
 `;
 
 interface Props {

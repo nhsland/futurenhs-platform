@@ -1,12 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
-  MobileFileList,
-  FileTable,
-} from "../../../../../../../components/FileTable";
+  IconCell,
+  MobileModifiedAtCell,
+  ModifiedAtCell,
+  TitleCell,
+} from "../../../../../../../components/Files";
 import { Footer } from "../../../../../../../components/Footer";
 import { Head } from "../../../../../../../components/Head";
 import { DeleteIcon, UploadIcon } from "../../../../../../../components/Icon";
@@ -15,10 +18,12 @@ import { Menu } from "../../../../../../../components/Menu";
 import { NavHeader } from "../../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../../components/PageLayout";
+import { MobileList, Table } from "../../../../../../../components/Table";
 import {
-  useGetWorkspaceByIdQuery,
-  useGetFileByIdQuery,
+  File,
   useDeleteFileMutation,
+  useGetFileByIdQuery,
+  useGetWorkspaceByIdQuery,
 } from "../../../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../../../lib/withUrqlClient";
 
@@ -47,6 +52,19 @@ const ContentWrapper = styled.div`
 
 const Description = styled.p`
   padding-bottom: 40px;
+`;
+
+const DownloadFile = styled.a`
+  display: inline-block;
+  padding-right: 8px;
+  font-size: 16px;
+`;
+
+const MobileTitle = styled.h3`
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 20px;
 `;
 
 const FileHomepage = () => {
@@ -83,6 +101,26 @@ const FileHomepage = () => {
       await router.push(`/workspaces/${workspaceId}/folders/${folderId}`);
     }
   };
+
+  const actionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <DownloadFile>Download file</DownloadFile>
+    </Link>
+  );
+
+  const mobileActionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <a>Download file</a>
+    </Link>
+  );
+
+  const mobileTitleCell: FC<File> = ({ id, title }) => (
+    <MobileTitle>
+      <Link href={`/workspaces/${workspaceId}/folders/${folderId}/files/${id}`}>
+        <a>{title}</a>
+      </Link>
+    </MobileTitle>
+  );
 
   return (
     <>
@@ -128,15 +166,23 @@ const FileHomepage = () => {
               "Loading..."
             ) : (
               <>
-                <MobileFileList
-                  files={[file.data.file]}
-                  workspaceId={workspaceId}
-                  titleLink={false}
+                <MobileList
+                  icon={IconCell}
+                  columns={[
+                    { content: mobileTitleCell },
+                    { content: MobileModifiedAtCell },
+                    { content: mobileActionsCell },
+                  ]}
+                  data={[file.data.file as File]}
                 />
-                <FileTable
-                  files={[file.data.file]}
-                  workspaceId={workspaceId}
-                  titleLink={false}
+                <Table
+                  icon={IconCell}
+                  columns={[
+                    { heading: "Title", content: TitleCell },
+                    { heading: "Last modified", content: ModifiedAtCell },
+                    { heading: "Actions", content: actionsCell },
+                  ]}
+                  data={[file.data.file as File]}
                 />
               </>
             )}

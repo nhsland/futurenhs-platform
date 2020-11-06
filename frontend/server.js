@@ -189,6 +189,7 @@ async function main() {
       const temporaryBlobStoragePath = response.fileDownloadUrl;
       res.redirect(307, temporaryBlobStoragePath);
     } catch (err) {
+      reportError(err);
       res.status(500).end();
     }
   });

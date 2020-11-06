@@ -9,13 +9,32 @@ on:
       - .github/workflows/event-models-branch.yaml
 
 jobs:
+  updated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+      - uses: actions-rs/toolchain@v1
+        with:
+          components: rustfmt
+      - name: Check if types are up-to-date
+        working-directory: event-models
+        run: |
+          set -eu
+          yarn
+          yarn generate
+          if [[ $(git diff --stat) != '' ]]; then
+            echo "Git repository contains changes after running 'yarn generate'."
+            echo "Did you update the schema.json but forgot to update the types?"
+            exit 1
+          fi
   rust:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
       - name: Test Rust types
         working-directory: event-models/rust
         run: cargo test
@@ -28,10 +47,4 @@ jobs:
         run: |
           set -eu
           yarn
-          yarn generate
-          if [[ $(git diff --stat) != '' ]]; then
-            echo "Git repository contains changes after running 'yarn generate'."
-            echo "Did you update the schema.json but forgot to update the TypeScript types?"
-            exit 1
-          fi
           yarn test

@@ -83,8 +83,6 @@ migrate-local: ## Bring up local dependencies, run DB migrations and setup stora
 	az storage container create --connection-string=$(localazure) -n upload -o none
 	az storage container create --connection-string=$(localazure) -n files -o none
 
-# You must have a version of sqlx that includes this patch
-# cargo install --git https://github.com/launchbadge/sqlx --rev 144dcceb445e804b16258d0dd9e580d6a484a01e sqlx-cli
 .PHONY: migrate
 migrate: ## Run migrations on current cluster
 	DATABASE_URL=$(db) cargo sqlx migrate run

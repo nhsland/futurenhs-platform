@@ -6,7 +6,7 @@ version = "0.1.0"
 [dependencies]
 anyhow = "1.0.33"
 async-compat = "0.1.5"
-async-graphql = "2.0.7"
+async-graphql = { version = "2.0.7", features = ["tracing"] }
 async-graphql-tide = "2.0.7"
 async-std = {version = "1.6.5", features = ["attributes", "unstable"]}
 azure_sdk_core = "0.43.7"

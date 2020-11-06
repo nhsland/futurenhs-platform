@@ -1,10 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { MobileFileList, FileTable } from "../../../../../components/FileTable";
+import {
+  IconCell,
+  MobileModifiedAtCell,
+  ModifiedAtCell,
+} from "../../../../../components/Files";
 import { Footer } from "../../../../../components/Footer";
 import { Head } from "../../../../../components/Head";
 import {
@@ -18,10 +23,12 @@ import { Menu, MenuItem } from "../../../../../components/Menu";
 import { NavHeader } from "../../../../../components/NavHeader";
 import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
+import { MobileList, Table } from "../../../../../components/Table";
 import {
+  File,
+  useFilesByFolderQuery,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
-  useFilesByFolderQuery,
 } from "../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
 
@@ -46,6 +53,19 @@ const PageContent = styled.section`
 
 const ContentWrapper = styled.div`
   display: flex;
+`;
+
+const MobileTitle = styled.h3`
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 20px;
+`;
+
+const DownloadFile = styled.a`
+  display: inline-block;
+  padding-right: 8px;
+  font-size: 16px;
 `;
 
 const FolderHomepage: NextPage = () => {
@@ -88,6 +108,37 @@ const FolderHomepage: NextPage = () => {
     },
   ];
 
+  const titleCell: FC<File> = ({ id, title }) => (
+    <Link
+      href={`/workspaces/${workspaceId}/folders/${folderId}/files/${id}`}
+      passHref
+    >
+      <a>
+        <span>{title}</span>
+      </a>
+    </Link>
+  );
+
+  const downloadCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <DownloadFile>Download file</DownloadFile>
+    </Link>
+  );
+
+  const mobileActionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <a>Download file</a>
+    </Link>
+  );
+
+  const mobileTitleCell: FC<File> = ({ id, title }) => (
+    <MobileTitle>
+      <Link href={`/workspaces/${workspaceId}/folders/${folderId}/files/${id}`}>
+        <a>{title}</a>
+      </Link>
+    </MobileTitle>
+  );
+
   return (
     <>
       <Head
@@ -123,17 +174,25 @@ const FolderHomepage: NextPage = () => {
             {files.fetching || (!files.data && <p>Loading...</p>)}
             {files.data && files.data.filesByFolder.length > 0 && (
               <>
-                <MobileFileList
-                  files={files.data.filesByFolder}
-                  workspaceId={workspaceId}
-                  titleLink={true}
+                <MobileList
                   tableHeading="Files"
-                ></MobileFileList>
-                <FileTable
-                  files={files.data.filesByFolder}
-                  workspaceId={workspaceId}
-                  titleLink={true}
+                  icon={IconCell}
+                  columns={[
+                    { content: mobileTitleCell },
+                    { content: MobileModifiedAtCell },
+                    { content: mobileActionsCell },
+                  ]}
+                  data={files.data.filesByFolder as File[]}
+                />
+                <Table
                   tableHeading="Files"
+                  icon={IconCell}
+                  columns={[
+                    { heading: "Title", content: titleCell },
+                    { heading: "Last modified", content: ModifiedAtCell },
+                    { heading: "Actions", content: downloadCell },
+                  ]}
+                  data={files.data.filesByFolder as File[]}
                 />
               </>
             )}

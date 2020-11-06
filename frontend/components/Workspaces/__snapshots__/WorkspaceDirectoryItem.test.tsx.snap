@@ -30,23 +30,23 @@ exports[`snapshot of component 1`] = `
   text-decoration: none;
 }
 
-.c1 div {
-  margin-bottom: 0px;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.c1 div:hover {
+.c1:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.c1 div:active {
+.c1:active {
   color: rgb(33,43,50);
+  background-color: rgb(255,235,59);
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: rgb(255,235,59);
+}
+
+.c1 div {
+  margin-bottom: 0px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 <div

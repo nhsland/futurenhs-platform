@@ -1,23 +1,28 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
 import styled from "styled-components";
 
 import {
-  FileTable,
-  MobileFileList,
-} from "../../../../../../../components/FileTable";
+  IconCell,
+  MobileModifiedAtCell,
+  ModifiedAtCell,
+  TitleCell,
+} from "../../../../../../../components/Files";
 import { Footer } from "../../../../../../../components/Footer";
 import { Head } from "../../../../../../../components/Head";
 import { MainHeading } from "../../../../../../../components/MainHeading";
 import { NavHeader } from "../../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../../components/PageLayout";
+import { MobileList, Table } from "../../../../../../../components/Table";
 import { UpdateFileForm } from "../../../../../../../containers/UploadFileForm";
 import {
-  useGetWorkspaceByIdQuery,
+  File,
   useGetFileByIdQuery,
+  useGetWorkspaceByIdQuery,
 } from "../../../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../../../lib/withUrqlClient";
 
@@ -36,6 +41,12 @@ const PageContent = styled.div`
     margin-bottom: 8px;
   }
   `}
+`;
+
+const DownloadFile = styled.a`
+  display: inline-block;
+  padding-right: 8px;
+  font-size: 16px;
 `;
 
 const UpdateFile: NextPage<any> = () => {
@@ -65,10 +76,21 @@ const UpdateFile: NextPage<any> = () => {
   if (workspace.error || file.error)
     return (
       <p>
-        {" "}
         Oh no... {workspace.error?.message} {file.error?.message}{" "}
       </p>
     );
+
+  const actionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <DownloadFile>Download file</DownloadFile>
+    </Link>
+  );
+
+  const mobileActionsCell: FC<File> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <a>Download file</a>
+    </Link>
+  );
 
   return (
     <>
@@ -89,20 +111,28 @@ const UpdateFile: NextPage<any> = () => {
             <MainHeading>Upload new version</MainHeading>
 
             {file.data && (
-              <FileTable
+              <Table
                 tableHeading="Current file"
-                files={[file.data?.file]}
-                workspaceId={workspaceId}
-                titleLink={false}
+                icon={IconCell}
+                columns={[
+                  { heading: "Title", content: TitleCell },
+                  { heading: "Last modified", content: ModifiedAtCell },
+                  { heading: "Actions", content: actionsCell },
+                ]}
+                data={[file.data?.file as File]}
               />
             )}
 
             {file.data && (
-              <MobileFileList
+              <MobileList
                 tableHeading="Current file"
-                files={[file.data?.file]}
-                workspaceId={workspaceId}
-                titleLink={false}
+                icon={IconCell}
+                columns={[
+                  { content: TitleCell },
+                  { content: MobileModifiedAtCell },
+                  { content: mobileActionsCell },
+                ]}
+                data={[file.data?.file as File]}
               />
             )}
 

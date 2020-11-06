@@ -2,6 +2,7 @@ import React from "react";
 
 interface Props {
   fileType: string;
+  className?: string;
 }
 
 const CsvIcon = () => (
@@ -215,32 +216,30 @@ export const matches = (
   return false;
 };
 
-const FileIcon = ({ fileType }: Props) => {
+const FileIcon = ({ fileType, className }: Props) => {
+  let Component = DefaultFileIcon;
   if (matches(fileType, "csv")) {
-    return <CsvIcon />;
+    Component = CsvIcon;
+  } else if (matches(fileType, "doc")) {
+    Component = DocIcon;
+  } else if (matches(fileType, "img")) {
+    Component = ImgIcon;
+  } else if (matches(fileType, "mov")) {
+    Component = MovIcon;
+  } else if (matches(fileType, "pdf")) {
+    Component = PdfIcon;
+  } else if (matches(fileType, "ppt")) {
+    Component = PptIcon;
+  } else if (matches(fileType, "txt")) {
+    Component = TxtIcon;
+  } else if (matches(fileType, "zip")) {
+    Component = ZipIcon;
   }
-  if (matches(fileType, "doc")) {
-    return <DocIcon />;
-  }
-  if (matches(fileType, "img")) {
-    return <ImgIcon />;
-  }
-  if (matches(fileType, "mov")) {
-    return <MovIcon />;
-  }
-  if (matches(fileType, "pdf")) {
-    return <PdfIcon />;
-  }
-  if (matches(fileType, "ppt")) {
-    return <PptIcon />;
-  }
-  if (matches(fileType, "txt")) {
-    return <TxtIcon />;
-  }
-  if (matches(fileType, "zip")) {
-    return <ZipIcon />;
-  }
-  return <DefaultFileIcon />;
+  return (
+    <div className={`icon-wrapper file-icon-wrapper ${className || ""}`}>
+      <Component />
+    </div>
+  );
 };
 
 export default FileIcon;
