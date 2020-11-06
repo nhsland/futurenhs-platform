@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - infrastructure/**
+      - .github/workflows/deploy-branch.sh
       - .github/workflows/infrastructure-branch.yaml
 
 jobs:

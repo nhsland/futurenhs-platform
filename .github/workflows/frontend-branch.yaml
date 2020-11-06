@@ -9,6 +9,7 @@ on:
       - event-models/**
       - workspace-service/graphql-schema.json
       - infrastructure/dev-overlay-variables.json
+      - .github/workflows/deploy-branch.sh
       - .github/workflows/frontend-branch.yaml
 
 jobs:
