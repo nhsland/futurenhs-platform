@@ -17,6 +17,7 @@ const Section = styled.section`
     background: inherit;
   }
   .chevron {
+    color: ${({ theme }) => theme.colorNhsukBlack};
     outline: inherit;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;

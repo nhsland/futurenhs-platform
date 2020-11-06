@@ -217,6 +217,7 @@ exports[`<Navigation/> renders correctly 1`] = `
 }
 
 .c5 .chevron {
+  color: rgb(33,43,50);
   outline: inherit;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;

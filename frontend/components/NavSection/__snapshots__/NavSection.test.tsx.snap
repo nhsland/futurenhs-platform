@@ -30,6 +30,7 @@ exports[`<NavSection/> does not render children when closed 1`] = `
 }
 
 .c0 .chevron {
+  color: rgb(33,43,50);
   outline: inherit;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
@@ -111,6 +112,7 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
 }
 
 .c0 .chevron {
+  color: rgb(33,43,50);
   outline: inherit;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
