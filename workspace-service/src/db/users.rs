@@ -66,45 +66,66 @@ impl UserRepo {
 #[cfg(test)]
 pub struct UserRepoFake {}
 
+#[cfg(test)]
+use std::collections::HashMap;
+#[cfg(test)]
+use std::sync::{Arc, Mutex};
+
+#[cfg(test)]
+lazy_static::lazy_static! {
+    static ref USERS_BY_ID: Arc<Mutex<HashMap<Uuid, User>>> = Arc::new(Mutex::new(HashMap::new()));
+    static ref USERS_BY_AUTH_ID: Arc<Mutex<HashMap<Uuid, User>>> = Arc::new(Mutex::new(HashMap::new()));
+}
+
 // Fake implementation for tests. If you want integration tests that exercise the database,
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
 #[cfg(test)]
 impl UserRepoFake {
     pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<User> {
-        const ADMIN_AUTH_ID: &str = "feedface-0000-0000-0000-000000000000";
-        Ok(User {
-            id: Uuid::new_v4(),
-            auth_id: *auth_id,
-            name: "Test".to_string(),
-            is_platform_admin: auth_id.to_string() == ADMIN_AUTH_ID,
-            email_address: "testuser@example.com".to_string(),
-        })
+        let users = USERS_BY_AUTH_ID.clone();
+        let users = users.lock().unwrap();
+        users
+            .get(auth_id)
+            .cloned()
+            .ok_or_else(|| anyhow::anyhow!("user with auth_id {} not found", auth_id))
     }
 
     pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<User> {
-        Ok(User {
-            id: *id,
-            auth_id: Uuid::new_v4(),
-            name: "Test".to_string(),
-            is_platform_admin: false,
-            email_address: "testuser@example.com".to_string(),
-        })
+        let users = USERS_BY_ID.clone();
+        let users = users.lock().unwrap();
+        users
+            .get(id)
+            .cloned()
+            .ok_or_else(|| anyhow::anyhow!("user with id {} not found", id))
     }
 
     pub async fn get_or_create(
         auth_id: &Uuid,
         name: &str,
         email_address: &str,
-        _pool: impl Sized,
+        pool: impl Sized,
     ) -> Result<User> {
         const ADMIN_AUTH_ID: &str = "feedface-0000-0000-0000-000000000000";
-        Ok(User {
-            id: Uuid::new_v4(),
-            auth_id: *auth_id,
-            name: name.to_string(),
-            is_platform_admin: auth_id.to_string() == ADMIN_AUTH_ID,
-            email_address: email_address.to_string(),
-        })
+        let user = if let Ok(user) = UserRepoFake::find_by_auth_id(auth_id, pool).await {
+            user
+        } else {
+            let user = User {
+                id: Uuid::new_v4(),
+                auth_id: *auth_id,
+                name: name.to_string(),
+                is_platform_admin: auth_id.to_string() == ADMIN_AUTH_ID,
+                email_address: email_address.to_string(),
+            };
+            let users = USERS_BY_ID.clone();
+            let mut users = users.lock().unwrap();
+            users.insert(user.id, user.clone());
+            let users = USERS_BY_AUTH_ID.clone();
+            let mut users = users.lock().unwrap();
+            users.insert(user.auth_id, user.clone());
+            user
+        };
+
+        Ok(user)
     }
 
     pub async fn update(
@@ -112,12 +133,10 @@ impl UserRepoFake {
         is_platform_admin: bool,
         _pool: impl Sized,
     ) -> Result<User> {
-        Ok(User {
-            id: Uuid::new_v4(),
-            auth_id: *auth_id,
-            name: "Test".to_string(),
-            is_platform_admin,
-            email_address: "testuser@example.com".to_string(),
-        })
+        let users = USERS_BY_AUTH_ID.clone();
+        let mut users = users.lock().unwrap();
+        let user = users.get_mut(auth_id).unwrap();
+        user.is_platform_admin = is_platform_admin;
+        Ok(user.clone())
     }
 }

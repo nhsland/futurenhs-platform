@@ -105,13 +105,17 @@ mod test {
     use crate::graphql::test_mocks::*;
 
     #[async_std::test]
-    async fn update_user_succeds_if_admin() -> anyhow::Result<()> {
+    async fn update_user_succeeds_if_admin() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
+        let requesting_user = mock_admin_requesting_user();
+        db::UserRepo::get_or_create(&requesting_user.auth_id, "name", "email_address", &pool)
+            .await?;
+
         update_user_impl(
             &pool,
-            &mock_admin_requesting_user(),
+            &requesting_user,
             UpdateUser {
-                auth_id: Uuid::new_v4().into(),
+                auth_id: requesting_user.auth_id.into(),
                 is_platform_admin: true,
             },
         )

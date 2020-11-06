@@ -476,6 +476,8 @@ mod test {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
         let requesting_user = mock_unprivileged_requesting_user();
+        db::UserRepo::get_or_create(&requesting_user.auth_id, "name", "email_address", &pool)
+            .await?;
         let (events, event_client) = mock_event_emitter();
 
         let result = create_file(
