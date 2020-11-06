@@ -15,6 +15,8 @@ const Section = styled.section`
   button {
     border: none;
     background: inherit;
+  }
+  .chevron {
     outline: inherit;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
@@ -41,7 +43,7 @@ const NavSection = ({
     <Section>
       <div>
         <h4>{title}</h4>
-        <button onClick={() => setOpen(!open)}>
+        <button className="chevron" onClick={() => setOpen(!open)}>
           {open ? (
             <ChevronTopIcon title={`Hide ${title}`} />
           ) : (

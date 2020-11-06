@@ -27,13 +27,16 @@ exports[`<NavSection/> does not render children when closed 1`] = `
 .c0 button {
   border: none;
   background: inherit;
+}
+
+.c0 .chevron {
   outline: inherit;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   cursor: pointer;
 }
 
-.c0 button:focus {
+.c0 .chevron:focus {
   background-color: rgb(255,235,59);
   border-bottom: 4px solid rgb(33,43,50);
 }
@@ -45,7 +48,9 @@ exports[`<NavSection/> does not render children when closed 1`] = `
       <h4>
         Folders
       </h4>
-      <button>
+      <button
+        class="chevron"
+      >
         <div
           class="icon-wrapper "
         >
@@ -103,13 +108,16 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
 .c0 button {
   border: none;
   background: inherit;
+}
+
+.c0 .chevron {
   outline: inherit;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   cursor: pointer;
 }
 
-.c0 button:focus {
+.c0 .chevron:focus {
   background-color: rgb(255,235,59);
   border-bottom: 4px solid rgb(33,43,50);
 }
@@ -121,7 +129,9 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
       <h4>
         Folders
       </h4>
-      <button>
+      <button
+        class="chevron"
+      >
         <div
           class="icon-wrapper "
         >

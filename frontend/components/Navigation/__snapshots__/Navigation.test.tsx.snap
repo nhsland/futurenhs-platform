@@ -214,13 +214,16 @@ exports[`<Navigation/> renders correctly 1`] = `
 .c5 button {
   border: none;
   background: inherit;
+}
+
+.c5 .chevron {
   outline: inherit;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   cursor: pointer;
 }
 
-.c5 button:focus {
+.c5 .chevron:focus {
   background-color: rgb(255,235,59);
   border-bottom: 4px solid rgb(33,43,50);
 }
@@ -371,7 +374,9 @@ exports[`<Navigation/> renders correctly 1`] = `
         <h4>
           Folders
         </h4>
-        <button>
+        <button
+          class="chevron"
+        >
           <div
             class="icon-wrapper "
           >
