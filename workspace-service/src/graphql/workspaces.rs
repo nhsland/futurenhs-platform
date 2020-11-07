@@ -28,11 +28,11 @@ pub enum RoleFilter {
 
 #[derive(Enum, Copy, Clone, Eq, PartialEq)]
 pub enum NewRole {
-    /// Promote to admin.
+    /// Promote to admin
     Admin,
-    /// Add as a non-admin member or demote an admin.
+    /// Add as a non-admin member or demote an admin
     NonAdmin,
-    /// Remove member.
+    /// Remove member
     NonMember,
 }
 

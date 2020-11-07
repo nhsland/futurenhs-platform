@@ -16,11 +16,11 @@ pub struct Workspace {
 
 #[derive(Copy, Clone)]
 pub enum Role {
-    /// Promote to admin.
+    /// User is a workspace administrator
     Admin,
-    /// Add as a non-admin member or demote an admin.
+    /// User is a workspace member
     NonAdmin,
-    /// Remove member.
+    /// User is not a workspace member
     NonMember,
 }
 
