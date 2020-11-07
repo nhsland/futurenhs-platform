@@ -1,9 +1,10 @@
 use super::{azure, db, RequestingUser};
-use fnhs_event_models::Event;
-use fnhs_event_models::EventClient;
+use fnhs_event_models::{Event, EventClient};
 use sqlx::PgPool;
-use std::sync::mpsc::{sync_channel, Receiver};
-use std::sync::Arc;
+use std::sync::{
+    mpsc::{sync_channel, Receiver},
+    Arc,
+};
 use url::Url;
 use uuid::Uuid;
 

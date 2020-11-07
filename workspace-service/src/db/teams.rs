@@ -3,8 +3,7 @@
 
 use crate::db::User;
 use anyhow::{Context, Result};
-use sqlx::types::Uuid;
-use sqlx::{Executor, Postgres};
+use sqlx::{types::Uuid, Executor, Postgres};
 
 #[derive(Clone)]
 pub struct Team {

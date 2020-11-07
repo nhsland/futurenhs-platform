@@ -1,7 +1,8 @@
-use crate::db;
-use crate::db::{Role, WorkspaceRepo};
-use crate::graphql::users::User;
-use crate::graphql::RequestingUser;
+use crate::{
+    db,
+    db::{Role, WorkspaceRepo},
+    graphql::{users::User, RequestingUser},
+};
 use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
 use fnhs_event_models::{
     Event, EventClient, EventPublisher as _, WorkspaceCreatedData, WorkspaceMembershipChangedData,
@@ -152,7 +153,7 @@ impl WorkspacesMutation {
     ) -> FieldResult<Workspace> {
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
+        let requesting_user = context.data::<RequestingUser>()?;
 
         create_workspace(
             &new_workspace.title,
@@ -199,9 +200,8 @@ impl WorkspacesMutation {
         context: &Context<'_>,
         input: MembershipChange,
     ) -> FieldResult<Workspace> {
-        // TODO: What do we do if the user is trying to remove themselves from the admin group?
         let pool = context.data()?;
-        let requesting_user = context.data::<super::RequestingUser>()?;
+        let requesting_user = context.data::<RequestingUser>()?;
         let event_client: &EventClient = context.data()?;
 
         change_workspace_membership(

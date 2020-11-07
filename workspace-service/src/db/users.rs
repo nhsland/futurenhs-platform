@@ -2,8 +2,7 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use anyhow::Result;
-use sqlx::types::Uuid;
-use sqlx::PgPool;
+use sqlx::{types::Uuid, PgPool};
 
 #[derive(Clone)]
 pub struct User {

@@ -7,8 +7,7 @@ use opentelemetry::{
 };
 use sqlx::PgPool;
 use structopt::StructOpt;
-use tracing_subscriber::layer::SubscriberExt;
-use tracing_subscriber::Registry;
+use tracing_subscriber::{layer::SubscriberExt, Registry};
 use workspace_service::{azure, config::Config};
 
 #[async_std::main]

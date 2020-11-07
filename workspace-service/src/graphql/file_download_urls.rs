@@ -1,5 +1,4 @@
-use super::azure;
-use super::db;
+use super::{azure, db};
 use async_graphql::{Context, FieldResult, Object, ID};
 use fnhs_event_models::{Event, EventClient, EventPublisher as _, FileDownloadedData};
 use sqlx::PgPool;
