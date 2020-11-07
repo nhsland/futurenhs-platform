@@ -138,18 +138,14 @@ impl TeamRepoFake {
         }
     }
     pub async fn members_difference<'c, E>(
-        id_a: Uuid,
-        _id_b: Uuid,
-        executor: E,
+        _team_a_id: Uuid,
+        _team_b_id: Uuid,
+        _executor: E,
     ) -> Result<Vec<User>>
     where
         E: Executor<'c, Database = Postgres>,
     {
-        if let Some(user) = crate::db::UserRepo::find_by_auth_id(&id_a, executor).await? {
-            Ok(vec![user])
-        } else {
-            Ok(vec![])
-        }
+        todo!()
     }
 
     pub async fn is_member<'c, E>(team_id: Uuid, user_id: Uuid, _executor: E) -> Result<bool>
