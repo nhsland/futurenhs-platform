@@ -109,16 +109,14 @@ impl WorkspaceRepo {
         Ok(workspace)
     }
 
-    pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {
-        if let Some(user) = db::UserRepo::find_by_id(&user_id, pool).await? {
-            if user.is_platform_admin {
-                return Ok(true);
+    pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
+        match db::UserRepo::find_by_auth_id(&user_auth_id, pool).await? {
+            Some(user) if user.is_platform_admin => Ok(true),
+            Some(user) => {
+                let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
+                db::TeamRepo::is_member(workspace.admins, user.id, pool).await
             }
-            let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
-
-            db::TeamRepo::is_member(workspace.admins, user.id, pool).await
-        } else {
-            Ok(false)
+            None => Ok(false),
         }
     }
 
@@ -220,15 +218,13 @@ impl WorkspaceRepoFake {
     }
 
     pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
-        if let Some(user) = db::UserRepo::find_by_auth_id(&user_auth_id, pool).await? {
-            if user.is_platform_admin {
-                return Ok(true);
+        match db::UserRepo::find_by_auth_id(&user_auth_id, pool).await? {
+            Some(user) if user.is_platform_admin => Ok(true),
+            Some(user) => {
+                let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+                db::TeamRepo::is_member(workspace.admins, user.id, pool).await
             }
-            let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
-
-            db::TeamRepo::is_member(workspace.admins, user.id, pool).await
-        } else {
-            Ok(false)
+            None => Ok(false),
         }
     }
 
