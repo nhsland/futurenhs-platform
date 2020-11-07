@@ -5,31 +5,30 @@ mod graphql;
 
 use fnhs_event_models::EventClient;
 pub use graphql::generate_graphql_schema;
-use opentelemetry::api::Extractor;
+use opentelemetry::api::{Extractor, TraceContextExt};
 use sqlx::PgPool;
-use std::{future::Future, pin::Pin};
-use tide::{Next, Redirect, Request, Server};
+use tide::{Middleware, Next, Redirect, Request, Server};
 use tracing::info_span;
 use tracing_futures::Instrument;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
-struct RequestExtractor<'a> {
-    req: &'a Request<graphql::State>,
+struct RequestExtractor<'a, State> {
+    req: &'a Request<State>,
 }
 
-impl<'a> Extractor for RequestExtractor<'a> {
+impl<'a, State> Extractor for RequestExtractor<'a, State> {
     /// Get a value for a key from the HeaderMap.  If the value is not valid ASCII, returns None.
     fn get(&self, key: &str) -> Option<&str> {
         self.req.header(key).map(|value| value.as_str())
     }
 }
 
-pub fn log<'a>(
-    req: Request<graphql::State>,
-    next: Next<'a, graphql::State>,
-) -> Pin<Box<dyn Future<Output = Result<tide::Response, http_types::Error>> + Send + 'a>> {
-    Box::pin(async {
-        let remote_context = opentelemetry::global::get_http_text_propagator(|propagator| {
+struct TracingMiddleware;
+
+#[async_trait::async_trait]
+impl<State: Clone + Send + Sync + 'static> Middleware<State> for TracingMiddleware {
+    async fn handle(&self, req: Request<State>, next: Next<'_, State>) -> tide::Result {
+        let parent_context = opentelemetry::global::get_http_text_propagator(|propagator| {
             propagator.extract(&RequestExtractor { req: &req })
         });
 
@@ -40,13 +39,24 @@ pub fn log<'a>(
             http.method = req.method().as_ref(),
             http.target = req.url().as_ref()
         );
-        span.set_parent(&remote_context);
+
+        // B3Propagator has a bug in version, which should be fixed in opentelemetry >0.9.1. When
+        // no headers are present it returns an invalid span context, which causes propagation to
+        // fail. This check if a workaround. After the version upgrade we can unconditionally call
+        // set_parent.
+        if (parent_context
+            .remote_span_context()
+            .map(|span_context| span_context.is_valid())
+            .unwrap_or(false))
+        {
+            span.set_parent(&parent_context);
+        }
 
         let res = next.run(req).instrument(span.clone()).await;
         span.record("http.status_code", &u16::from(res.status()));
 
         Ok(res)
-    })
+    }
 }
 
 pub async fn create_app(
@@ -60,7 +70,7 @@ pub async fn create_app(
         azure_config,
     ));
 
-    app.with(log);
+    app.with(TracingMiddleware);
 
     app.at("/").get(Redirect::permanent("/graphiql"));
     app.at("/healthz").get(graphql::handle_healthz);

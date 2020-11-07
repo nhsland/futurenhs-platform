@@ -9492,10 +9492,9 @@ nhsuk-frontend@^3.1.0:
     accessible-autocomplete "^2.0.2"
     sass-mq "^5.0.1"
 
-nhsuk-react-components@^1.0.0-rc.4:
+"nhsuk-react-components@git://github.com/FutureNHS/nhsuk-react-components#fix-input-ref-type":
   version "1.2.6"
-  resolved "https://registry.yarnpkg.com/nhsuk-react-components/-/nhsuk-react-components-1.2.6.tgz#af2710ee36772e002442ca2f4de00272d88934f3"
-  integrity sha512-Y0N6zsm6dF2n94T1l0mFA7qZLEkalMl56uvghEMKNb/Q2rnWZYRGliKDzZcce1RlrqaIltI4NL4fZk4cnpZpaA==
+  resolved "git://github.com/FutureNHS/nhsuk-react-components#e455c0a4cb58810656a2b0d361c583fcb2df2595"
   dependencies:
     classnames "^2.2.6"
 

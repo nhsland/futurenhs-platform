@@ -9,13 +9,11 @@ describe("Workspace Directory", () => {
   it("Navigates to workspace page", () => {
     cy.visit(`/workspaces/directory`);
 
-    cy.get("div")
-      .contains(Cypress.env("TEST_WORKSPACE_NAME"))
-      .click()
-      .then(($h3) => {
-        const text = $h3.text();
-        cy.contains("h1", text);
-        cy.contains("h2", "Most recent items");
-      });
+    cy.get("div").contains(Cypress.env("TEST_WORKSPACE_NAME")).click();
+    cy.location("pathname", {
+      timeout: Cypress.config("pageLoadTimeout"),
+    }).should("eq", `/workspaces/${Cypress.env("TEST_WORKSPACE_ID")}`);
+    cy.contains("h1", Cypress.env("TEST_WORKSPACE_NAME"));
+    cy.contains("h2", "Most recent items");
   });
 });
