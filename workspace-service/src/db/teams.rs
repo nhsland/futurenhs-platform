@@ -89,11 +89,11 @@ pub struct TeamRepoFake {}
 #[cfg(test)]
 use std::collections::HashSet;
 #[cfg(test)]
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
 
 #[cfg(test)]
 lazy_static::lazy_static! {
-    static ref TEAM_MEMBERS: Arc<Mutex<HashSet<(Uuid, Uuid)>>> = Arc::new(Mutex::new(HashSet::new()));
+    static ref TEAM_MEMBERS: Mutex<HashSet<(Uuid, Uuid)>> = Mutex::new(HashSet::new());
 }
 
 // Fake implementation for tests. If you want integration tests that exercise the database,
@@ -137,8 +137,7 @@ impl TeamRepoFake {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let teams = TEAM_MEMBERS.clone();
-        let teams = teams.lock().unwrap();
+        let teams = TEAM_MEMBERS.lock().unwrap();
         Ok(teams.contains(&(team_id, user_id)))
     }
 
@@ -146,8 +145,7 @@ impl TeamRepoFake {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let teams = TEAM_MEMBERS.clone();
-        let mut teams = teams.lock().unwrap();
+        let mut teams = TEAM_MEMBERS.lock().unwrap();
         teams.replace((team_id, user_id));
         Ok(())
     }
@@ -156,8 +154,7 @@ impl TeamRepoFake {
     where
         E: Executor<'c, Database = Postgres>,
     {
-        let teams = TEAM_MEMBERS.clone();
-        let mut teams = teams.lock().unwrap();
+        let mut teams = TEAM_MEMBERS.lock().unwrap();
         teams.remove(&(team_id, user_id));
         Ok(())
     }

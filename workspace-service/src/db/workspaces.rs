@@ -152,11 +152,11 @@ pub struct WorkspaceRepoFake {}
 #[cfg(test)]
 use std::collections::HashMap;
 #[cfg(test)]
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
 
 #[cfg(test)]
 lazy_static::lazy_static! {
-    static ref WORKSPACES: Arc<Mutex<HashMap<Uuid, Workspace>>> = Arc::new(Mutex::new(HashMap::new()));
+    static ref WORKSPACES: Mutex<HashMap<Uuid, Workspace>> = Mutex::new(HashMap::new());
 }
 
 #[cfg(test)]
@@ -169,8 +169,7 @@ impl WorkspaceRepoFake {
             admins: Uuid::new_v4(),
             members: Uuid::new_v4(),
         };
-        let teams = WORKSPACES.clone();
-        let mut teams = teams.lock().unwrap();
+        let mut teams = WORKSPACES.lock().unwrap();
         teams.insert(workspace.id, workspace.clone());
         Ok(workspace)
     }
@@ -180,8 +179,7 @@ impl WorkspaceRepoFake {
     }
 
     pub async fn find_by_id(id: Uuid, _pool: &PgPool) -> Result<Workspace> {
-        let teams = WORKSPACES.clone();
-        let teams = teams.lock().unwrap();
+        let teams = WORKSPACES.lock().unwrap();
         Ok(teams.get(&id).unwrap().clone())
     }
 

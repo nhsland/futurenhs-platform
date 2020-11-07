@@ -69,12 +69,12 @@ pub struct UserRepoFake {}
 #[cfg(test)]
 use std::collections::HashMap;
 #[cfg(test)]
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
 
 #[cfg(test)]
 lazy_static::lazy_static! {
-    static ref USERS_BY_ID: Arc<Mutex<HashMap<Uuid, User>>> = Arc::new(Mutex::new(HashMap::new()));
-    static ref USERS_BY_AUTH_ID: Arc<Mutex<HashMap<Uuid, User>>> = Arc::new(Mutex::new(HashMap::new()));
+    static ref USERS_BY_ID: Mutex<HashMap<Uuid, User>> = Mutex::new(HashMap::new());
+    static ref USERS_BY_AUTH_ID: Mutex<HashMap<Uuid, User>> = Mutex::new(HashMap::new());
 }
 
 // Fake implementation for tests. If you want integration tests that exercise the database,
@@ -82,8 +82,7 @@ lazy_static::lazy_static! {
 #[cfg(test)]
 impl UserRepoFake {
     pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<User> {
-        let users = USERS_BY_AUTH_ID.clone();
-        let users = users.lock().unwrap();
+        let users = USERS_BY_AUTH_ID.lock().unwrap();
         users
             .get(auth_id)
             .cloned()
@@ -91,8 +90,7 @@ impl UserRepoFake {
     }
 
     pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<User> {
-        let users = USERS_BY_ID.clone();
-        let users = users.lock().unwrap();
+        let users = USERS_BY_ID.lock().unwrap();
         users
             .get(id)
             .cloned()
@@ -116,11 +114,9 @@ impl UserRepoFake {
                 is_platform_admin: auth_id.to_string() == ADMIN_AUTH_ID,
                 email_address: email_address.to_string(),
             };
-            let users = USERS_BY_ID.clone();
-            let mut users = users.lock().unwrap();
+            let mut users = USERS_BY_ID.lock().unwrap();
             users.insert(user.id, user.clone());
-            let users = USERS_BY_AUTH_ID.clone();
-            let mut users = users.lock().unwrap();
+            let mut users = USERS_BY_AUTH_ID.lock().unwrap();
             users.insert(user.auth_id, user.clone());
             user
         };
@@ -133,8 +129,7 @@ impl UserRepoFake {
         is_platform_admin: bool,
         _pool: impl Sized,
     ) -> Result<User> {
-        let users = USERS_BY_AUTH_ID.clone();
-        let mut users = users.lock().unwrap();
+        let mut users = USERS_BY_AUTH_ID.lock().unwrap();
         let user = users.get_mut(auth_id).unwrap();
         user.is_platform_admin = is_platform_admin;
         Ok(user.clone())
