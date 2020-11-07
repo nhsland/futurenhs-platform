@@ -4,6 +4,7 @@
 use crate::db;
 use anyhow::{Context, Result};
 use sqlx::{types::Uuid, PgPool};
+use std::fmt::Display;
 
 #[derive(Clone)]
 pub struct Workspace {
@@ -24,14 +25,17 @@ pub enum Role {
     NonMember,
 }
 
-impl ToString for Role {
-    fn to_string(&self) -> String {
-        match self {
-            Role::Admin => "Admin",
-            Role::NonAdmin => "NonAdmin",
-            Role::NonMember => "NonMember",
-        }
-        .to_string()
+impl Display for Role {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Role::Admin => "Admin",
+                Role::NonAdmin => "NonAdmin",
+                Role::NonMember => "NonMember",
+            }
+        )
     }
 }
 
@@ -109,9 +113,8 @@ impl WorkspaceRepo {
         Ok(workspace)
     }
 
-    pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
-        match db::UserRepo::find_by_auth_id(&user_auth_id, pool).await? {
-            Some(user) if user.is_platform_admin => Ok(true),
+    pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {
+        match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
                 db::TeamRepo::is_member(workspace.admins, user.id, pool).await
@@ -217,9 +220,8 @@ impl WorkspaceRepoFake {
         Ok(workspace)
     }
 
-    pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
-        match db::UserRepo::find_by_auth_id(&user_auth_id, pool).await? {
-            Some(user) if user.is_platform_admin => Ok(true),
+    pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {
+        match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
                 db::TeamRepo::is_member(workspace.admins, user.id, pool).await

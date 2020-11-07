@@ -1146,19 +1146,19 @@
         "enumValues": [
           {
             "deprecationReason": null,
-            "description": "Promote to admin.",
+            "description": "Promote to admin",
             "isDeprecated": false,
             "name": "ADMIN"
           },
           {
             "deprecationReason": null,
-            "description": "Add as a non-admin member or demote an admin.",
+            "description": "Add as a non-admin member or demote an admin",
             "isDeprecated": false,
             "name": "NON_ADMIN"
           },
           {
             "deprecationReason": null,
-            "description": "Remove member.",
+            "description": "Remove member",
             "isDeprecated": false,
             "name": "NON_MEMBER"
           }

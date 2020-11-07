@@ -26,13 +26,13 @@ impl UserRepo {
         Ok(user)
     }
 
-    // pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<Option<User>> {
-    //     let user = sqlx::query_file_as!(User, "sql/users/find_by_id.sql", id)
-    //         .fetch_optional(pool)
-    //         .await?;
+    pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<Option<User>> {
+        let user = sqlx::query_file_as!(User, "sql/users/find_by_id.sql", id)
+            .fetch_optional(pool)
+            .await?;
 
-    //     Ok(user)
-    // }
+        Ok(user)
+    }
 
     pub async fn get_or_create(
         auth_id: &Uuid,
@@ -85,10 +85,10 @@ impl UserRepoFake {
         Ok(users.get(auth_id).cloned())
     }
 
-    // pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<Option<User>> {
-    //     let users = USERS_BY_ID.lock().unwrap();
-    //     Ok(users.get(id).cloned())
-    // }
+    pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<Option<User>> {
+        let users = USERS_BY_ID.lock().unwrap();
+        Ok(users.get(id).cloned())
+    }
 
     pub async fn get_or_create(
         auth_id: &Uuid,
