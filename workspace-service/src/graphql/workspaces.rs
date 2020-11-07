@@ -579,7 +579,7 @@ mod test {
     }
 
     #[async_std::test]
-    async fn a_site_admin_can_add_a_member() -> anyhow::Result<()> {
+    async fn a_platform_admin_can_add_a_member() -> anyhow::Result<()> {
         use db::TeamRepo;
         const NON_ADMIN_USER: &str = "1be12ec1-41bd-4384-b86f-de10fa754c12";
 
@@ -617,7 +617,7 @@ mod test {
     }
 
     #[async_std::test]
-    async fn a_site_admin_can_add_an_admin() -> anyhow::Result<()> {
+    async fn a_platform_admin_can_add_an_admin() -> anyhow::Result<()> {
         use db::TeamRepo;
         const NON_ADMIN_USER: &str = "1be12ec1-41bd-4384-b86f-de10fa754c12";
 
