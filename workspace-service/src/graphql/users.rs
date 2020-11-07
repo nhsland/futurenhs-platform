@@ -82,7 +82,9 @@ async fn update_user_impl(
     requesting_user: &RequestingUser,
     update_user: UpdateUser,
 ) -> FieldResult<User> {
-    let requesting_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let requesting_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     if !requesting_user.is_platform_admin {
         return Err(anyhow::anyhow!(
             "User with auth_id {} is not a platform admin.",

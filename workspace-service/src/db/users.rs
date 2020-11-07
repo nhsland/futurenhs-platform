@@ -19,17 +19,17 @@ pub struct UserRepo {}
 
 #[cfg_attr(test, allow(dead_code))]
 impl UserRepo {
-    pub async fn find_by_auth_id(auth_id: &Uuid, pool: &PgPool) -> Result<User> {
+    pub async fn find_by_auth_id(auth_id: &Uuid, pool: &PgPool) -> Result<Option<User>> {
         let user = sqlx::query_file_as!(User, "sql/users/find_by_auth_id.sql", auth_id)
-            .fetch_one(pool)
+            .fetch_optional(pool)
             .await?;
 
         Ok(user)
     }
 
-    pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<User> {
+    pub async fn find_by_id(id: &Uuid, pool: &PgPool) -> Result<Option<User>> {
         let user = sqlx::query_file_as!(User, "sql/users/find_by_id.sql", id)
-            .fetch_one(pool)
+            .fetch_optional(pool)
             .await?;
 
         Ok(user)
@@ -81,20 +81,14 @@ lazy_static::lazy_static! {
 // see https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html.
 #[cfg(test)]
 impl UserRepoFake {
-    pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<User> {
+    pub async fn find_by_auth_id(auth_id: &Uuid, _pool: impl Sized) -> Result<Option<User>> {
         let users = USERS_BY_AUTH_ID.lock().unwrap();
-        users
-            .get(auth_id)
-            .cloned()
-            .ok_or_else(|| anyhow::anyhow!("user with auth_id {} not found", auth_id))
+        Ok(users.get(auth_id).cloned())
     }
 
-    pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<User> {
+    pub async fn find_by_id(id: &Uuid, _pool: &PgPool) -> Result<Option<User>> {
         let users = USERS_BY_ID.lock().unwrap();
-        users
-            .get(id)
-            .cloned()
-            .ok_or_else(|| anyhow::anyhow!("user with id {} not found", id))
+        Ok(users.get(id).cloned())
     }
 
     pub async fn get_or_create(
@@ -104,7 +98,7 @@ impl UserRepoFake {
         pool: impl Sized,
     ) -> Result<User> {
         const ADMIN_AUTH_ID: &str = "feedface-0000-0000-0000-000000000000";
-        let user = if let Ok(user) = UserRepoFake::find_by_auth_id(auth_id, pool).await {
+        let user = if let Ok(Some(user)) = UserRepoFake::find_by_auth_id(auth_id, pool).await {
             user
         } else {
             let user = User {

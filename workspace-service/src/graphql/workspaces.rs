@@ -223,7 +223,9 @@ async fn create_workspace(
     pool: &PgPool,
     event_client: &EventClient,
 ) -> FieldResult<Workspace> {
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     if !user.is_platform_admin {
         return Err(anyhow::anyhow!(
             "User with auth_id {} does not have permission to create a workspace.",
@@ -378,7 +380,9 @@ mod test {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
         let requesting_user = mock_unprivileged_requesting_user().await?;
-        let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool).await?;
+        let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
         let workspace = WorkspaceRepo::create("", "", &pool).await?;
         TeamRepo::add_member(workspace.members, user.id, &pool).await?;
@@ -413,8 +417,9 @@ mod test {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
         let requesting_user = mock_unprivileged_requesting_user().await?;
-        let requesting_user_user =
-            db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool).await?;
+        let requesting_user_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
         let workspace = WorkspaceRepo::create("", "", &pool).await?;
         TeamRepo::add_member(workspace.members, requesting_user_user.id, &pool).await?;
@@ -453,8 +458,9 @@ mod test {
         let pool = mock_connection_pool()?;
         let (events, event_client) = mock_event_emitter();
         let requesting_user = mock_unprivileged_requesting_user().await?;
-        let requesting_user_user =
-            db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool).await?;
+        let requesting_user_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
         let workspace = WorkspaceRepo::create("", "", &pool).await?;
         TeamRepo::add_member(workspace.members, requesting_user_user.id, &pool).await?;

@@ -137,7 +137,9 @@ async fn create_folder(
         .await?
         .into();
 
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
     event_client
         .publish_events(&[Event::new(
@@ -169,7 +171,9 @@ async fn update_folder(
     )
     .await?;
 
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
     event_client
         .publish_events(&[Event::new(
@@ -194,7 +198,9 @@ async fn delete_folder(
     event_client: &EventClient,
 ) -> FieldResult<Folder> {
     let folder = db::FolderRepo::delete(Uuid::parse_str(&id)?, pool).await?;
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     event_client
         .publish_events(&[Event::new(
             id,

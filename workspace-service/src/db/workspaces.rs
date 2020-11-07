@@ -2,7 +2,7 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use crate::db;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use sqlx::{types::Uuid, PgPool};
 
 #[derive(Clone)]
@@ -55,7 +55,8 @@ impl WorkspaceRepo {
             members.id
         )
         .fetch_one(&mut tx)
-        .await?;
+        .await
+        .context("create workspace")?;
         tx.commit().await?;
 
         Ok(workspace)
@@ -64,7 +65,8 @@ impl WorkspaceRepo {
     pub async fn find_all(pool: &PgPool) -> Result<Vec<Workspace>> {
         let workspaces = sqlx::query_file_as!(Workspace, "sql/workspaces/find_all.sql")
             .fetch_all(pool)
-            .await?;
+            .await
+            .context("find all workspaces")?;
 
         Ok(workspaces)
     }
@@ -72,7 +74,8 @@ impl WorkspaceRepo {
     pub async fn find_by_id(id: Uuid, pool: &PgPool) -> Result<Workspace> {
         let workspace = sqlx::query_file_as!(Workspace, "sql/workspaces/find_by_id.sql", id)
             .fetch_one(pool)
-            .await?;
+            .await
+            .context("find a workspace by id")?;
 
         Ok(workspace)
     }
@@ -91,7 +94,8 @@ impl WorkspaceRepo {
             description
         )
         .fetch_one(pool)
-        .await?;
+        .await
+        .context("update workspace")?;
 
         Ok(workspace)
     }
@@ -99,19 +103,23 @@ impl WorkspaceRepo {
     pub async fn delete(id: Uuid, pool: &PgPool) -> Result<Workspace> {
         let workspace = sqlx::query_file_as!(Workspace, "sql/workspaces/delete.sql", id)
             .fetch_one(pool)
-            .await?;
+            .await
+            .context("delete workspace")?;
 
         Ok(workspace)
     }
 
     pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {
-        let user = db::UserRepo::find_by_id(&user_id, pool).await?;
-        if user.is_platform_admin {
-            return Ok(true);
-        }
-        let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
+        if let Some(user) = db::UserRepo::find_by_id(&user_id, pool).await? {
+            if user.is_platform_admin {
+                return Ok(true);
+            }
+            let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
 
-        db::TeamRepo::is_member(workspace.admins, user.id, pool).await
+            db::TeamRepo::is_member(workspace.admins, user.id, pool).await
+        } else {
+            Ok(false)
+        }
     }
 
     pub async fn change_workspace_membership(
@@ -120,8 +128,9 @@ impl WorkspaceRepo {
         new_role: Role,
         pool: &PgPool,
     ) -> Result<Workspace> {
-        let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
         let mut tx = pool.begin().await?;
+
+        let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
 
         match new_role {
             Role::Admin => {
@@ -211,13 +220,16 @@ impl WorkspaceRepoFake {
     }
 
     pub async fn is_admin(workspace_id: Uuid, user_auth_id: Uuid, pool: &PgPool) -> Result<bool> {
-        let user = db::UserRepo::find_by_auth_id(&user_auth_id, pool).await?;
-        if user.is_platform_admin {
-            return Ok(true);
-        }
-        let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+        if let Some(user) = db::UserRepo::find_by_auth_id(&user_auth_id, pool).await? {
+            if user.is_platform_admin {
+                return Ok(true);
+            }
+            let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
 
-        db::TeamRepo::is_member(workspace.admins, user.id, pool).await
+            db::TeamRepo::is_member(workspace.admins, user.id, pool).await
+        } else {
+            Ok(false)
+        }
     }
 
     pub async fn change_workspace_membership(

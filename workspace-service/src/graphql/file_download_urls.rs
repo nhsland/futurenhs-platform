@@ -29,7 +29,9 @@ async fn file_download_url(
     event_client: &EventClient,
     requesting_user: &super::RequestingUser,
 ) -> FieldResult<Url> {
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     let id = Uuid::parse_str(&id)?;
     let file = db::FileWithVersionRepo::find_by_id(id, pool).await?;
     let folder = db::FolderRepo::find_by_id(file.folder, pool).await?;
