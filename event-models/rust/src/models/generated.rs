@@ -245,6 +245,26 @@ pub struct WorkspaceCreatedData {
     pub workspace_id: String,
 }
 
+///
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct WorkspaceMembershipChangedData {
+    /// The id of the user that requested this change
+    #[serde(rename = "requestingUserId")]
+    pub requesting_user_id: String,
+
+    /// The id of the workspace affected by this change
+    #[serde(rename = "affectedWorkspaceId")]
+    pub affected_workspace_id: String,
+
+    /// The id of the user affected by this change
+    #[serde(rename = "affectedUserId")]
+    pub affected_user_id: String,
+
+    /// The role assigned to the affected user
+    #[serde(rename = "affectedRole")]
+    pub affected_role: String,
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum EventData {
     ContentViewed(ContentViewedData),
@@ -256,6 +276,7 @@ pub enum EventData {
     FolderUpdated(FolderUpdatedData),
     FolderDeleted(FolderDeletedData),
     WorkspaceCreated(WorkspaceCreatedData),
+    WorkspaceMembershipChanged(WorkspaceMembershipChangedData),
 }
 
 impl From<ContentViewedData> for EventData {
@@ -312,6 +333,12 @@ impl From<WorkspaceCreatedData> for EventData {
     }
 }
 
+impl From<WorkspaceMembershipChangedData> for EventData {
+    fn from(data: WorkspaceMembershipChangedData) -> Self {
+        Self::WorkspaceMembershipChanged(data)
+    }
+}
+
 pub(crate) enum EventDataDeserializationError {
     Json(serde_json::Error),
     UnknownVariant,
@@ -360,6 +387,10 @@ impl EventData {
                 serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
             )),
 
+            ("WorkspaceMembershipChanged", "1") => Ok(Self::WorkspaceMembershipChanged(
+                serde_json::from_value(data).map_err(EventDataDeserializationError::Json)?,
+            )),
+
             (_, _) => Err(EventDataDeserializationError::UnknownVariant),
         }
     }
@@ -385,6 +416,12 @@ impl EventData {
             Self::FolderDeleted(data) => ("FolderDeleted", "1", serde_json::to_value(data)?),
 
             Self::WorkspaceCreated(data) => ("WorkspaceCreated", "1", serde_json::to_value(data)?),
+
+            Self::WorkspaceMembershipChanged(data) => (
+                "WorkspaceMembershipChanged",
+                "1",
+                serde_json::to_value(data)?,
+            ),
         })
     }
 }

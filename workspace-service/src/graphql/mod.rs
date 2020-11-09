@@ -10,8 +10,7 @@ mod users;
 mod validation;
 mod workspaces;
 
-use super::azure;
-use super::db;
+use super::{azure, db};
 use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
     EmptySubscription, MergedObject, Schema,

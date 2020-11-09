@@ -1,13 +1,12 @@
-use super::azure;
-use fnhs_event_models::Event;
-use fnhs_event_models::EventClient;
+use super::{azure, db, RequestingUser};
+use fnhs_event_models::{Event, EventClient};
 use sqlx::PgPool;
-use std::sync::mpsc::{sync_channel, Receiver};
-use std::sync::Arc;
+use std::sync::{
+    mpsc::{sync_channel, Receiver},
+    Arc,
+};
 use url::Url;
 use uuid::Uuid;
-
-use super::RequestingUser;
 
 /// Should explode if you actually try to use it.
 pub fn mock_connection_pool() -> anyhow::Result<PgPool> {
@@ -22,16 +21,32 @@ pub fn mock_event_emitter() -> (Receiver<Event>, EventClient) {
     (receiver, EventClient::with_publisher(Arc::new(sender)))
 }
 
-pub fn mock_admin_requesting_user() -> RequestingUser {
-    RequestingUser {
-        auth_id: Uuid::parse_str("feedface-0000-0000-0000-000000000000").unwrap(),
-    }
+pub async fn mock_admin_requesting_user() -> anyhow::Result<RequestingUser> {
+    let pool = mock_connection_pool()?;
+    let requesting_user = db::UserRepo::get_or_create(
+        &Uuid::parse_str("feedface-0000-0000-0000-000000000000").unwrap(),
+        "admin",
+        "email_address",
+        &pool,
+    )
+    .await?;
+    Ok(RequestingUser {
+        auth_id: requesting_user.auth_id,
+    })
 }
 
-pub fn mock_unprivileged_requesting_user() -> RequestingUser {
-    RequestingUser {
-        auth_id: Uuid::parse_str("deadbeef-0000-0000-0000-000000000000").unwrap(),
-    }
+pub async fn mock_unprivileged_requesting_user() -> anyhow::Result<RequestingUser> {
+    let pool = mock_connection_pool()?;
+    let requesting_user = db::UserRepo::get_or_create(
+        &Uuid::parse_str("deadbeef-0000-0000-0000-000000000000").unwrap(),
+        "member",
+        "email_address",
+        &pool,
+    )
+    .await?;
+    Ok(RequestingUser {
+        auth_id: requesting_user.auth_id,
+    })
 }
 
 pub fn mock_azure_config() -> anyhow::Result<azure::Config> {

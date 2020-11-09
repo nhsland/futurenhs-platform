@@ -16,6 +16,7 @@ export type Event = BaseEvent &
     | FolderUpdated
     | FolderDeleted
     | WorkspaceCreated
+    | WorkspaceMembershipChanged
   );
 
 export interface BaseEvent {
@@ -206,6 +207,30 @@ export interface WorkspaceCreated {
      */
     userId: string;
     workspaceId: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export interface WorkspaceMembershipChanged {
+  eventType: "WorkspaceMembershipChanged";
+  dataVersion: "1";
+  data: {
+    /**
+     * The id of the user that requested this change
+     */
+    requestingUserId: string;
+    /**
+     * The id of the workspace affected by this change
+     */
+    affectedWorkspaceId: string;
+    /**
+     * The id of the user affected by this change
+     */
+    affectedUserId: string;
+    /**
+     * The role assigned to the affected user
+     */
+    affectedRole: string;
     [k: string]: unknown;
   };
   [k: string]: unknown;

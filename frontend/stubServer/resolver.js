@@ -13,7 +13,14 @@ const workspaceResponse = require("../cypress/fixtures/workspace-graphql-respons
 // Workspace
 const workspacesResolver = {
   workspaces: async () => workspaceResponse.data.workspaces,
-  workspace: async () => workspaceResponse.data.workspaces[0],
+  workspace: async () => ({
+    id: membersResponse.data.workspace.id,
+    title: membersResponse.data.workspace.title,
+    members: ({ filter }) =>
+      filter === "ADMIN"
+        ? membersResponse.data.workspace.admins
+        : membersResponse.data.workspace.members,
+  }),
 };
 
 const workspaceMutation = {
@@ -50,11 +57,6 @@ const userMutation = {
   getOrCreateUser: async () => getOrCreateUserResponse.data.getOrCreateUser,
 };
 
-// Members
-const membersResolver = {
-  workspace: async () => membersResponse.data.workspace,
-};
-
 module.exports = (schema) => {
   const federationResolver = {
     _service: async () => ({
@@ -68,7 +70,6 @@ module.exports = (schema) => {
       ...fileResolver,
       ...folderResolver,
       ...workspacesResolver,
-      ...membersResolver,
     },
     Mutation: {
       ...fileMutation,

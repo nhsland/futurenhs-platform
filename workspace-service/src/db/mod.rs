@@ -6,6 +6,7 @@ mod users;
 mod workspaces;
 
 pub use file_versions::*;
+pub use workspaces::Role;
 
 #[cfg(not(test))]
 pub use files::FileWithVersionRepo;
