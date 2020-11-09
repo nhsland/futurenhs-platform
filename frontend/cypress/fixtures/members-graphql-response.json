@@ -28,13 +28,6 @@
           "__typename": "User"
         },
         {
-          "authId": "88872e58-a867-4381-8597-943f98aee98b",
-          "emailAddress": "lisa.pink@example.com",
-          "id": "2a8c30e3-4b0e-4c52-990f-f678a94fdcf1",
-          "name": "Lisa Pink",
-          "__typename": "User"
-        },
-        {
           "authId": "ef65ade3-e2bd-433a-a443-8ba0f57d3fc5",
           "emailAddress": "dorian.black@example.com",
           "id": "0093085d-3520-48fb-a684-ade4db6b256a",
