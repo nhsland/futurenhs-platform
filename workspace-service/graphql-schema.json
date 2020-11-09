@@ -379,6 +379,59 @@
       {
         "description": null,
         "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "workspace",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "user",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "newRole",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "NewRole",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "interfaces": null,
+        "kind": "INPUT_OBJECT",
+        "name": "MembershipChange",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
         "fields": [
           {
             "args": [
@@ -505,7 +558,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Update workspace (returns updated workspace",
+            "description": "Update workspace (returns updated workspace)",
             "isDeprecated": false,
             "name": "updateWorkspace",
             "type": {
@@ -536,9 +589,40 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Delete workspace(returns deleted workspace",
+            "description": "Delete workspace (returns deleted workspace)",
             "isDeprecated": false,
             "name": "deleteWorkspace",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Workspace",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "MembershipChange",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Changes workspace permissions for a user (Admin/NonAdmin/NonMember)",
+            "isDeprecated": false,
+            "name": "changeWorkspaceMembership",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1075,6 +1159,35 @@
       },
       {
         "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": "Promote to admin",
+            "isDeprecated": false,
+            "name": "ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Add as a non-admin member or demote an admin",
+            "isDeprecated": false,
+            "name": "NON_ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Remove member",
+            "isDeprecated": false,
+            "name": "NON_MEMBER"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "NewRole",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
         "enumValues": null,
         "fields": null,
         "inputFields": [
@@ -1431,6 +1544,29 @@
         "possibleTypes": null
       },
       {
+        "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": "Only return Admins",
+            "isDeprecated": false,
+            "name": "ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Only return Non-Admins",
+            "isDeprecated": false,
+            "name": "NON_ADMIN"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "RoleFilter",
+        "possibleTypes": null
+      },
+      {
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
         "enumValues": null,
         "fields": null,
@@ -1739,33 +1875,20 @@
             }
           },
           {
-            "args": [],
-            "deprecationReason": null,
-            "description": "List of users in the admin team",
-            "isDeprecated": false,
-            "name": "admins",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "User",
-                    "ofType": null
-                  }
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "filter",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "RoleFilter",
+                  "ofType": null
                 }
               }
-            }
-          },
-          {
-            "args": [],
+            ],
             "deprecationReason": null,
-            "description": "List of all users who are members of this workspace",
+            "description": "List of users who are members of this workspace.\n\nPass RoleFilter: Admin or NonAdmin for finer control over\nwhich members are returned.",
             "isDeprecated": false,
             "name": "members",
             "type": {

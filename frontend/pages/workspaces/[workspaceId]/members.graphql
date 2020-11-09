@@ -2,13 +2,13 @@ query GetWorkspaceWithMembers($id: ID!) {
   workspace(id: $id) {
     id
     title
-    members {
+    members(filter: NON_ADMIN) {
       id
       authId
       name
       emailAddress
     }
-    admins {
+    admins: members(filter: ADMIN) {
       id
       authId
       name

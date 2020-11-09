@@ -7,12 +7,20 @@ const filesByFolderResponse = require("../cypress/fixtures/files-by-folder-graph
 const folderResponse = require("../cypress/fixtures/folder-graphql-response.json");
 const foldersByWorkspaceResponse = require("../cypress/fixtures/folders-by-workspace-graphql-response.json");
 const getOrCreateUserResponse = require("../cypress/fixtures/get-or-create-user-graphql-response.json");
+const membersResponse = require("../cypress/fixtures/members-graphql-response.json");
 const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
 
 // Workspace
 const workspacesResolver = {
   workspaces: async () => workspaceResponse.data.workspaces,
-  workspace: async () => workspaceResponse.data.workspaces[0],
+  workspace: async () => ({
+    id: membersResponse.data.workspace.id,
+    title: membersResponse.data.workspace.title,
+    members: ({ filter }) =>
+      filter === "ADMIN"
+        ? membersResponse.data.workspace.admins
+        : membersResponse.data.workspace.members,
+  }),
 };
 
 const workspaceMutation = {

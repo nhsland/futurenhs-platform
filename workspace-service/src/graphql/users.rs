@@ -82,7 +82,9 @@ async fn update_user_impl(
     requesting_user: &RequestingUser,
     update_user: UpdateUser,
 ) -> FieldResult<User> {
-    let requesting_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let requesting_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     if !requesting_user.is_platform_admin {
         return Err(anyhow::anyhow!(
             "User with auth_id {} is not a platform admin.",
@@ -105,13 +107,15 @@ mod test {
     use crate::graphql::test_mocks::*;
 
     #[async_std::test]
-    async fn update_user_succeds_if_admin() -> anyhow::Result<()> {
+    async fn update_user_succeeds_if_admin() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
+        let requesting_user = mock_admin_requesting_user().await?;
+
         update_user_impl(
             &pool,
-            &mock_admin_requesting_user(),
+            &requesting_user,
             UpdateUser {
-                auth_id: Uuid::new_v4().into(),
+                auth_id: requesting_user.auth_id.into(),
                 is_platform_admin: true,
             },
         )
@@ -125,7 +129,7 @@ mod test {
     async fn update_user_fails_if_not_admin() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
 
-        let user = mock_unprivileged_requesting_user();
+        let user = mock_unprivileged_requesting_user().await?;
 
         let result = update_user_impl(
             &pool,

@@ -1,5 +1,18 @@
 {
   "db": "PostgreSQL",
+  "0767749f22a524b9c487890d564010db70aa73009e110463a4571ff62252527f": {
+    "query": "DELETE FROM link_users_teams\nWHERE team_id = $1 AND user_id = $2\n",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "08015bc4c31cf876f34bb715b2289618ea2cb32934a34af727eb68bedd5e2bb9": {
     "query": "DELETE FROM folders\nWHERE id = $1\nRETURNING id, title, description, role_required, workspace\n",
     "describe": {
@@ -76,6 +89,50 @@
       ],
       "parameters": {
         "Left": []
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "0d37e1a94f7fbbfa6758722565300aff5430e6ea9fc1fe8b4060bf5befc7e3d7": {
+    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN link_users_teams ON users.id = link_users_teams.user_id\nWHERE\n\tlink_users_teams.team_id = $1\nORDER BY\n\tusers.name\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
       },
       "nullable": [
         false,
@@ -219,50 +276,6 @@
       ]
     }
   },
-  "2a5a1d1529af15b671c46021445dcba0bd02adc4941e84c74f56d16de9246c1e": {
-    "query": "SELECT *\nFROM folders\nWHERE workspace = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "title",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 2,
-          "name": "description",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "workspace",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 4,
-          "name": "access",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
   "2f057012b2ccd0571b02a7442f8f58e2af231e709f2b400e38646ed7587bbfe6": {
     "query": "INSERT INTO teams (title)\nVALUES ($1)\nRETURNING id, title\n",
     "describe": {
@@ -284,50 +297,6 @@
         ]
       },
       "nullable": [
-        false,
-        false
-      ]
-    }
-  },
-  "30ca906859817bb8fe8e85b4029315fa6366ab50ce91b0ed0bf36c48ebd788e9": {
-    "query": "SELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN link_users_teams ON users.id = link_users_teams.user_id\nWHERE\n\tlink_users_teams.team_id = $1\n",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "auth_id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 2,
-          "name": "name",
-          "type_info": "Text"
-        },
-        {
-          "ordinal": 3,
-          "name": "is_platform_admin",
-          "type_info": "Bool"
-        },
-        {
-          "ordinal": 4,
-          "name": "email_address",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Uuid"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
         false,
         false
       ]
@@ -563,6 +532,19 @@
       ]
     }
   },
+  "610a15ffc6c469717430534b2f94ee3f63dd64939b3228cb1c04c170088cce2b": {
+    "query": "INSERT INTO link_users_teams (team_id, user_id)\nVALUES ($1, $2)\nON CONFLICT DO NOTHING\n",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "6838012c47967c14881d876ed76d001c68b4f95ae423f35ebc3c49adcaf2b3da": {
     "query": "INSERT INTO file_versions (\n    id,\n    folder,\n    file,\n    file_title,\n    file_description,\n    file_name,\n    file_type,\n    blob_storage_path,\n    created_at,\n    created_by,\n    version_number,\n    version_label\n)\nVALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10, $11)\nRETURNING *\n",
     "describe": {
@@ -651,6 +633,51 @@
         false,
         false,
         false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "7c2eb4c370b448dcaab3585cf7a3526df946c1e8677bd80bb8eaeb8938528a85": {
+    "query": "WITH user_ids as (\n    SELECT user_id FROM link_users_teams WHERE team_id = $1\n    EXCEPT\n    SELECT user_id FROM link_users_teams WHERE team_id = $2\n)\nSELECT\n\tusers.*\nFROM\n\tusers\n\tJOIN user_ids ON users.id = user_ids.user_id\nORDER BY\n\tusers.name\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": [
         false,
         false,
         false,
@@ -822,6 +849,50 @@
           "ordinal": 4,
           "name": "workspace",
           "type_info": "Uuid"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "ad5d23d2bf1c098767d2bf876251aa2837f5dddd4739b6ba7c0e8c685c7bceb2": {
+    "query": "SELECT * FROM users WHERE id = $1;\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "auth_id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 2,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 3,
+          "name": "is_platform_admin",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 4,
+          "name": "email_address",
+          "type_info": "Text"
         }
       ],
       "parameters": {
@@ -1074,6 +1145,27 @@
         true,
         false,
         false
+      ]
+    }
+  },
+  "f1506d656916f75ed0ea484985e81eb2ebfa8656ed6e4e7e204501f03ee9594f": {
+    "query": "SELECT\n\tTRUE\nFROM\n    link_users_teams\nWHERE\n\tteam_id = $1 AND user_id = $2\n",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "bool",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        null
       ]
     }
   },

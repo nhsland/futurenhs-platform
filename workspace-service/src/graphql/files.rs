@@ -264,7 +264,9 @@ async fn create_file(
         .map_err(validation::ValidationError::from)?;
 
     let folder_id = Uuid::parse_str(&new_file.folder)?;
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     let destination = azure::copy_blob_from_url(
         &Url::parse(&new_file.temporary_blob_storage_path)?,
         azure_config,
@@ -331,7 +333,9 @@ async fn create_file_version(
         return Err("specified version is not the latest version of the file".into());
     }
 
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     let folder_id = match &new_version.folder {
         Some(folder_id) => Uuid::parse_str(folder_id)?,
         None => current_file.folder,
@@ -402,7 +406,9 @@ async fn delete_file(
     requesting_user: &RequestingUser,
     event_client: &EventClient,
 ) -> FieldResult<File> {
-    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool).await?;
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
     let file = db::FileWithVersionRepo::delete(Uuid::parse_str(&id)?, user.id, pool).await?;
 
     let folder = db::FolderRepo::find_by_id(file.folder, pool).await?;
@@ -446,11 +452,11 @@ mod test {
         file_type: Option<&'static str>,
         expected: Option<&'static str>,
     ) {
-        validate_newfile_filename(file_name, file_type, expected);
-        validate_newfileversion_filename(file_name, file_type, expected);
+        validate_new_file_filename(file_name, file_type, expected);
+        validate_new_file_version_filename(file_name, file_type, expected);
     }
 
-    fn validate_newfile_filename(
+    fn validate_new_file_filename(
         file_name: &'static str,
         file_type: Option<&'static str>,
         expected: Option<&'static str>,
@@ -471,7 +477,7 @@ mod test {
         assert_eq!(actual.as_deref(), expected);
     }
 
-    fn validate_newfileversion_filename(
+    fn validate_new_file_version_filename(
         file_name: &'static str,
         file_type: Option<&'static str>,
         expected: Option<&'static str>,
@@ -498,7 +504,7 @@ mod test {
     async fn create_file_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let (events, event_client) = mock_event_emitter();
 
         let result = create_file(
@@ -529,7 +535,7 @@ mod test {
     #[async_std::test]
     async fn delete_file_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let (events, event_client) = mock_event_emitter();
         let id: ID = ID::from("96bb1f76-6d0e-4a14-a379-034a738715ec");
 
@@ -550,7 +556,7 @@ mod test {
     async fn create_file_version_works() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
 
         let file_id = Uuid::new_v4();
         let current_file = db::FileWithVersionRepo::find_by_id(file_id, &pool).await?;
@@ -593,7 +599,7 @@ mod test {
     async fn create_file_version_fails_if_latest_version_mismatch() -> anyhow::Result<()> {
         let pool = mock_connection_pool()?;
         let azure_config = mock_azure_config()?;
-        let requesting_user = mock_unprivileged_requesting_user();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
         let (events, event_client) = mock_event_emitter();
 
         let file_id = Uuid::new_v4();

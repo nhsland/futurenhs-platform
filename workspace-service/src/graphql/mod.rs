@@ -5,12 +5,12 @@ mod folders;
 mod schema;
 #[cfg(test)]
 mod test_mocks;
+mod tracing_ext;
 mod users;
 mod validation;
 mod workspaces;
 
-use super::azure;
-use super::db;
+use super::{azure, db};
 use async_graphql::{
     http::{playground_source, GraphQLPlaygroundConfig},
     EmptySubscription, MergedObject, Schema,
@@ -30,7 +30,7 @@ impl State {
     pub fn new(pool: PgPool, event_client: EventClient, azure_config: azure::Config) -> State {
         State {
             schema: Schema::build(Query::default(), Mutation::default(), EmptySubscription)
-                .extension(async_graphql::extensions::Tracing)
+                .extension(tracing_ext::Tracing)
                 .data(pool)
                 .data(event_client.clone())
                 .data(azure_config)

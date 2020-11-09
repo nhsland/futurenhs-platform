@@ -5,8 +5,7 @@ use anyhow::{bail, Result};
 use azure_sdk_storage_core::{client, key_client::KeyClient, shared_access_signature::SasProtocol};
 pub use blob::copy_blob_from_url;
 use blob::BlobUrlParts;
-pub use sas::create_download_sas;
-pub use sas::create_upload_sas;
+pub use sas::{create_download_sas, create_upload_sas};
 use std::convert::TryInto;
 use url::Url;
 
