@@ -75,6 +75,13 @@ async function main() {
 
   // Login session
   const aadb2cStrategy = "aadb2c";
+  const requireLogin = (req, res, next) => {
+    if (req.user) {
+      next();
+    } else {
+      res.redirect(`/auth/login?next=${encodeURIComponent(req.url)}`);
+    }
+  };
   const configureUserFlow = (flow) => (req, _res, next) => {
     req.session["auth.next"] = req.query.next;
     req.query.p = flow;
@@ -181,18 +188,23 @@ async function main() {
     });
   });
 
-  server.get("/workspaces/:workspaceId/download/:fileId", async (req, res) => {
-    try {
-      const response = await getFileDownloadUrl({
-        fileId: req.params.fileId,
-      });
-      const temporaryBlobStoragePath = response.fileDownloadUrl;
-      res.redirect(307, temporaryBlobStoragePath);
-    } catch (err) {
-      reportError(err);
-      res.status(500).end();
+  server.get(
+    "/workspaces/:workspaceId/download/:fileId",
+    requireLogin,
+    async (req, res) => {
+      try {
+        const response = await getFileDownloadUrl({
+          authId: req.user.authId,
+          fileId: req.params.fileId,
+        });
+        const temporaryBlobStoragePath = response.fileDownloadUrl;
+        res.redirect(307, temporaryBlobStoragePath);
+      } catch (err) {
+        reportError(err);
+        res.status(500).end();
+      }
     }
-  });
+  );
 
   // Default catch-all handler to allow Next.js to handle all other routes
   server.all("*", (req, res) => handle(req, res));
