@@ -579,6 +579,47 @@ mod test {
     }
 
     #[async_std::test]
+    async fn a_workspace_admin_can_remove_another_user_from_the_workspace() -> anyhow::Result<()> {
+        use db::TeamRepo;
+
+        let pool = mock_connection_pool()?;
+        let (events, event_client) = mock_event_emitter();
+        let requesting_user = mock_unprivileged_requesting_user().await?;
+        let requesting_user_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("user not found"))?;
+
+        let workspace = WorkspaceRepo::create("", "", &pool).await?;
+        TeamRepo::add_member(workspace.members, requesting_user_user.id, &pool).await?;
+        TeamRepo::add_member(workspace.admins, requesting_user_user.id, &pool).await?;
+
+        let user_id = Uuid::new_v4();
+        change_workspace_membership(
+            workspace.id,
+            user_id,
+            Role::NonMember,
+            &requesting_user,
+            &pool,
+            &event_client,
+        )
+        .await
+        .unwrap();
+
+        let is_admin = TeamRepo::is_member(workspace.admins, user_id, &pool)
+            .await
+            .unwrap();
+        let is_member = TeamRepo::is_member(workspace.members, user_id, &pool)
+            .await
+            .unwrap();
+
+        assert_eq!(is_admin, false, "should not be an admin");
+        assert_eq!(is_member, false, "should not be a member");
+        assert_eq!(events.try_iter().count(), 1);
+
+        Ok(())
+    }
+
+    #[async_std::test]
     async fn a_platform_admin_can_add_a_member() -> anyhow::Result<()> {
         use db::TeamRepo;
         const NON_ADMIN_USER: &str = "1be12ec1-41bd-4384-b86f-de10fa754c12";
