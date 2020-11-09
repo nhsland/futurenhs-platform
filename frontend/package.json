@@ -51,7 +51,7 @@
     "next-images": "^1.4.1",
     "next-urql": "^1.1.0",
     "nhsuk-frontend": "^3.1.0",
-    "nhsuk-react-components": "git://github.com/FutureNHS/nhsuk-react-components#fix-input-ref-type",
+    "nhsuk-react-components": "https://raw.githubusercontent.com/FutureNHS/nhsuk-react-components/packages/futurenhs-nhsuk-react-components-1.2.6.tgz",
     "node-sass": "^4.14.1",
     "passport": "^0.4.1",
     "passport-azure-ad": "^4.3.0",
