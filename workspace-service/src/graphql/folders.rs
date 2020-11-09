@@ -259,7 +259,7 @@ mod test {
         let folder = create_folder(
             "title",
             "description",
-            "all-members",
+            "PLATFORM_MEMBER",
             Uuid::new_v4(),
             &pool,
             &requesting_user,
@@ -287,7 +287,7 @@ mod test {
             id: "d890181d-6b17-428e-896b-f76add15b54a".into(),
             title: "title".to_string(),
             description: "description".to_string(),
-            role_required: "all-members".to_string(),
+            role_required: "PLATFORM_MEMBER".to_string(),
         };
 
         let folder = update_folder(current_folder, &pool, &requesting_user, &event_client)

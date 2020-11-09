@@ -71,8 +71,13 @@ const CreateFolder: NextPage = () => {
   const backToPreviousPage = () => router.back();
 
   const onSubmit = async (newFolder: Folder) => {
-    if (!newFolder.roleRequired) newFolder.roleRequired = "ALL_MEMBERS";
-    createFolder({ ...newFolder, workspace: workspaceId }).then((result) => {
+    // Set the default folder permission to be all platform members
+    if (!newFolder.roleRequired) newFolder.roleRequired = "PLATFORM_MEMBER";
+    try {
+      const result = await createFolder({
+        ...newFolder,
+        workspace: workspaceId,
+      });
       if (result.data) {
         router.push(
           `/workspaces/${workspaceId}/folders/${result.data.createFolder.id}`
@@ -83,7 +88,12 @@ const CreateFolder: NextPage = () => {
           message: "Error creating folder",
         });
       }
-    });
+    } catch (err) {
+      setError("form", {
+        type: "server",
+        message: err,
+      });
+    }
   };
 
   return (

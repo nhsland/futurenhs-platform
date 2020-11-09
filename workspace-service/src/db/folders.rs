@@ -117,7 +117,7 @@ impl FolderRepoFake {
             title: "fake folder".into(),
             workspace: Uuid::new_v4(),
             description: "fake folder for testing".into(),
-            role_required: "all-memebers".into(),
+            role_required: "PLATFORM_MEMBER".into(),
         };
         Ok(folder)
     }
@@ -145,7 +145,7 @@ impl FolderRepoFake {
             title: "fake folder".into(),
             workspace: Uuid::new_v4(),
             description: "fake folder for testing".into(),
-            role_required: "all-members".into(),
+            role_required: "PLATFORM_MEMBER".into(),
         };
         Ok(folder)
     }

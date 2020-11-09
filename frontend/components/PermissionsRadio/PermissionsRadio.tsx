@@ -25,7 +25,7 @@ const PermissionsRadio: React.FC<PermissionsRadioProps> = ({ inputRef }) => (
       <StyledRadios name="roleRequired" id="roleRequired">
         <Radios.Radio
           inputRef={inputRef}
-          value="ALL_MEMBERS"
+          value="PLATFORM_MEMBER"
           id="all-members"
           hint="This will make the folder and its contents visible to all members of FutureNHS"
         >
@@ -33,7 +33,7 @@ const PermissionsRadio: React.FC<PermissionsRadioProps> = ({ inputRef }) => (
         </Radios.Radio>
         <Radios.Radio
           inputRef={inputRef}
-          value="WORKSPACE_MEMBERS"
+          value="WORKSPACE_MEMBER"
           id="workspace-members"
           hint="This will make the folder and its contents visible to members of your workspace."
         >

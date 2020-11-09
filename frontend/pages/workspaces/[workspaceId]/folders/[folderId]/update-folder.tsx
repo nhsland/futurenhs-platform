@@ -104,10 +104,11 @@ const UpdateFolder: NextPage = () => {
 
   const onSubmit = async (folder: Folder) => {
     folder.id = folderId;
-    if (!folder.roleRequired) folder.roleRequired = "ALL_MEMBERS";
-    updateFolder({ ...folder }).then((result) => {
+    // Set the default folder permission to be all platform members
+    if (!folder.roleRequired) folder.roleRequired = "PLATFORM_MEMBER";
+    try {
+      const result = await updateFolder({ ...folder });
       if (result.data) {
-        console.log(result);
         router.push(
           `/workspaces/${workspaceId}/folders/${result.data.updateFolder.id}`
         );
@@ -117,7 +118,12 @@ const UpdateFolder: NextPage = () => {
           message: "Error updating folder",
         });
       }
-    });
+    } catch (err) {
+      setError("form", {
+        type: "server",
+        message: err,
+      });
+    }
   };
 
   return (

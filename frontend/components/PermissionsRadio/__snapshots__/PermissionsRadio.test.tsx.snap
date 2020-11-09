@@ -16,7 +16,7 @@ exports[`PermissionsRadio renders matching snapshot 1`] = `
     >
       <div
         class="nhsuk-radios c0"
-        id="permissions"
+        id="roleRequired"
         role="radiogroup"
       >
         <div
@@ -27,9 +27,9 @@ exports[`PermissionsRadio renders matching snapshot 1`] = `
             aria-labelledby="all-members--label"
             class="nhsuk-radios__input"
             id="all-members"
-            name="permissions"
+            name="roleRequired"
             type="radio"
-            value="all-members"
+            value="PLATFORM_MEMBER"
           />
           <label
             class="nhsuk-label nhsuk-radios__label"
@@ -53,9 +53,9 @@ exports[`PermissionsRadio renders matching snapshot 1`] = `
             aria-labelledby="workspace-members--label"
             class="nhsuk-radios__input"
             id="workspace-members"
-            name="permissions"
+            name="roleRequired"
             type="radio"
-            value="workspace-members"
+            value="WORKSPACE_MEMBER"
           />
           <label
             class="nhsuk-label nhsuk-radios__label"
