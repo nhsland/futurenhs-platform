@@ -4,7 +4,7 @@ name = "workspace_service"
 version = "0.1.0"
 
 [dependencies]
-anyhow = "1.0.33"
+anyhow = "1.0.34"
 async-compat = "0.1.5"
 async-graphql = "=2.0.8"
 async-graphql-tide = "=2.0.8"
