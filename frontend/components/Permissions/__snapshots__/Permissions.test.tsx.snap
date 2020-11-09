@@ -39,7 +39,6 @@ exports[`Permissions renders matching snapshot 1`] = `
       Permissions
     </h3>
     <button
-      aria-label="permissions"
       type="button"
     >
       <div
