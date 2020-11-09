@@ -1462,6 +1462,13 @@
     ajv "^6.12.6"
     typescript "^4.0.5"
 
+"@futurenhs/nhsuk-react-components@^1.2.6":
+  version "1.2.6"
+  resolved "https://npm.pkg.github.com/download/@futurenhs/nhsuk-react-components/1.2.6/fac4896c8c837d46158f23ea44c8e5d83177fac8f96bcabf47ce3b6dd21a2f86#3f43df8aa513a21e7b61e806b4c115528ae5ea31"
+  integrity sha512-XNDbbkvLC62lxUQiB+C14HVRcbb77dybauW36rzKymTphuuy2/0oBoXXScUDHF9J+sinrdC9tht+P8igKppUmg==
+  dependencies:
+    classnames "^2.2.6"
+
 "@graphql-codegen/cli@1.19.1":
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-1.19.1.tgz#2f4ad535f3106af1f3b2422878d78405c556c1c1"
@@ -9491,12 +9498,6 @@ nhsuk-frontend@^3.1.0:
   dependencies:
     accessible-autocomplete "^2.0.2"
     sass-mq "^5.0.1"
-
-"nhsuk-react-components@git://github.com/FutureNHS/nhsuk-react-components#fix-input-ref-type":
-  version "1.2.6"
-  resolved "git://github.com/FutureNHS/nhsuk-react-components#e455c0a4cb58810656a2b0d361c583fcb2df2595"
-  dependencies:
-    classnames "^2.2.6"
 
 nice-try@^1.0.4:
   version "1.0.5"
