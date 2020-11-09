@@ -15,10 +15,10 @@ import { PageLayout } from "../../../../../components/PageLayout";
 import { Permissions } from "../../../../../components/Permissions";
 import { Textarea } from "../../../../../components/Textarea";
 import {
-  Folder,
   useUpdateFolderMutation,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
+  RoleRequired,
 } from "../../../../../lib/generated/graphql";
 import { useMaxLengthHelper } from "../../../../../lib/useMaxLengthHelper";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
@@ -51,11 +51,11 @@ const StyledButton = styled(Button)`
   margin-left: 12px;
 `;
 
-interface Inputs {
-  title: string | undefined;
-  description: string | undefined;
-  form?: string;
-  server?: any;
+interface FolderInputs {
+  title: string;
+  description: string;
+  roleRequired: RoleRequired;
+  server?: never;
 }
 
 const UpdateFolder: NextPage = () => {
@@ -79,18 +79,18 @@ const UpdateFolder: NextPage = () => {
   const titleMaxLength = useMaxLengthHelper("Title", 100);
   const descriptionMaxLength = useMaxLengthHelper("Description", 250);
 
-  const { errors, handleSubmit, register, reset, setError } = useForm<Inputs>({
-    defaultValues: {
-      title: folder.data?.folder.title,
-      description: folder.data?.folder.description,
-    },
-  });
+  const { errors, handleSubmit, register, reset, setError } = useForm<
+    FolderInputs
+  >();
 
   useEffect(() => {
-    reset({
-      title: folder.data?.folder.title,
-      description: folder.data?.folder.description,
-    });
+    if (folder.data) {
+      reset({
+        title: folder.data.folder.title,
+        description: folder.data.folder.description,
+        roleRequired: folder.data.folder.roleRequired,
+      });
+    }
   }, [folder]);
 
   const [{ data, fetching, error }] = useGetWorkspaceByIdQuery({
@@ -102,24 +102,21 @@ const UpdateFolder: NextPage = () => {
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async (folder: Folder) => {
-    folder.id = folderId;
-    // Set the default folder permission to be all platform members
-    if (!folder.roleRequired) folder.roleRequired = "PLATFORM_MEMBER";
+  const onSubmit = async (folder: FolderInputs) => {
     try {
-      const result = await updateFolder({ ...folder });
+      const result = await updateFolder({ ...folder, id: folderId });
       if (result.data) {
         router.push(
           `/workspaces/${workspaceId}/folders/${result.data.updateFolder.id}`
         );
       } else {
-        setError("form", {
+        setError("server", {
           type: "server",
           message: "Error updating folder",
         });
       }
     } catch (err) {
-      setError("form", {
+      setError("server", {
         type: "server",
         message: err,
       });
@@ -180,7 +177,9 @@ const UpdateFolder: NextPage = () => {
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
               Discard
             </StyledButton>
-            {errors.server && <ErrorMessage>{errors.server}</ErrorMessage>}
+            {errors.server && (
+              <ErrorMessage>{errors.server.message}</ErrorMessage>
+            )}
           </Form>
         </PageContent>
       </ContentWrapper>

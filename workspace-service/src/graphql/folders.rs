@@ -1,10 +1,42 @@
 use super::{db, RequestingUser};
-use async_graphql::{Context, FieldResult, InputObject, Object, SimpleObject, ID};
+use async_graphql::{Context, Enum, FieldResult, InputObject, Object, SimpleObject, ID};
 use fnhs_event_models::{
     Event, EventClient, EventPublisher, FolderCreatedData, FolderDeletedData, FolderUpdatedData,
 };
 use sqlx::PgPool;
+use std::fmt::Display;
+use std::str::FromStr;
 use uuid::Uuid;
+
+#[derive(Enum, Copy, Clone, Eq, PartialEq, Debug)]
+enum RoleRequired {
+    PlatformMember,
+    WorkspaceMember,
+}
+
+impl Display for RoleRequired {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                RoleRequired::PlatformMember => "PLATFORM_MEMBER",
+                RoleRequired::WorkspaceMember => "WORKSPACE_MEMBER",
+            }
+        )
+    }
+}
+
+impl FromStr for RoleRequired {
+    type Err = ();
+    fn from_str(input: &str) -> Result<RoleRequired, Self::Err> {
+        match input {
+            "PLATFORM_MEMBER" => Ok(RoleRequired::PlatformMember),
+            "WORKSPACE_MEMBER" => Ok(RoleRequired::WorkspaceMember),
+            _ => Err(()),
+        }
+    }
+}
 
 /// A folder
 #[derive(SimpleObject)]
@@ -16,7 +48,7 @@ pub struct Folder {
     /// The description of the folder
     description: String,
     /// The group that can access the folder
-    role_required: String,
+    role_required: RoleRequired,
     /// The workspace that this folder is in
     workspace: ID,
 }
@@ -27,7 +59,7 @@ impl From<db::Folder> for Folder {
             id: d.id.into(),
             title: d.title,
             description: d.description,
-            role_required: d.role_required,
+            role_required: RoleRequired::from_str(&d.role_required).unwrap(),
             workspace: d.workspace.into(),
         }
     }
@@ -37,7 +69,7 @@ impl From<db::Folder> for Folder {
 struct NewFolder {
     title: String,
     description: String,
-    role_required: String,
+    role_required: RoleRequired,
     workspace: ID,
 }
 
@@ -46,7 +78,7 @@ struct UpdateFolder {
     id: ID,
     title: String,
     description: String,
-    role_required: String,
+    role_required: RoleRequired,
 }
 
 #[derive(Default)]
@@ -98,7 +130,7 @@ impl FoldersMutation {
         create_folder(
             &new_folder.title,
             &new_folder.description,
-            &new_folder.role_required,
+            &new_folder.role_required.to_string(),
             workspace,
             pool,
             requesting_user,
@@ -173,7 +205,7 @@ async fn update_folder(
         Uuid::parse_str(&folder.id)?,
         &folder.title,
         &folder.description,
-        &folder.role_required,
+        &folder.role_required.to_string(),
         pool,
     )
     .await?;
@@ -259,7 +291,7 @@ mod test {
         let folder = create_folder(
             "title",
             "description",
-            "PLATFORM_MEMBER",
+            &RoleRequired::PlatformMember.to_string(),
             Uuid::new_v4(),
             &pool,
             &requesting_user,
@@ -287,7 +319,7 @@ mod test {
             id: "d890181d-6b17-428e-896b-f76add15b54a".into(),
             title: "title".to_string(),
             description: "description".to_string(),
-            role_required: "PLATFORM_MEMBER".to_string(),
+            role_required: RoleRequired::PlatformMember,
         };
 
         let folder = update_folder(current_folder, &pool, &requesting_user, &event_client)

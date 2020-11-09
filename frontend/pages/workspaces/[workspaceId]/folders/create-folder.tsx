@@ -15,7 +15,7 @@ import { PageLayout } from "../../../../components/PageLayout";
 import { Permissions } from "../../../../components/Permissions";
 import { Textarea } from "../../../../components/Textarea";
 import {
-  Folder,
+  RoleRequired,
   useCreateFolderMutation,
   useGetWorkspaceByIdQuery,
 } from "../../../../lib/generated/graphql";
@@ -46,6 +46,13 @@ const PageContent = styled.div`
   `}
 `;
 
+interface FolderInputs {
+  title: string;
+  description: string;
+  roleRequired: RoleRequired;
+  server?: never;
+}
+
 const StyledButton = styled(Button)`
   margin-left: 12px;
 `;
@@ -57,7 +64,7 @@ const CreateFolder: NextPage = () => {
   const titleMaxLength = useMaxLengthHelper("Title", 100);
   const descriptionMaxLength = useMaxLengthHelper("Description", 250);
 
-  const { errors, handleSubmit, register, setError } = useForm();
+  const { errors, handleSubmit, register, setError } = useForm<FolderInputs>();
 
   const [{ data, fetching, error }] = useGetWorkspaceByIdQuery({
     variables: { id: workspaceId },
@@ -70,9 +77,7 @@ const CreateFolder: NextPage = () => {
 
   const backToPreviousPage = () => router.back();
 
-  const onSubmit = async (newFolder: Folder) => {
-    // Set the default folder permission to be all platform members
-    if (!newFolder.roleRequired) newFolder.roleRequired = "PLATFORM_MEMBER";
+  const onSubmit = async (newFolder: FolderInputs) => {
     try {
       const result = await createFolder({
         ...newFolder,
@@ -83,13 +88,13 @@ const CreateFolder: NextPage = () => {
           `/workspaces/${workspaceId}/folders/${result.data.createFolder.id}`
         );
       } else {
-        setError("form", {
+        setError("server", {
           type: "server",
           message: "Error creating folder",
         });
       }
     } catch (err) {
-      setError("form", {
+      setError("server", {
         type: "server",
         message: err,
       });
@@ -150,7 +155,9 @@ const CreateFolder: NextPage = () => {
             <StyledButton secondary type="button" onClick={backToPreviousPage}>
               Discard
             </StyledButton>
-            {errors.server && <ErrorMessage>{errors.server}</ErrorMessage>}
+            {errors.server && (
+              <ErrorMessage>{errors.server.message}</ErrorMessage>
+            )}
           </Form>
         </PageContent>
       </ContentWrapper>
