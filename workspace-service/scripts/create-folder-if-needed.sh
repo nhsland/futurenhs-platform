@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
 USAGE="
 
-USAGE: $(basename $0) (dev-\$FNHSNAME|local) WORKSPACE_TITLE FOLDER_TITLE [FOLDER_DESCRIPTION]
+USAGE: $(basename "$0") (dev-\$FNHSNAME|local) WORKSPACE_TITLE FOLDER_TITLE [FOLDER_DESCRIPTION]
 
 "
 
@@ -17,10 +17,10 @@ FOLDER_DESCRIPTION=${4:-"Test folder with title $FOLDER_TITLE"}
 
 . ./_context.sh
 
-WORKSPACE_SERVICE_GRAPHQL_ENDPOINT="$(_verify_environment_and_get_graphql_endpoint $ENVIRONMENT)"
+WORKSPACE_SERVICE_GRAPHQL_ENDPOINT="$(_verify_environment_and_get_graphql_endpoint "$ENVIRONMENT")"
 
 workspace=$(./create-workspace-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE")
-if [ $workspace = "null" ]; then
+if [ "$workspace" = "null" ]; then
 	echo "Something went wrong finding/creating your workspace"
 	exit 1
 fi
@@ -41,7 +41,8 @@ existing_folders=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
+		"$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT" \
+		-H 'x-user-auth-id: feedface-0000-0000-0000-000000000000' \
 		-H 'Content-Type: application/json' \
 		-d "$body"
 )
@@ -54,7 +55,7 @@ found=$(
 			'.data.foldersByWorkspace | map(select(.title == $title))[0].id'
 )
 if [ "$found" != "null" ]; then
-	echo $found
+	echo "$found"
 	exit 0
 fi
 
@@ -78,14 +79,15 @@ response=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
+		"$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT" \
+		-H 'x-user-auth-id: feedface-0000-0000-0000-000000000000' \
 		-H 'Content-Type: application/json' \
 		-d "$body"
 )
 id=$(echo "$response" | jq -r '.data.createFolder.id')
-if [ $id = "null" ]; then
+if [ "$id" = "null" ]; then
 	echo "something went wrong! $response"
 	exit 1
 fi
 
-echo $id
+echo "$id"

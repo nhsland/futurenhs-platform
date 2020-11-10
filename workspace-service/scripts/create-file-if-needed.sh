@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
 USAGE="
 
-USAGE: $(basename $0) (dev-\$FNHSNAME|local) WORKSPACE_TITLE FOLDER_TITLE FILE_NAME
+USAGE: $(basename "$0") (dev-\$FNHSNAME|local) WORKSPACE_TITLE FOLDER_TITLE FILE_NAME
 
 "
 
@@ -19,10 +19,10 @@ FOLDER_TITLE=${3:?"${USAGE}Please give folder title as third parameter."}
 FILE_NAME=${4:?"${USAGE}Please provide a file name, e.g. data-file.xlsx."}
 FILE_TYPE=$(_get_mime_type "./files/$FILE_NAME")
 FILE_TITLE=$(echo "$FILE_NAME" | sed -e 's/[.][^.]*$//')
-WORKSPACE_SERVICE_GRAPHQL_ENDPOINT="$(_verify_environment_and_get_graphql_endpoint $ENVIRONMENT)"
+WORKSPACE_SERVICE_GRAPHQL_ENDPOINT="$(_verify_environment_and_get_graphql_endpoint "$ENVIRONMENT")"
 
 folder=$(./create-folder-if-needed.sh "$ENVIRONMENT" "$WORKSPACE_TITLE" "$FOLDER_TITLE")
-if [ $folder = "null" ]; then
+if [ "$folder" = "null" ]; then
 	echo "Something went wrong finding/creating your folder"
 	exit 1
 fi
@@ -43,7 +43,8 @@ existing_files=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
+		"$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT" \
+		-H 'x-user-auth-id: feedface-0000-0000-0000-000000000000' \
 		-H 'Content-Type: application/json' \
 		-d "$body"
 )
@@ -56,7 +57,7 @@ found=$(
 			'.data.filesByFolder | map(select(.title == $title))[0].id'
 )
 if [ "$found" != "null" ]; then
-	echo $found
+	echo "$found"
 	exit 0
 fi
 
@@ -66,7 +67,8 @@ file_upload_url=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
+		"$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT" \
+		-H 'x-user-auth-id: feedface-0000-0000-0000-000000000000' \
 		-H 'Content-Type: application/json' \
 		-d '{ "query": "{ fileUploadUrls(count: 1) }" }' |
 		jq -r '.data.fileUploadUrls[0]'
@@ -113,15 +115,15 @@ response=$(
 		--silent \
 		--show-error \
 		-XPOST \
-		$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT \
+		"$WORKSPACE_SERVICE_GRAPHQL_ENDPOINT" \
 		-H 'Content-Type: application/json' \
 		-H 'X-User-Auth-ID: feedface-0000-0000-0000-000000000000' \
 		-d "$body"
 )
 id=$(echo "$response" | jq -r '.data.createFile.id')
-if [ $id = "null" ]; then
+if [ "$id" = "null" ]; then
 	echo "something went wrong! $FILE_NAME, $FILE_TYPE, $response"
 	exit 1
 fi
 
-echo $id
+echo "$id"
