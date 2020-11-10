@@ -3,74 +3,99 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-  ${({ theme }) => `
-    min-width: 287px;
-    background-color: ${theme.colorNhsukGrey5};
-    border-radius: 4px 4px 0px 0px;
-    margin-top: 40px;
+  min-width: 287px;
+  background-color: ${({ theme }) => theme.colorNhsukGrey5};
+  border-radius: 4px 4px 0px 0px;
+  margin-top: 40px;
 
-    @media (min-width: ${theme.mqBreakpoints.tablet}) {
-      min-width: 435px;
-    }
+  @media (min-width: ${({ theme }) => theme.mqBreakpoints.tablet}) {
+    min-width: 435px;
+  }
 
-    @media (min-width: ${theme.mqBreakpoints.desktop}) {
-      min-width: 477px;
-    }
+  @media (min-width: ${({ theme }) => theme.mqBreakpoints.desktop}) {
+    min-width: 477px;
+  }
 
-    @media (min-width: ${theme.mqBreakpoints.largeDesktop}) {
-      min-width: 481px;
-    }
+  @media (min-width: ${({ theme }) => theme.mqBreakpoints.largeDesktop}) {
+    min-width: 481px;
+  }
 
-    @media (min-width: 1200px) {
-      input {
-        padding: 6px 14px;
-      }
-      button {
-        width: 154px;
-        height: 56px;
-        font-size: 19px;
-      }
-    }
-
-    .localAccount {
-      padding: 32px 40px;
-    }
-
-    label:after {
-      content: " *";
-    }
-
+  @media (min-width: 1200px) {
     input {
-      margin-top: 8px;
-      margin-bottom: 24px;
-      padding: 8px 12px;
-      border: solid 2px #3d4448;
+      padding: 6px 14px;
     }
-
-    .entry-item {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    #forgotPassword {
-      display: none;
-    }
-
-
     button {
-      width: 97px;
-      height: 44px;
-      background-color: ${theme.colorNhsukBlue};
-      color: ${theme.colorNhsukWhite};
-      border-radius: 4px;
-      box-shadow: 0 4px 0 0 #002a8e;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 20px;
-      border-style: none;
-      }
-  `}
+      width: 154px;
+      height: 56px;
+      font-size: 19px;
+    }
+  }
+
+  .localAccount {
+    padding: 32px 40px;
+  }
+
+  label:after {
+    content: " *";
+  }
+
+  input {
+    margin-top: 8px;
+    margin-bottom: 24px;
+    padding: 8px 12px;
+    border: solid 2px #3d4448;
+
+    :focus {
+      border: 4px solid ${({ theme }) => theme.colorNhsukBlack};
+      box-shadow: 0 0 0 4px ${({ theme }) => theme.colorNhsukYellow};
+      outline: 4px solid transparent;
+      outline-offset: 4px;
+    }
+  }
+
+  .entry-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  #forgotPassword {
+    display: none;
+  }
+
+  button {
+    width: 97px;
+    height: 44px;
+    background-color: ${({ theme }) => theme.colorNhsukBlue};
+    color: ${({ theme }) => theme.colorNhsukWhite};
+    border-radius: 4px;
+    box-shadow: 0 4px 0 0 #002a8e;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    border-style: none;
+    position: relative;
+
+    &:hover {
+      cursor: pointer;
+      background-color: ${({ theme }) => theme.colorShadeNhsukBlue35};
+    }
+
+    &:focus {
+      outline: none;
+      color: ${({ theme }) => theme.colorNhsukBlack};
+      background-color: ${({ theme }) => theme.colorNhsukYellow};
+      box-shadow: 0 4px 0 0 ${({ theme }) => theme.colorNhsukBlack};
+    }
+
+    &:active {
+      outline: none;
+      color: ${({ theme }) => theme.colorNhsukWhite};
+      background-color: ${({ theme }) => theme.colorShadeNhsukBlue35};
+      box-shadow: none;
+      top: 4px;
+    }
+  }
 `;
 
 const PasswordDiv = styled.div`
