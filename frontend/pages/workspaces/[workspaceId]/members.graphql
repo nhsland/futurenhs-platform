@@ -18,10 +18,5 @@ query GetWorkspaceWithMembers($id: ID!) {
 }
 
 query GetWorkspaceMembership($workspaceId: ID!) {
-  getWorkspaceMembership(workspaceId: $workspaceId) {
-    id
-    authId
-    name
-    emailAddress
-  }
+  getWorkspaceMembership(workspaceId: $workspaceId)
 }

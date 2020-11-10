@@ -122,18 +122,14 @@ impl WorkspaceRepo {
         }
     }
 
-    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<db::User> {
+    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
         match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
                 db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
-                Ok(user)
+                Ok(Role::NonAdmin)
             }
-            None => Err(anyhow!(
-                "User {} is not a member of workspace {}",
-                user_id,
-                workspace_id
-            )),
+            None => Ok(Role::NonMember),
         }
     }
 
@@ -234,18 +230,14 @@ impl WorkspaceRepoFake {
         Ok(workspace)
     }
 
-    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<db::User> {
+    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
         match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
                 db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
-                Ok(user)
+                Ok(Role::NonAdmin)
             }
-            None => Err(anyhow!(
-                "User {} is not a member of workspace {}",
-                user_id,
-                workspace_id
-            )),
+            None => Ok(Role::NonMember),
         }
     }
 

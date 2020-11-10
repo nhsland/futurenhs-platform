@@ -47,6 +47,16 @@ impl From<NewRole> for Role {
     }
 }
 
+impl From<Role> for NewRole {
+    fn from(role: Role) -> Self {
+        match role {
+            Role::Admin => NewRole::Admin,
+            Role::NonAdmin => NewRole::NonAdmin,
+            Role::NonMember => NewRole::NonMember,
+        }
+    }
+}
+
 #[Object]
 /// A workspace
 impl Workspace {
@@ -150,7 +160,7 @@ impl WorkspacesQuery {
         &self,
         context: &Context<'_>,
         workspace_id: ID,
-    ) -> FieldResult<User> {
+    ) -> FieldResult<NewRole> {
         let requesting_user = context.data()?;
         let pool = context.data()?;
         let event_client: &EventClient = context.data()?;
@@ -283,14 +293,14 @@ async fn get_workspace_membership(
     requesting_user: &RequestingUser,
     pool: &PgPool,
     event_client: &EventClient,
-) -> FieldResult<User> {
+) -> FieldResult<NewRole> {
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
         .await?
         .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
-    let user = WorkspaceRepo::is_member(workspace_id, user.id, pool).await?;
+    let userRole = WorkspaceRepo::is_member(workspace_id, user.id, pool).await?;
 
-    Ok(user.into())
+    Ok(userRole.into())
 }
 
 async fn change_workspace_membership(
