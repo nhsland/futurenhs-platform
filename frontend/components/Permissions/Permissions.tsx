@@ -60,12 +60,7 @@ const Permissions: React.FC<PermissionsProps> = ({ inputRef }) => {
         You can set permissions for this folder. All users authorised to access
         a folder can view all its contents
       </Description>
-      {expanded && (
-        <>
-          <h4>Viewing permissions</h4>
-          <PermissionsRadio inputRef={inputRef} />
-        </>
-      )}
+      <PermissionsRadio hidden={!expanded} inputRef={inputRef} />
     </>
   );
 };

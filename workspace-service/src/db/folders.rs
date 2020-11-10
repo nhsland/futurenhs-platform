@@ -9,6 +9,7 @@ pub struct Folder {
     pub id: Uuid,
     pub title: String,
     pub description: String,
+    pub role_required: String,
     pub workspace: Uuid,
 }
 
@@ -20,6 +21,7 @@ impl FolderRepo {
     pub async fn create(
         title: &str,
         description: &str,
+        role_required: &str,
         workspace: Uuid,
         pool: &PgPool,
     ) -> Result<Folder> {
@@ -28,7 +30,8 @@ impl FolderRepo {
             "sql/folders/create.sql",
             title,
             description,
-            workspace
+            role_required,
+            workspace,
         )
         .fetch_one(pool)
         .await?;
@@ -52,10 +55,23 @@ impl FolderRepo {
         Ok(folder)
     }
 
-    pub async fn update(id: Uuid, title: &str, description: &str, pool: &PgPool) -> Result<Folder> {
-        let folder = sqlx::query_file_as!(Folder, "sql/folders/update.sql", id, title, description)
-            .fetch_one(pool)
-            .await?;
+    pub async fn update(
+        id: Uuid,
+        title: &str,
+        description: &str,
+        role_required: &str,
+        pool: &PgPool,
+    ) -> Result<Folder> {
+        let folder = sqlx::query_file_as!(
+            Folder,
+            "sql/folders/update.sql",
+            id,
+            title,
+            description,
+            role_required,
+        )
+        .fetch_one(pool)
+        .await?;
 
         Ok(folder)
     }
@@ -77,6 +93,7 @@ impl FolderRepoFake {
     pub async fn create(
         title: &str,
         description: &str,
+        role_required: &str,
         workspace: Uuid,
         _pool: &PgPool,
     ) -> Result<Folder> {
@@ -85,6 +102,7 @@ impl FolderRepoFake {
             title: title.to_string(),
             workspace,
             description: description.to_string(),
+            role_required: role_required.to_string(),
         };
         Ok(folder)
     }
@@ -99,6 +117,7 @@ impl FolderRepoFake {
             title: "fake folder".into(),
             workspace: Uuid::new_v4(),
             description: "fake folder for testing".into(),
+            role_required: "PLATFORM_MEMBER".into(),
         };
         Ok(folder)
     }
@@ -107,6 +126,7 @@ impl FolderRepoFake {
         id: Uuid,
         title: &str,
         description: &str,
+        role_required: &str,
         _pool: &PgPool,
     ) -> Result<Folder> {
         let folder = Folder {
@@ -114,6 +134,7 @@ impl FolderRepoFake {
             title: title.to_string(),
             workspace: Uuid::new_v4(),
             description: description.to_string(),
+            role_required: role_required.to_string(),
         };
         Ok(folder)
     }
@@ -124,6 +145,7 @@ impl FolderRepoFake {
             title: "fake folder".into(),
             workspace: Uuid::new_v4(),
             description: "fake folder for testing".into(),
+            role_required: "PLATFORM_MEMBER".into(),
         };
         Ok(folder)
     }

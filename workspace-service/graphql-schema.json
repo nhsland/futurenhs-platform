@@ -320,6 +320,22 @@
           {
             "args": [],
             "deprecationReason": null,
+            "description": "The group that can access the folder",
+            "isDeprecated": false,
+            "name": "roleRequired",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RoleRequired",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
             "description": "The workspace that this folder is in",
             "isDeprecated": false,
             "name": "workspace",
@@ -653,20 +669,6 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
-                }
-              },
-              {
-                "defaultValue": null,
-                "description": null,
                 "name": "folder",
                 "type": {
                   "kind": "NON_NULL",
@@ -680,7 +682,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Update folder (returns updated folder",
+            "description": "Update folder (returns updated folder)",
             "isDeprecated": false,
             "name": "updateFolder",
             "type": {
@@ -711,7 +713,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Delete folder (returns deleted folder",
+            "description": "Delete folder (returns deleted folder)",
             "isDeprecated": false,
             "name": "deleteFolder",
             "type": {
@@ -1117,6 +1119,20 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "roleRequired",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RoleRequired",
                 "ofType": null
               }
             }
@@ -1551,6 +1567,29 @@
         "possibleTypes": null
       },
       {
+        "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "PLATFORM_MEMBER"
+          },
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "WORKSPACE_MEMBER"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "RoleRequired",
+        "possibleTypes": null
+      },
+      {
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
         "enumValues": null,
         "fields": null,
@@ -1565,6 +1604,20 @@
         "enumValues": null,
         "fields": null,
         "inputFields": [
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
           {
             "defaultValue": null,
             "description": null,
@@ -1589,6 +1642,20 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "roleRequired",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RoleRequired",
                 "ofType": null
               }
             }
