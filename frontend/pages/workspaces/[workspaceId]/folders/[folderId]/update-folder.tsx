@@ -14,11 +14,13 @@ import { Navigation } from "../../../../../components/Navigation";
 import { PageLayout } from "../../../../../components/PageLayout";
 import { Permissions } from "../../../../../components/Permissions";
 import { Textarea } from "../../../../../components/Textarea";
+import { User } from "../../../../../lib/auth";
 import {
   useUpdateFolderMutation,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
   RoleRequired,
+  useGetWorkspaceMembershipQuery,
 } from "../../../../../lib/generated/graphql";
 import { useMaxLengthHelper } from "../../../../../lib/useMaxLengthHelper";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
@@ -58,7 +60,11 @@ interface FolderInputs {
   server?: never;
 }
 
-const UpdateFolder: NextPage = () => {
+interface InitialProps {
+  user: User | undefined;
+}
+
+const UpdateFolder: NextPage<InitialProps> = () => {
   const router = useRouter();
   const { workspaceId, folderId } = router.query;
 
@@ -75,6 +81,14 @@ const UpdateFolder: NextPage = () => {
   });
 
   const [, updateFolder] = useUpdateFolderMutation();
+
+  const [returnedUser] = useGetWorkspaceMembershipQuery({
+    variables: {
+      workspaceId,
+    },
+  });
+
+  console.log(returnedUser);
 
   const titleMaxLength = useMaxLengthHelper("Title", 100);
   const descriptionMaxLength = useMaxLengthHelper("Description", 250);

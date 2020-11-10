@@ -2,10 +2,9 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use crate::db;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use sqlx::{types::Uuid, PgPool};
 use std::fmt::Display;
-
 #[derive(Clone)]
 pub struct Workspace {
     pub id: Uuid,
@@ -123,6 +122,21 @@ impl WorkspaceRepo {
         }
     }
 
+    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<db::User> {
+        match db::UserRepo::find_by_id(&user_id, pool).await? {
+            Some(user) => {
+                let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
+                db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
+                Ok(user)
+            }
+            None => Err(anyhow!(
+                "User {} is not a member of workspace {}",
+                user_id,
+                workspace_id
+            )),
+        }
+    }
+
     pub async fn change_workspace_membership(
         workspace_id: Uuid,
         user_id: Uuid,
@@ -218,6 +232,21 @@ impl WorkspaceRepoFake {
             members: Uuid::new_v4(),
         };
         Ok(workspace)
+    }
+
+    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<db::User> {
+        match db::UserRepo::find_by_id(&user_id, pool).await? {
+            Some(user) => {
+                let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+                db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
+                Ok(user)
+            }
+            None => Err(anyhow!(
+                "User {} is not a member of workspace {}",
+                user_id,
+                workspace_id
+            )),
+        }
     }
 
     pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {

@@ -108,6 +108,12 @@ struct UpdateWorkspace {
 }
 
 #[derive(InputObject)]
+struct GetMembership {
+    workspace_id: ID,
+    user_id: ID,
+}
+
+#[derive(InputObject)]
 struct MembershipChange {
     workspace: ID,
     user: ID,
@@ -137,6 +143,25 @@ impl WorkspacesQuery {
         let id = Uuid::parse_str(id.as_str())?;
         let workspace = WorkspaceRepo::find_by_id(id, pool).await?;
         Ok(workspace.into())
+    }
+
+    // Checks workspace permissions for a given user ID and return the user if valid
+    async fn get_workspace_membership(
+        &self,
+        context: &Context<'_>,
+        workspace_id: ID,
+    ) -> FieldResult<User> {
+        let requesting_user = context.data()?;
+        let pool = context.data()?;
+        let event_client: &EventClient = context.data()?;
+
+        get_workspace_membership(
+            workspace_id.try_into()?,
+            requesting_user,
+            pool,
+            event_client,
+        )
+        .await
     }
 }
 
@@ -251,6 +276,21 @@ async fn create_workspace(
         .await?;
 
     Ok(workspace)
+}
+
+async fn get_workspace_membership(
+    workspace_id: Uuid,
+    requesting_user: &RequestingUser,
+    pool: &PgPool,
+    event_client: &EventClient,
+) -> FieldResult<User> {
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
+
+    let user = WorkspaceRepo::is_member(workspace_id, user.id, pool).await?;
+
+    Ok(user.into())
 }
 
 async fn change_workspace_membership(
