@@ -2,9 +2,11 @@ import React from "react";
 
 interface Props {
   className?: string;
+  title?: string;
+  description?: string;
 }
 
-const ChevronTopIcon = ({ className }: Props) => (
+const ChevronTopIcon = ({ className, title, description }: Props) => (
   <div className={`icon-wrapper ${className || ""}`}>
     <svg
       width="24"
@@ -12,7 +14,10 @@ const ChevronTopIcon = ({ className }: Props) => (
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-labelledby="chevronTopIconId chevronTopIconDesc"
     >
+      {title ? <title id="chevronTopIconId">{title}</title> : ""}
+      {description ? <desc id="chevronTopIconDesc">{description}</desc> : ""}
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -48,12 +48,12 @@ const Permissions: React.FC<PermissionsProps> = ({ inputRef }) => {
     <>
       <TitleContainer>
         <h3>Permissions</h3>
-        <button
-          type="button"
-          aria-label="permissions"
-          onClick={() => setExpandedState(!expanded)}
-        >
-          {expanded ? <ChevronTopIcon /> : <ChevronBottomIcon />}
+        <button type="button" onClick={() => setExpandedState(!expanded)}>
+          {expanded ? (
+            <ChevronTopIcon title={`Hide permissions`} />
+          ) : (
+            <ChevronBottomIcon title={`Show permissions`} />
+          )}
         </button>
       </TitleContainer>
       <Description>

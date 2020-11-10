@@ -29,6 +29,19 @@ exports[`<NavSection/> does not render children when closed 1`] = `
   background: inherit;
 }
 
+.c0 .chevron {
+  color: rgb(33,43,50);
+  outline: inherit;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  cursor: pointer;
+}
+
+.c0 .chevron:focus {
+  background-color: rgb(255,235,59);
+  border-bottom: 4px solid rgb(33,43,50);
+}
+
 <section
     class="c0"
   >
@@ -36,11 +49,33 @@ exports[`<NavSection/> does not render children when closed 1`] = `
       <h4>
         Folders
       </h4>
-      <button>
-        <img
-          alt="Show Folders"
-          src="/public/chevronClosed.svg"
-        />
+      <button
+        class="chevron"
+      >
+        <div
+          class="icon-wrapper "
+        >
+          <svg
+            aria-labelledby="chevronBottomIconId chevronBottomIconDesc"
+            fill="none"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title
+              id="chevronBottomIconId"
+            >
+              Show Folders
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M11.5 16.5C11.1 16.5 10.8333 16.3714 10.5667 16.1143L3.9 9.68571C3.36667 9.17143 3.36667 8.4 3.9 7.88571C4.43333 7.37143 5.23333 7.37143 5.76667 7.88571L11.5 13.4143L17.2333 7.88571C17.7667 7.37143 18.5667 7.37143 19.1 7.88571C19.6333 8.4 19.6333 9.17143 19.1 9.68571L12.4333 16.1143C12.1667 16.3714 11.9 16.5 11.5 16.5V16.5Z"
+              fill="#425462"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
       </button>
     </div>
   </section>
@@ -76,6 +111,19 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
   background: inherit;
 }
 
+.c0 .chevron {
+  color: rgb(33,43,50);
+  outline: inherit;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  cursor: pointer;
+}
+
+.c0 .chevron:focus {
+  background-color: rgb(255,235,59);
+  border-bottom: 4px solid rgb(33,43,50);
+}
+
 <section
     class="c0"
   >
@@ -83,11 +131,33 @@ exports[`<NavSection/> shows children when open (default) 1`] = `
       <h4>
         Folders
       </h4>
-      <button>
-        <img
-          alt="Hide Folders"
-          src="/public/chevronOpen.svg"
-        />
+      <button
+        class="chevron"
+      >
+        <div
+          class="icon-wrapper "
+        >
+          <svg
+            aria-labelledby="chevronTopIconId chevronTopIconDesc"
+            fill="none"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title
+              id="chevronTopIconId"
+            >
+              Hide Folders
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M12.5 7.5C12.9 7.5 13.1667 7.62857 13.4333 7.88571L20.1 14.3143C20.6333 14.8286 20.6333 15.6 20.1 16.1143C19.5667 16.6286 18.7667 16.6286 18.2333 16.1143L12.5 10.5857L6.76667 16.1143C6.23333 16.6286 5.43333 16.6286 4.9 16.1143C4.36667 15.6 4.36667 14.8286 4.9 14.3143L11.5667 7.88571C11.8333 7.62857 12.1 7.5 12.5 7.5V7.5Z"
+              fill="#425462"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
       </button>
     </div>
     Look at me! I am children!
