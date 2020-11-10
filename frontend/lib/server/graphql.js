@@ -31,9 +31,14 @@ const getOrCreateUser = async ({ authId, name, emailAddress }) => {
   }
 };
 
-const getFileDownloadUrl = async ({ fileId }) => {
+const getFileDownloadUrl = async ({ authId, fileId }) => {
   const client = createClient({
     url: requireEnv("WORKSPACE_SERVICE_GRAPHQL_ENDPOINT"),
+    fetchOptions: {
+      headers: {
+        "x-user-auth-id": authId,
+      },
+    },
   });
   const query = gql`
     mutation CreateFileDownloadUrl($id: ID!) {
