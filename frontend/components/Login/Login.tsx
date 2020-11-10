@@ -115,7 +115,7 @@ const Login = () => {
   return (
     <LoginContainer>
       <StyledDiv id="api">
-        <form
+        {/* <form
           id="localAccountForm"
           action="JavaScript:void(0);"
           className="localAccount"
@@ -160,7 +160,7 @@ const Login = () => {
               </button>
             </div>
           </div>
-        </form>
+        </form> */}
       </StyledDiv>
       <PasswordDiv>
         <a
