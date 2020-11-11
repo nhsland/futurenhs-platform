@@ -2,7 +2,7 @@
 #![allow(clippy::suspicious_else_formatting)]
 
 use crate::db;
-use anyhow::{anyhow, Context, Result};
+use anyhow::{Context, Result};
 use sqlx::{types::Uuid, PgPool};
 use std::fmt::Display;
 #[derive(Clone)]

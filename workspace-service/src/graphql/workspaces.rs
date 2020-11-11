@@ -298,9 +298,9 @@ async fn get_workspace_membership(
         .await?
         .ok_or_else(|| anyhow::anyhow!("user not found"))?;
 
-    let userRole = WorkspaceRepo::is_member(workspace_id, user.id, pool).await?;
+    let user_role = WorkspaceRepo::is_member(workspace_id, user.id, pool).await?;
 
-    Ok(userRole.into())
+    Ok(user_role.into())
 }
 
 async fn change_workspace_membership(
