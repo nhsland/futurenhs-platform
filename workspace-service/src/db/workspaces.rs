@@ -122,16 +122,16 @@ impl WorkspaceRepo {
         }
     }
 
-    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
+    pub async fn get_user_role(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
         match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
                 let is_member = db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
                 let is_admin = db::TeamRepo::is_member(workspace.admins, user.id, pool).await?;
-                if is_member {
-                    Ok(Role::NonAdmin)
-                } else if is_admin {
+                if is_admin {
                     Ok(Role::Admin)
+                } else if is_member {
+                    Ok(Role::NonAdmin)
                 } else {
                     Ok(Role::NonMember)
                 }
@@ -237,16 +237,16 @@ impl WorkspaceRepoFake {
         Ok(workspace)
     }
 
-    pub async fn is_member(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
+    pub async fn get_user_role(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
         match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
                 let is_member = db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
                 let is_admin = db::TeamRepo::is_member(workspace.admins, user.id, pool).await?;
-                if is_member {
-                    Ok(Role::NonAdmin)
-                } else if is_admin {
+                if is_admin {
                     Ok(Role::Admin)
+                } else if is_member {
+                    Ok(Role::NonAdmin)
                 } else {
                     Ok(Role::NonMember)
                 }

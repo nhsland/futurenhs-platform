@@ -1,5 +1,8 @@
 use super::{db, RequestingUser};
-use async_graphql::{Context, Enum, FieldResult, InputObject, Object, SimpleObject, ID};
+use crate::graphql::workspaces::{get_workspace_membership, WorkspaceMembership};
+use async_graphql::{
+    Context, Enum, Error, ErrorExtensions, FieldResult, InputObject, Object, SimpleObject, ID,
+};
 use fnhs_event_models::{
     Event, EventClient, EventPublisher, FolderCreatedData, FolderDeletedData, FolderUpdatedData,
 };
@@ -7,7 +10,6 @@ use sqlx::PgPool;
 use std::fmt::Display;
 use std::str::FromStr;
 use uuid::Uuid;
-
 #[derive(Enum, Copy, Clone, Eq, PartialEq, Debug)]
 enum RoleRequired {
     PlatformMember,
@@ -107,8 +109,18 @@ impl FoldersQuery {
     async fn get_folder(&self, context: &Context<'_>, id: ID) -> FieldResult<Folder> {
         let pool = context.data()?;
         let id = Uuid::parse_str(&id)?;
+        let requesting_user = context.data()?;
+        let event_client: &EventClient = context.data()?;
         let folder = db::FolderRepo::find_by_id(id, pool).await?;
-        Ok(folder.into())
+        let user_role =
+            get_workspace_membership(folder.workspace, requesting_user, pool, event_client).await?;
+        if folder.role_required == "WORKSPACE_MEMBER" && user_role == WorkspaceMembership::NonMember
+        {
+            Err(Error::new("Insufficient permissions: access denied")
+                .extend_with(|_, e| e.set("details", "ACCESS_DENIED")))
+        } else {
+            Ok(folder.into())
+        }
     }
 }
 

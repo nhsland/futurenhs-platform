@@ -20,7 +20,6 @@ import {
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
   RoleRequired,
-  useGetWorkspaceMembershipQuery,
 } from "../../../../../lib/generated/graphql";
 import { useMaxLengthHelper } from "../../../../../lib/useMaxLengthHelper";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
@@ -78,20 +77,8 @@ const UpdateFolder: NextPage = () => {
 
   const [, updateFolder] = useUpdateFolderMutation();
 
-  const [returnedUserPermissons] = useGetWorkspaceMembershipQuery({
-    variables: {
-      workspaceId,
-    },
-  });
-
-  const userRole = returnedUserPermissons.data?.getWorkspaceMembership;
-  const folderAccessLevel = folder.data?.folder.roleRequired;
-
-  // If the folder only permits workspace members to view, and the user is not
-  // a member of the workspace, then set accessPermitted to false.
   const accessPermitted =
-    folderAccessLevel === RoleRequired.WorkspaceMember &&
-    userRole === "NON_MEMBER"
+    folder.error?.graphQLErrors[0]?.extensions?.details === "ACCESS_DENIED"
       ? false
       : true;
 
