@@ -2,6 +2,8 @@ import React from "react";
 
 import styled from "styled-components";
 
+import { requireEnv } from "../../lib/server/requireEnv";
+
 const StyledDiv = styled.div`
   min-width: 287px;
   background-color: ${({ theme }) => theme.colorNhsukGrey5};
@@ -165,7 +167,7 @@ const Login = () => {
       <PasswordDiv>
         <a
           id="forgotPassword"
-          href="/futurenhsplatform.onmicrosoft.com/B2C_1_logintest/api/CombinedSigninAndSignup/forgotPassword?csrf_token=Q0tQNm51aUlXcXAzamVxNTFuL3c4aVRuWlJQQ3QwSGZ6Yk1KR2YxU1E2WHhUZENta2tZeDVRZzZMbXpMUTF4dHlnQkI3Q2FXWjNNd2tab2ZmWDhYSkE9PTsyMDIwLTA4LTI2VDE0OjA3OjE1Ljg3MjU4MjVaO09lVllQYy8xOW5kdWVnTmhFMEJzMkE9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiJjNTU3YTExOC03MTczLTRkZGQtOGQ5NS0xYTI3YWEzY2U2MjcifQ&amp;p=B2C_1_logintest"
+          href={`${requireEnv("ORIGIN")}/auth/resetpassword`}
         >
           Forgot your password?
         </a>
