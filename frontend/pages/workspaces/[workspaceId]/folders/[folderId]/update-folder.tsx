@@ -6,6 +6,7 @@ import { Input, Form, Button, ErrorMessage } from "nhsuk-react-components";
 import { useForm } from "react-hook-form/dist/index.ie11";
 import styled from "styled-components";
 
+import { Error as ErrorComponent } from "../../../../../components/Error";
 import { Footer } from "../../../../../components/Footer";
 import { H2 } from "../../../../../components/H2";
 import { MainHeading } from "../../../../../components/MainHeading";
@@ -76,6 +77,11 @@ const UpdateFolder: NextPage = () => {
 
   const [, updateFolder] = useUpdateFolderMutation();
 
+  const accessPermitted =
+    folder.error?.graphQLErrors[0]?.extensions?.details === "ACCESS_DENIED"
+      ? false
+      : true;
+
   const titleMaxLength = useMaxLengthHelper("Title", 100);
   const descriptionMaxLength = useMaxLengthHelper("Description", 250);
 
@@ -133,54 +139,70 @@ const UpdateFolder: NextPage = () => {
           activeFolder={folderId}
         />
         <PageContent>
-          <MainHeading>Edit folder</MainHeading>
-          <H2 title="Folder details" />
-          <p> Fields marked with * are mandatory.</p>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <FormField>
-              <Input
-                name="title"
-                onChange={titleMaxLength.onChange}
-                id="title"
-                label="Enter folder title*"
-                hint="The title of your folder should accurately reflect its content or audience"
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Title is required",
-                  },
-                  ...titleMaxLength.validation,
-                })}
-                error={errors.title?.message}
-              />
-              {titleMaxLength.remainingText("title")}
-            </FormField>
+          {accessPermitted ? (
+            <>
+              <MainHeading>Edit folder</MainHeading>
+              <H2 title="Folder details" />
+              <p> Fields marked with * are mandatory.</p>
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <FormField>
+                  <Input
+                    name="title"
+                    onChange={titleMaxLength.onChange}
+                    id="title"
+                    label="Enter folder title*"
+                    hint="The title of your folder should accurately reflect its content or audience"
+                    inputRef={register({
+                      required: {
+                        value: true,
+                        message: "Title is required",
+                      },
+                      ...titleMaxLength.validation,
+                    })}
+                    error={errors.title?.message}
+                  />
+                  {titleMaxLength.remainingText("title")}
+                </FormField>
 
-            <FormField>
-              <Textarea
-                name="description"
-                onChange={descriptionMaxLength.onChange}
-                id="description"
-                label="Description"
-                error={errors.description?.message}
-                hint="This is the description as seen by users"
-                inputRef={register(descriptionMaxLength.validation)}
+                <FormField>
+                  <Textarea
+                    name="description"
+                    onChange={descriptionMaxLength.onChange}
+                    id="description"
+                    label="Description"
+                    error={errors.description?.message}
+                    hint="This is the description as seen by users"
+                    inputRef={register(descriptionMaxLength.validation)}
+                  />
+                  {descriptionMaxLength.remainingText("description")}
+                </FormField>
+                <FormField>
+                  <Permissions inputRef={register()} />
+                </FormField>
+                <Button type="submit" name="submitButton">
+                  Save and complete
+                </Button>
+                <StyledButton
+                  secondary
+                  type="button"
+                  onClick={backToPreviousPage}
+                >
+                  Discard
+                </StyledButton>
+                {errors.server && (
+                  <ErrorMessage>{errors.server.message}</ErrorMessage>
+                )}
+              </Form>
+            </>
+          ) : (
+            <>
+              <ErrorComponent
+                title="You do not have permission to do this."
+                description="Please contact a Workspace Administrator to request access
+                to this folder."
               />
-              {descriptionMaxLength.remainingText("description")}
-            </FormField>
-            <FormField>
-              <Permissions inputRef={register()} />
-            </FormField>
-            <Button type="submit" name="submitButton">
-              Save and complete
-            </Button>
-            <StyledButton secondary type="button" onClick={backToPreviousPage}>
-              Discard
-            </StyledButton>
-            {errors.server && (
-              <ErrorMessage>{errors.server.message}</ErrorMessage>
-            )}
-          </Form>
+            </>
+          )}
         </PageContent>
       </ContentWrapper>
       <Footer />

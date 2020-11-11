@@ -16,3 +16,7 @@ query GetWorkspaceWithMembers($id: ID!) {
     }
   }
 }
+
+query GetWorkspaceMembership($workspaceId: ID!) {
+  getWorkspaceMembership(workspaceId: $workspaceId)
+}

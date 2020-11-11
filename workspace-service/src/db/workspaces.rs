@@ -5,7 +5,6 @@ use crate::db;
 use anyhow::{Context, Result};
 use sqlx::{types::Uuid, PgPool};
 use std::fmt::Display;
-
 #[derive(Clone)]
 pub struct Workspace {
     pub id: Uuid,
@@ -123,6 +122,24 @@ impl WorkspaceRepo {
         }
     }
 
+    pub async fn get_user_role(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
+        match db::UserRepo::find_by_id(&user_id, pool).await? {
+            Some(user) => {
+                let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
+                let is_member = db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
+                let is_admin = db::TeamRepo::is_member(workspace.admins, user.id, pool).await?;
+                if is_admin {
+                    Ok(Role::Admin)
+                } else if is_member {
+                    Ok(Role::NonAdmin)
+                } else {
+                    Ok(Role::NonMember)
+                }
+            }
+            None => Ok(Role::NonMember),
+        }
+    }
+
     pub async fn change_workspace_membership(
         workspace_id: Uuid,
         user_id: Uuid,
@@ -218,6 +235,24 @@ impl WorkspaceRepoFake {
             members: Uuid::new_v4(),
         };
         Ok(workspace)
+    }
+
+    pub async fn get_user_role(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<Role> {
+        match db::UserRepo::find_by_id(&user_id, pool).await? {
+            Some(user) => {
+                let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
+                let is_member = db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
+                let is_admin = db::TeamRepo::is_member(workspace.admins, user.id, pool).await?;
+                if is_admin {
+                    Ok(Role::Admin)
+                } else if is_member {
+                    Ok(Role::NonAdmin)
+                } else {
+                    Ok(Role::NonMember)
+                }
+            }
+            None => Ok(Role::NonMember),
+        }
     }
 
     pub async fn is_admin(workspace_id: Uuid, user_id: Uuid, pool: &PgPool) -> Result<bool> {

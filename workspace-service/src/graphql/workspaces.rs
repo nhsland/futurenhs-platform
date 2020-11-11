@@ -28,7 +28,7 @@ pub enum RoleFilter {
 }
 
 #[derive(Enum, Copy, Clone, Eq, PartialEq)]
-pub enum NewRole {
+pub enum WorkspaceMembership {
     /// Promote to admin
     Admin,
     /// Add as a non-admin member or demote an admin
@@ -37,12 +37,22 @@ pub enum NewRole {
     NonMember,
 }
 
-impl From<NewRole> for Role {
-    fn from(role: NewRole) -> Self {
+impl From<WorkspaceMembership> for Role {
+    fn from(role: WorkspaceMembership) -> Self {
         match role {
-            NewRole::Admin => Role::Admin,
-            NewRole::NonAdmin => Role::NonAdmin,
-            NewRole::NonMember => Role::NonMember,
+            WorkspaceMembership::Admin => Role::Admin,
+            WorkspaceMembership::NonAdmin => Role::NonAdmin,
+            WorkspaceMembership::NonMember => Role::NonMember,
+        }
+    }
+}
+
+impl From<Role> for WorkspaceMembership {
+    fn from(role: Role) -> Self {
+        match role {
+            Role::Admin => WorkspaceMembership::Admin,
+            Role::NonAdmin => WorkspaceMembership::NonAdmin,
+            Role::NonMember => WorkspaceMembership::NonMember,
         }
     }
 }
@@ -111,7 +121,7 @@ struct UpdateWorkspace {
 struct MembershipChange {
     workspace: ID,
     user: ID,
-    new_role: NewRole,
+    new_role: WorkspaceMembership,
 }
 
 #[derive(Default)]
@@ -137,6 +147,25 @@ impl WorkspacesQuery {
         let id = Uuid::parse_str(id.as_str())?;
         let workspace = WorkspaceRepo::find_by_id(id, pool).await?;
         Ok(workspace.into())
+    }
+
+    // Checks workspace permissions for a given user ID and return the user if valid
+    async fn get_workspace_membership(
+        &self,
+        context: &Context<'_>,
+        workspace_id: ID,
+    ) -> FieldResult<WorkspaceMembership> {
+        let requesting_user = context.data()?;
+        let pool = context.data()?;
+        let event_client = context.data()?;
+
+        get_workspace_membership(
+            workspace_id.try_into()?,
+            requesting_user,
+            pool,
+            event_client,
+        )
+        .await
     }
 }
 
@@ -251,6 +280,21 @@ async fn create_workspace(
         .await?;
 
     Ok(workspace)
+}
+
+pub async fn get_workspace_membership(
+    workspace_id: Uuid,
+    requesting_user: &RequestingUser,
+    pool: &PgPool,
+    _event_client: &EventClient,
+) -> FieldResult<WorkspaceMembership> {
+    let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
+        .await?
+        .ok_or_else(|| anyhow::anyhow!("user not found"))?;
+
+    let user_role = WorkspaceRepo::get_user_role(workspace_id, user.id, pool).await?;
+
+    Ok(user_role.into())
 }
 
 async fn change_workspace_membership(

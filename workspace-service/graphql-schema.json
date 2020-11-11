@@ -418,7 +418,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "NewRole",
+                "name": "WorkspaceMembership",
                 "ofType": null
               }
             }
@@ -1159,35 +1159,6 @@
       },
       {
         "description": null,
-        "enumValues": [
-          {
-            "deprecationReason": null,
-            "description": "Promote to admin",
-            "isDeprecated": false,
-            "name": "ADMIN"
-          },
-          {
-            "deprecationReason": null,
-            "description": "Add as a non-admin member or demote an admin",
-            "isDeprecated": false,
-            "name": "NON_ADMIN"
-          },
-          {
-            "deprecationReason": null,
-            "description": "Remove member",
-            "isDeprecated": false,
-            "name": "NON_MEMBER"
-          }
-        ],
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "ENUM",
-        "name": "NewRole",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
         "enumValues": null,
         "fields": null,
         "inputFields": [
@@ -1333,6 +1304,37 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Workspace",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "workspaceId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "getWorkspaceMembership",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "WorkspaceMembership",
                 "ofType": null
               }
             }
@@ -1937,6 +1939,35 @@
         "interfaces": [],
         "kind": "OBJECT",
         "name": "Workspace",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": "Promote to admin",
+            "isDeprecated": false,
+            "name": "ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Add as a non-admin member or demote an admin",
+            "isDeprecated": false,
+            "name": "NON_ADMIN"
+          },
+          {
+            "deprecationReason": null,
+            "description": "Remove member",
+            "isDeprecated": false,
+            "name": "NON_MEMBER"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "WorkspaceMembership",
         "possibleTypes": null
       },
       {
