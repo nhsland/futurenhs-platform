@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { Error as ErrorComponent } from "../../../../../components/Error";
 import {
   IconCell,
   MobileModifiedAtCell,
@@ -26,9 +27,11 @@ import { PageLayout } from "../../../../../components/PageLayout";
 import { MobileList, Table } from "../../../../../components/Table";
 import {
   File,
+  RoleRequired,
   useFilesByFolderQuery,
   useGetFolderByIdQuery,
   useGetWorkspaceByIdQuery,
+  useGetWorkspaceMembershipQuery,
 } from "../../../../../lib/generated/graphql";
 import withUrqlClient from "../../../../../lib/withUrqlClient";
 
@@ -84,6 +87,23 @@ const FolderHomepage: NextPage = () => {
   const [files] = useFilesByFolderQuery({
     variables: { folder: folderId },
   });
+
+  const [returnedUserPermissons] = useGetWorkspaceMembershipQuery({
+    variables: {
+      workspaceId,
+    },
+  });
+
+  const userRole = returnedUserPermissons.data?.getWorkspaceMembership;
+  const folderAccessLevel = folder.data?.folder.roleRequired;
+
+  // If the folder only permits workspace members to view, and the user is not
+  // a member of the workspace, then set accessPermitted to false.
+  const accessPermitted =
+    folderAccessLevel === RoleRequired.WorkspaceMember &&
+    userRole === "NON_MEMBER"
+      ? false
+      : true;
 
   const items: MenuItem[] = [
     {
@@ -157,42 +177,54 @@ const FolderHomepage: NextPage = () => {
             activeFolder={folderId}
           />
           <PageContent>
-            <MainHeading
-              menu={
-                <Menu
-                  background="light"
-                  items={items}
-                  dataCy="folder-options"
-                />
-              }
-            >
-              {folder.data?.folder.title || ""}
-            </MainHeading>
-            <p>{folder.data?.folder.description}</p>
-            {folder.error && <p> Oh no... {folder.error?.message} </p>}
-            {files.error && <p> Oh no... {files.error?.message} </p>}
-            {files.fetching || (!files.data && <p>Loading...</p>)}
-            {files.data && files.data.filesByFolder.length > 0 && (
+            {accessPermitted ? (
               <>
-                <MobileList
-                  tableHeading="Files"
-                  icon={IconCell}
-                  columns={[
-                    { content: mobileTitleCell },
-                    { content: MobileModifiedAtCell },
-                    { content: mobileActionsCell },
-                  ]}
-                  data={files.data.filesByFolder as File[]}
-                />
-                <Table
-                  tableHeading="Files"
-                  icon={IconCell}
-                  columns={[
-                    { heading: "Title", content: titleCell },
-                    { heading: "Last modified", content: ModifiedAtCell },
-                    { heading: "Actions", content: downloadCell },
-                  ]}
-                  data={files.data.filesByFolder as File[]}
+                <MainHeading
+                  menu={
+                    <Menu
+                      background="light"
+                      items={items}
+                      dataCy="folder-options"
+                    />
+                  }
+                >
+                  {folder.data?.folder.title || ""}
+                </MainHeading>
+                <p>{folder.data?.folder.description}</p>
+                {folder.error && <p> Oh no... {folder.error?.message} </p>}
+                {files.error && <p> Oh no... {files.error?.message} </p>}
+                {files.fetching || (!files.data && <p>Loading...</p>)}
+                {files.data && files.data.filesByFolder.length > 0 && (
+                  <>
+                    <MobileList
+                      tableHeading="Files"
+                      icon={IconCell}
+                      columns={[
+                        { content: mobileTitleCell },
+                        { content: MobileModifiedAtCell },
+                        { content: mobileActionsCell },
+                      ]}
+                      data={files.data.filesByFolder as File[]}
+                    />
+                    <Table
+                      tableHeading="Files"
+                      icon={IconCell}
+                      columns={[
+                        { heading: "Title", content: titleCell },
+                        { heading: "Last modified", content: ModifiedAtCell },
+                        { heading: "Actions", content: downloadCell },
+                      ]}
+                      data={files.data.filesByFolder as File[]}
+                    />
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <ErrorComponent
+                  title="You do not have permission to do this."
+                  description="Please contact a Workspace Administrator to request access
+                to this folder."
                 />
               </>
             )}
