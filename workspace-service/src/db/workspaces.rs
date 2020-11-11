@@ -126,8 +126,15 @@ impl WorkspaceRepo {
         match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepo::find_by_id(workspace_id, pool).await?;
-                db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
-                Ok(Role::NonAdmin)
+                let is_member = db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
+                let is_admin = db::TeamRepo::is_member(workspace.admins, user.id, pool).await?;
+                if is_member {
+                    Ok(Role::NonAdmin)
+                } else if is_admin {
+                    Ok(Role::Admin)
+                } else {
+                    Ok(Role::NonMember)
+                }
             }
             None => Ok(Role::NonMember),
         }
@@ -234,8 +241,15 @@ impl WorkspaceRepoFake {
         match db::UserRepo::find_by_id(&user_id, pool).await? {
             Some(user) => {
                 let workspace = WorkspaceRepoFake::find_by_id(workspace_id, pool).await?;
-                db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
-                Ok(Role::NonAdmin)
+                let is_member = db::TeamRepo::is_member(workspace.members, user.id, pool).await?;
+                let is_admin = db::TeamRepo::is_member(workspace.admins, user.id, pool).await?;
+                if is_member {
+                    Ok(Role::NonAdmin)
+                } else if is_admin {
+                    Ok(Role::Admin)
+                } else {
+                    Ok(Role::NonMember)
+                }
             }
             None => Ok(Role::NonMember),
         }

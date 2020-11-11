@@ -163,7 +163,7 @@ impl WorkspacesQuery {
     ) -> FieldResult<NewRole> {
         let requesting_user = context.data()?;
         let pool = context.data()?;
-        let event_client: &EventClient = context.data()?;
+        let event_client = context.data()?;
 
         get_workspace_membership(
             workspace_id.try_into()?,
@@ -292,7 +292,7 @@ async fn get_workspace_membership(
     workspace_id: Uuid,
     requesting_user: &RequestingUser,
     pool: &PgPool,
-    event_client: &EventClient,
+    _event_client: &EventClient,
 ) -> FieldResult<NewRole> {
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
         .await?
