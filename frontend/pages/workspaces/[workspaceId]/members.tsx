@@ -15,6 +15,8 @@ import { ResponsiveTable } from "../../../components/Table";
 import {
   User,
   useGetWorkspaceWithMembersQuery,
+  useChangeWorkspaceMembershipMutation,
+  WorkspaceMembership,
 } from "../../../lib/generated/graphql";
 import withUrqlClient from "../../../lib/withUrqlClient";
 
@@ -58,6 +60,8 @@ const WorkspaceMembersPage: NextPage = () => {
     variables: { id },
   });
 
+  const [, changeMembership] = useChangeWorkspaceMembershipMutation();
+
   const workspaceTitle = (!fetching && data?.workspace.title) || "Loading...";
 
   return (
@@ -100,9 +104,22 @@ const WorkspaceMembersPage: NextPage = () => {
                       },
                       {
                         // eslint-disable-next-line react/display-name
-                        content: () => (
+                        content: (user) => (
                           <>
-                            <Button secondary>Make Member</Button>
+                            <Button
+                              secondary
+                              onClick={() =>
+                                changeMembership({
+                                  input: {
+                                    workspace: id,
+                                    user: user.id,
+                                    newRole: WorkspaceMembership.NonAdmin,
+                                  },
+                                })
+                              }
+                            >
+                              Make Member
+                            </Button>
                           </>
                         ),
                       },
@@ -136,9 +153,22 @@ const WorkspaceMembersPage: NextPage = () => {
                       },
                       {
                         // eslint-disable-next-line react/display-name
-                        content: () => (
+                        content: (user) => (
                           <>
-                            <Button secondary>Make Administrator</Button>
+                            <Button
+                              secondary
+                              onClick={() =>
+                                changeMembership({
+                                  input: {
+                                    workspace: id,
+                                    user: user.id,
+                                    newRole: WorkspaceMembership.Admin,
+                                  },
+                                })
+                              }
+                            >
+                              Make Administrator
+                            </Button>
                           </>
                         ),
                       },
