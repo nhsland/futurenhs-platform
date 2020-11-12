@@ -48,7 +48,11 @@ const Permissions: React.FC<PermissionsProps> = ({ inputRef }) => {
     <>
       <TitleContainer>
         <h3>Permissions</h3>
-        <button type="button" onClick={() => setExpandedState(!expanded)}>
+        <button
+          type="button"
+          data-cy="permissions-button"
+          onClick={() => setExpandedState(!expanded)}
+        >
           {expanded ? (
             <ChevronTopIcon title={`Hide permissions`} />
           ) : (
