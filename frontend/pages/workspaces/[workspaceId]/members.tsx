@@ -2,6 +2,7 @@ import React, { FC } from "react";
 
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { Button } from "nhsuk-react-components";
 import styled from "styled-components";
 
 import { Footer } from "../../../components/Footer";
@@ -75,7 +76,6 @@ const WorkspaceMembersPage: NextPage = () => {
                 <>
                   <CountSentence>
                     Showing all administrators ({data.workspace.admins.length})
-                    {/* FIXME: think about the huge void caused by position:34 in the table below */}
                   </CountSentence>
                   <ResponsiveTable
                     tableHeading="Administrators"
@@ -88,6 +88,23 @@ const WorkspaceMembersPage: NextPage = () => {
                         heading: "Permissions",
                         // eslint-disable-next-line react/display-name
                         content: () => <>Administrator</>,
+                      },
+                      {
+                        // eslint-disable-next-line react/display-name
+                        content: () => (
+                          <>
+                            Administrators can manager folder, members and
+                            workspace details
+                          </>
+                        ),
+                      },
+                      {
+                        // eslint-disable-next-line react/display-name
+                        content: () => (
+                          <>
+                            <Button secondary>Make Member</Button>
+                          </>
+                        ),
                       },
                     ]}
                     data={data.workspace.admins as User[]}
@@ -107,6 +124,23 @@ const WorkspaceMembersPage: NextPage = () => {
                         heading: "Permissions",
                         // eslint-disable-next-line react/display-name
                         content: () => <>Member</>,
+                      },
+                      {
+                        // eslint-disable-next-line react/display-name
+                        content: () => (
+                          <>
+                            Administrators can manager folder, members and
+                            workspace details
+                          </>
+                        ),
+                      },
+                      {
+                        // eslint-disable-next-line react/display-name
+                        content: () => (
+                          <>
+                            <Button secondary>Make Administrator</Button>
+                          </>
+                        ),
                       },
                     ]}
                     data={data.workspace.members as User[]}
