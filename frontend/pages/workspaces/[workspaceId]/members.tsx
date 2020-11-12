@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -61,6 +61,10 @@ const WorkspaceMembersPage: NextPage = () => {
   });
 
   const [, changeMembership] = useChangeWorkspaceMembershipMutation();
+  const [mutatationError, setMutatationError] = useState<{
+    user: User;
+    error?: string;
+  } | null>(null);
 
   const workspaceTitle = (!fetching && data?.workspace.title) || "Loading...";
 
@@ -108,18 +112,26 @@ const WorkspaceMembersPage: NextPage = () => {
                           <>
                             <Button
                               secondary
-                              onClick={() =>
-                                changeMembership({
+                              onClick={async () => {
+                                const result = await changeMembership({
                                   input: {
                                     workspace: id,
                                     user: user.id,
                                     newRole: WorkspaceMembership.NonAdmin,
                                   },
-                                })
-                              }
+                                });
+                                setMutatationError({
+                                  user,
+                                  error: result.error?.message,
+                                });
+                              }}
                             >
                               Make Member
                             </Button>
+                            {mutatationError?.user.id === user.id &&
+                              mutatationError?.error && (
+                                <p> Oh no... {mutatationError.error} </p>
+                              )}
                           </>
                         ),
                       },
@@ -169,6 +181,10 @@ const WorkspaceMembersPage: NextPage = () => {
                             >
                               Make Administrator
                             </Button>
+                            {mutatationError?.user.id === user.id &&
+                              mutatationError?.error && (
+                                <p> Oh no... {mutatationError.error} </p>
+                              )}
                           </>
                         ),
                       },
