@@ -39,6 +39,7 @@ exports[`Permissions renders matching snapshot 1`] = `
       Permissions
     </h3>
     <button
+      data-cy="permissions-button"
       type="button"
     >
       <div
