@@ -40,7 +40,7 @@ test("renders make member button", () => {
     <ThemeProvider theme={theme}>
       <MemberStatusButtonCell
         {...buttonCellProps}
-        newRole={WorkspaceMembership.Admin}
+        newRole={WorkspaceMembership.NonAdmin}
       />
     </ThemeProvider>
   );
