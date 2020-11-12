@@ -120,8 +120,8 @@ const WorkspaceMembersPage: NextPage = () => {
                         // eslint-disable-next-line react/display-name
                         content: () => (
                           <>
-                            Administrators can manager folder, members and
-                            workspace details
+                            Members cannot manage members, folders, and
+                            workspace details.
                           </>
                         ),
                       },
