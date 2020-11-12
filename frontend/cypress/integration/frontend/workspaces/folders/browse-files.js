@@ -22,7 +22,7 @@ describe("Browse files", () => {
           cy.get("td")
             .eq(0)
             .contains("London Region NHS England Safeguarding Annual Review");
-          cy.get("td").eq(1).contains("Oct 6, 2020");
+          cy.get("td").eq(1).contains("6 Oct 2020 17:53");
           cy.get("td").eq(2).contains("a", "Download file");
         });
       cy.get("tr")
@@ -32,7 +32,7 @@ describe("Browse files", () => {
           cy.get("td")
             .eq(0)
             .contains("Midlands & East Region Safeguarding Annual Report");
-          cy.get("td").eq(1).contains("Oct 6, 2020");
+          cy.get("td").eq(1).contains("6 Oct 2020 17:53");
           cy.get("td").eq(2).contains("a", "Download file");
         });
     });
@@ -58,7 +58,7 @@ describe("Browse files", () => {
                 "London Region NHS England Safeguarding Annual Review"
               );
               cy.contains("h4", "Last modified");
-              cy.contains("p", "Oct 6, 2020");
+              cy.contains("p", "6 Oct 2020 17:53");
               cy.contains("a", "Download file");
             });
           cy.get("li")
@@ -70,7 +70,7 @@ describe("Browse files", () => {
                 "Midlands & East Region Safeguarding Annual Report"
               );
               cy.contains("h4", "Last modified");
-              cy.contains("p", "Oct 6, 2020");
+              cy.contains("p", "6 Oct 2020 17:53");
               cy.contains("a", "Download file");
             });
         });
