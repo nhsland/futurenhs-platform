@@ -126,7 +126,7 @@ const WorkspaceMembersPage: NextPage = () => {
                         ),
                       },
                       {
-                        content: makeAdminButtonCell,
+                        content: makeNonAdminButtonCell,
                       },
                     ]}
                     data={data.workspace.admins as User[]}
@@ -157,7 +157,7 @@ const WorkspaceMembersPage: NextPage = () => {
                         ),
                       },
                       {
-                        content: makeNonAdminButtonCell,
+                        content: makeAdminButtonCell,
                       },
                     ]}
                     data={data.workspace.members as User[]}
