@@ -582,6 +582,45 @@ mod test {
     }
 
     #[async_std::test]
+    async fn a_site_admin_can_make_themselves_admin() -> anyhow::Result<()> {
+        use db::TeamRepo;
+
+        let pool = mock_connection_pool()?;
+        let (events, event_client) = mock_event_emitter();
+        let requesting_user = mock_admin_requesting_user().await?;
+        let requesting_user_user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, &pool)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("user not found"))?;
+
+        let workspace = WorkspaceRepo::create("", "", &pool).await?;
+
+        let user_id = requesting_user_user.id;
+        change_workspace_membership(
+            workspace.id,
+            user_id,
+            Role::Admin,
+            &requesting_user,
+            &pool,
+            &event_client,
+        )
+        .await
+        .unwrap();
+
+        let is_admin = TeamRepo::is_member(workspace.admins, user_id, &pool)
+            .await
+            .unwrap();
+        let is_member = TeamRepo::is_member(workspace.members, user_id, &pool)
+            .await
+            .unwrap();
+
+        assert_eq!(is_admin, true, "should be an admin");
+        assert_eq!(is_member, true, "should be a member");
+        assert_eq!(events.try_iter().count(), 1);
+
+        Ok(())
+    }
+
+    #[async_std::test]
     async fn a_workspace_admin_can_add_another_user_as_admin() -> anyhow::Result<()> {
         use db::TeamRepo;
 
