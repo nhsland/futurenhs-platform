@@ -317,7 +317,7 @@ async fn change_workspace_membership(
         .into());
     }
 
-    if user.id == user_id {
+    if !user.is_platform_admin && user.id == user_id {
         return Err(anyhow::anyhow!(
             "user with auth_id {} cannot demote themselves to {}",
             user.auth_id,
