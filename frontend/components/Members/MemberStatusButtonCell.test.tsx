@@ -18,8 +18,8 @@ const user = {
 const buttonCellProps = {
   workspaceId: "id",
   changeMembership: (() => {}) as any,
-  mutatationError: null,
-  setMutatationError: (() => {}) as any,
+  mutationError: null,
+  setMutationError: (() => {}) as any,
   user,
   newRole: WorkspaceMembership.Admin,
 };
@@ -54,7 +54,7 @@ test("renders error message when user matches one in error", () => {
       <MemberStatusButtonCell
         {...buttonCellProps}
         newRole={WorkspaceMembership.Admin}
-        mutatationError={{ user, error: "something went wrong" }}
+        mutationError={{ user, error: "something went wrong" }}
       />
     </ThemeProvider>
   );
@@ -68,7 +68,7 @@ test("renders no error message when user does not match error", () => {
       <MemberStatusButtonCell
         {...buttonCellProps}
         newRole={WorkspaceMembership.Admin}
-        mutatationError={{
+        mutationError={{
           user: { ...user, id: "someone-else" },
           error: "something went wrong",
         }}

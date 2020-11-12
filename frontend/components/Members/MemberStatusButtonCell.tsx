@@ -28,8 +28,8 @@ type ButtonCellProps = {
       | undefined,
     context?: Partial<OperationContext> | undefined
   ) => Promise<OperationResult<ChangeWorkspaceMembershipMutation>>;
-  mutatationError: MutationError;
-  setMutatationError: React.Dispatch<React.SetStateAction<MutationError>>;
+  mutationError: MutationError;
+  setMutationError: React.Dispatch<React.SetStateAction<MutationError>>;
 };
 
 export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
@@ -37,8 +37,8 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
   workspaceId,
   newRole,
   changeMembership,
-  setMutatationError,
-  mutatationError,
+  setMutationError,
+  mutationError,
 }) => (
   <>
     <Button
@@ -51,7 +51,7 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
             newRole,
           },
         });
-        setMutatationError({
+        setMutationError({
           user,
           error: result.error?.message,
         });
@@ -61,8 +61,8 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
         ? "Make Administrator"
         : "Make Member"}
     </Button>
-    {mutatationError?.user.id === user.id && mutatationError?.error && (
-      <p> Oh no... {mutatationError.error} </p>
+    {mutationError?.user.id === user.id && mutationError?.error && (
+      <p> Oh no... {mutationError.error} </p>
     )}
   </>
 );

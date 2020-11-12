@@ -61,7 +61,7 @@ const WorkspaceMembersPage: NextPage = () => {
   });
 
   const [, changeMembership] = useChangeWorkspaceMembershipMutation();
-  const [mutatationError, setMutatationError] = useState<{
+  const [mutationError, setMutationError] = useState<{
     user: User;
     error?: string;
   } | null>(null);
@@ -69,8 +69,8 @@ const WorkspaceMembersPage: NextPage = () => {
   const buttonCellProps = {
     workspaceId: id,
     changeMembership,
-    mutatationError,
-    setMutatationError,
+    mutationError,
+    setMutationError,
   };
   const makeAdminButtonCell = (user: User) =>
     MemberStatusButtonCell({
@@ -120,8 +120,8 @@ const WorkspaceMembersPage: NextPage = () => {
                         // eslint-disable-next-line react/display-name
                         content: () => (
                           <>
-                            Members cannot manage members, folders, and
-                            workspace details.
+                            Administrators can manager folder, members and
+                            workspace details
                           </>
                         ),
                       },
