@@ -34,7 +34,7 @@ exports[`renders make member button 1`] = `
     class="nhsuk-button nhsuk-button--secondary"
     type="submit"
   >
-    Make Administrator
+    Make Member
   </button>
 </DocumentFragment>
 `;
