@@ -201,6 +201,7 @@ async fn create_folder(
                 user_id: user.id.to_string(),
                 title: folder.title.clone(),
                 description: folder.description.clone(),
+                role_required: folder.role_required.to_string(),
             },
         )])
         .await?;
@@ -235,6 +236,7 @@ async fn update_folder(
                 title: updated_folder.title.to_string(),
                 description: updated_folder.description.to_string(),
                 user_id: user.id.to_string(),
+                role_required: updated_folder.role_required.to_string(),
             },
         )])
         .await?;
