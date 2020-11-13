@@ -4,6 +4,7 @@ import { format, parseISO } from "date-fns";
 import Link from "next/link";
 import styled from "styled-components";
 
+import { EmailLink } from "../../components/EmailLink";
 import { H2 } from "../../components/H2";
 import { FileIcon } from "../../components/Icon";
 import { MobileList } from "../../components/Table";
@@ -69,13 +70,7 @@ const FileInformation = ({ workspaceId }: Props) => {
   const mobileEmailCell: FC<FileVersion> = ({ emailAddress }) => (
     <>
       <h4>Modified by</h4>
-      <a
-        href={`mailto:${encodeURI(emailAddress)}`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {emailAddress}
-      </a>
+      <EmailLink emailAddress={emailAddress} />
     </>
   );
 
