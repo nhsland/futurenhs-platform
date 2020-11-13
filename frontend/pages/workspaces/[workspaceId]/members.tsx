@@ -102,7 +102,7 @@ const WorkspaceMembersPage: NextPage = () => {
                   <ResponsiveTable
                     tableHeading="Administrators"
                     columns={[
-                      { heading: "Name of user", content: nameCell },
+                      { heading: "Name of User", content: nameCell },
                       { heading: "Email", content: emailAddressCell },
                     ]}
                     extraDetails={[
