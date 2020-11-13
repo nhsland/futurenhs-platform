@@ -58,7 +58,6 @@ interface Props {
 
 const FileInformation = ({ workspaceId }: Props) => {
   const previousVersions = fileVersions.slice(0, fileVersions.length - 1);
-  const previousVersionsNumber = fileVersions.length - 1;
   const mobileTitleCell: FC<FileVersion> = ({ title }) => (
     <MobileTitle>{title}</MobileTitle>
   );
@@ -98,7 +97,7 @@ const FileInformation = ({ workspaceId }: Props) => {
       <H2 title="File information" />
       <h3>Contents</h3>
       <FileInfoLinks>
-        <a>&#8212; {`Versions (${previousVersionsNumber}`})</a>
+        <a>&#8212; {`Versions (${previousVersions.length}`})</a>
       </FileInfoLinks>
 
       <MobileList
