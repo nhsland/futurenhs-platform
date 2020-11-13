@@ -100,7 +100,8 @@ impl FoldersQuery {
         let event_client: &EventClient = context.data()?;
         let folders = db::FolderRepo::find_by_workspace(workspace, pool).await?;
         let user_role =
-            get_workspace_membership(workspace, requesting_user, pool, event_client).await?;
+            requesting_user_workspace_rights(workspace, requesting_user, pool, event_client)
+                .await?;
         Ok(folders
             .into_iter()
             .map(Into::into)
