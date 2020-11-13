@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FileInformation renders matching snapshot when not active 1`] = `
+exports[`FileInformation renders as expected 1`] = `
 <DocumentFragment>
   @media (min-width:641px) {
 
@@ -174,7 +174,7 @@ exports[`FileInformation renders matching snapshot when not active 1`] = `
               Modified on
             </h4>
             <p>
-              11 Oct 2020 11:53
+              11 Oct 2020 10:53
             </p>
           </div>
         </div>

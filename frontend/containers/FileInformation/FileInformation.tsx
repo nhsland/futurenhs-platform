@@ -12,19 +12,19 @@ const fileVersions = [
   {
     id: "e92f20cb-58b0-464b-bbb3-7627c4b21628",
     title: "Version 1",
-    createdAt: "2020-10-11 10:53:58.696734+00",
+    createdAt: "2020-10-11 10:53:58.696734",
     emailAddress: "email@address.com",
   },
   {
     id: "55f4166f-af41-4513-a2aa-3b46519fb44e",
     title: "Version 2",
-    createdAt: "2020-11-11 11:54:44.376148+00",
+    createdAt: "2020-11-11 11:54:44.376148",
     emailAddress: "correct-grammar@address.com",
   },
   {
     id: "55f4166f-af41-4513-a2aa-3b46519fb44e",
     title: "Version 3",
-    createdAt: "2020-12-11 19:54:44.376148+00",
+    createdAt: "2020-12-11 19:54:44.376148",
     emailAddress: "perfectionist@address.com",
   },
 ];
