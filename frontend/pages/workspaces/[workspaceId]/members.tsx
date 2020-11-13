@@ -18,6 +18,7 @@ import {
   useGetWorkspaceWithMembersQuery,
   useChangeWorkspaceMembershipMutation,
   WorkspaceMembership,
+  useRequestingUserWorkspaceRightsQuery,
 } from "../../../lib/generated/graphql";
 import withUrqlClient from "../../../lib/withUrqlClient";
 
@@ -55,6 +56,15 @@ const WorkspaceMembersPage: NextPage = () => {
     variables: { id },
   });
 
+  const [workspaceRights] = useRequestingUserWorkspaceRightsQuery({
+    variables: { workspaceId: id },
+  });
+
+  const isAdmin =
+    workspaceRights.data?.requestingUserWorkspaceRights === "ADMIN"
+      ? true
+      : false;
+
   const [, changeMembership] = useChangeWorkspaceMembershipMutation();
   const [mutationError, setMutationError] = useState<{
     user: User;
@@ -66,18 +76,23 @@ const WorkspaceMembersPage: NextPage = () => {
     changeMembership,
     mutationError,
     setMutationError,
+    isAdmin,
   };
+
   const makeAdminButtonCell = (user: User) =>
     MemberStatusButtonCell({
       ...buttonCellProps,
       user,
       newRole: WorkspaceMembership.Admin,
+      isAdmin,
     });
+
   const makeNonAdminButtonCell = (user: User) =>
     MemberStatusButtonCell({
       ...buttonCellProps,
       user,
       newRole: WorkspaceMembership.NonAdmin,
+      isAdmin,
     });
 
   const workspaceTitle = (!fetching && data?.workspace.title) || "Loading...";
