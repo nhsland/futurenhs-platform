@@ -5,6 +5,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { H2 } from "../../components/H2";
+import { FileIcon } from "../../components/Icon";
 import { MobileList } from "../../components/Table";
 
 // Hardcoded data until backend is done.
@@ -14,18 +15,21 @@ const fileVersions = [
     title: "Version 1",
     createdAt: "2020-10-11 10:53:58.696734",
     emailAddress: "email@address.com",
+    fileType: "csv",
   },
   {
     id: "55f4166f-af41-4513-a2aa-3b46519fb44e",
     title: "Version 2",
     createdAt: "2020-11-11 11:54:44.376148",
     emailAddress: "correct-grammar@address.com",
+    fileType: "csv",
   },
   {
     id: "55f4166f-af41-4513-a2aa-3b46519fb44e",
     title: "Version 3",
     createdAt: "2020-12-11 19:54:44.376148",
     emailAddress: "perfectionist@address.com",
+    fileType: "csv",
   },
 ];
 
@@ -38,6 +42,7 @@ interface FileVersion {
   title: string;
   createdAt: string;
   emailAddress: string;
+  fileType: string;
 }
 
 const MobileTitle = styled.h3`
@@ -56,6 +61,10 @@ const FileInformation = ({ workspaceId }: Props) => {
   const previousVersionsNumber = fileVersions.length - 1;
   const mobileTitleCell: FC<FileVersion> = ({ title }) => (
     <MobileTitle>{title}</MobileTitle>
+  );
+
+  const IconCell: FC<FileVersion> = ({ fileType }) => (
+    <FileIcon fileType={fileType} />
   );
 
   const mobileEmailCell: FC<FileVersion> = ({ emailAddress }) => (
@@ -93,6 +102,7 @@ const FileInformation = ({ workspaceId }: Props) => {
       </FileInfoLinks>
 
       <MobileList
+        icon={IconCell}
         tableHeading="Previous versions"
         columns={[
           { content: mobileTitleCell },
