@@ -149,8 +149,9 @@ impl WorkspacesQuery {
         Ok(workspace.into())
     }
 
-    // Checks workspace permissions for a given user ID and return the user if valid
-    async fn get_workspace_membership(
+    // Returns the requesting user's rights for a particular workspace.
+    // Returns ADMIN if the user is_platform_admin.
+    async fn requesting_user_workspace_rights(
         &self,
         context: &Context<'_>,
         workspace_id: ID,
@@ -159,7 +160,7 @@ impl WorkspacesQuery {
         let pool = context.data()?;
         let event_client = context.data()?;
 
-        get_workspace_membership(
+        requesting_user_workspace_rights(
             workspace_id.try_into()?,
             requesting_user,
             pool,
@@ -282,7 +283,7 @@ async fn create_workspace(
     Ok(workspace)
 }
 
-pub async fn get_workspace_membership(
+pub async fn requesting_user_workspace_rights(
     workspace_id: Uuid,
     requesting_user: &RequestingUser,
     pool: &PgPool,
@@ -291,6 +292,10 @@ pub async fn get_workspace_membership(
     let user = db::UserRepo::find_by_auth_id(&requesting_user.auth_id, pool)
         .await?
         .ok_or_else(|| anyhow::anyhow!("user not found"))?;
+
+    if user.is_platform_admin {
+        return Ok(WorkspaceMembership::Admin);
+    }
 
     let user_role = WorkspaceRepo::get_user_role(workspace_id, user.id, pool).await?;
 

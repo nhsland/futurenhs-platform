@@ -1328,7 +1328,7 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "getWorkspaceMembership",
+            "name": "requestingUserWorkspaceRights",
             "type": {
               "kind": "NON_NULL",
               "name": null,
