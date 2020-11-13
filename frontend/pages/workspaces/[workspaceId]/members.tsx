@@ -1,13 +1,13 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Button } from "nhsuk-react-components";
 import styled from "styled-components";
 
 import { Footer } from "../../../components/Footer";
 import { Head } from "../../../components/Head";
 import { MainHeading } from "../../../components/MainHeading";
+import { MemberStatusButtonCell } from "../../../components/Members";
 import { NavHeader } from "../../../components/NavHeader";
 import { Navigation } from "../../../components/Navigation";
 import { PageLayout } from "../../../components/PageLayout";
@@ -15,6 +15,8 @@ import { ResponsiveTable } from "../../../components/Table";
 import {
   User,
   useGetWorkspaceWithMembersQuery,
+  useChangeWorkspaceMembershipMutation,
+  WorkspaceMembership,
 } from "../../../lib/generated/graphql";
 import withUrqlClient from "../../../lib/withUrqlClient";
 
@@ -58,6 +60,31 @@ const WorkspaceMembersPage: NextPage = () => {
     variables: { id },
   });
 
+  const [, changeMembership] = useChangeWorkspaceMembershipMutation();
+  const [mutationError, setMutationError] = useState<{
+    user: User;
+    error?: string;
+  } | null>(null);
+
+  const buttonCellProps = {
+    workspaceId: id,
+    changeMembership,
+    mutationError,
+    setMutationError,
+  };
+  const makeAdminButtonCell = (user: User) =>
+    MemberStatusButtonCell({
+      ...buttonCellProps,
+      user,
+      newRole: WorkspaceMembership.Admin,
+    });
+  const makeNonAdminButtonCell = (user: User) =>
+    MemberStatusButtonCell({
+      ...buttonCellProps,
+      user,
+      newRole: WorkspaceMembership.NonAdmin,
+    });
+
   const workspaceTitle = (!fetching && data?.workspace.title) || "Loading...";
 
   return (
@@ -99,12 +126,7 @@ const WorkspaceMembersPage: NextPage = () => {
                         ),
                       },
                       {
-                        // eslint-disable-next-line react/display-name
-                        content: () => (
-                          <>
-                            <Button secondary>Make Member</Button>
-                          </>
-                        ),
+                        content: makeNonAdminButtonCell,
                       },
                     ]}
                     data={data.workspace.admins as User[]}
@@ -135,12 +157,7 @@ const WorkspaceMembersPage: NextPage = () => {
                         ),
                       },
                       {
-                        // eslint-disable-next-line react/display-name
-                        content: () => (
-                          <>
-                            <Button secondary>Make Administrator</Button>
-                          </>
-                        ),
+                        content: makeAdminButtonCell,
                       },
                     ]}
                     data={data.workspace.members as User[]}

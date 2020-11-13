@@ -20,3 +20,18 @@ query GetWorkspaceWithMembers($id: ID!) {
 query GetWorkspaceMembership($workspaceId: ID!) {
   getWorkspaceMembership(workspaceId: $workspaceId)
 }
+
+mutation ChangeWorkspaceMembership($input: MembershipChange!) {
+  changeWorkspaceMembership(input: $input) {
+    id
+    title
+    admins: members(filter: ADMIN) {
+      name
+      id
+    }
+    members: members(filter: NON_ADMIN) {
+      name
+      id
+    }
+  }
+}
