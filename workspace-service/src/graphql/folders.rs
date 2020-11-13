@@ -99,25 +99,14 @@ impl FoldersQuery {
         let requesting_user = context.data()?;
         let event_client: &EventClient = context.data()?;
         let folders = db::FolderRepo::find_by_workspace(workspace, pool).await?;
-        let first_folder = folders.first().unwrap();
-        let user_role = get_workspace_membership(
-            first_folder.workspace.clone(),
-            requesting_user,
-            pool,
-            event_client,
-        )
-        .await?;
+        let user_role =
+            get_workspace_membership(workspace, requesting_user, pool, event_client).await?;
         Ok(folders
             .into_iter()
             .map(Into::into)
             .filter(|folder: &Folder| {
-                if folder.role_required == RoleRequired::WorkspaceMember
-                    && user_role == WorkspaceMembership::NonMember
-                {
-                    false
-                } else {
-                    true
-                }
+                !(folder.role_required == RoleRequired::WorkspaceMember
+                    && user_role == WorkspaceMembership::NonMember)
             })
             .collect())
     }
