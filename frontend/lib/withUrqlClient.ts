@@ -175,7 +175,7 @@ export default function withUrqlClient(
         ? {
             headers: {
               // @ts-ignore
-              "x-user-auth-id": ctx?.req?.user.authId,
+              "x-user-auth-id": ctx?.req?.user?.authId,
             },
           }
         : undefined;
