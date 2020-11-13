@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 import { Button } from "nhsuk-react-components";
-import { OperationContext, OperationResult } from "urql";
+import { CombinedError, OperationContext, OperationResult } from "urql";
 
 import {
   User,
@@ -13,7 +13,7 @@ import {
 
 type MutationError = {
   user: User;
-  error?: string | undefined;
+  error?: CombinedError;
 } | null;
 
 type ButtonCellProps = {
@@ -56,7 +56,7 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
           });
           setMutationError({
             user,
-            error: result.error?.message,
+            error: result.error,
           });
         }}
       >
@@ -65,8 +65,8 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
           : "Make Member"}
       </Button>
     )}
-    {mutationError?.user.id === user.id && mutationError?.error && (
-      <p> Oh no... {mutationError.error} </p>
+    {mutationError?.user.id === user.id && mutationError?.error?.message && (
+      <p> Oh no... {mutationError.error?.message} </p>
     )}
   </>
 );

@@ -21,6 +21,7 @@ import {
   useRequestingUserWorkspaceRightsQuery,
 } from "../../../lib/generated/graphql";
 import withUrqlClient from "../../../lib/withUrqlClient";
+import { CombinedError } from "urql";
 
 const PageContent = styled.section`
   flex-grow: 3;
@@ -68,7 +69,7 @@ const WorkspaceMembersPage: NextPage = () => {
   const [, changeMembership] = useChangeWorkspaceMembershipMutation();
   const [mutationError, setMutationError] = useState<{
     user: User;
-    error?: string;
+    error?: CombinedError;
   } | null>(null);
 
   const buttonCellProps = {
