@@ -3,6 +3,7 @@ import React, { FC, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { CombinedError } from "urql";
 
 import { EmailLink } from "../../../components/EmailLink";
 import { Footer } from "../../../components/Footer";
@@ -21,7 +22,6 @@ import {
   useRequestingUserWorkspaceRightsQuery,
 } from "../../../lib/generated/graphql";
 import withUrqlClient from "../../../lib/withUrqlClient";
-import { CombinedError } from "urql";
 
 const PageContent = styled.section`
   flex-grow: 3;
