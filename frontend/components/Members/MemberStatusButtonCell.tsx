@@ -45,7 +45,6 @@ const StyledButton = styled(Button)`
 const unpackError = (
   error: CombinedError
 ): { problem: string; suggestion: string } => {
-  console.log(error);
   const extensions = error.graphQLErrors[0]?.extensions;
 
   if (!extensions || !extensions.problem || !extensions.suggestion) {
