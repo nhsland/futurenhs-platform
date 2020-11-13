@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 import { EmailLink } from "../../components/EmailLink";
 import { H2 } from "../../components/H2";
-import { FileIcon } from "../../components/Icon";
-import { MobileList } from "../../components/Table";
+import { DownloadIcon, FileIcon } from "../../components/Icon";
+import { MobileList, Table } from "../../components/Table";
 
 // Hardcoded data until backend is done.
 const fileVersions = [
@@ -53,6 +53,10 @@ const MobileTitle = styled.h3`
   padding-bottom: 20px;
 `;
 
+const CreatedDate = styled.span`
+  color: ${({ theme }) => theme.colorNhsukGrey1};
+`;
+
 interface Props {
   workspaceId: string;
 }
@@ -87,6 +91,22 @@ const FileInformation = ({ workspaceId }: Props) => {
     </Link>
   );
 
+  const desktopTitleCell: FC<FileVersion> = ({ title }) => <>{title}</>;
+
+  const desktopCreatedAtCell: FC<FileVersion> = ({ createdAt }) => (
+    <CreatedDate>{format(parseISO(createdAt), "d LLL yyyy kk:mm")}</CreatedDate>
+  );
+
+  const desktopEmailCell: FC<FileVersion> = ({ emailAddress }) => (
+    <EmailLink emailAddress={emailAddress} />
+  );
+
+  const desktopDownloadCell: FC<FileVersion> = ({ id }) => (
+    <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
+      <DownloadIcon />
+    </Link>
+  );
+
   return (
     <>
       <H2 title="File information" />
@@ -103,6 +123,17 @@ const FileInformation = ({ workspaceId }: Props) => {
           { content: mobileEmailCell },
           { content: mobileCreatedAtCell },
           { content: mobileDownloadCell },
+        ]}
+        data={previousVersions}
+      />
+      <Table
+        icon={IconCell}
+        tableHeading="Previous versions"
+        columns={[
+          { heading: "Title", content: desktopTitleCell },
+          { heading: "Modified by", content: desktopEmailCell },
+          { heading: "Modified on", content: desktopCreatedAtCell },
+          { content: desktopDownloadCell },
         ]}
         data={previousVersions}
       />
