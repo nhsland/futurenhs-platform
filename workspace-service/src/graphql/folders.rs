@@ -96,8 +96,20 @@ impl FoldersQuery {
     ) -> FieldResult<Vec<Folder>> {
         let pool = context.data()?;
         let workspace = Uuid::parse_str(&workspace)?;
+        let requesting_user = context.data()?;
+        let event_client: &EventClient = context.data()?;
         let folders = db::FolderRepo::find_by_workspace(workspace, pool).await?;
-        Ok(folders.into_iter().map(Into::into).collect())
+        let user_role =
+            requesting_user_workspace_rights(workspace, requesting_user, pool, event_client)
+                .await?;
+        Ok(folders
+            .into_iter()
+            .map(Into::into)
+            .filter(|folder: &Folder| {
+                !(folder.role_required == RoleRequired::WorkspaceMember
+                    && user_role == WorkspaceMembership::NonMember)
+            })
+            .collect())
     }
 
     /// Get folder by ID

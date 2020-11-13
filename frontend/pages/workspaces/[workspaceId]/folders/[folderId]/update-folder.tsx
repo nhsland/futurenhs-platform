@@ -139,7 +139,7 @@ const UpdateFolder: NextPage = () => {
           activeFolder={folderId}
         />
         <PageContent>
-          {accessPermitted ? (
+          {accessPermitted && folder.data ? (
             <>
               <MainHeading>Edit folder</MainHeading>
               <H2 title="Folder details" />
