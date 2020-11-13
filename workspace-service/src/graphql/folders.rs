@@ -1,5 +1,5 @@
 use super::{db, RequestingUser};
-use crate::graphql::workspaces::{get_workspace_membership, WorkspaceMembership};
+use crate::graphql::workspaces::{requesting_user_workspace_rights, WorkspaceMembership};
 use async_graphql::{
     Context, Enum, Error, ErrorExtensions, FieldResult, InputObject, Object, SimpleObject, ID,
 };
@@ -123,9 +123,11 @@ impl FoldersQuery {
         let requesting_user = context.data()?;
         let event_client: &EventClient = context.data()?;
         let folder = db::FolderRepo::find_by_id(id, pool).await?;
-        let user_role =
-            get_workspace_membership(folder.workspace, requesting_user, pool, event_client).await?;
-        if folder.role_required == "WORKSPACE_MEMBER" && user_role == WorkspaceMembership::NonMember
+        let user_rights =
+            requesting_user_workspace_rights(folder.workspace, requesting_user, pool, event_client)
+                .await?;
+        if folder.role_required == "WORKSPACE_MEMBER"
+            && user_rights == WorkspaceMembership::NonMember
         {
             Err(Error::new("Insufficient permissions: access denied")
                 .extend_with(|_, e| e.set("details", "ACCESS_DENIED")))

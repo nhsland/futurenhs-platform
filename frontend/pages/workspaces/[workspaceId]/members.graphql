@@ -17,8 +17,8 @@ query GetWorkspaceWithMembers($id: ID!) {
   }
 }
 
-query GetWorkspaceMembership($workspaceId: ID!) {
-  getWorkspaceMembership(workspaceId: $workspaceId)
+query RequestingUserWorkspaceRights($workspaceId: ID!) {
+  requestingUserWorkspaceRights(workspaceId: $workspaceId)
 }
 
 mutation ChangeWorkspaceMembership($input: MembershipChange!) {
