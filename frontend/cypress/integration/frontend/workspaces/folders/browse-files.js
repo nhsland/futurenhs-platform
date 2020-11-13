@@ -88,7 +88,9 @@ describe("Browse files", () => {
           .contains("London Region NHS England Safeguarding Annual Review")
           .click();
       });
-    cy.contains("h1", "London Region NHS England Safeguarding Annual Review");
+    cy.contains("h1", "London Region NHS England Safeguarding Annual Review", {
+      timeout: Cypress.config("pageLoadTimeout"),
+    });
     cy.contains(
       "p",
       "London Region NHS England Safeguarding Annual Review.ppt"
@@ -101,7 +103,7 @@ describe("Browse files", () => {
         cy.get("td")
           .eq(0)
           .contains("London Region NHS England Safeguarding Annual Review");
-        cy.get("td").eq(1).contains("Oct 6, 2020");
+        cy.get("td").eq(1).contains("6 Oct 2020 17:53");
         cy.get("td").eq(2).contains("a", "Download file");
       });
 

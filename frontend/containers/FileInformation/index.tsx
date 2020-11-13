@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { H2 } from "../../components/H2";
 import { MobileList } from "../../components/Table";
 
+// Hardcoded data until backend is done.
 const fileVersions = [
   {
     id: "e92f20cb-58b0-464b-bbb3-7627c4b21628",
