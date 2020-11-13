@@ -1,13 +1,13 @@
 import React from "react";
 
 import { render } from "@testing-library/react";
+import { GraphQLError } from "graphql";
 import { ThemeProvider } from "styled-components";
 import { CombinedError } from "urql";
 
 import theme from "../../lib/fixtures/theme.json";
 import { WorkspaceMembership } from "../../lib/generated/graphql";
 import { MemberStatusButtonCell } from "./MemberStatusButtonCell";
-import { GraphQLError } from "graphql";
 
 const user = {
   id: "asdf",
