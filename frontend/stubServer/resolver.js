@@ -1,3 +1,4 @@
+const changeWorkspaceMembershipResponse = require("../cypress/fixtures/change-workspace-membership-response.json");
 const createFolderResponse = require("../cypress/fixtures/create-folder-graphql-response.json");
 const createWorkspaceResponse = require("../cypress/fixtures/create-workspace-graphql-response.json");
 const deleteFileResponse = require("../cypress/fixtures/delete-file-graphql-response.json");
@@ -10,7 +11,6 @@ const getOrCreateUserResponse = require("../cypress/fixtures/get-or-create-user-
 const membersResponse = require("../cypress/fixtures/members-graphql-response.json");
 const updateFolderResponse = require("../cypress/fixtures/update-folder-graphql-response.json");
 const workspaceResponse = require("../cypress/fixtures/workspace-graphql-response.json");
-
 // Workspace
 const workspacesResolver = {
   workspaces: async () => workspaceResponse.data.workspaces,
@@ -59,6 +59,12 @@ const userMutation = {
   getOrCreateUser: async () => getOrCreateUserResponse.data.getOrCreateUser,
 };
 
+// Members
+const membersMutation = {
+  changeWorkspaceMembership: async () =>
+    changeWorkspaceMembershipResponse.data.changeWorkspaceMembership,
+};
+
 module.exports = (schema) => {
   const federationResolver = {
     _service: async () => ({
@@ -79,6 +85,7 @@ module.exports = (schema) => {
       ...folderMutation,
       ...userMutation,
       ...workspaceMutation,
+      ...membersMutation,
     },
   };
 };
