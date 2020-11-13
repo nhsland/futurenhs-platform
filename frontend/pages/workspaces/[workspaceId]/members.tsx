@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { EmailLink } from "../../../components/EmailLink";
 import { Footer } from "../../../components/Footer";
 import { Head } from "../../../components/Head";
 import { MainHeading } from "../../../components/MainHeading";
@@ -42,13 +43,7 @@ const CountSentence = styled.p`
 
 const nameCell: FC<User> = ({ name }) => <div>{name}</div>;
 const emailAddressCell: FC<User> = ({ emailAddress }) => (
-  <a
-    href={`mailto:${encodeURI(emailAddress)}`}
-    target="_blank"
-    rel="noreferrer"
-  >
-    {emailAddress}
-  </a>
+  <EmailLink emailAddress={emailAddress} />
 );
 
 const WorkspaceMembersPage: NextPage = () => {
