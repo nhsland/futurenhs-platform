@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileInformation renders matching snapshot when not active 1`] = `
+<DocumentFragment>
+  @media (min-width:641px) {
+
+}
+
+@media (min-width:641px) {
+
+}
+
+<h2>
+    File information
+  </h2>
+  @media (min-width:641px) {
+
+}
+
+@media (min-width:641px) {
+
+}
+
+<h3>
+    Contents
+  </h3>
+  .c0 {
+  padding-bottom: 40px;
+}
+
+@media (min-width:641px) {
+
+}
+
+@media (min-width:641px) {
+
+}
+
+<div
+    class="c0"
+  >
+    <a>
+      — Versions (2)
+    </a>
+  </div>
+  .c0 {
+  background-color: #005eb8;
+  color: rgb(255,255,255);
+  display: inline-block;
+  font-size: 1.5rem;
+  line-height: 1.33333;
+  padding: 8px 32px;
+  position: relative;
+  top: 34px;
+}
+
+@media (min-width:641px) {
+
+}
+
+@media (min-width:641px) {
+  .c0 {
+    display: none;
+  }
+}
+
+<h3
+    class="c0"
+  >
+    Previous versions
+  </h3>
+  .c1 {
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgb(216,221,224);
+}
+
+.c2 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.c2 > div {
+  padding-bottom: 10px;
+}
+
+.c2 p,
+.c2 h4 {
+  margin-bottom: 0;
+  font-size: 16px;
+}
+
+.c2 p {
+  color: rgb(76,98,114);
+}
+
+.c2 a {
+  font-size: 16px;
+}
+
+.c0 {
+  padding-top: 20px;
+  padding-left: 12px;
+  padding-right: 16px;
+  background: rgb(240,244,245);
+}
+
+.c3 {
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+@media (min-width:641px) {
+  .c0 {
+    display: none;
+  }
+}
+
+@media (min-width:641px) {
+
+}
+
+<ul
+    class="c0"
+  >
+    <li
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div>
+          <h3
+            class="c3"
+          >
+            Version 1
+          </h3>
+        </div>
+        <div>
+          <h4>
+            Modified by
+          </h4>
+          <a
+            href="mailto:email@address.com"
+            rel="noreferrer"
+            target="_blank"
+          >
+            email@address.com
+          </a>
+        </div>
+        <div>
+          <div>
+            <h4>
+              Modified on
+            </h4>
+            <p>
+              11 Oct 2020 11:53
+            </p>
+          </div>
+        </div>
+        <div>
+          <a
+            href="/workspaces/7cb46d97-beb4-4f48-a527-b7a1b0f9f219/download/e92f20cb-58b0-464b-bbb3-7627c4b21628"
+          >
+            Download file
+          </a>
+        </div>
+      </div>
+    </li>
+    <li
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div>
+          <h3
+            class="c3"
+          >
+            Version 2
+          </h3>
+        </div>
+        <div>
+          <h4>
+            Modified by
+          </h4>
+          <a
+            href="mailto:correct-grammar@address.com"
+            rel="noreferrer"
+            target="_blank"
+          >
+            correct-grammar@address.com
+          </a>
+        </div>
+        <div>
+          <div>
+            <h4>
+              Modified on
+            </h4>
+            <p>
+              11 Nov 2020 11:54
+            </p>
+          </div>
+        </div>
+        <div>
+          <a
+            href="/workspaces/7cb46d97-beb4-4f48-a527-b7a1b0f9f219/download/55f4166f-af41-4513-a2aa-3b46519fb44e"
+          >
+            Download file
+          </a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
+`;

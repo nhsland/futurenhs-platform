@@ -23,7 +23,7 @@ import { NavHeader } from "../../../../../../../components/NavHeader";
 import { Navigation } from "../../../../../../../components/Navigation";
 import { PageLayout } from "../../../../../../../components/PageLayout";
 import { MobileList, Table } from "../../../../../../../components/Table";
-import FileInformation from "../../../../../../../containers/FileInformation";
+import { FileInformation } from "../../../../../../../containers/FileInformation";
 import {
   File,
   useDeleteFileMutation,
