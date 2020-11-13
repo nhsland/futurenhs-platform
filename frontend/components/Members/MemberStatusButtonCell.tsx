@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 
-import { Button } from "nhsuk-react-components";
+import { Button, ErrorMessage } from "nhsuk-react-components";
+import styled from "styled-components";
 import { CombinedError, OperationContext, OperationResult } from "urql";
 
 import {
@@ -33,6 +34,43 @@ type ButtonCellProps = {
   isAdmin: boolean;
 };
 
+const StyledErrorMessage = styled(ErrorMessage)`
+  margin-bottom: 0;
+`;
+
+const StyledButton = styled(Button)`
+  margin-bottom: 20px;
+`;
+
+const unpackError = (
+  error: CombinedError
+): { problem: string; suggestion: string } => {
+  console.log(error);
+  const extensions = error.graphQLErrors[0]?.extensions;
+
+  if (!extensions || !extensions.problem || !extensions.suggestion) {
+    return {
+      problem: "Something went wrong.",
+      suggestion: "Try again.",
+    };
+  }
+  return { problem: extensions.problem, suggestion: extensions.suggestion };
+};
+
+const RenderedError: FC<CombinedError> = (error) => {
+  const { problem, suggestion } = unpackError(error);
+
+  return (
+    <>
+      <StyledErrorMessage>
+        {problem}
+        <br />
+        {suggestion}
+      </StyledErrorMessage>
+    </>
+  );
+};
+
 export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
   user,
   workspaceId,
@@ -44,7 +82,7 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
 }) => (
   <>
     {isAdmin && (
-      <Button
+      <StyledButton
         secondary
         onClick={async () => {
           const result = await changeMembership({
@@ -63,10 +101,10 @@ export const MemberStatusButtonCell: FC<ButtonCellProps> = ({
         {newRole === WorkspaceMembership.Admin
           ? "Make Administrator"
           : "Make Member"}
-      </Button>
+      </StyledButton>
     )}
-    {mutationError?.user.id === user.id && mutationError?.error?.message && (
-      <p> Oh no... {mutationError.error?.message} </p>
+    {mutationError?.user.id === user.id && mutationError?.error && (
+      <RenderedError {...mutationError.error} />
     )}
   </>
 );
