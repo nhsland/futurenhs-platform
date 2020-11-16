@@ -3,7 +3,7 @@ use crate::{
     db::{Role, WorkspaceRepo},
     graphql::{users::User, RequestingUser},
 };
-use async_graphql::{Context, Enum, FieldResult, InputObject, Object, ID};
+use async_graphql::{Context, Enum, ErrorExtensions, FieldResult, InputObject, Object, ID};
 use fnhs_event_models::{
     Event, EventClient, EventPublisher as _, WorkspaceCreatedData, WorkspaceMembershipChangedData,
 };
@@ -319,7 +319,10 @@ async fn change_workspace_membership(
             "user with auth_id {} does not have permission to update workspace membership",
             user.auth_id,
         )
-        .into());
+        .extend_with(|_, extensions| {
+            extensions.set("problem", "You do not have permission to do this.");
+            extensions.set("suggestion", "Please contact a workspace administrator.");
+        }));
     }
 
     if !user.is_platform_admin && user.id == user_id {
@@ -328,7 +331,10 @@ async fn change_workspace_membership(
             user.auth_id,
             role
         )
-        .into());
+        .extend_with(|_, extensions| {
+            extensions.set("problem", "You cannot edit your own permissions.");
+            extensions.set("suggestion", "Please contact another administrator.");
+        }));
     }
 
     let workspace: Workspace =

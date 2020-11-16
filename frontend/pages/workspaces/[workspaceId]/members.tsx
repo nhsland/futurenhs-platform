@@ -3,6 +3,7 @@ import React, { FC, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { CombinedError } from "urql";
 
 import { EmailLink } from "../../../components/EmailLink";
 import { Footer } from "../../../components/Footer";
@@ -68,7 +69,7 @@ const WorkspaceMembersPage: NextPage = () => {
   const [, changeMembership] = useChangeWorkspaceMembershipMutation();
   const [mutationError, setMutationError] = useState<{
     user: User;
-    error?: string;
+    error?: CombinedError;
   } | null>(null);
 
   const buttonCellProps = {
