@@ -130,6 +130,7 @@ const FileInformation = ({ workspaceId }: Props) => {
       />
       <Table
         icon={IconCell}
+        dataCy="file-version-table"
         tableHeading="Previous versions"
         columns={[
           { heading: "Title", content: desktopTitleCell },

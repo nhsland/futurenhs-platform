@@ -96,17 +96,33 @@ describe("Browse files", () => {
       "London Region NHS England Safeguarding Annual Review.ppt"
     );
 
-    cy.get("tr")
-      .eq(1)
-      .within(() => {
-        cy.get("td").eq(0).get(`svg[width="28"]`);
-        cy.get("td")
-          .eq(0)
-          .contains("London Region NHS England Safeguarding Annual Review");
-        cy.get("td").eq(1).contains("6 Oct 2020 17:53");
-        cy.get("td").eq(2).contains("a", "Download file");
-      });
+    cy.get("[data-cy=current-file-table]").within(() => {
+      cy.get("tr")
+        // cy.get(`table[data-cy="current-file-table"`).cy.get("tr")
+        .eq(1)
+        .within(() => {
+          cy.get("td").eq(0).get(`svg[width="28"]`);
+          cy.get("td")
+            .eq(0)
+            .contains("London Region NHS England Safeguarding Annual Review");
+          cy.get("td").eq(1).contains("6 Oct 2020 17:53");
+          cy.get("td").eq(2).contains("a", "Download file");
+        });
 
-    cy.get("tr").should("have.length", 2);
+      cy.get("tr").should("have.length", 2);
+    });
+
+    cy.get("[data-cy=file-version-table]").within(() => {
+      cy.get("tr")
+        .eq(1)
+        .within(() => {
+          cy.get("td").eq(0).get(`svg[width="28"]`);
+          cy.get("td").eq(0).contains("Version 1");
+          cy.get("td").eq(1).contains("email@address.com");
+          cy.get("td").eq(2).contains("11 Oct 2020 10:53");
+        });
+
+      cy.get("tr").should("have.length", 3);
+    });
   });
 });

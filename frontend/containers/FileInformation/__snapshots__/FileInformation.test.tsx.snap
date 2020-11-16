@@ -297,6 +297,20 @@ exports[`FileInformation renders as expected 1`] = `
   background: rgb(240,244,245);
 }
 
+.c0.have-expander table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.c0.have-expander th:first-child {
+  width: 30%;
+}
+
+.c0.have-expander th:last-child {
+  width: 10%;
+}
+
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -317,6 +331,10 @@ tbody tr:hover:not(.c1.withoutBottomBorder) {
 
 .c2 td {
   font-size: 16px;
+}
+
+.c3 a[href^="mailto"] {
+  word-break: break-all;
 }
 
 .c3.withoutBottomBorder {
@@ -357,6 +375,7 @@ tbody tr:hover:not(.c1.withoutBottomBorder) {
       >
         <table
           class="nhsuk-table c1 c2"
+          data-cy="file-version-table"
         >
           <thead
             class="nhsuk-table__head"
@@ -444,24 +463,28 @@ tbody tr:hover:not(.c1.withoutBottomBorder) {
               <td
                 class="nhsuk-table__cell c3"
               >
-                <div
-                  class="icon-wrapper "
+                <a
+                  href="/workspaces/7cb46d97-beb4-4f48-a527-b7a1b0f9f219/download/e92f20cb-58b0-464b-bbb3-7627c4b21628"
                 >
-                  <svg
-                    fill="none"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="icon-wrapper "
                   >
-                    <path
-                      clip-rule="evenodd"
-                      d="M20 19.6923V22H4V19.6923H20ZM13.1443 2V13.3462L16.75 9.8125L18.2955 11.3269L12.1136 17.3846L5.93182 11.3269L7.47727 9.8125L11.083 13.3462V2H13.1443Z"
-                      fill="#005EB8"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                </div>
+                    <svg
+                      fill="none"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M20 19.6923V22H4V19.6923H20ZM13.1443 2V13.3462L16.75 9.8125L18.2955 11.3269L12.1136 17.3846L5.93182 11.3269L7.47727 9.8125L11.083 13.3462V2H13.1443Z"
+                        fill="#005EB8"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </a>
               </td>
             </tr>
             <tr
@@ -517,24 +540,28 @@ tbody tr:hover:not(.c1.withoutBottomBorder) {
               <td
                 class="nhsuk-table__cell c3"
               >
-                <div
-                  class="icon-wrapper "
+                <a
+                  href="/workspaces/7cb46d97-beb4-4f48-a527-b7a1b0f9f219/download/55f4166f-af41-4513-a2aa-3b46519fb44e"
                 >
-                  <svg
-                    fill="none"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="icon-wrapper "
                   >
-                    <path
-                      clip-rule="evenodd"
-                      d="M20 19.6923V22H4V19.6923H20ZM13.1443 2V13.3462L16.75 9.8125L18.2955 11.3269L12.1136 17.3846L5.93182 11.3269L7.47727 9.8125L11.083 13.3462V2H13.1443Z"
-                      fill="#005EB8"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                </div>
+                    <svg
+                      fill="none"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M20 19.6923V22H4V19.6923H20ZM13.1443 2V13.3462L16.75 9.8125L18.2955 11.3269L12.1136 17.3846L5.93182 11.3269L7.47727 9.8125L11.083 13.3462V2H13.1443Z"
+                        fill="#005EB8"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </a>
               </td>
             </tr>
           </tbody>
