@@ -98,7 +98,6 @@ describe("Browse files", () => {
 
     cy.get("[data-cy=current-file-table]").within(() => {
       cy.get("tr")
-        // cy.get(`table[data-cy="current-file-table"`).cy.get("tr")
         .eq(1)
         .within(() => {
           cy.get("td").eq(0).get(`svg[width="28"]`);
