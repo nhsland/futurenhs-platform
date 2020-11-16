@@ -20,16 +20,18 @@ const TableContainer = styled.div`
   `}
   }
 
-  table {
-    table-layout: fixed;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  th:first-child {
-    width: 30%;
-  }
-  th:last-child {
-    width: 10%;
+  &.have-expander {
+    table {
+      table-layout: fixed;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th:first-child {
+      width: 30%;
+    }
+    th:last-child {
+      width: 10%;
+    }
   }
 `;
 
@@ -105,7 +107,11 @@ const TableComponent = <ItemType extends Item>({
 }: Props<ItemType>) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   return (
-    <TableContainer>
+    <TableContainer
+      className={classNames({
+        "have-expander": Boolean(extraDetails),
+      })}
+    >
       <NHSTable.Panel heading={tableHeading}>
         <StyledTable>
           <NHSTable.Head>
