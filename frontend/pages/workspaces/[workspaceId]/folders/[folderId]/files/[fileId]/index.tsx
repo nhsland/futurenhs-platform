@@ -188,6 +188,7 @@ const FileHomepage = () => {
                 />
                 <Table
                   icon={IconCell}
+                  dataCy="current-file-table"
                   columns={[
                     { heading: "Title", content: TitleCell },
                     { heading: "Last modified", content: ModifiedAtCell },

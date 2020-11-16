@@ -4,6 +4,7 @@ import ChevronTopIcon from "./ChevronTopIcon";
 import CrossIcon from "./CrossIcon";
 import DashboardIcon from "./DashboardIcon";
 import DeleteIcon from "./DeleteIcon";
+import DownloadIcon from "./DownloadIcon";
 import EditIcon from "./EditIcon";
 import FileIcon from "./FileIcon";
 import FnhsLogoIcon from "./FnhsLogoIcon";
@@ -29,6 +30,7 @@ export {
   CrossIcon,
   DashboardIcon,
   DeleteIcon,
+  DownloadIcon,
   EditIcon,
   FileIcon,
   FnhsLogoIcon,

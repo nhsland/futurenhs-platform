@@ -96,6 +96,7 @@ interface Props<ItemType extends Item> {
     heading?: string;
     content: (x: ItemType) => ReactNode;
   }>;
+  dataCy?: string;
 }
 
 const TableComponent = <ItemType extends Item>({
@@ -104,6 +105,7 @@ const TableComponent = <ItemType extends Item>({
   columns,
   data,
   extraDetails,
+  dataCy,
 }: Props<ItemType>) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   return (
@@ -113,7 +115,7 @@ const TableComponent = <ItemType extends Item>({
       })}
     >
       <NHSTable.Panel heading={tableHeading}>
-        <StyledTable>
+        <StyledTable data-cy={dataCy}>
           <NHSTable.Head>
             <NHSTable.Row>
               {columns.map((c, i) => (
