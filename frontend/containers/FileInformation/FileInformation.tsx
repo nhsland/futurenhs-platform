@@ -103,7 +103,9 @@ const FileInformation = ({ workspaceId }: Props) => {
 
   const desktopDownloadCell: FC<FileVersion> = ({ id }) => (
     <Link href={`/workspaces/${workspaceId}/download/${id}`} passHref>
-      <DownloadIcon />
+      <a>
+        <DownloadIcon />
+      </a>
     </Link>
   );
 
