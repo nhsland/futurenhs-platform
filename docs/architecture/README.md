@@ -17,6 +17,7 @@ This represents the current plan. Some parts are not implemented, yet (transpare
 - All applications send metrics and traces to Application Insights
 - Applications access CosmosDB, Blob Storage, Search and EventHub
 - Analytics data is sent through Data Factory to Synapse Analytics
+- The Discourse API is shown as an upstream service. This could either be hosted by Discourse or on the Kubernetes platform
 
 ## Change process and approvals
 
