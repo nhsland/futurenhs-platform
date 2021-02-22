@@ -2173,6 +2173,13 @@
   dependencies:
     "@opentelemetry/context-base" "^0.12.0"
 
+"@opentelemetry/api@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-0.17.0.tgz#c90e24acad7c67a26d2b8c86bed5b56785787a98"
+  integrity sha512-Rr5NklomjXd7BqfGRs8lD78MvDM+tPeUdHNXilyRIgsUu3gKEKpl3ZgJMiI7gx5r94OqvNc5MukkwKK6xjWYfA==
+  dependencies:
+    "@opentelemetry/context-base" "^0.17.0"
+
 "@opentelemetry/api@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-0.6.1.tgz#a00b504801f408230b9ad719716fe91ad888c642"
@@ -2180,12 +2187,12 @@
   dependencies:
     "@opentelemetry/context-base" "^0.6.1"
 
-"@opentelemetry/context-async-hooks@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/context-async-hooks/-/context-async-hooks-0.12.0.tgz#7d74c568445ce26a0f7c1be3898900a58031f225"
-  integrity sha512-pQclJ/fab+vZN/Q6XPMqKjMxnO8FZQi+GCSgb3CEnY4v6Xpu8MQ9T5oUKXyTP/DRfBt63M+hoCQLIH7+7aDnvQ==
+"@opentelemetry/context-async-hooks@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/context-async-hooks/-/context-async-hooks-0.17.0.tgz#4cdc53c3d6fe77573699fb855b9ecb591796cdf4"
+  integrity sha512-RvbsTM3wm7N6XNTcjEVi4B5FiUlCENqyLIFe9VZp090jM8+KQ/KrBXotAJxLT9CcXGekRzbIKB3vutm2Eloiwg==
   dependencies:
-    "@opentelemetry/context-base" "^0.12.0"
+    "@opentelemetry/context-base" "^0.17.0"
 
 "@opentelemetry/context-base@^0.10.2":
   version "0.10.2"
@@ -2196,6 +2203,11 @@
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.12.0.tgz#4906ae27359d3311e3dea1b63770a16f60848550"
   integrity sha512-UXwSsXo3F3yZ1dIBOG9ID8v2r9e+bqLWoizCtTb8rXtwF+N5TM7hzzvQz72o3nBU+zrI/D5e+OqAYK8ZgDd3DA==
+
+"@opentelemetry/context-base@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.17.0.tgz#03b72c54b5be5f40d6d88806de01d88e8ab196c4"
+  integrity sha512-q4Jy9JqTQh7/SE33YgKqcG5X2/JP9TbTpTmGoCBUYDKePK9E2uO40Rn4MjACqgnxu5sC61seG0P6xilvkpr9CQ==
 
 "@opentelemetry/context-base@^0.6.1":
   version "0.6.1"
@@ -2220,16 +2232,24 @@
     "@opentelemetry/context-base" "^0.12.0"
     semver "^7.1.3"
 
-"@opentelemetry/node@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/node/-/node-0.12.0.tgz#6f0fae58c01a679a502321076353a769661c8709"
-  integrity sha512-S6kl2ExkcSvMl+oVgiibmL67liTAKnVXUS9PqvpZcafhkNqMAyIq/BEKF6p/oDJO/2N+nEvXu8kmPjivdOqi9g==
+"@opentelemetry/core@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/core/-/core-0.17.0.tgz#3e57a3bfd45fe8634ede81a90266ff415f39e24e"
+  integrity sha512-jRM0Ydcb98a1ejrShqJIhnc2qqPJI2SJfHDRsFeWCj/q6LIlPo7yRl9msIndUQjRTHHvLdIKBGclNvqoXRyXTA==
   dependencies:
-    "@opentelemetry/api" "^0.12.0"
-    "@opentelemetry/context-async-hooks" "^0.12.0"
-    "@opentelemetry/core" "^0.12.0"
-    "@opentelemetry/tracing" "^0.12.0"
-    require-in-the-middle "^5.0.0"
+    "@opentelemetry/api" "^0.17.0"
+    "@opentelemetry/context-base" "^0.17.0"
+    semver "^7.1.3"
+
+"@opentelemetry/node@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/node/-/node-0.17.0.tgz#a9d0fa56a252a7769fa1c30b3841b9d4c59acaf2"
+  integrity sha512-ED6Js2HNvsbekT43v7YE2cy8o1j5tbrWGIS48PiJj43l8XEFjrMWF9pezM7bGThno/f0L2vNuuYmc0B0/8QyMw==
+  dependencies:
+    "@opentelemetry/api" "^0.17.0"
+    "@opentelemetry/context-async-hooks" "^0.17.0"
+    "@opentelemetry/core" "^0.17.0"
+    "@opentelemetry/tracing" "^0.17.0"
     semver "^7.1.3"
 
 "@opentelemetry/plugin-express@^0.11.0":
@@ -2299,6 +2319,14 @@
     "@opentelemetry/api" "^0.12.0"
     "@opentelemetry/core" "^0.12.0"
 
+"@opentelemetry/resources@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/resources/-/resources-0.17.0.tgz#1087d12178c69fb13125767b363a313dc4e31621"
+  integrity sha512-0f+RryxBh+m+8zrZ1x36CihK21KME/1pIFcPCH9095hDx9yHiAv1h3AGrR/knWpgA5j84Icr5ymlALarmpWSbg==
+  dependencies:
+    "@opentelemetry/api" "^0.17.0"
+    "@opentelemetry/core" "^0.17.0"
+
 "@opentelemetry/semantic-conventions@^0.10.2":
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-0.10.2.tgz#a78c88609e04abc6ba3e652f51d7a83d13787b1e"
@@ -2308,6 +2336,11 @@
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-0.12.0.tgz#7e392aecdbdbd5d737d3995998b120dc17589ab0"
   integrity sha512-BuCcDW0uLNYYTns0/LwXkJ8lp8aDm7kpS+WunEmPAPRSCe6ciOYRvzn5reqJfX93rf+6A3U2SgrBnCTH+0qoQQ==
+
+"@opentelemetry/semantic-conventions@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-0.17.0.tgz#f4c0d5121c89a9638266b5f34790a60cb90e0152"
+  integrity sha512-WtFcpOv1IHaI0kT2BaZcA6/+fkx6pWyJspUKBljA3HeNDIQgYGB2n6nL/6eaZzWNDvDBHzFEzOKULDJdIwGRlQ==
 
 "@opentelemetry/tracing@^0.10.2":
   version "0.10.2"
@@ -2329,6 +2362,18 @@
     "@opentelemetry/core" "^0.12.0"
     "@opentelemetry/resources" "^0.12.0"
     "@opentelemetry/semantic-conventions" "^0.12.0"
+
+"@opentelemetry/tracing@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/tracing/-/tracing-0.17.0.tgz#124934e9ef62ee624e69a44b22681b1c03a080d6"
+  integrity sha512-fnhG6PsDyxpssNGvxx90UNHlsBtPJM0Ouegq7xqQidC33JsQRCFGL0XFMoRltXbuOjT+uKnOti/0o+AxwLnuJA==
+  dependencies:
+    "@opentelemetry/api" "^0.17.0"
+    "@opentelemetry/context-base" "^0.17.0"
+    "@opentelemetry/core" "^0.17.0"
+    "@opentelemetry/resources" "^0.17.0"
+    "@opentelemetry/semantic-conventions" "^0.17.0"
+    lodash.merge "^4.6.2"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -8755,6 +8800,11 @@ lodash.isstring@^4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   integrity sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
 
+lodash.merge@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
+  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
 lodash.once@^4.0.0, lodash.once@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
@@ -9241,11 +9291,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
-
-module-details-from-path@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/module-details-from-path/-/module-details-from-path-1.0.3.tgz#114c949673e2a8a35e9d35788527aa37b679da2b"
-  integrity sha1-EUyUlnPiqKNenTV4hSeqN7Z52is=
 
 moment@^2.19.3, moment@^2.21.0, moment@^2.22.2, moment@^2.27.0:
   version "2.29.1"
@@ -11194,15 +11239,6 @@ require-directory@^2.1.1:
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
   integrity sha1-jGStX9MNqxyXbiNE/+f3kqam30I=
 
-require-in-the-middle@^5.0.0:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/require-in-the-middle/-/require-in-the-middle-5.0.3.tgz#ef8bfd771760db573bc86d1341d8ae411a04c600"
-  integrity sha512-p/ICV8uMlqC4tjOYabLMxAWCIKa0YUQgZZ6KDM0xgXJNgdGQ1WmL2A07TwmrZw+wi6ITUFKzH5v3n+ENEyXVkA==
-  dependencies:
-    debug "^4.1.1"
-    module-details-from-path "^1.0.3"
-    resolve "^1.12.0"
-
 require-main-filename@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
@@ -11246,7 +11282,7 @@ resolve-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
-resolve@^1.10.0, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.17.0, resolve@^1.18.1, resolve@^1.3.2, resolve@^1.8.1:
+resolve@^1.10.0, resolve@^1.13.1, resolve@^1.17.0, resolve@^1.18.1, resolve@^1.3.2, resolve@^1.8.1:
   version "1.18.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.18.1.tgz#018fcb2c5b207d2a6424aee361c5a266da8f4130"
   integrity sha512-lDfCPaMKfOJXjy0dPayzPdF1phampNWr3qFCjAu+rw/qbQmr5jWH5xN2hwh9QKfw9E5v4hwV7A+jrCmL8yjjqA==
